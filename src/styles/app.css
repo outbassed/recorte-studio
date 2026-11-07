@@ -415,3 +415,49 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
 .m-popup .panel-header { padding: 4px 12px; }
 .m-popup .panel-sub { padding: 6px 10px; }
 .editor-mobile.is-landscape .stage-tools { display: none; }
+
+/* ---------- 1.1: salvar, modos, mídias, cenários, modo simples ---------- */
+.btn-save { background: #24364a; border-color: #3d6188; color: #dbeaff; font-weight: 600; }
+.btn-save:hover:not(:disabled) { background: #2d4560; }
+.mode-toggle { display: inline-flex; border: 1px solid var(--line-2); border-radius: var(--radius); overflow: hidden; flex: none; }
+.mode-toggle button { display: inline-flex; align-items: center; gap: 4px; min-height: 32px; padding: 4px 9px; background: var(--bg-3); border: 0; color: var(--text-2); font-size: 12px; }
+.mode-toggle button.is-active { background: #3a4152; color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+.tl-audio-btn { flex: none; border-color: #3d6188; color: #dbeaff; }
+.media-import { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.media-row { display: flex; align-items: center; gap: 4px; padding: 4px 8px; border-bottom: 1px solid var(--line); min-height: 44px; }
+.media-row.is-missing { background: #3a2a20; }
+.media-thumb { width: 34px; height: 34px; object-fit: cover; border-radius: 4px; background: #000; flex: none; display: inline-block; }
+.media-info { flex: 1; min-width: 0; display: grid; }
+.media-info strong { font-size: 12px; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.media-info small { color: var(--text-3); font-size: 11px; display: inline-flex; gap: 3px; align-items: center; }
+.media-row .icon-btn { width: 28px; height: 28px; }
+.cbg-section { padding: 0 10px 6px; border-bottom: 1px solid var(--line); }
+.cbg-title { display: flex; align-items: center; justify-content: space-between; }
+.cbg-title .group-title { padding-left: 0; }
+.cbg-card { border: 1px solid var(--line); border-radius: var(--radius); padding: 6px; margin-bottom: 8px; background: var(--bg-3); display: grid; gap: 6px; }
+.cbg-card.is-active { border-color: var(--accent); }
+.cbg-head { display: flex; align-items: center; gap: 2px; }
+.cbg-head strong { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.cbg-times { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.cbg-slot { position: relative; display: grid; justify-items: center; gap: 2px; }
+.cbg-slot small { font-size: 9.5px; color: var(--text-3); }
+.cbg-slot-btn { width: 100%; aspect-ratio: 16 / 10; display: grid; place-items: center; padding: 0; border: 1px dashed var(--line-2); border-radius: 5px; background: var(--bg); color: var(--text-3); overflow: hidden; min-height: 32px; }
+.cbg-slot.has-img .cbg-slot-btn { border-style: solid; border-color: var(--accent-2); }
+.cbg-slot-btn img { width: 100%; height: 100%; object-fit: cover; }
+.cbg-remove { position: absolute; top: -5px; right: -5px; width: 18px; height: 18px; border-radius: 50%; border: 0; background: #3a2024; color: #ffb3b8; display: grid; place-items: center; padding: 0; }
+.simple-tl { height: 100%; display: flex; flex-direction: column; min-height: 0; border-top: 1px solid var(--line); }
+.simple-body { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); gap: 0; }
+.simple-form { display: flex; flex-wrap: wrap; gap: 8px; align-content: start; padding: 8px 10px; border-right: 1px solid var(--line); overflow: auto; }
+.simple-form label { display: grid; gap: 3px; font-size: 11.5px; color: var(--text-2); flex: 1 1 100px; }
+.simple-form label.is-wide { flex-basis: 100%; }
+.simple-form .btn { flex-basis: 100%; }
+.simple-steps { list-style: none; margin: 0; padding: 4px 0; overflow: auto; min-height: 0; }
+.simple-step { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.simple-step label { display: inline-flex; align-items: center; gap: 3px; color: var(--text-3); font-size: 11px; }
+.simple-step label .input { width: 56px; }
+.simple-step-main { flex: 1 1 180px; min-width: 0; text-align: left; background: none; border: 0; padding: 6px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.simple-step-main span { color: var(--text-2); }
+.editor-mobile .simple-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); overflow: auto; }
+.editor-mobile .simple-form { border-right: 0; border-bottom: 1px solid var(--line); }
+.editor-mobile .mode-toggle button { min-height: 36px; padding: 4px 8px; }
+.editor-mobile .btn-save, .editor-mobile .btn-export { min-height: 36px; padding: 4px 9px; }

@@ -1,7 +1,8 @@
 /* Recorte Studio: instalação e uso offline dos arquivos do aplicativo.
    Os projetos continuam salvos no IndexedDB do navegador. */
 const CACHE_PREFIX = 'recorte-studio-pwa-';
-const CACHE_NAME = CACHE_PREFIX + '2';
+// Substituído no build por um ID do conteúdo (vite.config.ts → pwaCacheVersion).
+const CACHE_NAME = CACHE_PREFIX + 'dev';
 const APP_ROOT = new URL(self.registration.scope);
 const SHELL = [
   './',
@@ -68,7 +69,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   const path = url.pathname.slice(APP_ROOT.pathname.length);
-  const isAppAsset = path.startsWith('assets/')
+  const isAppAsset = path.startsWith('assets/') || path.startsWith('vendor/')
     || /^(?:manifest\.webmanifest|favicon\.svg|icon-(?:192|512)\.png)$/.test(path);
   if (!isAppAsset) return; // Não guardar respostas de APIs e serviços externos.
 

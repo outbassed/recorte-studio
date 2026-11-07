@@ -15,9 +15,15 @@ import { EXPRESSIONS, VISEMES } from '@/engine/character/expressions';
 import { POSES } from '@/engine/character/presets';
 import { VIEW_LABELS, VIEW_ORDER } from '@/engine/character/views';
 import { BUBBLE_STYLES } from '@/engine/render/bubbles';
-import { beginGroup, commit, endGroup, useCurrentScene, useProject } from '@/state/projectStore';
+import { beginGroup, commit, currentProject, endGroup, useCurrentScene, useProject } from '@/state/projectStore';
+import { extractSequence, FRAMING_PRESETS, frameCamera, type FramingPreset } from '@/engine/model/ops';
+import { applyCustomBackground, availableTimes, customIdOf, isCustomPreset, resolveCustomVariant, TIME_LABELS } from '@/engine/world/customBackgrounds';
+import { getAction } from '@/engine/animation/actions';
+import { uid } from '@/engine/model/ids';
+import { repo } from '@/storage/db';
+import type { TimeOfDay } from '@/engine/model/schema';
 import { seek, transport, useTransport } from '@/state/transport';
-import { useUI, toast } from '@/state/uiStore';
+import { promptDialog, useUI, toast } from '@/state/uiStore';
 import { deleteSelection } from '@/state/actions';
 import { ColorField, IconButton, Section, SelectField, TextField, ToggleField } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
@@ -237,6 +243,17 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
         <PropField scene={scene} target={node.id} kind="character" path="expressionIntensity" />
         <DiscreteField scene={scene} target={node.id} path="mouthShape" label="Boca (visema manual)" options={[{ id: 'auto', label: 'Automática (fala ou expressão)' }, ...Object.entries(VISEMES).map(([id, v]) => ({ id, label: v.label }))]} />
       </Section>
+      <Section title="Movimento natural" defaultOpen={false} testId="sec-secondary">
+        <ToggleField label="Respiração, cabeça e olhar vivos" hint="Movimentos sutis e automáticos; diminuem durante ações." testId="secondary-toggle" checked={node.secondary.enabled} onChange={(v) => set('Movimento natural', (n) => { n.secondary.enabled = v; })} />
+        {node.secondary.enabled && (
+          <>
+            <SliderNumberField label="Respiração" unit="%" display={100} min={0} max={1.5} sliderMin={0} sliderMax={100} value={node.secondary.breathing} onChange={(v) => set('Respiração', (n) => { n.secondary.breathing = v; })} />
+            <SliderNumberField label="Movimento da cabeça" unit="%" display={100} min={0} max={1.5} sliderMin={0} sliderMax={100} value={node.secondary.headSway} onChange={(v) => set('Cabeça', (n) => { n.secondary.headSway = v; })} />
+            <SliderNumberField label="Olhares rápidos" unit="%" display={100} min={0} max={1.5} sliderMin={0} sliderMax={100} value={node.secondary.eyeDarts} onChange={(v) => set('Olhar', (n) => { n.secondary.eyeDarts = v; })} />
+            <SliderNumberField label="Troca de postura" unit="%" display={100} min={0} max={1.5} sliderMin={0} sliderMax={100} value={node.secondary.posture} onChange={(v) => set('Postura', (n) => { n.secondary.posture = v; })} />
+          </>
+        )}
+      </Section>
       <Section title="Pose e rig" defaultOpen={false} testId="sec-rig">
         <SelectField label="Pose pronta" value={node.poseId} testId="pose" options={POSES.map((p) => ({ id: p.id, label: p.label }))} onChange={(v) => set('Aplicar pose', (n) => applyPose(n, v))} />
         {(['armLUpper', 'armLLower', 'armRUpper', 'armRLower', 'legLUpper', 'legLLower', 'legRUpper', 'legRLower', 'torsoLean', 'headTilt', 'headNod', 'bodyY', 'sit'] as const).map((k) => (
@@ -257,6 +274,19 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
           commit('Inserir ação', (d) => void insertAction(d as Project, sceneOf(d as Project, scene.id), node.id, action, nowMs(), { targetX: readProperty(scene, node.id, 'transform.x', nowMs()) as number + 300 }));
           toast('Ação inserida: edite os clips e keys na timeline.');
         }}><Wand2 size={15} /> Inserir na timeline</button>
+        <div className="btn-row">
+          <button type="button" className="btn btn-sm" data-testid="save-sequence" onClick={async () => {
+            const seq = extractSequence(scene, node.id);
+            if (!seq) {
+              toast('Este personagem ainda não tem ações ou falas para salvar.', 'error');
+              return;
+            }
+            const name = await promptDialog('Salvar sequência', 'Nome da sequência', `Sequência de ${node.name}`);
+            if (!name) return;
+            await repo.putLibrary({ id: uid('lib'), kind: 'animation', name, favorite: 0, createdAt: Date.now(), data: seq });
+            toast('Sequência salva na biblioteca. Aplique em qualquer personagem pela aba Biblioteca.', 'success');
+          }}>Salvar sequência</button>
+        </div>
       </Section>
     </>
   );
@@ -346,6 +376,9 @@ function CameraSections({ scene }: { scene: Scene }) {
         <PropField scene={scene} target={CAMERA_TARGET} kind="camera" path="zoom" testId="camera-zoom" />
         <PropField scene={scene} target={CAMERA_TARGET} kind="camera" path="rotationDeg" />
       </Section>
+      <Section title="Enquadramento rápido" testId="sec-framing">
+        <FramingButtons scene={scene} />
+      </Section>
       <Section title="Seguir personagem">
         <SelectField label="Seguir" value={scene.camera.followNodeId ?? ''} options={[{ id: '', label: 'Ninguém' }, ...Object.values(scene.nodes).filter((n) => n.kind === 'character').map((n) => ({ id: n.id, label: n.name }))]} onChange={(v) => set('Seguir', (s) => { s.camera.followNodeId = v || null; if (v && !s.camera.followStrength) s.camera.followStrength = 1; })} />
         <SliderNumberField label="Força de seguir" unit="%" display={100} min={0} max={1} sliderMin={0} sliderMax={100} value={scene.camera.followStrength} onChange={(v) => set('Seguir', (s) => { s.camera.followStrength = v; })} />
@@ -380,6 +413,7 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
         <Section title="Parâmetros da ação">
           <SliderNumberField label="Intensidade" unit="%" display={100} min={0} max={3} sliderMin={0} sliderMax={200} value={c.intensity} onChange={(v) => set<typeof c>((x) => { x.intensity = v; })} />
           <SliderNumberField label="Velocidade" unit="×" min={0.05} max={10} step={0.05} decimals={2} sliderMin={0.1} sliderMax={4} value={c.speed} onChange={(v) => set<typeof c>((x) => { x.speed = v; })} />
+          <SliderNumberField label="Transição (entrada e saída)" unit="ms" min={0} max={5000} sliderMin={0} sliderMax={1500} step={10} decimals={0} value={c.blendMs ?? getAction(c.action)?.blend ?? 180} testId="clip-blend" onChange={(v) => set<typeof c>((x) => { x.blendMs = Math.round(v); })} />
           <SelectField label="Braço" value={c.side} options={[{ id: 'auto', label: 'Automático (lado do alvo)' }, { id: 'L', label: 'Esquerdo' }, { id: 'R', label: 'Direito' }]} onChange={(v) => set<typeof c>((x) => { x.side = v as typeof x.side; })} />
           <button type="button" className="btn btn-block" data-testid="bake-clip" onClick={() => {
             let count = 0;
@@ -488,6 +522,10 @@ function SceneSections({ scene }: { scene: Scene }) {
   const set = (label: string, fn: (s: Scene) => void, coalesce?: string) => commit(label, (d) => fn(sceneOf(d as Project, scene.id)), coalesce ? { coalesce } : {});
   const bg = scene.background;
   const def = getBackground(bg.presetId);
+  const project = currentProject();
+  const customOptions = Object.values(project.customBackgrounds).map((c) => ({ id: `custom:${c.id}`, label: `★ ${c.name}` }));
+  const custom = isCustomPreset(bg.presetId) ? project.customBackgrounds[customIdOf(bg.presetId)] : undefined;
+  const customPick = custom ? resolveCustomVariant(custom, bg.timeOfDay) : null;
   return (
     <>
       <div className="insp-title"><strong>{scene.name}</strong><small>Propriedades da cena</small></div>
@@ -497,8 +535,19 @@ function SceneSections({ scene }: { scene: Scene }) {
         <TextField label="Anotações" multiline value={scene.notes} onChange={(v) => set('Anotações', (s) => { s.notes = v; }, 'scene-notes')} />
       </Section>
       <Section title="Cenário" testId="sec-bg">
-        <SelectField label="Cenário" value={bg.presetId} testId="bg-select" options={BACKGROUNDS.map((b) => ({ id: b.id, label: b.label }))} onChange={(v) => set('Trocar cenário', (s) => applyBackground(s, v, { variant: s.background.variant }))} />
-        <SelectField label="Variante" value={bg.variant} testId="bg-variant" options={[{ id: 'day', label: 'Dia' }, { id: 'night', label: 'Noite' }]} onChange={(v) => set('Variante', (s) => { s.background.variant = v as 'day' | 'night'; })} />
+        <SelectField label="Cenário" value={bg.presetId} testId="bg-select" options={[...customOptions, ...BACKGROUNDS.map((b) => ({ id: b.id, label: b.label }))]} onChange={(v) => set('Trocar cenário', (s) => {
+          const cb = isCustomPreset(v) ? project.customBackgrounds[customIdOf(v)] : undefined;
+          if (cb) applyCustomBackground(s, cb);
+          else applyBackground(s, v, { variant: s.background.variant });
+        })} />
+        {custom ? (
+          <>
+            <SelectField label="Horário" value={customPick?.time ?? ''} testId="bg-time" options={availableTimes(custom).map((t) => ({ id: t, label: TIME_LABELS[t] }))} onChange={(v) => set('Horário', (s) => { s.background.timeOfDay = v as TimeOfDay; })} />
+            {customPick?.fallback && <p className="warn-box" role="status">O horário {TIME_LABELS[bg.timeOfDay!]} não existe neste cenário: usando {TIME_LABELS[customPick.time]}.</p>}
+          </>
+        ) : (
+          <SelectField label="Variante" value={bg.variant} testId="bg-variant" options={[{ id: 'day', label: 'Dia' }, { id: 'night', label: 'Noite' }]} onChange={(v) => set('Variante', (s) => { s.background.variant = v as 'day' | 'night'; })} />
+        )}
         <SelectField label="Tom" value={bg.tone} options={[{ id: 'normal', label: 'Normal' }, { id: 'light', label: 'Claro' }, { id: 'dark', label: 'Escuro' }]} onChange={(v) => set('Tom', (s) => { s.background.tone = v as 'normal' | 'light' | 'dark'; })} />
         <ColorField label="Parede / céu" value={bg.primary || def.wall} onChange={(v) => set('Cor do cenário', (s) => { s.background.primary = v; })} />
         <ColorField label="Destaque" value={bg.secondary || def.accent} onChange={(v) => set('Cor do cenário', (s) => { s.background.secondary = v; })} />
@@ -519,6 +568,28 @@ function SceneSections({ scene }: { scene: Scene }) {
         <SelectField label="Saída" value={scene.transitionOut.kind === 'fade' ? 'fade' : 'cut'} options={[{ id: 'cut', label: 'Sem efeito' }, { id: 'fade', label: 'Fade para preto' }]} onChange={(v) => set('Transição', (s) => { s.transitionOut.kind = v as Transition['kind']; })} />
         <SliderNumberField label="Duração da saída" unit="ms" min={0} max={10000} step={50} decimals={0} sliderMin={0} sliderMax={3000} value={scene.transitionOut.durationMs} onChange={(v) => set('Transição', (s) => { s.transitionOut.durationMs = Math.round(v); }, 'tr-out')} />
       </Section>
+    </>
+  );
+}
+
+function FramingButtons({ scene }: { scene: Scene }) {
+  const chars = Object.values(scene.nodes).filter((n) => n.kind === 'character');
+  const [a, setA] = useState(chars[0]?.id ?? '');
+  const [b, setB] = useState(chars[1]?.id ?? '');
+  const [smooth, setSmooth] = useState(false);
+  const apply = (preset: FramingPreset) => {
+    let ok = false;
+    commit('Enquadrar câmera', (d) => { ok = frameCamera(d as Project, sceneOf(d as Project, scene.id), preset, preset === 'two-shot' ? [a, b] : [a], nowMs(), smooth ? 1200 : 0); });
+    if (!ok) toast('Escolha o(s) personagem(ns) do enquadramento.', 'error');
+  };
+  return (
+    <>
+      <SelectField label="Personagem" value={a} options={chars.map((c) => ({ id: c.id, label: c.name }))} onChange={setA} />
+      <SelectField label="Segundo personagem" value={b} options={[{ id: '', label: '—' }, ...chars.map((c) => ({ id: c.id, label: c.name }))]} onChange={setB} />
+      <ToggleField label="Movimento suave (1,2 s)" hint="Desligado: corte seco no tempo atual." checked={smooth} onChange={setSmooth} />
+      <div className="btn-row">
+        {FRAMING_PRESETS.map((p) => <button key={p.id} type="button" className="btn btn-sm" data-testid={`frame-${p.id}`} onClick={() => apply(p.id)}>{p.label}</button>)}
+      </div>
     </>
   );
 }

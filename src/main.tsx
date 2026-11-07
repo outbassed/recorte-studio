@@ -34,6 +34,13 @@ function App() {
       }).catch(() => toast('Não foi possível abrir este projeto.', 'error'));
     };
     window.addEventListener('popstate', onHistoryChange);
+    // PWA: quando uma versão nova assume o controle, oferece recarregar (sem forçar).
+    if ('serviceWorker' in navigator) {
+      const hadController = !!navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (hadController) toast('Uma versão nova do Recorte Studio foi instalada.', 'info', { label: 'Recarregar', run: () => location.reload() });
+      });
+    }
     // Pede ao navegador para não apagar os projetos sob pressão de espaço.
     void navigator.storage?.persist?.();
     return () => window.removeEventListener('popstate', onHistoryChange);

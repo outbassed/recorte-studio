@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import { registerSelectionProvider } from './projectStore';
 
-export type LeftTab = 'characters' | 'backgrounds' | 'objects' | 'templates' | 'scenes' | 'layers' | 'library' | 'direction';
+export type LeftTab = 'characters' | 'backgrounds' | 'objects' | 'media' | 'templates' | 'scenes' | 'layers' | 'library' | 'direction';
 export type MobilePanel = LeftTab | 'properties' | null;
 export type TimelineSelection = { trackId: string; clipId?: string; keyId?: string } | null;
 
@@ -36,13 +36,15 @@ interface UIState extends Selection {
   snapStage: boolean;
   snapTimeline: boolean;
   frameOnly: boolean;
+  /** Modo simples (passos) × avançado (timeline): mesma estrutura de dados. */
+  simpleMode: boolean;
   checker: boolean;
   gazeArrows: boolean;
   expandedTracks: Record<string, boolean>;
 }
 
 const PREF_KEY = 'recorte.ui.v1';
-const prefKeys = ['leftWidth', 'rightWidth', 'timelineHeight', 'timelineZoom', 'showGrid', 'showSafe', 'showRulers', 'snapStage', 'snapTimeline', 'checker'] as const;
+const prefKeys = ['leftWidth', 'rightWidth', 'timelineHeight', 'timelineZoom', 'showGrid', 'showSafe', 'showRulers', 'snapStage', 'snapTimeline', 'checker', 'simpleMode'] as const;
 
 function loadPrefs(): Partial<UIState> {
   try {
@@ -77,6 +79,7 @@ export const useUI = create<UIState>(() => ({
   snapStage: true,
   snapTimeline: true,
   frameOnly: false,
+  simpleMode: false,
   checker: false,
   gazeArrows: false,
   expandedTracks: {},

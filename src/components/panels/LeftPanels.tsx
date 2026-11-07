@@ -4,6 +4,7 @@ import {
   ArrowDown, ArrowUp, ChevronsDown, ChevronsUp, Copy, Eye, EyeOff, FileUp, Group, ImagePlus, Lightbulb, Lock, LockOpen, Pencil, Plus, Shapes, Sparkles, Star, Trash2, Type, Ungroup, UserPlus,
 } from 'lucide-react';
 import { createLightNode, createProject, createScene, createShapeNode, createTextNode, newCharacterDefinition } from '@/engine/model/factory';
+import { applySequence, type Sequence } from '@/engine/model/ops';
 import { addScene as addSceneOp, applyBackground, characterUsage, countSceneActions, deleteCharacter, deleteNode, duplicateNode, groupNodes, moveLayer, moveScene, pasteSceneContent, replaceSceneContent, sceneOf, ungroup } from '@/engine/model/ops';
 import { uid, deepClone } from '@/engine/model/ids';
 import { CharacterDefinitionSchema, type CharacterDefinition, type Project, type Scene, type SceneNode } from '@/engine/model/schema';
@@ -25,6 +26,8 @@ import { repo, type LibraryRecord } from '@/storage/db';
 import { IconButton, MoreButton, SearchBox, SelectField, TextField, useLongPress, VirtualList } from '../controls/fields';
 import { backgroundThumbUrl, CharacterThumb, PropThumb, SceneThumb } from './thumbs';
 import { formatTime } from '../timeline/Timeline';
+import { MediaPanel } from './MediaPanel';
+import { CustomBackgroundsSection } from './CustomBackgrounds';
 
 /* ---------------------------------- CENAS ---------------------------------- */
 let sceneClipboard: Scene | null = null;
@@ -326,6 +329,7 @@ export function BackgroundsPanel() {
         </div>
       </div>
       <div className="panel-scroll">
+        <CustomBackgroundsSection />
         {groups.map((g) => (
           <div key={g}>
             <h3 className="group-title">{g}</h3>
@@ -514,6 +518,16 @@ export function LibraryPanel() {
         replaceSceneContent(d as Project, s.id, data.scene);
       });
       seek(0);
+    } else if (r.kind === 'animation') {
+      const id = useUI.getState().nodeIds[0];
+      const n = id ? scene.nodes[id] : undefined;
+      if (n?.kind !== 'character') {
+        toast('Selecione um personagem para aplicar a sequência.', 'error');
+        return;
+      }
+      let count = 0;
+      commit('Aplicar sequência', (d) => { count = applySequence(sceneOf(d as Project, scene.id), n.id, r.data as Sequence, transport.getState().timeMs); });
+      toast(`${count} passo(s) aplicados a ${n.name} a partir do tempo atual. Todos editáveis na timeline.`, 'success');
     } else if (r.kind === 'pose') {
       const id = useUI.getState().nodeIds[0];
       const n = id ? scene.nodes[id] : undefined;
@@ -716,6 +730,7 @@ export const LEFT_TABS = [
   { id: 'characters', label: 'Personagens', short: 'Elenco', panel: CharactersPanel },
   { id: 'backgrounds', label: 'Cenários', short: 'Cenários', panel: BackgroundsPanel },
   { id: 'objects', label: 'Objetos', short: 'Objetos', panel: ObjectsPanel },
+  { id: 'media', label: 'Mídias e áudio', short: 'Mídias', panel: MediaPanel },
   { id: 'templates', label: 'Templates', short: 'Modelos', panel: TemplatesPanel },
   { id: 'scenes', label: 'Cenas', short: 'Cenas', panel: ScenesPanel },
   { id: 'layers', label: 'Camadas', short: 'Camadas', panel: LayersPanel },

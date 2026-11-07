@@ -5,7 +5,7 @@
  */
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
-  AlertTriangle, Check, ChevronLeft, ChevronsUpDown, Clapperboard, Download, Expand, FileUp, Film, FolderOpen, HelpCircle, Layers, Link2, Loader2, Minimize, Package, Redo2, Settings, Shapes, SlidersHorizontal, Sparkles, Trees, Undo2, Users, X,
+  AlertTriangle, Check, Music, Save, ListChecks, Workflow, ChevronLeft, ChevronsUpDown, Clapperboard, Download, Expand, FileUp, Film, FolderOpen, HelpCircle, Layers, Link2, Loader2, Minimize, Package, Redo2, Settings, Shapes, SlidersHorizontal, Sparkles, Trees, Undo2, Users, X,
 } from 'lucide-react';
 import { useProjectStore, useCurrentScene, useProject, commit, currentScene } from '@/state/projectStore';
 import { useSession, leaveEditor, saveNow } from '@/features/projects/session';
@@ -22,7 +22,9 @@ import { LEFT_TABS, ScenesPanel, LayersPanel, CharactersPanel, BackgroundsPanel,
 import { CreatorDialog } from '../dialogs/CreatorDialog';
 import { ExportDialog } from '../dialogs/ExportDialog';
 import { ImportReportDialog, SettingsDialog, ShortcutsDialog } from '../dialogs/OtherDialogs';
-import { importFile } from '@/features/projects/session';
+import { importAnything, saveProjectWithChecks } from '@/state/mediaActions';
+import { MediaPanel } from '../panels/MediaPanel';
+import { SimpleTimeline } from '../timeline/SimpleTimeline';
 import type { Project } from '@/engine/model/schema';
 
 /* ----------------- modo de layout por espaço real ----------------- */
@@ -167,6 +169,18 @@ function useShortcuts() {
 }
 
 /* ----------------- barra superior ----------------- */
+export const PROJECT_ACCEPT = '.jrec,.json,.zip,.7z,.rar,.tar,.gz,.tgz,.xz,.txz,.bz2,.tbz2,application/json,application/zip';
+
+function ModeToggle({ compact }: { compact?: boolean }) {
+  const simple = useUI((s) => s.simpleMode);
+  return (
+    <div className="mode-toggle" role="group" aria-label="Modo de edição">
+      <button type="button" className={simple ? 'is-active' : ''} aria-pressed={simple} data-testid="mode-simple" title="Modo simples: passos com quem, o quê e quando" onClick={() => useUI.setState({ simpleMode: true })}><ListChecks size={14} />{!compact && ' Simples'}</button>
+      <button type="button" className={!simple ? 'is-active' : ''} aria-pressed={!simple} data-testid="mode-advanced" title="Modo avançado: timeline, trilhas e keyframes" onClick={() => useUI.setState({ simpleMode: false })}><Workflow size={14} />{!compact && ' Avançado'}</button>
+    </div>
+  );
+}
+
 function SaveBadge() {
   const { status, error } = useSession();
   const map = {
@@ -206,14 +220,16 @@ function TopBar({ compact }: { compact?: boolean }) {
       <IconButton label="Desfazer (Ctrl+Z)" testId="undo" disabled={!canUndo} onClick={doUndo}><Undo2 size={17} /></IconButton>
       <IconButton label="Refazer (Ctrl+Shift+Z)" testId="redo" disabled={!canRedo} onClick={doRedo}><Redo2 size={17} /></IconButton>
       {!compact && <IconButton label="Importar projeto" testId="top-import" onClick={() => fileRef.current?.click()}><FileUp size={17} /></IconButton>}
-      <input ref={fileRef} hidden type="file" accept=".json,.zip" onChange={(e) => {
+      <input ref={fileRef} hidden type="file" accept={PROJECT_ACCEPT} onChange={(e) => {
         const f = e.target.files?.[0];
-        if (f) void importFile(f).catch((err: Error) => toast(`Não foi possível importar: ${err.message}`, 'error'));
+        if (f) void importAnything(f, true);
         e.target.value = '';
       }} />
       <IconButton label="Configurações do projeto" testId="open-settings" onClick={() => openDialog('settings')}><Settings size={17} /></IconButton>
       {!compact && <IconButton label="Atalhos de teclado (?)" testId="open-shortcuts" onClick={() => openDialog('shortcuts')}><HelpCircle size={17} /></IconButton>}
-      <button type="button" className="btn btn-primary btn-export" data-testid="open-export" onClick={() => openDialog('export')}><Download size={15} />{!compact && ' Exportar'}</button>
+      <ModeToggle compact={compact} />
+      <button type="button" className="btn btn-save" data-testid="save-project" title="Baixar o projeto editável com todas as mídias (.jrec)" onClick={() => void saveProjectWithChecks()}><Save size={15} />{compact ? '' : ' Salvar projeto'}</button>
+      <button type="button" className="btn btn-primary btn-export" data-testid="open-export" title="Exportar vídeo ou imagens" onClick={() => openDialog('export')}><Download size={15} />{!compact && ' Exportar vídeo/imagem'}</button>
     </header>
   );
 }
@@ -227,12 +243,13 @@ const PANEL_COMPONENTS: Record<LeftTab, () => React.ReactElement | null> = {
   scenes: ScenesPanel,
   layers: LayersPanel,
   library: LibraryPanel,
+  media: MediaPanel,
   direction: DirectionPanel,
 };
 
 const TAB_ICONS: Record<LeftTab, React.ReactNode> = {
   characters: <Users size={17} />, backgrounds: <Trees size={17} />, objects: <Shapes size={17} />, templates: <Clapperboard size={17} />,
-  scenes: <Film size={17} />, layers: <Layers size={17} />, library: <Package size={17} />, direction: <Sparkles size={17} />,
+  scenes: <Film size={17} />, layers: <Layers size={17} />, library: <Package size={17} />, media: <Music size={17} />, direction: <Sparkles size={17} />,
 };
 
 function Dialogs() {
@@ -311,7 +328,7 @@ function DesktopEditor() {
         <div className="panel-scroll is-padded"><Inspector /></div>
       </aside>
       <Divider axis="y" label="Altura da timeline" invert value={tlHeight} min={140} max={tlMax} onChange={(v) => useUI.setState({ timelineHeight: v })} testId="divider-timeline" />
-      <div className="bottom-area"><Timeline /></div>
+      <div className="bottom-area">{ui.simpleMode ? <SimpleTimeline /> : <Timeline />}</div>
     </div>
   );
 }
@@ -326,7 +343,7 @@ const DOCK: Array<{ id: Exclude<MobilePanel, null>; label: string; icon: React.R
   { id: 'properties', label: 'Editar', icon: <SlidersHorizontal size={19} /> },
 ];
 const EXTRA: Array<{ id: LeftTab; label: string }> = [
-  { id: 'templates', label: 'Modelos' }, { id: 'library', label: 'Biblioteca' }, { id: 'direction', label: 'Direção' },
+  { id: 'media', label: 'Mídias e áudio' }, { id: 'templates', label: 'Modelos' }, { id: 'library', label: 'Biblioteca' }, { id: 'direction', label: 'Direção' },
 ];
 
 function MobileEditor({ landscape }: { landscape: boolean }) {
@@ -345,7 +362,7 @@ function MobileEditor({ landscape }: { landscape: boolean }) {
         <Stage />
         <IconButton label={ui.previewFocus ? 'Sair do modo foco' : 'Modo foco no palco'} className="m-focus-btn" testId="focus-mode" onClick={() => useUI.setState({ previewFocus: !ui.previewFocus, mobilePanel: null })}>{ui.previewFocus ? <Minimize size={17} /> : <Expand size={17} />}</IconButton>
       </div>
-      {!ui.previewFocus && <div className="m-timeline"><Timeline compact /></div>}
+      {!ui.previewFocus && <div className="m-timeline">{ui.simpleMode ? <SimpleTimeline /> : <Timeline compact />}</div>}
       {panel && (
         <section className="m-popup" role="dialog" aria-label={label} data-testid="mobile-popup">
           <header className="m-popup-head">

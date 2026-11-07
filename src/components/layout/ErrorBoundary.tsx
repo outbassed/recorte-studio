@@ -1,6 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { exportProjectJson } from '@/features/export/pipeline';
-import { downloadBlob } from '@/features/projects/session';
+import { saveProjectFile } from '@/features/projects/session';
 import { useProjectStore } from '@/state/projectStore';
 
 /** Falha de interface não pode custar o trabalho: oferece backup antes de recarregar. */
@@ -21,7 +20,7 @@ export class ErrorBoundary extends Component<{ children: ReactNode }, { error: E
         <p>Seu projeto continua salvo neste navegador. Baixe uma cópia por segurança e recarregue a página.</p>
         <pre>{this.state.error.message}</pre>
         <div className="btn-row">
-          {project && <button type="button" className="btn" onClick={() => downloadBlob(exportProjectJson(project), `${project.title}-recuperado.json`)}>Baixar cópia do projeto</button>}
+          {project && <button type="button" className="btn" onClick={() => void saveProjectFile(project, { allowMissing: true })}>Baixar cópia do projeto (.jrec)</button>}
           <button type="button" className="btn btn-primary" onClick={() => location.reload()}>Recarregar</button>
         </div>
       </div>

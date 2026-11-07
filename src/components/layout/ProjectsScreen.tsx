@@ -4,7 +4,9 @@ import { Archive, ArchiveRestore, Copy, FilePlus2, FileUp, Link2, Pencil, Trash2
 import { createProject } from '@/engine/model/factory';
 import { PROJECT_TEMPLATES, createDemoProject, createFromProjectTemplate } from '@/features/templates/projects';
 import { matchesSearch } from '@/features/library/search';
-import { createAndOpen, duplicateProject, importFile, openProjectById } from '@/features/projects/session';
+import { createAndOpen, duplicateProject, openProjectById } from '@/features/projects/session';
+import { importAnything } from '@/state/mediaActions';
+import { PROJECT_ACCEPT } from './Editor';
 import { copyProjectLink } from '@/features/projects/urls';
 import { confirmDialog, promptDialog, toast } from '@/state/uiStore';
 import { repo, type ProjectRecord } from '@/storage/db';
@@ -28,7 +30,7 @@ export function ProjectsScreen() {
 
   const onImport = async (f: File) => {
     try {
-      await importFile(f);
+      await importAnything(f, false);
     } catch (e) {
       toast(`Não foi possível importar: ${e instanceof Error ? e.message : 'erro desconhecido'}`, 'error');
     }
@@ -41,7 +43,7 @@ export function ProjectsScreen() {
         <div className="projects-actions">
           <button type="button" className="btn" data-testid="import-project" onClick={() => fileRef.current?.click()}><FileUp size={15} /> Importar projeto</button>
           <button type="button" className="btn btn-primary" data-testid="new-project" onClick={() => void createAndOpen(createProject('Novo projeto'))}><FilePlus2 size={15} /> Novo projeto</button>
-          <input ref={fileRef} hidden type="file" accept=".json,.zip,application/json,application/zip" data-testid="project-input" onChange={(e) => {
+          <input ref={fileRef} hidden type="file" accept={PROJECT_ACCEPT} data-testid="project-input" onChange={(e) => {
             const f = e.target.files?.[0];
             if (f) void onImport(f);
             e.target.value = '';
@@ -113,7 +115,7 @@ export function ProjectsScreen() {
           ))}
         </div>
       </section>
-      <p className="hint projects-note">Cada projeto tem seu próprio link, mas os dados ficam só neste navegador. Para abrir em outro aparelho, use Exportar e Importar. Faça backups regularmente. Importa também arquivos das versões 0.3 e 0.4.</p>
+      <p className="hint projects-note">Cada projeto tem seu próprio link, mas os dados ficam só neste navegador. Para abrir em outro aparelho, use "Salvar projeto" (.jrec) e importe o arquivo lá. Faça backups regularmente. Importa também arquivos das versões 0.3 e 0.4.</p>
     </main>
   );
 }

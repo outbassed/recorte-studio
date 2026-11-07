@@ -5,7 +5,7 @@
  * Vídeo: prefere WebCodecs + muxer (quadro a quadro, mais rápido que tempo real e com
  * timestamps exatos). Sem WebCodecs, cai para MediaRecorder em tempo real, avisando.
  */
-import { strToU8, zipSync, type Zippable } from 'fflate';
+import { zipSync, type Zippable } from 'fflate';
 import { Muxer as WebmMuxer, ArrayBufferTarget as WebmTarget } from 'webm-muxer';
 import { Muxer as Mp4Muxer, ArrayBufferTarget as Mp4Target } from 'mp4-muxer';
 import type { Project } from '@/engine/model/schema';
@@ -14,7 +14,6 @@ import { planFrame, planToSvgString, type AssetResolver } from '@/engine/render/
 import { preloadDataUrls } from '@/features/library/assets';
 import { eventsFrom, montageAudioEvents, scheduleGain, sceneAudioEvents, type AudioEvent } from '@/features/audio/mix';
 import { getBuffer } from '@/features/audio/engine';
-import { repo } from '@/storage/db';
 import { deepClone } from '@/engine/model/ids';
 
 export type ExportScope = { kind: 'current'; sceneId: string } | { kind: 'range'; sceneId: string; startMs: number; endMs: number } | { kind: 'project' };
@@ -391,26 +390,6 @@ async function exportMediaRecorder(project: Project, scope: ExportScope, opts: V
   return { blob: new Blob(chunks, { type: 'video/webm' }), method: 'mediarecorder', hasAudio, warnings, frames };
 }
 
-/* ------------------------------ Projeto ------------------------------ */
-
-export function exportProjectJson(project: Project): Blob {
-  return new Blob([JSON.stringify(project, null, 2)], { type: 'application/json' });
-}
-
-const safeName = (s: string) => s.replace(/[\\/:*?"<>|]+/g, '_');
-
-/** Pacote .zip: project.json + todas as mídias. Abre em outra instalação, offline. */
-export async function exportProjectPackage(project: Project, onProgress?: ProgressFn): Promise<Blob> {
-  const files: Zippable = { 'project.json': strToU8(JSON.stringify(project)) };
-  const ids = Object.keys(project.assets);
-  let i = 0;
-  for (const id of ids) {
-    const blob = await repo.getBlob(id);
-    i++;
-    onProgress?.({ done: i, total: ids.length, label: `Empacotando mídia ${i} de ${ids.length}` });
-    if (blob) files[`assets/${safeName(id)}`] = [new Uint8Array(await blob.arrayBuffer()), { level: 0 }];
-  }
-  return new Blob([zipSync(files, { level: 1 }) as Uint8Array<ArrayBuffer>], { type: 'application/zip' });
-}
+/* Projetos editáveis são salvos SÓ em .jrec: ver src/features/projects/jrec.ts. */
 
 export const cloneForExport = deepClone;
