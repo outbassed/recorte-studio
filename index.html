@@ -6,10 +6,24 @@
     <meta name="theme-color" content="#14161c" />
     <meta name="description" content="Recorte Studio — editor de animação narrativa 2D com personagens recortados." />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Recorte" />
     <title>Recorte Studio</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Service Workers não funcionam quando a versão exportada é aberta por file://.
+      if ('serviceWorker' in navigator && window.isSecureContext && location.protocol !== 'file:') {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' })
+            .catch((error) => console.warn('PWA indisponível:', error));
+        });
+      }
+    </script>
   </body>
 </html>
