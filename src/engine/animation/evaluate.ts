@@ -12,6 +12,7 @@ import { evaluateKeys } from './interp';
 import { getAction, HOLD_AFTER, sampleActionClip } from './actions';
 import { amplitudeAt, amplitudeToViseme, autoBlink, visemeAt } from './lipsync';
 import { resolveGaze, type GazeResult } from '../gaze/gaze';
+import { sampleSecondary } from './secondary';
 import { bodyMetrics, type CharacterPose } from '../character/render';
 import { VIEW_YAW } from '../character/views';
 import { BUILTIN_CHARACTERS } from '../character/presets';
@@ -202,6 +203,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
     const side = pickSide(Math.cos((yaw * Math.PI) / 180), yaw, gaze.dx || (yaw > 0 ? 1 : yaw < 0 ? -1 : 1));
     let exprWeight = 0;
     let sitHold = 0;
+    let actionWeight = 0;
     for (const clip of [...clips].sort((a, b) => a.startMs - b.startMs)) {
       const hold = HOLD_AFTER[clip.action];
       if (hold && t >= clip.startMs + clip.durationMs) sitHold = (hold.sit ?? 0) * clip.intensity;
@@ -209,6 +211,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
       const s = sampleActionClip(clip, t, side);
       if (!s) continue;
       for (const key of Object.keys(s.rig) as RigKey[]) rig[key] += (s.rig[key] ?? 0) * s.weight;
+      actionWeight = Math.max(actionWeight, s.weight);
       if (s.expression && s.weight >= exprWeight && s.weight > 0.25) {
         expression = s.expression;
         exprWeight = s.weight;
@@ -219,6 +222,9 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
       }
     }
     rig.sit = Math.min(1, rig.sit + sitHold);
+    // Movimento secundário: diminui enquanto uma ação está ativa, para não brigar com ela.
+    const sec = sampleSecondary(id, t, n.secondary, actionWeight);
+    for (const key of Object.keys(sec.rig) as RigKey[]) rig[key] += sec.rig[key] ?? 0;
 
     // Boca: uma única fonte de visema por vez. Prioridade: manual > fala > áudio > expressão.
     let viseme: string | null = null;
@@ -270,8 +276,8 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
           viseme,
           visemeAmount,
           blink,
-          gazeX: gaze.gazeX,
-          gazeY: gaze.gazeY,
+          gazeX: Math.max(-1, Math.min(1, gaze.gazeX + sec.gazeX)),
+          gazeY: Math.max(-1, Math.min(1, gaze.gazeY + sec.gazeY)),
         },
       },
     };

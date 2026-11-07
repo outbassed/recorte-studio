@@ -8,6 +8,7 @@ import { frameSize, type Project, type Scene, type SceneNode, WORLD_HEIGHT } fro
 import { evaluateScene, type ResolvedScene } from '../animation/evaluate';
 import { renderCharacter, type CharacterRenderResult } from '../character/render';
 import { getBackground, FLOOR_Y, renderBackground } from '../world/backgrounds';
+import { isCustomPreset, renderCustomBackground } from '../world/customBackgrounds';
 import { getProp, propBounds, renderProp } from '../world/props';
 import { clamp, ellipse, esc, n, path, rad, rect, safeColor, seeded, shade } from './svg';
 import { bubbleLayout, renderBubble, renderSubtitle } from './bubbles';
@@ -340,7 +341,12 @@ export function planScene(project: Project, scene: Scene, timeMs: number, assets
   const cam = resolved.camera;
   const bg = scene.background;
   const transparent = opts.transparentBg || bg.transparent;
-  if (!transparent) {
+  if (!transparent && isCustomPreset(bg.presetId)) {
+    // Cenário do usuário: uma imagem por horário, no mesmo retângulo do mundo.
+    const blur = bg.blur > 0.01 ? bg.blur : 0;
+    if (blur) filters.add(Math.round(blur * 2) / 2);
+    entries.push({ key: 'bg-custom', transform: cameraTransform(cam, bg.parallax), opacity: 1, filter: blur ? blurFilter(blur) : '', clip: '', blend: '', inner: renderCustomBackground(project, bg, assets) });
+  } else if (!transparent) {
     const layers = cachedBackground(bg, scene.id);
     const def = getBackground(bg.presetId);
     const p = bg.parallax;

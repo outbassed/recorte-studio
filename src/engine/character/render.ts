@@ -503,7 +503,7 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   const armsFront = (!armLBehind ? renderArm('L') : '') + (!armRBehind ? renderArm('R') : '');
 
   const torsoGroup =
-    `<g data-part="torso-group" transform="translate(0 ${n(hipY)}) rotate(${n(lean)})">` +
+    `<g data-part="torso-group" transform="translate(0 ${n(hipY)}) rotate(${n(lean)})${rig.breath ? ` scale(${(1 + 0.006 * rig.breath).toFixed(4)} ${(1 + 0.014 * rig.breath).toFixed(4)})` : ''}">` +
     (hair.backBehindBody ? `<g transform="translate(0 ${n(headLocalY + rig.headNod)})">${hair.backBehindBody}</g>` : '') +
     armsBehind +
     pelvis +

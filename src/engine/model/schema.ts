@@ -193,6 +193,8 @@ export const RigSchema = z.object({
   headNod: finite.default(0),
   bodyY: finite.default(0),
   sit: finite.default(0),
+  /** Respiração (0–1): expansão sutil do tronco, usada pelo movimento secundário. */
+  breath: finite.default(0),
 });
 export type Rig = z.infer<typeof RigSchema>;
 export type RigKey = keyof Rig;

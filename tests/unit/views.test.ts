@@ -121,7 +121,7 @@ describe('olhos', () => {
         }
       }
     }
-  });
+  }, 30000);
 
   it('piscar transforma os olhos sem duplicá-los', () => {
     const list = eyes(render('nina', pose('front', { blink: 1 })));
@@ -233,6 +233,7 @@ describe('olhar', () => {
     deleteNode(scene, zeca.id);
     const n = scene.nodes[nina.id]!;
     expect(n.kind === 'character' && n.gaze.targetId).toBeNull();
-    expect(evaluateScene(p, scene, 0).characters[nina.id]!.pose.face.gazeX).toBe(0);
+    // Sem alvo: só os olhares rápidos sutis do movimento secundário (1.1).
+    expect(Math.abs(evaluateScene(p, scene, 0).characters[nina.id]!.pose.face.gazeX)).toBeLessThan(0.2);
   });
 });

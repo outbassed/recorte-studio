@@ -191,7 +191,7 @@ export function sampleActionClip(clip: ActionClip, timeMs: number, sideAuto: 'L'
   if (!def) return null;
   const local = timeMs - clip.startMs;
   if (local < 0 || local >= clip.durationMs) return null;
-  const blend = Math.min(def.blend ?? 180, clip.durationMs / 2);
+  const blend = Math.max(1, Math.min(clip.blendMs ?? def.blend ?? 180, clip.durationMs / 2));
   const weight = Math.min(1, local / blend, (clip.durationMs - local) / blend);
   const eased = weight * weight * (3 - 2 * weight);
   const side = clip.side === 'auto' ? sideAuto : clip.side;

@@ -69,11 +69,18 @@ export function autoBlink(nodeId: string, timeMs: number): number {
   const seed = hashString(nodeId);
   const period = 3400 + (seed % 2400);
   const offset = seed % period;
-  const phase = (timeMs + offset) % period;
+  const local = timeMs + offset;
+  const cycle = Math.floor(local / period);
+  const phase = local % period;
   const dur = 130;
-  if (phase > dur) return 0;
-  const t = phase / dur;
-  return t < 0.5 ? t * 2 : (1 - t) * 2;
+  const curve = (p: number) => {
+    if (p < 0 || p > dur) return 0;
+    const t = p / dur;
+    return t < 0.5 ? t * 2 : (1 - t) * 2;
+  };
+  // Cerca de 1 em cada 5 ciclos tem piscada dupla (determinística).
+  const double = hashString(`${seed}:${cycle}`) % 5 === 0;
+  return Math.max(curve(phase), double ? curve(phase - 230) : 0);
 }
 
 /** Calcula picos de um AudioBuffer-like (canais Float32Array). */
