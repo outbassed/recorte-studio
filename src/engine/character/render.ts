@@ -472,7 +472,7 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   const headLocalY = -m.torso - m.neck - m.ry * 0.8;
   const hair = renderHair({
     styleId: def.hair.style, color: def.hair.color, highlight: def.hair.highlight, ink, ow,
-    rx: m.rx, ry: m.ry, view: headV,
+    rx: m.rx, ry: m.ry, view: headV, idPrefix: id,
   });
   const ears = renderEars({ def, rx: m.rx, ry: m.ry, view: headV });
   const headD = headOutline(def.face.headShape, m.rx, m.ry, headV);
