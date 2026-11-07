@@ -1,7 +1,7 @@
 /* Recorte Studio: instalação e uso offline dos arquivos do aplicativo.
    Os projetos continuam salvos no IndexedDB do navegador. */
 const CACHE_PREFIX = 'recorte-studio-pwa-';
-const CACHE_NAME = CACHE_PREFIX + '1';
+const CACHE_NAME = CACHE_PREFIX + '2';
 const APP_ROOT = new URL(self.registration.scope);
 const SHELL = [
   './',

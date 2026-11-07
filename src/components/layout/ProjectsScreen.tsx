@@ -1,10 +1,11 @@
 /** Tela de projetos: criar, abrir, renomear, duplicar, arquivar, excluir, importar. */
 import { useEffect, useRef, useState } from 'react';
-import { Archive, ArchiveRestore, Copy, FilePlus2, FileUp, Pencil, Trash2 } from 'lucide-react';
+import { Archive, ArchiveRestore, Copy, FilePlus2, FileUp, Link2, Pencil, Trash2 } from 'lucide-react';
 import { createProject } from '@/engine/model/factory';
 import { PROJECT_TEMPLATES, createDemoProject, createFromProjectTemplate } from '@/features/templates/projects';
 import { matchesSearch } from '@/features/library/search';
 import { createAndOpen, duplicateProject, importFile, openProjectById } from '@/features/projects/session';
+import { copyProjectLink } from '@/features/projects/urls';
 import { confirmDialog, promptDialog, toast } from '@/state/uiStore';
 import { repo, type ProjectRecord } from '@/storage/db';
 import { IconButton, SearchBox } from '../controls/fields';
@@ -81,6 +82,12 @@ export function ProjectsScreen() {
                 <small>{new Date(r.updatedAt).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })} · {r.sceneCount} cena(s) · {formatTime(r.durationMs).slice(0, 5)}</small>
               </button>
               <div className="project-tools">
+                <IconButton label={`Copiar link de ${r.title}`} onClick={async () => {
+                  try {
+                    await copyProjectLink(r);
+                    toast('Link do projeto copiado. Ele funciona neste navegador.', 'success');
+                  } catch { toast('Não foi possível copiar. Verifique a permissão de copiar links.', 'error'); }
+                }}><Link2 size={15} /></IconButton>
                 <IconButton label={`Renomear ${r.title}`} onClick={async () => {
                   const v = await promptDialog('Renomear projeto', 'Nome', r.title);
                   if (!v) return;
@@ -106,7 +113,7 @@ export function ProjectsScreen() {
           ))}
         </div>
       </section>
-      <p className="hint projects-note">Tudo fica salvo apenas neste navegador, sem conta e sem envio de dados. Faça backups em Exportar. Importa também arquivos das versões 0.3 e 0.4.</p>
+      <p className="hint projects-note">Cada projeto tem seu próprio link, mas os dados ficam só neste navegador. Para abrir em outro aparelho, use Exportar e Importar. Faça backups regularmente. Importa também arquivos das versões 0.3 e 0.4.</p>
     </main>
   );
 }

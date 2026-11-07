@@ -5,10 +5,11 @@
  */
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
-  AlertTriangle, Check, ChevronLeft, ChevronsUpDown, Clapperboard, Download, Expand, FileUp, Film, FolderOpen, HelpCircle, Layers, Loader2, Minimize, Package, Redo2, Settings, Shapes, SlidersHorizontal, Sparkles, Trees, Undo2, Users, X,
+  AlertTriangle, Check, ChevronLeft, ChevronsUpDown, Clapperboard, Download, Expand, FileUp, Film, FolderOpen, HelpCircle, Layers, Link2, Loader2, Minimize, Package, Redo2, Settings, Shapes, SlidersHorizontal, Sparkles, Trees, Undo2, Users, X,
 } from 'lucide-react';
 import { useProjectStore, useCurrentScene, useProject, commit, currentScene } from '@/state/projectStore';
 import { useSession, leaveEditor, saveNow } from '@/features/projects/session';
+import { copyProjectLink } from '@/features/projects/urls';
 import { closeDialog, clearSelection, openDialog, selectNodes, useUI, useFeedback, toast, type LeftTab, type MobilePanel } from '@/state/uiStore';
 import { pause, seek, togglePlay, transport } from '@/state/transport';
 import { copySelectedKey, deleteSelection, doRedo, doUndo, duplicateSelection, pasteKey } from '@/state/actions';
@@ -196,6 +197,12 @@ function TopBar({ compact }: { compact?: boolean }) {
       </div>
       <SaveBadge />
       <span className="tl-spacer" />
+      <IconButton label="Copiar link deste projeto" onClick={async () => {
+        try {
+          await copyProjectLink(project);
+          toast('Link do projeto copiado. Ele funciona neste navegador.', 'success');
+        } catch { toast('Não foi possível copiar o link.', 'error'); }
+      }}><Link2 size={17} /></IconButton>
       <IconButton label="Desfazer (Ctrl+Z)" testId="undo" disabled={!canUndo} onClick={doUndo}><Undo2 size={17} /></IconButton>
       <IconButton label="Refazer (Ctrl+Shift+Z)" testId="redo" disabled={!canRedo} onClick={doRedo}><Redo2 size={17} /></IconButton>
       {!compact && <IconButton label="Importar projeto" testId="top-import" onClick={() => fileRef.current?.click()}><FileUp size={17} /></IconButton>}

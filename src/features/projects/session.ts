@@ -14,6 +14,7 @@ import { closeProject, loadProject, useProjectStore } from '@/state/projectStore
 import { resetTransport } from '@/state/transport';
 import { clearSelection, toast, useUI } from '@/state/uiStore';
 import { repo, StorageQuotaError } from '@/storage/db';
+import { getProjectIdFromUrl, updateProjectUrl, updateProjectsUrl, type RouteMode } from './urls';
 
 export type SaveStatus = 'idle' | 'dirty' | 'saving' | 'saved' | 'error';
 
@@ -74,6 +75,9 @@ useProjectStore.subscribe((s, prev) => {
     useSession.setState({ status: 'dirty' });
     scheduleSave();
   }
+  if (s.project && s.project.id === prev.project?.id && s.project.title !== prev.project.title) {
+    updateProjectUrl(s.project, 'replace');
+  }
 });
 
 // Salvamento "ao sair" não é garantido, por isso o debounce acima é a defesa real.
@@ -90,7 +94,7 @@ if (typeof document !== 'undefined') {
   });
 }
 
-export async function openProjectObject(project: Project): Promise<void> {
+export async function openProjectObject(project: Project, routeMode: RouteMode = 'push'): Promise<void> {
   releaseAssetUrls();
   await preloadAssetUrls(project);
   savedRevision = 0;
@@ -99,7 +103,8 @@ export async function openProjectObject(project: Project): Promise<void> {
   clearSelection();
   useSession.setState({ status: 'saved', error: '', lastSavedAt: project.updatedAt });
   await repo.setMeta('lastProjectId', project.id);
-  useUI.setState({ screen: 'editor', stageZoom: 'fit', stagePanX: 0, stagePanY: 0 });
+  updateProjectUrl(project, routeMode);
+  useUI.setState({ screen: 'editor', dialog: null, stageZoom: 'fit', stagePanX: 0, stagePanY: 0 });
 }
 
 export async function createAndOpen(project: Project): Promise<void> {
@@ -107,25 +112,33 @@ export async function createAndOpen(project: Project): Promise<void> {
   await openProjectObject(project);
 }
 
-export async function openProjectById(id: string): Promise<boolean> {
+export async function openProjectById(id: string, routeMode: RouteMode = 'push'): Promise<boolean> {
   const p = await repo.loadProject(id);
   if (!p) return false;
-  await openProjectObject(p);
+  if (useProjectStore.getState().project?.id !== id) await saveNow();
+  await openProjectObject(p, routeMode);
   return true;
 }
 
-export async function leaveEditor(): Promise<void> {
+export async function leaveEditor(routeMode: RouteMode = 'push'): Promise<void> {
   await saveNow();
   resetTransport();
   closeProject();
   releaseAssetUrls();
-  useUI.setState({ screen: 'projects' });
+  updateProjectsUrl(routeMode);
+  useUI.setState({ screen: 'projects', dialog: null });
 }
 
-export async function restoreLastProject(): Promise<boolean> {
-  const id = await repo.getMeta<string>('lastProjectId');
+/** Abre o projeto da URL após recarregar, ou mostra a biblioteca na página inicial. */
+export async function restoreProjectFromUrl(): Promise<boolean> {
+  const id = getProjectIdFromUrl();
   if (!id) return false;
-  return openProjectById(id).catch(() => false);
+  try {
+    if (await openProjectById(id, 'replace')) return true;
+  } catch { /* Link inválido ou registro não disponível neste navegador. */ }
+  updateProjectsUrl('replace');
+  toast('Este projeto não está salvo neste navegador. Importe um backup para abri-lo.', 'error');
+  return false;
 }
 
 export async function duplicateProject(id: string): Promise<void> {
