@@ -1,0 +1,41 @@
+{
+  "version": 4,
+  "format": "Recorte Studio",
+  "projectName": "Minha animação",
+  "layers": [
+    { "kind": "actor", "id": "nina" },
+    { "kind": "actor", "id": "zeca" },
+    { "kind": "object", "id": "obj_mesa" }
+  ],
+  "actors": [
+    { "id": "nina", "name": "Nina", "x": 0.28, "y": 0, "scale": 0.85, "rotation": 0, "skin": "#f2bd91", "shirt": "#efaa82", "pants": "#344862", "hair": "#382a3d", "hairstyle": "medium", "clothes": "camiseta", "mood": "neutra", "view": "auto", "bodyView": "front", "look": "zeca", "headTilt": 0, "opacity": 100 },
+    { "id": "zeca", "name": "Zeca", "x": 0.76, "y": 0, "scale": 0.85, "rotation": 0, "skin": "#ba7a58", "shirt": "#a7baa2", "pants": "#344862", "hair": "#252c3a", "hairstyle": "wavy", "clothes": "camisa", "mood": "feliz", "view": "auto", "bodyView": "front", "look": "nina", "headTilt": 0, "opacity": 100 }
+  ],
+  "objects": [
+    { "id": "obj_mesa", "name": "Mesa 1", "type": "table", "color": "#b7a1e4", "x": 0.5, "y": 0, "size": 0.8, "rotation": 0 }
+  ],
+  "scenes": [
+    {
+      "id": "scene_dance", "name": "Você sabe dançar?", "background": "sala", "duration": 9,
+      "cues": [
+        { "id": "q1", "actor": "nina", "kind": "talk", "start": 0.4, "end": 2.3, "text": "Você sabe dançar?", "label": "Pergunta" },
+        { "id": "q2", "actor": "zeca", "kind": "talk", "start": 2.6, "end": 4, "text": "Sei, olha só!", "label": "Responde" },
+        { "id": "q3", "actor": "zeca", "kind": "dance", "start": 4.1, "end": 8.7, "label": "Dança" },
+        { "id": "q4", "actor": "nina", "kind": "surprise", "start": 6, "end": 8, "label": "Surpresa" }
+      ]
+    },
+    {
+      "id": "scene_room", "name": "Cadê o controle?", "background": "escola", "duration": 10,
+      "cues": [
+        { "id": "w1", "actor": "nina", "kind": "walk", "start": 0.3, "end": 1.85, "from": 0.12, "to": 0.28, "label": "Entra andando" },
+        { "id": "t1", "actor": "nina", "kind": "talk", "start": 2, "end": 4.25, "text": "Cadê o controle remoto?", "label": "Pergunta" },
+        { "id": "w2", "actor": "zeca", "kind": "wave", "start": 4.2, "end": 5.35, "label": "Acena" },
+        { "id": "t2", "actor": "zeca", "kind": "talk", "start": 5.45, "end": 7.85, "text": "Você tá segurando ele!", "label": "Responde" },
+        { "id": "sur", "actor": "nina", "kind": "angry", "start": 8.05, "end": 9.6, "label": "Bravo" }
+      ]
+    }
+  ],
+  "activeScene": "scene_dance",
+  "selectedActor": "zeca",
+  "selectedObject": null
+}

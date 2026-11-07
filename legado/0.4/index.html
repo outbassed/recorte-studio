@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#10131b"><title>Recorte Studio 0.4 • Animação 2D em camadas</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+<header class="topbar">
+  <div class="brand"><span class="brand-icon"><span class="cut-icon">◪</span></span><span class="brand-text">recorte<span>studio</span><small>CRIATIVIDADE EM MOVIMENTO</small></span></div>
+  <div class="project-label"><span class="status-dot"></span><span>PROJETO LOCAL</span><span class="head-divider">/</span><strong id="projectName">Minha animação</strong><span class="version-pill">v0.4</span></div>
+  <div class="header-actions"><button id="btnImport" class="toolbar-btn" title="Importar JSON"><span class="icon-label">↥</span><span class="wide-label">Importar</span></button><button id="btnExportJSON" class="toolbar-btn" title="Exportar projeto JSON"><span class="icon-label">⇩</span><span class="wide-label">Projeto</span></button><button id="btnExportPNG" class="toolbar-btn button-accent"><span class="icon-label">▣</span><span class="wide-label">Exportar PNG</span></button><input hidden id="importInput" type="file" accept=".json,application/json"/></div>
+</header>
+<div class="workspace" id="workspace">
+  <aside class="asset-sidebar" id="assetSidebar">
+    <div class="sidebar-title"><span>BIBLIOTECA CRIATIVA</span><button class="panel-close mobile-only" data-close-panel title="Fechar">✕</button></div>
+    <div class="asset-top-tabs" id="assetTabs">
+      <button data-panel="characters" class="asset-tab active"><span>♟</span> Personagens</button>
+      <button data-panel="backdrops" class="asset-tab"><span>▧</span> Cenários</button>
+      <button data-panel="objects" class="asset-tab"><span>⬡</span> Objetos</button>
+      <button data-panel="templates" class="asset-tab"><span>✦</span> Templates</button>
+      <button data-panel="layers" class="asset-tab"><span>▥</span> Camadas</button>
+      <button data-panel="scenes" class="asset-tab"><span>▤</span> Cenas</button>
+      <button data-panel="director" class="asset-tab"><span>✧</span> Direção</button>
+    </div>
+    <div class="sidebar-inner" id="assetContent"></div>
+    <div class="sidebar-foot"><span class="status-dot"></span><span id="saveStatus">Salvo automaticamente</span></div>
+  </aside>
+  <main class="editor-center">
+    <div class="scene-heading"><div><div class="eyebrow">PALCO DE ANIMAÇÃO <span class="slash">/</span> CENA ATUAL</div><h1 id="activeSceneName">Você sabe dançar?</h1></div><div class="heading-tools"><label class="toggle-chip"><input id="guideToggle" type="checkbox" checked><span>▦</span><span class="wide-label">Área de exportação</span></label><button id="btnCameraLeft" class="icon-btn" title="Câmera para esquerda">↶</button><button id="btnCameraRight" class="icon-btn" title="Câmera para direita">↷</button><button id="btnCameraReset" class="icon-btn" title="Centralizar câmera">⌖</button></div></div>
+    <section class="preview-container" aria-label="Preview de animação">
+      <div class="preview-board" id="previewBoard">
+        <div class="preview-caption top-left">EDITOR <span>•</span> ANIMAÇÃO EM CAMADAS</div>
+        <div class="preview-caption top-right"><span class="dot-orange"></span> 100% 2D</div>
+        <div class="export-frame" id="exportFrame">
+          <canvas id="backdropCanvas" width="1280" height="720" aria-hidden="true"></canvas>
+          <canvas id="worldCanvas" aria-label="Efeitos de profundidade 2D"></canvas>
+          <div id="characterLayer" class="character-layer"></div>
+          <div class="frame-rule-of-thirds"></div>
+          <div class="frame-tag">SAÍDA · <span id="aspectLabel">16:9</span></div>
+        </div>
+        <div class="outside-note left-note">FORA DO QUADRO</div><div class="outside-note right-note">FORA DO QUADRO</div>
+      </div>
+      <div class="preview-footer"><span><i class="small-live-dot"></i> <span id="renderStatus">Visualização ativa</span></span><span>Selecione um personagem para editar <span class="foot-dot">•</span> Área externa não exportada</span></div>
+    </section>
+    <section class="timeline" aria-label="Linha do tempo">
+      <div class="transport"><div class="transport-buttons"><button id="btnRestart" class="transport-small" title="Voltar ao começo">⏮</button><button id="btnPlay" class="transport-play" title="Reproduzir / pausar">▶</button><button id="btnStop" class="transport-small" title="Parar">■</button></div><div class="clock"><strong id="timeDisplay">00:00.0</strong><span>/</span><span id="totalTime">00:10.0</span></div><span class="transport-spacer"></span><label class="mini-option"><input id="loopToggle" type="checkbox" checked> Repetir</label><label class="mini-select">Velocidade <select id="speedSelect"><option value="0.5">0,5×</option><option value="1" selected>1×</option><option value="1.5">1,5×</option><option value="2">2×</option></select></label></div>
+      <div class="timeline-caption"><strong>LINHA DO TEMPO</strong><span id="cueCount">0 ações</span><span class="transport-spacer"></span><span class="timeline-legend"><b></b> CLIQUE EM UM BLOCO PARA NAVEGAR</span></div>
+      <div class="time-ruler"><div class="ruler-label">TEMPO</div><div class="ruler-main"><input id="timelineSeek" type="range" min="0" max="1000" value="0" aria-label="Tempo atual"><div id="timeTicks" class="tick-row"></div></div><input id="timelineNumber" class="time-num" type="number" min="0" step="0.1" value="0" aria-label="Tempo atual em segundos" title="Digite o tempo em segundos"><span class="time-unit">s</span></div>
+      <div id="timelineTracks" class="timeline-tracks"></div>
+    </section>
+  </main>
+  <aside class="inspector-sidebar" id="inspectorSidebar"><div class="sidebar-title"><span>PROPRIEDADES</span><button class="panel-close mobile-only" data-close-panel title="Fechar">✕</button><span class="inspector-dots">•••</span></div><div class="inspector-content" id="inspectorContent"></div><div class="sidebar-foot"><span>◈</span> Editor de propriedades</div></aside>
+  <div class="mobile-backdrop" id="mobileBackdrop"></div>
+  <nav class="mobile-dock" aria-label="Ferramentas no celular">
+    <button data-mobile-tab="characters"><span>♟</span><small>Elenco</small></button><button data-mobile-tab="backdrops"><span>▧</span><small>Cenários</small></button><button data-mobile-tab="objects"><span>⬡</span><small>Objetos</small></button><button data-mobile-tab="templates"><span>✦</span><small>Modelos</small></button><button data-mobile-tab="layers"><span>▥</span><small>Camadas</small></button><button data-mobile-tab="director"><span>✧</span><small>Direção</small></button><button data-mobile-tab="properties"><span>☷</span><small>Editar</small></button>
+  </nav>
+</div>
+</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="world2d.js"></script><script src="app.js"></script>
+</body>
+</html>
