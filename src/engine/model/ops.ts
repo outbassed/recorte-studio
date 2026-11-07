@@ -408,7 +408,7 @@ export function getOrCreateDialogueTrack(scene: Scene, nodeId: string) {
 }
 
 export function addAudioTrack(scene: Scene, role: AudioTrack['role']): AudioTrack {
-  const label = { dialogue: 'Diálogo', voice: 'Voz', music: 'Música', sfx: 'Efeitos sonoros' }[role];
+  const label = { dialogue: 'Diálogo', voice: 'Voz', music: 'Música', sfx: 'Efeitos sonoros', ambient: 'Ambiente' }[role];
   const track: AudioTrack = { id: uid('track'), name: label, type: 'audio', role, enabled: true, locked: false, muted: false, solo: false, clips: [] };
   scene.tracks.push(track);
   return track;

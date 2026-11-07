@@ -21,7 +21,7 @@ export interface ProjectRecord {
 export interface BlobRecord { id: string; blob: Blob; name: string; mime: string; size: number; createdAt: number }
 export interface BackupRecord { id?: number; projectId: string; createdAt: number; label: string; raw: string }
 export interface LibraryRecord { id: string; kind: LibraryKind; name: string; favorite: number; createdAt: number; data: unknown }
-export type LibraryKind = 'character' | 'pose' | 'scene' | 'background' | 'animation' | 'prop';
+export type LibraryKind = 'character' | 'pose' | 'scene' | 'background' | 'animation' | 'prop' | 'audio';
 export interface MetaRecord { key: string; value: unknown }
 
 class RecorteDB extends Dexie {
@@ -43,6 +43,9 @@ class RecorteDB extends Dexie {
 }
 
 export const db = new RecorteDB();
+
+/** Todo ID de mídia segue um destes prefixos (legado: asset_, 1.1: media_). */
+const MEDIA_REF = /\b(?:asset|media)_[a-z0-9]+\b/g;
 
 export class StorageQuotaError extends Error {}
 
@@ -97,8 +100,13 @@ export const repo = {
   /** Blobs sem nenhum projeto referenciando são removidos. */
   async collectOrphanBlobs(): Promise<number> {
     const used = new Set<string>();
+    // Um blob é mantido se QUALQUER projeto ou item da biblioteca o referencia.
     await db.projects.each((r) => {
       for (const id of Object.keys(r.data.assets)) used.add(id);
+      for (const m of JSON.stringify(r.data).matchAll(MEDIA_REF)) used.add(m[0]);
+    });
+    await db.library.each((r) => {
+      for (const m of JSON.stringify(r.data).matchAll(MEDIA_REF)) used.add(m[0]);
     });
     const all = await db.blobs.toCollection().primaryKeys();
     const orphans = all.filter((id) => !used.has(id));
@@ -114,6 +122,7 @@ export const repo = {
     }
   },
   getBlob: async (id: string): Promise<Blob | undefined> => (await db.blobs.get(id))?.blob,
+  hasBlob: async (id: string): Promise<boolean> => (await db.blobs.where('id').equals(id).count()) > 0,
   async addBackup(projectId: string, label: string, raw: string): Promise<void> {
     await db.backups.add({ projectId, label, raw, createdAt: Date.now() });
   },

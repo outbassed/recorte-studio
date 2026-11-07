@@ -211,6 +211,16 @@ export const GazeSchema = z.object({
 });
 export type Gaze = z.infer<typeof GazeSchema>;
 
+/** Movimento secundário: vida sutil e determinística (função do tempo). */
+export const SecondaryMotionSchema = z.object({
+  enabled: z.boolean().default(false),
+  breathing: finite.default(0.6),
+  headSway: finite.default(0.5),
+  eyeDarts: finite.default(0.5),
+  posture: finite.default(0.4),
+});
+export type SecondaryMotion = z.infer<typeof SecondaryMotionSchema>;
+
 export const CharacterNodeSchema = z.object({
   ...baseNode,
   kind: z.literal('character'),
@@ -227,6 +237,7 @@ export const CharacterNodeSchema = z.object({
   handL: z.enum(['open', 'fist', 'point']).default('open'),
   handR: z.enum(['open', 'fist', 'point']).default('open'),
   appearanceOverrides: AppearanceOverridesSchema,
+  secondary: SecondaryMotionSchema.prefault({}),
 });
 export type CharacterNode = z.infer<typeof CharacterNodeSchema>;
 
@@ -343,6 +354,8 @@ export const ActionClipSchema = z.object({
   /** Lado do braço para gestos: auto escolhe o braço voltado ao alvo. */
   side: z.enum(['auto', 'L', 'R']).default('auto'),
   easing: EasingSchema.default('easeInOut'),
+  /** Transição de entrada e saída; ausente usa o padrão da ação. */
+  blendMs: z.number().int().min(0).max(5000).optional(),
 });
 export type ActionClip = z.infer<typeof ActionClipSchema>;
 
@@ -436,7 +449,7 @@ export type DialogueTrack = z.infer<typeof DialogueTrackSchema>;
 export const AudioTrackSchema = z.object({
   ...trackBase,
   type: z.literal('audio'),
-  role: z.enum(['dialogue', 'voice', 'music', 'sfx']).default('sfx'),
+  role: z.enum(['dialogue', 'voice', 'music', 'sfx', 'ambient']).default('sfx'),
   clips: z.array(AudioClipSchema).default([]),
 });
 export type AudioTrack = z.infer<typeof AudioTrackSchema>;
@@ -482,6 +495,8 @@ export const BackgroundSchema = z.object({
   parallax: finite.default(0.55),
   blur: finite.default(0),
   transparent: z.boolean().default(false),
+  /** Horário de um cenário personalizado (presetId = "custom:<id>"). */
+  timeOfDay: z.enum(['morning', 'day', 'afternoon', 'sunset', 'night']).optional(),
 });
 export type Background = z.infer<typeof BackgroundSchema>;
 
@@ -540,8 +555,35 @@ export const AssetSchema = z.object({
   /** Picos normalizados (0–1) a cada PEAK_WINDOW_MS, para onda e lip-sync. */
   peaks: z.array(finite).optional(),
   createdAt: z.number().default(0),
+  /** Biblioteca de áudio: voz, música, efeitos ou ambiente. */
+  category: z.enum(['voice', 'music', 'sfx', 'ambient']).optional(),
+  /** SHA-256 do conteúdo, quando conhecido. */
+  hash: z.string().optional(),
 });
 export type Asset = z.infer<typeof AssetSchema>;
+
+export const TIMES_OF_DAY = ['morning', 'day', 'afternoon', 'sunset', 'night'] as const;
+export type TimeOfDay = (typeof TIMES_OF_DAY)[number];
+
+export const CustomVariantSchema = z.object({
+  assetId: z.string(),
+  fit: z.enum(['cover', 'contain']).default('cover'),
+});
+
+/** Cenário do usuário: qualquer subconjunto de horários, cada um com a própria imagem. */
+export const CustomBackgroundSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  variants: z.object({
+    morning: CustomVariantSchema.optional(),
+    day: CustomVariantSchema.optional(),
+    afternoon: CustomVariantSchema.optional(),
+    sunset: CustomVariantSchema.optional(),
+    night: CustomVariantSchema.optional(),
+  }).prefault({}),
+  createdAt: z.number().default(0),
+});
+export type CustomBackground = z.infer<typeof CustomBackgroundSchema>;
 
 export const SettingsSchema = z.object({
   width: z.number().int().min(16).default(1920),
@@ -567,6 +609,7 @@ export const ProjectSchema = z.object({
   scenes: z.record(z.string(), SceneSchema),
   characters: z.record(z.string(), CharacterDefinitionSchema).default({}),
   assets: z.record(z.string(), AssetSchema).default({}),
+  customBackgrounds: z.record(z.string(), CustomBackgroundSchema).default({}),
   currentSceneId: z.string().nullable().default(null),
   metadata: z
     .object({

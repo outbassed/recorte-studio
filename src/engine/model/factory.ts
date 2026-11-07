@@ -53,6 +53,7 @@ export function createCharacterNode(characterId: string, name: string, o: { x?: 
     characterId,
     bodyView: o.bodyView ?? 'auto',
     headView: o.headView ?? 'auto',
+    secondary: { enabled: true },
     transform: { x: o.x ?? 0, y: o.y ?? FLOOR_Y, scaleX: o.scale ?? 1, scaleY: o.scale ?? 1 },
   });
 }

@@ -20,6 +20,7 @@
     "dexie": "^4.4.7",
     "fflate": "^0.8.3",
     "immer": "^11.2.9",
+    "libarchive.js": "^2.0.2",
     "lucide-react": "^1.69.0",
     "mp4-muxer": "^5.2.2",
     "react": "^19.3.1",

@@ -482,7 +482,7 @@ export function LibraryPanel() {
   const fileRef = useRef<HTMLInputElement>(null);
   if (!project || !scene) return null;
   const filtered = items.filter((i) => matchesSearch(query, i.name, i.kind)).sort((a, b) => b.favorite - a.favorite || b.createdAt - a.createdAt);
-  const label = { character: 'Personagem', scene: 'Cena', pose: 'Pose', background: 'Cenário', animation: 'Animação', prop: 'Objeto' } as const;
+  const label = { character: 'Personagem', scene: 'Cena', pose: 'Pose', background: 'Cenário', animation: 'Sequência', prop: 'Objeto', audio: 'Áudio' } as const;
   const saveScene = async () => {
     await repo.putLibrary({ id: uid('lib'), kind: 'scene', name: scene.name, favorite: 0, createdAt: Date.now(), data: { scene: deepClone(scene), characters: deepClone(project.characters) } });
     reload();
