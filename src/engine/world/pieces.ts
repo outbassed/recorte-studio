@@ -20,7 +20,7 @@ const color = (c: string, fb: string) => (COLOR.test(c) ? c : fb);
 
 export const PIECE_LABELS: Record<PieceKind, string> = {
   rect: 'Retângulo', ellipse: 'Elipse', triangle: 'Triângulo', polygon: 'Polígono', star: 'Estrela', line: 'Linha',
-  image: 'Imagem', prop: 'Objeto pronto', object: 'Meu objeto', character: 'Personagem estático', text: 'Texto',
+  image: 'Imagem', prop: 'Objeto pronto', object: 'Meu objeto', character: 'Personagem estático', text: 'Texto', trapezoid: 'Trapézio',
 };
 
 export function createPiece(kind: PieceKind, o: Partial<Piece> = {}): Piece {
@@ -82,6 +82,11 @@ function pieceInner(p: Piece, env: PieceEnv): string {
   switch (p.kind) {
     case 'rect': return `<rect x="${n(-w / 2)}" y="${n(-h / 2)}" width="${n(w)}" height="${n(h)}" rx="${n(Math.max(0, p.radius))}" ${paint}/>`;
     case 'ellipse': return `<ellipse cx="0" cy="0" rx="${n(w / 2)}" ry="${n(h / 2)}" ${paint}/>`;
+    case 'trapezoid': {
+      // Topo com largura w·taper e base com largura w: mangas, saias, pernas de calça, mechas.
+      const tw = w * Math.max(0, Math.min(4, p.taper));
+      return `<path d="M${n(-tw / 2)} ${n(-h / 2)}L${n(tw / 2)} ${n(-h / 2)}L${n(w / 2)} ${n(h / 2)}L${n(-w / 2)} ${n(h / 2)}Z" ${paint}/>`;
+    }
     case 'triangle': return `<path d="M0 ${n(-h / 2)}L${n(w / 2)} ${n(h / 2)}L${n(-w / 2)} ${n(h / 2)}Z" ${paint}/>`;
     case 'polygon': return `<polygon points="${polygonPoints(p.sides, w, h, false)}" ${paint}/>`;
     case 'star': return `<polygon points="${polygonPoints(p.sides, w, h, true)}" ${paint}/>`;

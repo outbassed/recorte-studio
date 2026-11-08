@@ -15,6 +15,8 @@ import { clamp, ellipse, n, path, rad, rect, shade, smoothPath, type Pt } from '
 import { renderEars, renderFace, type FaceState } from './face';
 import { renderHair } from './hair';
 import { azZ, viewInfo, type ViewInfo } from './views';
+import { BASE_COVER, headDepth, layerVisible, refHalfHip, refHalfShoulder, refMetrics, renderLayer, wearAt, wearHides } from './wear';
+import type { WearLayer } from '../model/schema';
 
 export interface CharacterPose {
   bodyView: ViewId;
@@ -188,8 +190,9 @@ function outfitInfo(def: CharacterDefinition, id: string): OutfitInfo {
     defs += `<pattern id="${pid}" width="${size}" height="${size}" patternUnits="userSpaceOnUse"><rect width="${size}" height="${size}" fill="${o.topColor}"/>${art}</pattern>`;
     topFill = `url(#${pid})`;
   }
+  if (o.top === 'base') topFill = BASE_COVER; // cobertura neutra: peito sempre coberto
   const short = ['tshirt', 'polo', 'scrubs', 'police', 'apron'].includes(o.top);
-  const none = o.top === 'tank' || o.top === 'dress';
+  const none = o.top === 'tank' || o.top === 'dress' || o.top === 'base';
   const sleeveColor = o.topPattern !== 'none' && (o.top === 'tshirt' || o.top === 'shirt' || o.top === 'longsleeve' || o.top === 'polo') ? topFill : o.topColor;
   return {
     sleeveShort: short,
@@ -231,8 +234,12 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   const rig = pose.rig;
   const bodyV = viewInfo(pose.bodyView);
   const headV = viewInfo(pose.headView);
-  const o = def.outfit;
-  const info = outfitInfo(def, id);
+  // Roupas e cabelos criados: o que eles substituem vira cobertura neutra (nunca nudez).
+  const wear = def.wear ?? [];
+  const hides = wearHides(wear);
+  const o = hides.top || hides.bottom ? { ...def.outfit, ...(hides.top ? { top: 'base', topPattern: 'none' as const } : {}), ...(hides.bottom ? { bottom: 'base' } : {}) } : def.outfit;
+  const info = outfitInfo(o === def.outfit ? def : { ...def, outfit: o }, id);
+  const REF = refMetrics();
   const accIds = def.accessories.map((a) => a.id);
   const acc = (key: string) => def.accessories.find((a) => a.id === key);
 
@@ -255,7 +262,7 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
     return { near, x, upperDeg: -dir * (upper * k + sitAngle), lowerDeg: dir * (lower * k + sitAngle) };
   };
   const bottomIsLong = !['shorts', 'skirt'].includes(o.bottom) && !info.skirtFromTop;
-  const legColor = info.skirtFromTop ? skin : o.bottom === 'skirt' || o.bottom === 'shorts' ? skin : o.bottom === 'longskirt' ? o.bottomColor : o.bottomColor;
+  const legColor = info.skirtFromTop ? skin : o.bottom === 'skirt' || o.bottom === 'shorts' || o.bottom === 'base' ? skin : o.bottom === 'longskirt' ? o.bottomColor : o.bottomColor;
   const renderLeg = (name: 'L' | 'R'): string => {
     const g = legGeom(name);
     const thigh = m.thigh * thighForeshort;
@@ -272,8 +279,10 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
       `<g transform="rotate(${n(g.upperDeg)})">` +
       limb(`M0 0L0 ${n(thigh)}`, legColor, ink, m.legW, ow) +
       upperCloth + jeans + sock +
+      wearAt(wear, 'thigh', bodyV, { x: 0, y: 0, sx: m.legW / REF.legW, sy: thigh / REF.thigh, turnUnit: 0 }, `${id}L${name}`) +
       `<g transform="translate(0 ${n(thigh)}) rotate(${n(g.lowerDeg)})">` +
       limb(`M0 0L0 ${n(m.shin)}`, legColor, ink, m.legW * 0.92, ow) +
+      wearAt(wear, 'shin', bodyV, { x: 0, y: 0, sx: m.legW / REF.legW, sy: m.shin / REF.shin, turnUnit: 0 }, `${id}S${name}`) +
       `<g transform="rotate(${n(-g.upperDeg - g.lowerDeg)} 0 ${n(m.shin)})">${foot(o.shoes, o.shoeColor, bodyV, 0, m.shin - 2, def.body.height * (AGE_SCALE[def.body.age]?.shoulders ?? 1), ink, ow, skin)}</g>` +
       `</g></g></g>`
     );
@@ -321,11 +330,14 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
         `<g transform="translate(0 ${n(m.upperArm)}) rotate(${n(g.lowerDeg)})">${handSvg}</g></g>`
       );
     }
+    const armK = m.limbW / REF.limbW;
     return (
       `<g data-part="arm-${name}" data-depth="${depth}" transform="translate(${n(g.x)} ${n(shoulderY)}) rotate(${n(g.upperDeg)})">` +
       upperArm +
+      wearAt(wear, 'upperArm', bodyV, { x: 0, y: 0, sx: armK, sy: m.upperArm / REF.upperArm, turnUnit: 0 }, `${id}A${name}`) +
       `<g transform="translate(0 ${n(m.upperArm)}) rotate(${n(g.lowerDeg)})">` +
       lowerArm + watch +
+      wearAt(wear, 'forearm', bodyV, { x: 0, y: 0, sx: armK, sy: m.forearm / REF.forearm, turnUnit: 0 }, `${id}F${name}`) +
       (part === 'all' ? handSvg : '') +
       `</g></g>`
     );
@@ -478,13 +490,13 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   else if (o.top === 'coat') skirt = flare(m.thigh * 0.8 * (1 - sit * 0.3), 14 * bodyV.bodyWidth, o.topColor, -8);
   // Quadril: emenda calça/tronco.
   const pelvis = !info.skirtFromTop && o.bottom !== 'skirt' && o.bottom !== 'longskirt'
-    ? path(`M${n(-halfH * 1.02)} -4Q0 6 ${n(halfH * 1.02)} -4L${n(Math.max(hipOff + m.legW * 0.55, halfH * 0.72))} 22L${n(-Math.max(hipOff + m.legW * 0.55, halfH * 0.72))} 22Z`, `fill="${o.bottomColor}" stroke="${ink}" stroke-width="${n(ow)}" stroke-linejoin="round"`)
+    ? path(`M${n(-halfH * 1.02)} -4Q0 6 ${n(halfH * 1.02)} -4L${n(Math.max(hipOff + m.legW * 0.55, halfH * 0.72))} 22L${n(-Math.max(hipOff + m.legW * 0.55, halfH * 0.72))} 22Z`, `fill="${o.bottom === 'base' ? BASE_COVER : o.bottomColor}" stroke="${ink}" stroke-width="${n(ow)}" stroke-linejoin="round"`)
     : '';
 
   // ---- cabeça ----
   const headLocalY = -m.torso - m.neck - m.ry * 0.8;
   const hair = renderHair({
-    styleId: def.hair.style, color: def.hair.color, highlight: def.hair.highlight, ink, ow,
+    styleId: hides.hair ? 'bald' : def.hair.style, color: def.hair.color, highlight: def.hair.highlight, ink, ow,
     rx: m.rx, ry: m.ry, view: headV, idPrefix: id,
   });
   const ears = renderEars({ def, rx: m.rx, ry: m.ry, view: headV });
@@ -493,9 +505,21 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   const neckW = m.limbW * 1.15 * clamp(def.body.build, 0.8, 1.3);
   const neck = limb(`M${n(headV.facing * 6)} ${n(-m.torso - m.neck - 10)}L0 ${n(-m.torso + 8)}`, shade(skin, -0.08), ink, neckW, ow * 0.9);
   const accFront = renderHeadAccessories(def, headV, m, ink, ow);
+  // Cabelos/chapéus criados: presos à cabeça; de costas, a parte "de trás" passa a ser a visível por cima.
+  const headFrame = { x: 0, y: 0, sx: m.rx / REF.rx, sy: m.ry / REF.ry, turnUnit: REF.rx * 0.8 };
+  const headWear = (depth: WearLayer['depth']) => {
+    let out = '';
+    for (const w of wear) for (const l of w.layers) if (l.anchor === 'head' && layerVisible(l, headV) && headDepth(l, headV) === depth) out += renderLayer(l, headFrame, headV, `${id}H${w.id}`);
+    return out;
+  };
+  // Comprimento do cabelo: atrás do corpo de frente; de costas e de perfil, sobre as costas (como o cabelo nativo).
+  const hairOverBack = headV.cls === 'back' || headV.cls === 'backQuarter' || headV.cls === 'profile';
+  const wearHeadBehindBody = hairOverBack ? '' : headWear('behindBody');
+  const wearHeadOverBody = hairOverBack ? headWear('behindBody') : '';
   const headGroup =
     `<g data-part="head" data-view="${pose.headView}" transform="translate(0 ${n(headLocalY + rig.headNod)}) rotate(${n(rig.headTilt)} 0 ${n(m.ry * 0.8)})">` +
     hair.behindHead +
+    headWear('behindHead') +
     ears.behind +
     path(headD, `data-part="head-shape" fill="${skin}" stroke="${ink}" stroke-width="${n(ow * 1.05)}" stroke-linejoin="round"`) +
     (headV.showsFace ? '' : path(headD, `fill="${shade(skin, -0.08)}" fill-opacity=".6"`)) +
@@ -503,6 +527,7 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
     `<g data-part="face">${face}</g>` +
     (acc('earrings') && headV.cls !== 'back' ? renderEarrings(def, headV, m, ink) : '') +
     hair.front +
+    headWear('front') +
     accFront +
     `</g>`;
 
@@ -539,11 +564,16 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   const torsoGroup =
     `<g data-part="torso-group" transform="translate(0 ${n(hipY)}) rotate(${n(lean)})${rig.breath ? ` scale(${(1 + 0.006 * rig.breath).toFixed(4)} ${(1 + 0.014 * rig.breath).toFixed(4)})` : ''}">` +
     (hair.backBehindBody ? `<g transform="translate(0 ${n(headLocalY + rig.headNod)})">${hair.backBehindBody}</g>` : '') +
+    (wearHeadBehindBody ? `<g transform="translate(0 ${n(headLocalY + rig.headNod)})">${wearHeadBehindBody}</g>` : '') +
     armsBehind +
     pelvis +
+    // Quadril (cós, saia, barra): por cima das coxas e do quadril neutro, por baixo da blusa.
+    wearAt(wear, 'hips', bodyV, { x: 0, y: 0, sx: halfH / refHalfHip(), sy: (m.thigh * (1 - sit * 0.3)) / REF.thigh, turnUnit: refHalfHip() }, `${id}Q`) +
     torso +
+    wearAt(wear, 'torso', bodyV, { x: 0, y: 0, sx: halfS / refHalfShoulder(), sy: m.torso / REF.torso, turnUnit: refHalfShoulder() }, `${id}T`) +
     neck +
     (hair.backOverBody ? `<g transform="translate(0 ${n(headLocalY + rig.headNod)})">${hair.backOverBody}</g>` : '') +
+    (wearHeadOverBody ? `<g transform="translate(0 ${n(headLocalY + rig.headNod)})">${wearHeadOverBody}</g>` : '') +
     armsFront +
     headGroup +
     armsOverHead +
