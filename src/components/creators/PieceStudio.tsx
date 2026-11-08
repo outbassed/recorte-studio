@@ -40,6 +40,8 @@ export interface StudioProps {
   /** Área exportada: com "Prévia final" ligada, a prévia mostra exatamente este retângulo. */
   finalBox?: { x: number; y: number; w: number; h: number };
   testId: string;
+  /** Só peças vetoriais (roupas e cabelos): sem imagem, objeto ou personagem. */
+  vectorOnly?: boolean;
 }
 
 type Tab = 'add' | 'layers' | 'props';
@@ -135,7 +137,7 @@ export function PieceStudio(p: StudioProps) {
 
   const shapes: Array<[PieceKind, Partial<Piece>]> = [
     ['rect', { w: 240, h: 160 }], ['ellipse', { w: 200, h: 200, fill: '#7fc8ff' }], ['triangle', { w: 220, h: 190, fill: '#6fce8e' }],
-    ['polygon', { w: 200, h: 200, sides: 6, fill: '#c9a0e8' }], ['star', { w: 200, h: 200, sides: 5, fill: '#f2c95c' }], ['line', { w: 300, h: 10, strokeWidth: 10 }],
+    ['polygon', { w: 200, h: 200, sides: 6, fill: '#c9a0e8' }], ['trapezoid', { w: 200, h: 140, taper: 0.6, fill: '#e98f4e' }], ['star', { w: 200, h: 200, sides: 5, fill: '#f2c95c' }], ['line', { w: 300, h: 10, strokeWidth: 10 }],
   ];
 
   // Um objeto não pode conter a si mesmo, direta ou indiretamente (A → B → A).
@@ -154,6 +156,7 @@ export function PieceStudio(p: StudioProps) {
       )}
       <h4>Texto</h4>
       <button type="button" className="btn btn-sm" data-testid="add-text-piece" onClick={() => add(createPiece('text', { name: 'Texto', text: 'Texto', fontSize: 72, fill: '#23202b', stroke: '#ffffff', strokeWidth: 0, x: center.x, y: center.y }))}><Type size={14} /> Adicionar texto</button>
+      {!p.vectorOnly && <>
       <h4>Imagem (SVG, PNG, JPEG, WebP)</h4>
       <button type="button" className="btn btn-sm" data-testid="add-image" onClick={() => fileRef.current?.click()}><ImagePlus size={14} /> Importar imagem</button>
       <input ref={fileRef} hidden type="file" accept={IMAGE_ACCEPT} data-testid={`${p.testId}-image-input`} onChange={(e) => {
@@ -183,6 +186,7 @@ export function PieceStudio(p: StudioProps) {
           }} />
         </>
       )}
+      </>}
     </div>
   );
 
@@ -234,11 +238,12 @@ export function PieceStudio(p: StudioProps) {
         <button type="button" className="btn btn-sm" data-testid="piece-flipx" aria-pressed={one.flipX} onClick={() => editSel('Espelhar', (pc) => { pc.flipX = !pc.flipX; })}><FlipHorizontal2 size={14} /> Espelhar</button>
         <button type="button" className="btn btn-sm" aria-pressed={one.flipY} onClick={() => editSel('Virar', (pc) => { pc.flipY = !pc.flipY; })}><FlipVertical2 size={14} /> Virar</button>
       </div>
-      {['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line'].includes(one.kind) && (
+      {['rect', 'ellipse', 'triangle', 'trapezoid', 'polygon', 'star', 'line'].includes(one.kind) && (
         <>
           {one.kind !== 'line' && <ColorField label="Preenchimento" value={one.fill} testId="piece-fill" onChange={(v) => editSel('Cor', (pc) => { pc.fill = v; }, `pc-${one.id}-f`)} />}
           <ColorField label="Contorno" value={one.stroke} onChange={(v) => editSel('Contorno', (pc) => { pc.stroke = v; }, `pc-${one.id}-st`)} />
           <SliderNumberField label="Espessura do contorno" unit="px" min={0} max={80} sliderMin={0} sliderMax={30} value={one.strokeWidth} onChange={(v) => editSel('Contorno', (pc) => { pc.strokeWidth = v; }, `pc-${one.id}-sw`)} />
+          {one.kind === 'trapezoid' && <SliderNumberField label="Largura do topo" unit="%" display={100} min={0} max={4} sliderMin={0} sliderMax={250} decimals={0} value={one.taper} testId="piece-taper" onChange={(v) => editSel('Largura do topo', (pc) => { pc.taper = Math.max(0, Math.min(4, v)); }, `pc-${one.id}-tp`)} />}
           {one.kind === 'rect' && <SliderNumberField label="Cantos" unit="px" min={0} sliderMin={0} sliderMax={120} value={one.radius} onChange={(v) => editSel('Cantos', (pc) => { pc.radius = v; }, `pc-${one.id}-r`)} />}
           {(one.kind === 'polygon' || one.kind === 'star') && <SliderNumberField label={one.kind === 'star' ? 'Pontas' : 'Lados'} min={3} max={12} sliderMin={3} sliderMax={12} decimals={0} value={one.sides} onChange={(v) => editSel('Lados', (pc) => { pc.sides = Math.round(Math.min(12, Math.max(3, v))); }, `pc-${one.id}-n`)} />}
         </>
