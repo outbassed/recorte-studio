@@ -4,6 +4,7 @@ import 'fake-indexeddb/auto';
 import { createDemoProject } from '@/features/templates/projects';
 import { buildCatalog, categoriesOf, CAT, pushRecent, queryCatalog, readSceneData, DEFAULT_QUERY, type CatalogEntry } from '@/features/catalog/catalog';
 import { BUILTIN_CHARACTERS } from '@/engine/character/presets';
+import { ANIMATED_TEMPLATES } from '@/features/catalog/animatedTemplates';
 import { PROPS, getProp } from '@/engine/world/props';
 import { BACKGROUNDS } from '@/engine/world/backgrounds';
 import { renderProp } from '@/engine/world/props';
@@ -39,7 +40,7 @@ describe('catálogo: fontes e origens', () => {
     expect(views).toEqual(new Set(['cast', 'scenery', 'objects']));
     expect(e.filter((x) => x.origin === 'builtin' && x.view === 'cast')).toHaveLength(BUILTIN_CHARACTERS.length);
     expect(e.filter((x) => x.origin === 'builtin' && x.view === 'scenery')).toHaveLength(BACKGROUNDS.length);
-    expect(e.filter((x) => x.origin === 'builtin' && x.view === 'objects')).toHaveLength(PROPS.length);
+    expect(e.filter((x) => x.origin === 'builtin' && x.view === 'objects')).toHaveLength(PROPS.length + ANIMATED_TEMPLATES.length);
     expect(e.find((x) => x.origin === 'mine')?.name).toBe('Fogueira');
   });
   it('chaves estáveis e únicas, com espaço de nomes', () => {
@@ -173,6 +174,24 @@ describe('ações: cópia ao editar (padrão nunca muda)', () => {
     const cb = currentProject().customBackgrounds[id!]!;
     expect(cb.name).toBe('Praia (cópia)');
     expect(id).not.toBe('praia');
+  });
+});
+
+describe('objetos animados padrão', () => {
+  it('inserir duas vezes reaproveita o mesmo objeto (identidade estável) e anima; cópia ganha ID novo', async () => {
+    await insertEntry(entry('builtin:object:fogueira'));
+    await insertEntry(entry('builtin:object:fogueira'));
+    const objs = Object.values(currentProject().customObjects).filter((o) => o.name === 'Fogueira');
+    expect(objs).toHaveLength(1);
+    expect(objs[0]!.clips.map((c) => c.name)).toEqual(['Aceso', 'Apagando']);
+    expect(Object.values(currentScene().nodes).filter((n) => n.kind === 'prop' && n.propId === 'obj:tpl_fogueira')).toHaveLength(2);
+    const copy = await copyBuiltin(entry('builtin:object:ventilador'), false);
+    expect(copy).not.toBe('tpl_ventilador');
+    expect(currentProject().customObjects[copy!]!.clips[0]!.frames).toHaveLength(4);
+    // O padrão fica escondido em Todos (já está no projeto), mas aparece em Padrão.
+    const e = all();
+    expect(queryCatalog(e, 'objects', DEFAULT_QUERY).filter((x) => x.name === 'Fogueira').map((x) => x.origin)).toEqual(['project']);
+    expect(queryCatalog(e, 'objects', { ...DEFAULT_QUERY, filter: 'builtin' }).some((x) => x.key === 'builtin:object:fogueira')).toBe(true);
   });
 });
 

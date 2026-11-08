@@ -20,6 +20,7 @@ import { customObjectUsage } from '@/engine/world/pieces';
 import { availableTimes, customBackgroundUsage } from '@/engine/world/customBackgrounds';
 import { readBackgroundBundle, readObjectBundle, type BackgroundBundle, type ObjectBundle } from '@/features/library/bundles';
 import { matchesSearch } from '@/features/library/search';
+import { ANIMATED_CATEGORY, ANIMATED_TEMPLATES, animatedTemplate, TEMPLATE_PREFIX } from './animatedTemplates';
 import type { LibraryRecord } from '@/storage/db';
 
 export type CatalogView = 'cast' | 'scenery' | 'objects';
@@ -35,6 +36,7 @@ export type CatalogRef =
   | { type: 'project-object'; id: string }
   | { type: 'builtin-background'; presetId: string }
   | { type: 'project-background'; id: string }
+  | { type: 'builtin-object'; tplId: string }
   | { type: 'library'; libId: string };
 
 export interface PoseData { rig: Rig; handL: 'open' | 'fist' | 'point'; handR: 'open' | 'fist' | 'point' }
@@ -86,6 +88,7 @@ export const CAT = {
   poses: 'Poses',
   sequences: 'Sequências',
   objects: 'Objetos montados',
+  animated: ANIMATED_CATEGORY,
   custom: 'Personalizados',
   scenes: 'Cenas-molde',
 } as const;
@@ -112,6 +115,7 @@ const keyOf = (ref: CatalogRef): string => {
     case 'project-object': return `project:object:${ref.id}`;
     case 'builtin-background': return `builtin:background:${ref.presetId}`;
     case 'project-background': return `project:background:${ref.id}`;
+    case 'builtin-object': return `builtin:object:${ref.tplId}`;
     case 'library': return `mine:${ref.libId}`;
   }
 };
@@ -165,9 +169,9 @@ export function buildCatalog({ project, library, favorites }: CatalogInput): Cat
     const ref: CatalogRef = { type: 'project-object', id: o.id };
     const key = keyOf(ref);
     out.push({
-      key, view: 'objects', kind: 'object', category: CAT.objects, name: o.name, keywords: o.pieces.map((p) => p.name),
+      key, view: 'objects', kind: 'object', category: o.clips.length ? CAT.animated : CAT.objects, name: o.name, keywords: o.pieces.map((p) => p.name),
       origin: 'project', editable: true, favorite: fav(key), updatedAt: o.updatedAt || o.createdAt, usage: customObjectUsage(project, o.id),
-      inProject: true, libId: libObj.get(o.id)?.id, states: [], ref,
+      inProject: true, libId: libObj.get(o.id)?.id, states: o.clips.map((c) => ({ id: c.id, label: c.name })), ref, fromBuiltin: o.id.startsWith(TEMPLATE_PREFIX),
     });
   }
   for (const cb of Object.values(project.customBackgrounds)) {
@@ -225,6 +229,16 @@ export function buildCatalog({ project, library, favorites }: CatalogInput): Cat
       inProject: false, shadowed: builtinInProject.has(c.builtinId!), states: [], ref, character: c,
     });
   }
+  for (const t of ANIMATED_TEMPLATES) {
+    const ref: CatalogRef = { type: 'builtin-object', tplId: t.id };
+    const key = keyOf(ref);
+    const o = animatedTemplate(t.id)!;
+    out.push({
+      key, view: 'objects', kind: 'object', category: CAT.animated, name: t.label, keywords: t.keywords, origin: 'builtin', editable: false,
+      favorite: fav(key), updatedAt: 0, usage: customObjectUsage(project, o.id), inProject: false, shadowed: !!project.customObjects[o.id],
+      states: o.clips.map((c) => ({ id: c.id, label: c.name })), ref,
+    });
+  }
   const groupOrder = [...new Set(BACKGROUNDS.map((b) => b.group))];
   for (const b of [...BACKGROUNDS].sort((x, y) => groupOrder.indexOf(x.group) - groupOrder.indexOf(y.group))) {
     const ref: CatalogRef = { type: 'builtin-background', presetId: b.id };
@@ -278,7 +292,7 @@ export function queryCatalog(entries: CatalogEntry[], view: CatalogView, q: Cata
 export function categoriesOf(entries: CatalogEntry[], view: CatalogView): Array<{ id: string; count: number }> {
   const m = new Map<string, number>();
   for (const e of entries) if (e.view === view && !e.shadowed) m.set(e.category, (m.get(e.category) ?? 0) + 1);
-  const pinned: string[] = view === 'cast' ? [CAT.characters, CAT.poses, CAT.sequences] : view === 'scenery' ? [CAT.custom, CAT.scenes] : [CAT.objects];
+  const pinned: string[] = view === 'cast' ? [CAT.characters, CAT.poses, CAT.sequences] : view === 'scenery' ? [CAT.custom, CAT.scenes] : [CAT.objects, CAT.animated];
   const keys = [...m.keys()].sort((a, b) => {
     const ia = pinned.indexOf(a);
     const ib = pinned.indexOf(b);

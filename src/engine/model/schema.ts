@@ -264,6 +264,12 @@ export const PropNodeSchema = z.object({
   state: z.string().default(''),
   /** Personagem que segura o objeto: "nodeId:L" ou "nodeId:R". */
   heldBy: z.string().default(''),
+  /** Objeto montado com animação própria: '' = a padrão do objeto, 'static' = desenho estático, ou o ID da animação. */
+  clip: z.string().default(''),
+  /** Velocidade da animação própria nesta instância (1 = normal). */
+  clipSpeed: finite.default(1),
+  /** Defasagem da animação própria nesta instância, em ms (instâncias iguais começam em pontos diferentes). */
+  clipOffsetMs: finite.default(0),
 });
 export type PropNode = z.infer<typeof PropNodeSchema>;
 
@@ -629,6 +635,24 @@ export const PieceSchema = z.object({
 });
 export type Piece = z.infer<typeof PieceSchema>;
 
+/** Quadro de uma animação do objeto: desenho completo (peças) e duração própria. */
+export const ObjectFrameSchema = z.object({
+  id: z.string(),
+  durationMs: z.number().int().min(20).max(10_000).default(120),
+  pieces: z.array(PieceSchema).max(400).default([]),
+});
+export type ObjectFrame = z.infer<typeof ObjectFrameSchema>;
+
+export const CLIP_MODES = ['loop', 'once', 'pingpong'] as const;
+export const ObjectClipSchema = z.object({
+  id: z.string(),
+  name: z.string().default('Animação'),
+  /** loop = repete; once = toca uma vez e para no último quadro; pingpong = vai e volta. */
+  mode: z.enum(CLIP_MODES).default('loop'),
+  frames: z.array(ObjectFrameSchema).max(240).default([]),
+});
+export type ObjectClip = z.infer<typeof ObjectClipSchema>;
+
 export const CustomObjectSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -638,6 +662,10 @@ export const CustomObjectSchema = z.object({
   pivotX: finite.default(0),
   pivotY: finite.default(0),
   pieces: z.array(PieceSchema).default([]),
+  /** Animações internas (quadros), salvas no objeto e reaproveitadas em toda instância. Vazio = objeto estático. */
+  clips: z.array(ObjectClipSchema).max(16).default([]),
+  /** Animação que toca ao inserir ('' = desenho estático). */
+  defaultClip: z.string().default(''),
   createdAt: z.number().default(0),
   updatedAt: z.number().default(0),
 });

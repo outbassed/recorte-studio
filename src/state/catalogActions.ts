@@ -18,6 +18,7 @@ import { applyCustomBackground, availableTimes, createCustomBackground, customBa
 import { buildBackgroundBundle, buildObjectBundle } from '@/features/library/bundles';
 import { previewAssetUrl, registerAssetBlob } from '@/features/library/assets';
 import { pushRecent, type CatalogEntry } from '@/features/catalog/catalog';
+import { animatedTemplate } from '@/features/catalog/animatedTemplates';
 import { repo, type LibraryRecord } from '@/storage/db';
 import { placeBuiltin, placeCharacter, placeProp } from './actions';
 import {
@@ -113,6 +114,14 @@ export async function insertEntry(e: CatalogEntry, opts: { variant?: 'day' | 'ni
     case 'project-character': placeCharacter(ref.id); break;
     case 'builtin-prop': placeProp(ref.propId); break;
     case 'project-object': insertCustomObject(ref.id); break;
+    case 'builtin-object': {
+      const tpl = animatedTemplate(ref.tplId);
+      if (!tpl) return false;
+      // Entra no projeto com identidade estável (uma vez); as próximas inserções reaproveitam.
+      if (!currentProject().customObjects[tpl.id]) commit(`Trazer ${tpl.name}`, (d) => { d.customObjects[tpl.id] = deepClone(tpl); });
+      insertCustomObject(tpl.id);
+      break;
+    }
     case 'builtin-background': {
       const variant = opts.variant ?? 'day';
       commit('Trocar cenário', (d) => applyBackground(sceneOf(d as Project, scene.id), ref.presetId, { variant }));
@@ -202,6 +211,15 @@ export async function copyBuiltin(e: CatalogEntry, open = true): Promise<string 
     toast(`Cópia "${obj.name}" criada em Meus objetos. O objeto padrão continua igual.`, 'success');
     return obj.id;
   }
+  if (ref.type === 'builtin-object') {
+    const tpl = animatedTemplate(ref.tplId);
+    if (!tpl) return null;
+    const obj = { ...deepClone(tpl), id: uid('obj'), name: `${tpl.name} (cópia)`, createdAt: Date.now(), updatedAt: Date.now() };
+    commit('Criar cópia editável', (d) => { d.customObjects[obj.id] = obj; });
+    if (open) openObjectCreator(obj.id);
+    toast(`Cópia "${obj.name}" criada com as animações. O objeto padrão continua igual.`, 'success');
+    return obj.id;
+  }
   if (ref.type === 'builtin-background') {
     const def = getBackground(ref.presetId);
     let id = '';
@@ -219,7 +237,7 @@ export async function editEntry(e: CatalogEntry): Promise<void> {
   if (e.broken) { toast(`Este item não pode ser editado: ${e.broken}`, 'error'); return; }
   const ref = e.ref;
   switch (ref.type) {
-    case 'builtin-character': case 'builtin-prop': case 'builtin-background': await copyBuiltin(e); return;
+    case 'builtin-character': case 'builtin-prop': case 'builtin-background': case 'builtin-object': await copyBuiltin(e); return;
     case 'project-character': useUI.setState({ dialog: 'creator', creatorCharacterId: ref.id }); return;
     case 'project-object': openObjectCreator(ref.id); return;
     case 'project-background': {

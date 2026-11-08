@@ -34,6 +34,7 @@ import { Modal } from '../dialogs/Modal';
 import { HelpLink } from '../manual/HelpLink';
 import { backgroundThumbUrl, CharacterThumb, PropThumb, sceneThumbUrl } from './thumbs';
 import { CustomBackgroundCard } from './CustomBackgrounds';
+import { animatedTemplate } from '@/features/catalog/animatedTemplates';
 
 const MANNEQUIN = BUILTIN_CHARACTERS[0]!;
 const PAGE = 60;
@@ -51,9 +52,9 @@ function pseudoProject(project: Project, b: ObjectBundle | { objects: ObjectBund
   return { ...project, customObjects: { ...project.customObjects, ...Object.fromEntries(objs.map((o) => [o.id, o])) }, assets: { ...project.assets, ...Object.fromEntries(b.assets.map((a) => [a.id, a])) } };
 }
 
-const ObjectThumb = memo(function ObjectThumb({ project, id, size }: { project: Project; id: string; size: number; blobs: number }) {
+const ObjectThumb = memo(function ObjectThumb({ project, id, size, anim }: { project: Project; id: string; size: number; blobs: number; anim?: { clip: string; localMs: number } }) {
   const o = project.customObjects[id];
-  const html = useMemo(() => { try { return renderCustomObject(project, OBJECT_PREFIX + id, previewAssetUrl); } catch { return ''; } }, [project, id]);
+  const html = useMemo(() => { try { return renderCustomObject(project, OBJECT_PREFIX + id, previewAssetUrl, '', anim); } catch { return ''; } }, [project, id, anim?.clip, anim?.localMs]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!o) return <span className="cat-icon" aria-hidden="true">?</span>;
   const s = Math.max(o.width, o.height);
   return <svg className="obj-thumb" width={size} height={size} viewBox={`${-s * 0.6 - o.pivotX} ${-s * 1.1 - o.pivotY} ${s * 1.2} ${s * 1.2}`} aria-hidden="true" dangerouslySetInnerHTML={{ __html: html }} />;
@@ -76,16 +77,34 @@ function SceneMoldThumb({ project, e, width }: { project: Project; e: CatalogEnt
   return url ? <img className="bg-thumb" src={url} alt="" width={width} /> : <span className="cat-icon" aria-hidden="true"><Clapperboard size={22} /></span>;
 }
 
-export function EntryThumb({ e, project, size = 64, variant = 'day', state, view, full }: { e: CatalogEntry; project: Project; size?: number; variant?: 'day' | 'night'; state?: string; view?: ViewId; full?: boolean }) {
+/** Prévia tocando a animação (só na interface; a cena e a exportação usam o tempo da timeline). */
+function useClock(on: boolean): number {
+  const [t, setT] = useState(0);
+  useEffect(() => {
+    if (!on) return;
+    const t0 = performance.now();
+    let raf = 0;
+    const tick = () => { setT(performance.now() - t0); raf = requestAnimationFrame(tick); };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [on]);
+  return t;
+}
+
+export function EntryThumb({ e, project, size = 64, variant = 'day', state, view, full, playMs }: { e: CatalogEntry; project: Project; size?: number; variant?: 'day' | 'night'; state?: string; view?: ViewId; full?: boolean; playMs?: number }) {
   const blobs = useLibrary((s) => s.blobs);
   const libProject = useMemo(() => {
     if (e.objectBundle) return pseudoProject(project, e.objectBundle);
+    if (e.ref.type === 'builtin-object') {
+      const o = animatedTemplate(e.ref.tplId);
+      if (o) return { ...project, customObjects: { ...project.customObjects, [o.id]: o } };
+    }
     if (e.backgroundBundle) {
       const b = e.backgroundBundle;
       return { ...pseudoProject(project, b), customBackgrounds: { ...project.customBackgrounds, [b.background.id]: b.background } };
     }
     return project;
-  }, [project, e.objectBundle, e.backgroundBundle]);
+  }, [project, e.objectBundle, e.backgroundBundle, e.ref]);
   if (e.broken) return <span className="cat-icon is-broken" aria-hidden="true">!</span>;
   const wide = Math.round(size * 1.6);
   switch (e.kind) {
@@ -94,8 +113,8 @@ export function EntryThumb({ e, project, size = 64, variant = 'day', state, view
     case 'sequence': return <span className="cat-icon" aria-hidden="true"><Clapperboard size={22} /><small>{e.sequenceSteps} passo(s)</small></span>;
     case 'prop': return <PropThumb propId={(e.ref as { propId: string }).propId} size={size} state={state} />;
     case 'object': {
-      const id = e.ref.type === 'project-object' ? e.ref.id : e.objectBundle?.object.id ?? '';
-      return <ObjectThumb project={libProject} id={id} size={size} blobs={blobs} />;
+      const id = e.ref.type === 'project-object' ? e.ref.id : e.ref.type === 'builtin-object' ? animatedTemplate(e.ref.tplId)?.id ?? '' : e.objectBundle?.object.id ?? '';
+      return <ObjectThumb project={libProject} id={id} size={size} blobs={blobs} anim={state !== undefined || playMs !== undefined ? { clip: state ?? '', localMs: Math.floor((playMs ?? 0) / 20) * 20 } : undefined} />;
     }
     case 'background': {
       if (e.ref.type === 'builtin-background') return <img className="bg-thumb" src={backgroundThumbUrl(e.ref.presetId, (state as 'day' | 'night') ?? variant)} alt="" loading="lazy" width={wide} />;
@@ -116,6 +135,7 @@ function legacyTestId(e: CatalogEntry): string {
     case 'builtin-background': return 'bg-card';
     case 'project-object': return 'my-object';
     case 'project-background': return 'custom-bg';
+    case 'builtin-object': return 'anim-card';
     case 'library': return e.kind === 'object' ? 'obj-lib-row' : e.kind === 'background' ? 'cbg-lib-row' : 'catalog-card';
   }
 }
@@ -184,8 +204,23 @@ function DetailPreview({ e, project }: { e: CatalogEntry; project: Project }) {
   if (e.kind === 'prop' && e.states.length) {
     return <div className="cat-views" data-testid="catalog-views">{e.states.map((s) => <figure key={s.id}><EntryThumb e={e} project={project} size={96} state={s.id} /><figcaption>{s.label}</figcaption></figure>)}</div>;
   }
+  if (e.kind === 'object' && e.states.length) return <AnimatedStates e={e} project={project} />;
   if (e.kind === 'sequence') return <p className="hint">Sequência de {e.sequenceSteps} passo(s). Selecione um personagem no palco e use "Aplicar": os passos entram a partir do tempo atual e ficam editáveis na timeline.</p>;
   return <div className="cat-views is-single" data-testid="catalog-views"><figure><EntryThumb e={e} project={project} size={150} /></figure></div>;
+}
+
+function AnimatedStates({ e, project }: { e: CatalogEntry; project: Project }) {
+  const [playing, setPlaying] = useState(true);
+  const t = useClock(playing);
+  return (
+    <>
+      <div className="cat-views" data-testid="catalog-views">
+        {e.states.map((s) => <figure key={s.id} data-clip={s.id}><EntryThumb e={e} project={project} size={110} state={s.id} playMs={t} /><figcaption>{s.label}</figcaption></figure>)}
+      </div>
+      <button type="button" className="btn btn-sm" data-testid="catalog-play" aria-pressed={playing} onClick={() => setPlaying(!playing)}>{playing ? 'Pausar prévia' : 'Tocar prévia'}</button>
+      <p className="hint">As animações ficam salvas no objeto: cada cópia na cena anima sozinha, também no vídeo. Velocidade e defasagem se ajustam por cópia em Propriedades → Aparência.</p>
+    </>
+  );
 }
 
 function policyText(e: CatalogEntry): string {

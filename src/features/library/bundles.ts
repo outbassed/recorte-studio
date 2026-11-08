@@ -9,6 +9,7 @@
  */
 import { AssetSchema, CustomBackgroundSchema, CustomObjectSchema, type Asset, type CustomBackground, type CustomObject, type Piece, type Project } from '@/engine/model/schema';
 import { deepClone, uid } from '@/engine/model/ids';
+import { objectPieceLists } from '@/engine/world/pieces';
 
 export const BUNDLE_VERSION = 2;
 
@@ -35,7 +36,7 @@ export function objectClosure(project: Pick<Project, 'customObjects'>, pieces: P
       const o = project.customObjects[pc.refId];
       if (!o) continue;
       seen.set(o.id, o);
-      visit(o.pieces);
+      for (const list of objectPieceLists(o)) visit(list);
     }
   };
   visit(pieces);
@@ -46,7 +47,7 @@ export function objectClosure(project: Pick<Project, 'customObjects'>, pieces: P
 export function objectContains(project: Pick<Project, 'customObjects'>, candidateId: string, targetId: string): boolean {
   if (candidateId === targetId) return true;
   const o = project.customObjects[candidateId];
-  return !!o && objectClosure(project, o.pieces).some((d) => d.id === targetId);
+  return !!o && objectClosure(project, objectPieceLists(o).flat()).some((d) => d.id === targetId);
 }
 
 const assetsFor = (project: Pick<Project, 'assets'>, ids: Iterable<string>): Asset[] => {
@@ -61,8 +62,8 @@ const assetsFor = (project: Pick<Project, 'assets'>, ids: Iterable<string>): Ass
 export function buildObjectBundle(project: Project, objectId: string): ObjectBundle | null {
   const object = project.customObjects[objectId];
   if (!object) return null;
-  const objects = objectClosure(project, object.pieces).filter((o) => o.id !== object.id);
-  const ids = [...assetIdsOfPieces(object.pieces), ...objects.flatMap((o) => assetIdsOfPieces(o.pieces))];
+  const objects = objectClosure(project, objectPieceLists(object).flat()).filter((o) => o.id !== object.id);
+  const ids = [...assetIdsOfPieces(objectPieceLists(object).flat()), ...objects.flatMap((o) => assetIdsOfPieces(objectPieceLists(o).flat()))];
   return { bundle: 2, object: deepClone(object), objects: deepClone(objects), assets: assetsFor(project, ids) };
 }
 
@@ -74,7 +75,7 @@ export function buildBackgroundBundle(project: Project, cbId: string): Backgroun
   const ids = [
     ...Object.values(background.variants).flatMap((v) => (v ? [v.assetId] : [])),
     ...assetIdsOfPieces(pieces),
-    ...objects.flatMap((o) => assetIdsOfPieces(o.pieces)),
+    ...objects.flatMap((o) => assetIdsOfPieces(objectPieceLists(o).flat())),
   ];
   return { bundle: 2, background: deepClone(background), objects: deepClone(objects), assets: assetsFor(project, ids) };
 }
@@ -158,9 +159,11 @@ export function mergeBundleObjects(draft: Project, objects: CustomObject[], asse
     const o = byId.get(id);
     if (!o || visiting.has(id)) return id;
     visiting.add(id);
-    const pieces = o.pieces.map((p) => (p.kind === 'object' && p.refId ? { ...p, refId: resolve(p.refId) } : p));
+    const fix = (list: Piece[]) => list.map((p) => (p.kind === 'object' && p.refId ? { ...p, refId: resolve(p.refId) } : p));
+    const pieces = fix(o.pieces);
+    const clips = (o.clips ?? []).map((c) => ({ ...c, frames: c.frames.map((f) => ({ ...f, pieces: fix(f.pieces) })) }));
     visiting.delete(id);
-    const candidate: CustomObject = { ...o, pieces };
+    const candidate: CustomObject = { ...o, pieces, clips };
     const existing = draft.customObjects[id];
     if (existing && strip(deepClone(existing)) === strip(candidate)) {
       done.set(id, id);

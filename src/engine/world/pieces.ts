@@ -2,7 +2,7 @@
  * Peças 2D: base do Criador de Objetos e do Criador de Cenários.
  * Mesmo desenho na prévia, no editor e na exportação (string SVG determinística).
  */
-import type { CharacterDefinition, Composition, CustomObject, Piece, PieceKind, Project, StaticCharacter } from '../model/schema';
+import type { CharacterDefinition, Composition, CustomObject, ObjectClip, Piece, PieceKind, Project, StaticCharacter } from '../model/schema';
 import { PieceSchema, StaticCharacterSchema } from '../model/schema';
 import { uid, deepClone } from '../model/ids';
 import { renderCharacter } from '../character/render';
@@ -116,9 +116,57 @@ export function renderPieces(pieces: Piece[], env: PieceEnv): string {
   return out;
 }
 
+/* ------------------------------ animação própria do objeto (quadros) ------------------------------ */
+/** Todas as listas de peças de um objeto: desenho estático + cada quadro de cada animação. */
+export const objectPieceLists = (o: CustomObject): Piece[][] => [o.pieces, ...(o.clips ?? []).flatMap((c) => c.frames.map((f) => f.pieces))];
+
+/** Animação efetiva: '' = a padrão do objeto; 'static' (ou inexistente/sem quadros) = desenho estático. */
+export function resolveClip(obj: CustomObject, clipId: string): ObjectClip | null {
+  const id = clipId === '' ? obj.defaultClip : clipId;
+  if (!id || id === 'static') return null;
+  const c = (obj.clips ?? []).find((x) => x.id === id);
+  return c && c.frames.length ? c : null;
+}
+
+export const clipDuration = (c: ObjectClip): number => c.frames.reduce((s, f) => s + f.durationMs, 0);
+
+/**
+ * Quadro da animação no tempo local (ms). Função PURA do tempo: prévia, PNG e vídeo pegam o mesmo
+ * quadro no mesmo instante, sem relógio nem estado acumulado.
+ */
+export function clipFrameIndex(c: ObjectClip, localMs: number): number {
+  const count = c.frames.length;
+  if (count <= 1) return 0;
+  const t0 = Number.isFinite(localMs) ? localMs : 0;
+  // Sequência tocada: pingue-pongue repete os quadros do meio na volta (0 1 2 3 2 1 | 0 …).
+  const fwd = [...c.frames.keys()];
+  const order = c.mode === 'pingpong' ? [...fwd, ...fwd.slice(1, -1).reverse()] : fwd;
+  const total = order.reduce((s, i) => s + c.frames[i]!.durationMs, 0);
+  if (total <= 0) return 0;
+  let t: number;
+  if (c.mode === 'once') {
+    if (t0 >= total) return count - 1;
+    t = Math.max(0, t0);
+  } else t = ((t0 % total) + total) % total;
+  for (const i of order) {
+    const d = c.frames[i]!.durationMs;
+    if (t < d) return i;
+    t -= d;
+  }
+  return order[order.length - 1]!;
+}
+
+/** Peças a desenhar no tempo local; frame = -1 quando é o desenho estático. */
+export function objectPiecesAt(obj: CustomObject, clipId: string, localMs: number): { pieces: Piece[]; clip: string; frame: number } {
+  const c = resolveClip(obj, clipId);
+  if (!c) return { pieces: obj.pieces, clip: 'static', frame: -1 };
+  const i = clipFrameIndex(c, localMs);
+  return { pieces: c.frames[i]!.pieces, clip: c.id, frame: i };
+}
+
 /** Corpo do objeto: peças deslocadas pelo pivô (o pivô vira a origem do nó na cena). */
-export function renderObjectBody(obj: CustomObject, env: PieceEnv): string {
-  const body = renderPieces(obj.pieces, env);
+export function renderObjectBody(obj: CustomObject, env: PieceEnv, pieces: Piece[] = obj.pieces): string {
+  const body = renderPieces(pieces, env);
   return obj.pivotX || obj.pivotY ? `<g transform="translate(${n(-obj.pivotX)} ${n(-obj.pivotY)})">${body}</g>` : body;
 }
 
@@ -144,16 +192,22 @@ export function availabilityKey(project: Project, pieces: Piece[], url: PieceEnv
  * quando QUALQUER objeto muda). Assim, editar um objeto também refaz os que o contêm e os cenários que o usam.
  */
 const objCache = new WeakMap<object, Map<string, string>>();
-export function renderCustomObject(project: Project, propId: string, url: PieceEnv['url'], nodeId = ''): string {
+/**
+ * anim = animação e tempo LOCAL da instância (já com velocidade e defasagem). Sem anim, desenha o
+ * primeiro quadro da animação padrão (ou o estático): é o "estado inicial" de miniaturas e cenários.
+ */
+export function renderCustomObject(project: Project, propId: string, url: PieceEnv['url'], nodeId = '', anim?: { clip: string; localMs: number }): string {
   const obj = project.customObjects[customObjectIdOf(propId)];
   if (!obj) return `<rect x="-50" y="-100" width="100" height="100" fill="#3a3f4b" stroke="#d65f5f" stroke-width="4" stroke-dasharray="10 8"/>`;
+  const at = objectPiecesAt(obj, anim?.clip ?? '', anim?.localMs ?? 0);
   let m = objCache.get(project.customObjects);
   if (!m) objCache.set(project.customObjects, (m = new Map()));
-  const key = `${propId}|${nodeId}|${availabilityKey(project, obj.pieces, url)}`;
+  const key = `${propId}|${nodeId}|${at.clip}:${at.frame}|${availabilityKey(project, at.pieces, url)}`;
   let v = m.get(key);
   if (v === undefined) {
-    v = renderObjectBody(obj, { project, url, idPrefix: `o${nodeId}` });
-    if (m.size > 200) m.clear();
+    const body = renderObjectBody(obj, { project, url, idPrefix: `o${nodeId}${at.frame >= 0 ? `f${at.frame}` : ''}` }, at.pieces);
+    v = at.frame >= 0 ? `<g data-obj-clip="${esc(at.clip)}" data-obj-frame="${at.frame}">${body}</g>` : body;
+    if (m.size > 400) m.clear();
     m.set(key, v);
   }
   return v;
@@ -295,7 +349,7 @@ export function normalizeAngle(d: number): number {
 
 /** Todas as listas de peças do projeto (objetos e composições de cenário). */
 export function allPieceLists(p: Project): Piece[][] {
-  const lists: Piece[][] = Object.values(p.customObjects).map((o) => o.pieces);
+  const lists: Piece[][] = Object.values(p.customObjects).flatMap(objectPieceLists);
   for (const b of Object.values(p.customBackgrounds)) for (const c of Object.values(b.compositions ?? {})) if (c) lists.push(c.pieces);
   return lists;
 }

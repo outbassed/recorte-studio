@@ -421,6 +421,19 @@ function PropSections({ scene, node }: { scene: Scene; node: Extract<SceneNode, 
         <button type="button" className="btn btn-block" data-testid="edit-custom-object" onClick={() => openObjectCreator(customObjectIdOf(node.propId))}>Editar no Criador de Objetos</button>
       </Section>
     )}
+    {(() => {
+      const obj = isCustomObjectId(node.propId) ? currentProject().customObjects[customObjectIdOf(node.propId)] : undefined;
+      if (!obj?.clips.length) return null;
+      const def0 = obj.clips.find((c) => c.id === obj.defaultClip);
+      return (
+        <Section title="Animação do objeto" testId="sec-object-anim">
+          <p className="hint">Os quadros ficam salvos no objeto. Aqui você escolhe só como ESTA cópia toca: animação, velocidade e defasagem. Trocar a animação com keyframe faz ela começar naquele instante.</p>
+          <DiscreteField scene={scene} target={node.id} path="clip" label="Animação" testId="prop-clip" options={[{ id: '', label: def0 ? `Padrão do objeto (${def0.name})` : 'Padrão do objeto (estático)' }, { id: 'static', label: 'Desenho estático' }, ...obj.clips.map((c) => ({ id: c.id, label: `${c.name} · ${c.frames.length} quadro(s)` }))]} />
+          <SliderNumberField label="Velocidade" unit="%" display={100} min={0} max={20} sliderMin={0} sliderMax={300} decimals={0} value={node.clipSpeed} testId="prop-clip-speed" onChange={(v) => set('Velocidade da animação', (n) => { n.clipSpeed = Math.max(0, v); })} />
+          <SliderNumberField label="Defasagem" unit="ms" min={-600000} max={600000} sliderMin={-2000} sliderMax={2000} decimals={0} value={node.clipOffsetMs} testId="prop-clip-offset" onChange={(v) => set('Defasagem da animação', (n) => { n.clipOffsetMs = Math.round(v); })} />
+        </Section>
+      );
+    })()}
     <Section title="Aparência do objeto" testId="sec-prop" actions={<SectionKeys id="prop" scene={scene} target={node.id} kind="prop" paths={[...(def?.states ? ['state'] : []), ...(def?.handheld ? ['heldBy'] : [])]} />}>
       <ColorField label="Cor principal" value={node.colorA || def?.a || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorA = v; })} />
       <ColorField label="Cor secundária" value={node.colorB || def?.b || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorB = v; })} />

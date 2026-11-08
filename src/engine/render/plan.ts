@@ -121,6 +121,7 @@ export function cameraTransform(cam: ResolvedScene['camera'], parallax: number):
 }
 
 interface NodeRenderCtx {
+  timeMs: number;
   project: Project;
   scene: Scene;
   resolved: ResolvedScene;
@@ -215,6 +216,18 @@ function cachedProp(id: string, a: string, b: string, state: string): string {
   return v;
 }
 
+/**
+ * Tempo local da animação própria de um objeto montado. Se a animação é trocada por keyframe na
+ * timeline ("acionada"), ela começa no instante desse keyframe; senão, no início da cena.
+ */
+export function objectAnimAt(scene: Scene, node: Extract<SceneNode, { kind: 'prop' }>, timeMs: number): { clip: string; localMs: number } {
+  let start = 0;
+  const track = scene.tracks.find((t) => t.type === 'property' && t.targetNodeId === node.id && t.propertyPath === 'clip');
+  if (track && track.type === 'property' && track.enabled) for (const k of track.keyframes) if (k.timeMs <= timeMs) start = k.timeMs;
+  const speed = Number.isFinite(node.clipSpeed) ? Math.min(20, Math.max(0, node.clipSpeed)) : 1;
+  return { clip: node.clip, localMs: (timeMs - start) * speed + (Number.isFinite(node.clipOffsetMs) ? node.clipOffsetMs : 0) };
+}
+
 function renderNodeInner(node: SceneNode, ctx: NodeRenderCtx): string {
   switch (node.kind) {
     case 'character': {
@@ -227,7 +240,7 @@ function renderNodeInner(node: SceneNode, ctx: NodeRenderCtx): string {
       return ctx.charCache.get(node.id)?.svg ?? '';
     }
     case 'prop':
-      if (isCustomObjectId(node.propId)) return renderCustomObject(ctx.project, node.propId, ctx.assets, node.id);
+      if (isCustomObjectId(node.propId)) return renderCustomObject(ctx.project, node.propId, ctx.assets, node.id, objectAnimAt(ctx.scene, node, ctx.timeMs));
       return cachedProp(node.propId, safeColor(node.colorA, ''), safeColor(node.colorB, ''), node.state);
     case 'image': {
       const url = ctx.assets(node.assetId);
@@ -341,7 +354,7 @@ function cachedBackground(bg: Scene['background'], sceneId: string) {
 /** Monta os grupos de uma cena em um instante. */
 export function planScene(project: Project, scene: Scene, timeMs: number, assets: AssetResolver, opts: { transparentBg?: boolean } = {}): { group: PlanGroup; defs: string; screen: string; resolved: ResolvedScene } {
   const resolved = evaluateScene(project, scene, timeMs);
-  const ctx: NodeRenderCtx = { project, scene, resolved, assets, charCache: new Map() };
+  const ctx: NodeRenderCtx = { timeMs, project, scene, resolved, assets, charCache: new Map() };
   collectCharacters(ctx);
   const entries: PlanEntry[] = [];
   const filters = new Set<number>();

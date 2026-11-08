@@ -90,6 +90,7 @@ export const PROPERTIES: PropertyDef[] = [
   { path: 'gaze.mode', label: 'Modo do olhar', kind: 'enum', appliesTo: ['character'] },
   { path: 'gaze.targetId', label: 'Alvo do olhar', kind: 'enum', appliesTo: ['character'] },
   { path: 'state', label: 'Estado do objeto', kind: 'enum', appliesTo: ['prop'] },
+  { path: 'clip', label: 'Animação do objeto', kind: 'enum', appliesTo: ['prop'] },
   { path: 'heldBy', label: 'Segurado por', kind: 'enum', appliesTo: ['prop'] },
   // Câmera
   num('x', 'Câmera X', { unit: 'px', min: -20000, max: 20000, sliderMin: -1400, sliderMax: 1400, appliesTo: ['camera'] }),

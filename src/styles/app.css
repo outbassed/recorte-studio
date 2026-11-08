@@ -362,7 +362,7 @@ button.card { border: 1px solid var(--line); background: var(--bg-3); }
 .is-compact .tl-fps { display: none; }
 
 /* ---------- modais ---------- */
-.modal-back { position: fixed; inset: 0; z-index: 40; background: #0009; display: grid; place-items: center; padding: 12px; }
+.modal-back { position: fixed; inset: 0; z-index: 70; background: #0009; display: grid; place-items: center; padding: 12px; }
 .modal { background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 12px; display: flex; flex-direction: column; max-height: calc(100dvh - 24px); width: 100%; box-shadow: 0 20px 60px #000a; min-height: 0; }
 .modal-sm { max-width: 420px; }
 .modal-md { max-width: 600px; }
@@ -380,11 +380,11 @@ button.card { border: 1px solid var(--line); background: var(--bg-3); }
 .shortcuts dd { margin: 0; color: var(--text-2); }
 kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inherit; font-size: calc(11.5px * var(--ui-scale, 1)); border-bottom: 2px solid #0007; }
 .report { margin: 0; padding-left: 18px; display: grid; gap: 3px; color: var(--text-2); }
-.toasts { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(68px + var(--safe-b)); z-index: 60; display: grid; gap: 6px; width: max-content; max-width: min(92vw, 520px); pointer-events: none; }
+.toasts { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(68px + var(--safe-b)); z-index: 90; display: grid; gap: 6px; width: max-content; max-width: min(92vw, 520px); pointer-events: none; }
 .toast { background: #2b2f3b; border: 1px solid var(--line-2); padding: 8px 12px; border-radius: 8px; box-shadow: 0 6px 18px #0008; line-height: 1.35; pointer-events: auto; }
 .toast.is-error { background: #3a2024; border-color: #6d3339; color: #ffc3c7; }
 .toast.is-success { background: #1f3528; border-color: #2f5b3e; color: #bfeccd; }
-.ctx-back { position: fixed; inset: 0; z-index: 50; }
+.ctx-back { position: fixed; inset: 0; z-index: 80; }
 .ctx-menu { position: fixed; min-width: 190px; max-height: 70dvh; overflow: auto; background: var(--bg-3); border: 1px solid var(--line-2); border-radius: 8px; padding: 4px; box-shadow: 0 10px 30px #000a; }
 .ctx-title { padding: 5px 9px; color: var(--text-3); font-size: calc(11px * var(--ui-scale, 1)); border-bottom: 1px solid var(--line); margin-bottom: 3px; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ctx-menu button { display: block; width: 100%; min-height: 34px; background: none; border: 0; padding: 6px 9px; text-align: left; border-radius: 5px; }
@@ -820,3 +820,17 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
 .catalog .panel-sub { padding-top: 8px; padding-bottom: 8px; }
 .catalog .card-grid.is-wide { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
 .catalog .chip { min-height: 24px; padding: 2px 8px; }
+
+/* ------------------------------ Criador de Objetos: quadros ------------------------------ */
+.anim-bar { display: grid; gap: 6px; padding: 6px 10px; border-bottom: 1px solid var(--line); background: var(--bg-2); }
+.anim-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
+.anim-row > .hint { flex: 1 1 260px; margin: 0; }
+.anim-label { display: inline-flex; align-items: center; gap: 6px; font-size: calc(11.5px * var(--ui-scale, 1)); color: var(--text-2); }
+.anim-label .input-sm { width: 76px; }
+.anim-check { display: inline-flex; align-items: center; gap: 4px; font-size: calc(11.5px * var(--ui-scale, 1)); color: var(--text-2); }
+.anim-frames { display: flex; gap: 4px; overflow-x: auto; list-style: none; margin: 0; padding: 0 0 2px; flex: 1 1 100%; min-width: 0; }
+.anim-frame { display: grid; justify-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg-3); color: var(--text-2); font-size: calc(10px * var(--ui-scale, 1)); }
+.anim-frame.is-active { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); color: var(--text); }
+.anim-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+@media (pointer: coarse) { .anim-frame { min-width: 52px; } }
+.cat-views .obj-thumb { width: auto; height: auto; background: none; }
