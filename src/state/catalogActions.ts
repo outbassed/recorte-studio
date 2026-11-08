@@ -29,6 +29,7 @@ import { commit, currentProject, currentScene } from './projectStore';
 import { setPref, usePrefs } from './prefs';
 import { seek, transport } from './transport';
 import { confirmDialog, promptDialog, toast, useUI } from './uiStore';
+import { usePacks } from './packActions';
 
 /* ------------------------------ biblioteca persistente (compartilhada pelos painéis) ------------------------------ */
 interface LibraryState { records: LibraryRecord[]; loaded: boolean; error: string | null; blobs: number }
@@ -59,6 +60,13 @@ export async function reloadLibrary(): Promise<void> {
     useLibrary.setState({ loaded: true, error: e instanceof Error ? e.message : 'erro desconhecido' });
   }
 }
+
+/** Dados do item de pacote (pacote instalado e ativo). */
+const packItemOf = (e: CatalogEntry) => {
+  if (e.ref.type !== 'pack-item') return undefined;
+  const { packId, itemId } = e.ref;
+  return usePacks.getState().packs.find((p) => p.id === packId && p.enabled)?.items.find((i) => i.id === itemId);
+};
 
 const recordOf = (e: CatalogEntry): LibraryRecord | undefined =>
   e.ref.type === 'library' ? useLibrary.getState().records.find((r) => r.id === (e.ref as { libId: string }).libId) : undefined;
@@ -114,6 +122,22 @@ export async function insertEntry(e: CatalogEntry, opts: { variant?: 'day' | 'ni
     case 'project-character': placeCharacter(ref.id); break;
     case 'builtin-prop': placeProp(ref.propId); break;
     case 'project-object': insertCustomObject(ref.id); break;
+    case 'pack-item': {
+      // Usar item de pacote = trazer uma CÓPIA (com imagens) para o projeto; o pacote pode sumir depois.
+      const it = packItemOf(e);
+      if (!it) { toast('Este pacote está desativado ou foi removido.', 'error'); return false; }
+      if (it.kind === 'object') {
+        const id = await bringObjectFromLibrary(it.data, true);
+        if (id) insertCustomObject(id);
+        ok = !!id;
+      } else {
+        const id = await bringBackgroundFromLibrary(it.data, true);
+        const cb = id ? currentProject().customBackgrounds[id] : undefined;
+        if (cb && availableTimes(cb).length) commit('Usar cenário', (d) => { const c = d.customBackgrounds[cb.id]; if (c) applyCustomBackground(sceneOf(d as Project, scene.id), c); });
+        ok = !!id;
+      }
+      break;
+    }
     case 'builtin-object': {
       const tpl = animatedTemplate(ref.tplId);
       if (!tpl) return false;
@@ -211,6 +235,29 @@ export async function copyBuiltin(e: CatalogEntry, open = true): Promise<string 
     toast(`Cópia "${obj.name}" criada em Meus objetos. O objeto padrão continua igual.`, 'success');
     return obj.id;
   }
+  if (ref.type === 'pack-item') {
+    // Item de pacote é protegido: editar gera uma cópia pessoal com ID novo; o pacote não muda.
+    const it = packItemOf(e);
+    if (!it) { toast('Este pacote está desativado ou foi removido.', 'error'); return null; }
+    if (it.kind === 'object') {
+      const srcId = await bringObjectFromLibrary(it.data, true);
+      const src = srcId ? currentProject().customObjects[srcId] : undefined;
+      if (!src) return null;
+      const obj = { ...deepClone(src), id: uid('obj'), name: `${src.name} (cópia)`, createdAt: Date.now(), updatedAt: Date.now() };
+      commit('Criar cópia editável', (d) => { d.customObjects[obj.id] = obj; });
+      if (open) openObjectCreator(obj.id);
+      toast(`Cópia "${obj.name}" criada. O item do pacote continua igual.`, 'success');
+      return obj.id;
+    }
+    const srcId = await bringBackgroundFromLibrary(it.data, true);
+    const src = srcId ? currentProject().customBackgrounds[srcId] : undefined;
+    if (!src) return null;
+    const cb = { ...deepClone(src), id: uid('cbg'), name: `${src.name} (cópia)`, createdAt: Date.now() };
+    commit('Criar cópia editável', (d) => { d.customBackgrounds[cb.id] = cb; });
+    if (open) openSceneCreator(cb.id, availableTimes(cb)[0] ?? 'day');
+    toast(`Cópia "${cb.name}" criada. O item do pacote continua igual.`, 'success');
+    return cb.id;
+  }
   if (ref.type === 'builtin-object') {
     const tpl = animatedTemplate(ref.tplId);
     if (!tpl) return null;
@@ -252,7 +299,7 @@ export async function editEntry(e: CatalogEntry): Promise<void> {
   if (e.broken) { toast(`Este item não pode ser editado: ${e.broken}`, 'error'); return; }
   const ref = e.ref;
   switch (ref.type) {
-    case 'builtin-character': case 'builtin-prop': case 'builtin-background': case 'builtin-object': await copyBuiltin(e); return;
+    case 'builtin-character': case 'builtin-prop': case 'builtin-background': case 'builtin-object': case 'pack-item': await copyBuiltin(e); return;
     case 'project-character': useUI.setState({ dialog: 'creator', creatorCharacterId: ref.id }); return;
     case 'project-object': openObjectCreator(ref.id); return;
     case 'project-background': {

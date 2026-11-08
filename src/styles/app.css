@@ -852,3 +852,13 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
 .tpl-test strong { display: block; margin-bottom: 4px; }
 .tpl-test ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; color: var(--text-2); }
 .home-page > .hstrip { margin-bottom: 12px; }
+/* ------------------------------ Pacotes ------------------------------ */
+.packs { padding: 0 10px 10px; border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+.packs .group-title { display: flex; align-items: center; gap: 6px; padding-left: 0; }
+.packs .btn-row { margin: 6px 0; }
+.pack-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.pack-row { display: flex; align-items: center; gap: 6px; padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-3); }
+.pack-row.is-off { opacity: .65; }
+.pack-main { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.pack-main small { color: var(--text-3); font-size: calc(10.5px * var(--ui-scale, 1)); overflow-wrap: anywhere; }
+.cat-badge.is-pack { color: #c6a8ff; }

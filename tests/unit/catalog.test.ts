@@ -169,11 +169,12 @@ describe('ações: cópia ao editar (padrão nunca muda)', () => {
     expect(JSON.stringify(src)).toBe(snapshot);
   });
   // As composições de Dia/Noite dependem de decodificar SVG (não existe no jsdom): conferidas no E2E.
-  it('cenário padrão: cópia própria com ID novo; o padrão não entra no projeto como editável', async () => {
+  // A cópia completa (Dia e Noite, um só Ctrl+Z) é conferida no E2E: aqui o jsdom não decodifica SVG.
+  it('cenário padrão: se a composição não puder ser feita, não sobra cópia pela metade nem passo de histórico', async () => {
+    const before = Object.keys(currentProject().customBackgrounds).length;
     const id = await copyBuiltin(entry('builtin:background:praia'), false);
-    const cb = currentProject().customBackgrounds[id!]!;
-    expect(cb.name).toBe('Praia (cópia)');
-    expect(id).not.toBe('praia');
+    expect(id).toBeNull();
+    expect(Object.keys(currentProject().customBackgrounds)).toHaveLength(before);
   });
 });
 

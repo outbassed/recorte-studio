@@ -31,6 +31,7 @@ import { promptDialog, toast, useUI } from '@/state/uiStore';
 import { repo } from '@/storage/db';
 import { IconButton, MoreButton, SearchBox } from '../controls/fields';
 import { ScrollStrip } from '../controls/ScrollStrip';
+import { reloadPacks, usePacks } from '@/state/packActions';
 import { Modal } from '../dialogs/Modal';
 import { HelpLink } from '../manual/HelpLink';
 import { backgroundThumbUrl, CharacterThumb, PropThumb, sceneThumbUrl } from './thumbs';
@@ -39,8 +40,8 @@ import { animatedTemplate } from '@/features/catalog/animatedTemplates';
 
 const MANNEQUIN = BUILTIN_CHARACTERS[0]!;
 const PAGE = 60;
-const FILTERS: CatalogFilter[] = ['all', 'builtin', 'mine', 'favorites', 'recent', 'project'];
-const ORIGIN_SHORT: Record<CatalogEntry['origin'], string> = { builtin: 'Padrão', project: 'Projeto', mine: 'Meu' };
+const FILTERS: CatalogFilter[] = ['all', 'builtin', 'packs', 'mine', 'favorites', 'recent', 'project'];
+const ORIGIN_SHORT: Record<CatalogEntry['origin'], string> = { builtin: 'Padrão', project: 'Projeto', mine: 'Meu', pack: 'Pacote' };
 const SEARCH_ID: Record<CatalogView, string> = { cast: 'char-search', scenery: 'bg-search', objects: 'prop-search' };
 const PLACEHOLDER: Record<CatalogView, string> = { cast: 'Buscar personagem, pose…', scenery: 'Buscar cenário', objects: 'Buscar objeto' };
 
@@ -137,6 +138,7 @@ function legacyTestId(e: CatalogEntry): string {
     case 'project-object': return 'my-object';
     case 'project-background': return 'custom-bg';
     case 'builtin-object': return 'tpl-object';
+    case 'pack-item': return 'pack-item';
     case 'library': return e.kind === 'object' ? 'obj-lib-row' : e.kind === 'background' ? 'cbg-lib-row' : 'catalog-card';
   }
 }
@@ -226,6 +228,7 @@ function AnimatedStates({ e, project }: { e: CatalogEntry; project: Project }) {
 
 function policyText(e: CatalogEntry): string {
   if (e.origin === 'builtin') return 'Item padrão do app: não muda nem some. Editar cria uma cópia sua, com identidade nova, guardada neste projeto.';
+  if (e.origin === 'pack') return `Item do pacote "${e.packName}": protegido. Usar copia o item (com imagens) para o projeto, então desativar ou remover o pacote não muda o projeto. Editar cria uma cópia sua.`;
   if (e.origin === 'project') return `Guardado neste projeto. Editar muda este item em todas as cenas do projeto.${e.libId ? ' Também está na sua biblioteca: "Atualizar na minha biblioteca" grava a versão atual no mesmo registro.' : ' "Salvar na minha biblioteca" deixa o item disponível em todos os projetos deste navegador.'}`;
   return 'Na sua biblioteca, disponível em todos os projetos deste navegador. Ao usar, uma cópia completa (com imagens e objetos usados) entra no projeto: apagar daqui nunca quebra um projeto.';
 }
@@ -329,6 +332,7 @@ export function CatalogPanel({ view }: { view: CatalogView }) {
   const project = useProject();
   const scene = useCurrentScene();
   const records = useLibrary((s) => s.records);
+  const packs = usePacks((s) => s.packs);
   const loaded = useLibrary((s) => s.loaded);
   const libError = useLibrary((s) => s.error);
   const favorites = usePrefs((s) => s.catalogFavorites);
@@ -341,11 +345,14 @@ export function CatalogPanel({ view }: { view: CatalogView }) {
   const [limit, setLimit] = useState(PAGE);
   const sentinel = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLInputElement>(null);
-  useEffect(() => { void reloadLibrary(); }, []);
+  useEffect(() => { void reloadLibrary(); void reloadPacks(); }, []);
   useEffect(() => { memory.set(view, { q, variant }); setLimit(PAGE); }, [view, q, variant]);
 
   const favSet = useMemo(() => new Set(favorites), [favorites]);
-  const entries = useMemo(() => (project ? buildCatalog({ project, library: records, favorites: favSet }) : []), [project, records, favSet]);
+  const entries = useMemo(() => (project ? buildCatalog({ project, library: records, favorites: favSet, packs }) : []), [project, records, favSet, packs]);
+  // O filtro "Pacotes" só existe quando há pacote ativo com itens desta aba.
+  const hasPacks = entries.some((x) => x.origin === 'pack' && x.view === view);
+  useEffect(() => { if (!hasPacks && q.filter === 'packs') setQ((o) => ({ ...o, filter: 'all' })); }, [hasPacks, q.filter]);
   const list = useMemo(() => queryCatalog(entries, view, q, recents), [entries, view, q, recents]);
   const cats = useMemo(() => categoriesOf(entries, view), [entries, view]);
 
@@ -387,7 +394,7 @@ export function CatalogPanel({ view }: { view: CatalogView }) {
       <div className="panel-sub cat-sub-head">
         <SearchBox value={q.text} onChange={(text) => set({ text })} placeholder={PLACEHOLDER[view]} testId={SEARCH_ID[view]} />
         <ScrollStrip className="chip-row" role="group" ariaLabel="Origem" testId="catalog-filters" watch={q.filter}>
-          {FILTERS.map((f) => (
+          {FILTERS.filter((f) => f !== 'packs' || hasPacks).map((f) => (
             <button key={f} type="button" className={`chip${q.filter === f ? ' is-active' : ''}`} aria-pressed={q.filter === f} data-filter={f} onClick={() => set({ filter: f })}>{f === 'favorites' && <Star size={11} />}{FILTER_LABELS[f]}</button>
           ))}
         </ScrollStrip>

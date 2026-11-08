@@ -21,11 +21,11 @@ import { availableTimes, customBackgroundUsage } from '@/engine/world/customBack
 import { readBackgroundBundle, readObjectBundle, type BackgroundBundle, type ObjectBundle } from '@/features/library/bundles';
 import { matchesSearch } from '@/features/library/search';
 import { ANIMATED_CATEGORY, ANIMATED_TEMPLATES, animatedTemplate, TEMPLATE_PREFIX } from './animatedTemplates';
-import type { LibraryRecord } from '@/storage/db';
+import type { LibraryRecord, PackRecord } from '@/storage/db';
 
 export type CatalogView = 'cast' | 'scenery' | 'objects';
-export type CatalogOrigin = 'builtin' | 'project' | 'mine';
-export type CatalogFilter = 'all' | 'builtin' | 'mine' | 'favorites' | 'recent' | 'project';
+export type CatalogOrigin = 'builtin' | 'project' | 'mine' | 'pack';
+export type CatalogFilter = 'all' | 'builtin' | 'packs' | 'mine' | 'favorites' | 'recent' | 'project';
 export type CatalogSort = 'default' | 'name' | 'updated' | 'favorites';
 export type CatalogKind = 'character' | 'pose' | 'sequence' | 'prop' | 'object' | 'background' | 'scene';
 
@@ -37,6 +37,7 @@ export type CatalogRef =
   | { type: 'builtin-background'; presetId: string }
   | { type: 'project-background'; id: string }
   | { type: 'builtin-object'; tplId: string }
+  | { type: 'pack-item'; packId: string; itemId: string }
   | { type: 'library'; libId: string };
 
 export interface PoseData { rig: Rig; handL: 'open' | 'fist' | 'point'; handR: 'open' | 'fist' | 'point' }
@@ -61,6 +62,8 @@ export interface CatalogEntry {
   inProject: boolean;
   /** Item de projeto que também está salvo na biblioteca (mesma identidade). */
   libId?: string;
+  /** Nome do pacote de origem (itens de pacote). */
+  packName?: string;
   /** Personagem padrão que já tem definição no projeto (some de "Todos" para não duplicar). */
   shadowed?: boolean;
   /** Personagem do projeto que nasceu de um personagem padrão. */
@@ -79,8 +82,8 @@ export interface CatalogEntry {
 }
 
 export const VIEW_LABELS: Record<CatalogView, string> = { cast: 'Elenco', scenery: 'Cenários', objects: 'Objetos' };
-export const ORIGIN_LABELS: Record<CatalogOrigin, string> = { builtin: 'Padrão', project: 'Projeto', mine: 'Minha biblioteca' };
-export const FILTER_LABELS: Record<CatalogFilter, string> = { all: 'Todos', builtin: 'Padrão', mine: 'Meus', favorites: 'Favoritos', recent: 'Recentes', project: 'No projeto' };
+export const ORIGIN_LABELS: Record<CatalogOrigin, string> = { builtin: 'Padrão', project: 'Projeto', mine: 'Minha biblioteca', pack: 'Pacote' };
+export const FILTER_LABELS: Record<CatalogFilter, string> = { all: 'Todos', builtin: 'Padrão', packs: 'Pacotes', mine: 'Meus', favorites: 'Favoritos', recent: 'Recentes', project: 'No projeto' };
 export const SORT_LABELS: Record<CatalogSort, string> = { default: 'Por seção', name: 'Nome (A–Z)', updated: 'Mais recentes', favorites: 'Favoritos primeiro' };
 
 export const CAT = {
@@ -116,6 +119,7 @@ const keyOf = (ref: CatalogRef): string => {
     case 'builtin-background': return `builtin:background:${ref.presetId}`;
     case 'project-background': return `project:background:${ref.id}`;
     case 'builtin-object': return `builtin:object:${ref.tplId}`;
+    case 'pack-item': return `pack:${ref.packId}:${ref.itemId}`;
     case 'library': return `mine:${ref.libId}`;
   }
 };
@@ -128,6 +132,8 @@ export interface CatalogInput {
   library: LibraryRecord[];
   /** Favoritos de itens sem campo próprio (padrão, objetos e cenários do projeto). */
   favorites: ReadonlySet<string>;
+  /** Pacotes instalados; só os ATIVOS entram no catálogo. */
+  packs?: PackRecord[];
 }
 
 function propUsage(project: Project, propId: string): number {
@@ -139,7 +145,7 @@ const backgroundUsage = (project: Project, presetId: string) => Object.values(pr
 const cbTimes = (cb: CustomBackground) => availableTimes(cb) as string[];
 
 /** Monta a lista completa. Ordem natural: projeto, minha biblioteca, padrão. */
-export function buildCatalog({ project, library, favorites }: CatalogInput): CatalogEntry[] {
+export function buildCatalog({ project, library, favorites, packs = [] }: CatalogInput): CatalogEntry[] {
   const out: CatalogEntry[] = [];
   const fav = (key: string) => favorites.has(key);
 
@@ -218,6 +224,26 @@ export function buildCatalog({ project, library, favorites }: CatalogInput): Cat
     // 'prop' e 'audio' nunca foram gravados por nenhuma versão; não há o que mostrar.
   }
 
+  /* ---------------- pacotes ativos (protegidos: editar cria cópia) ---------------- */
+  for (const pk of packs) {
+    if (!pk.enabled) continue;
+    for (const it of pk.items) {
+      const ref: CatalogRef = { type: 'pack-item', packId: pk.id, itemId: it.id };
+      const key = keyOf(ref);
+      const base = {
+        key, name: it.name, origin: 'pack' as const, editable: false, favorite: fav(key), updatedAt: pk.installedAt, usage: 0, inProject: false,
+        states: [] as Array<{ id: string; label: string }>, ref, packName: pk.name, keywords: [pk.name, pk.manifest.category], category: pk.manifest.category,
+      };
+      if (it.kind === 'object') {
+        const o = it.data.object;
+        out.push({ ...base, view: 'objects', kind: 'object', usage: customObjectUsage(project, o.id), shadowed: !!project.customObjects[o.id], states: o.clips.map((c) => ({ id: c.id, label: c.name })), objectBundle: it.data });
+      } else {
+        const bg = it.data.background;
+        out.push({ ...base, view: 'scenery', kind: 'background', usage: customBackgroundUsage(project, bg.id), shadowed: !!project.customBackgrounds[bg.id], times: cbTimes(bg), backgroundBundle: it.data });
+      }
+    }
+  }
+
   /* ---------------- padrão ---------------- */
   for (const c of BUILTIN_CHARACTERS) {
     const ref: CatalogRef = { type: 'builtin-character', builtinId: c.builtinId! };
@@ -264,7 +290,7 @@ export function buildCatalog({ project, library, favorites }: CatalogInput): Cat
 export interface CatalogQuery { text: string; filter: CatalogFilter; category: string | null; sort: CatalogSort }
 export const DEFAULT_QUERY: CatalogQuery = { text: '', filter: 'all', category: null, sort: 'default' };
 
-const ORIGIN_RANK: Record<CatalogOrigin, number> = { project: 0, mine: 1, builtin: 2 };
+const ORIGIN_RANK: Record<CatalogOrigin, number> = { project: 0, mine: 1, pack: 2, builtin: 3 };
 
 /** Filtra e ordena uma visão. Busca sem diferenciar maiúsculas nem acentos. */
 export function queryCatalog(entries: CatalogEntry[], view: CatalogView, q: CatalogQuery, recents: readonly string[] = []): CatalogEntry[] {
@@ -275,6 +301,7 @@ export function queryCatalog(entries: CatalogEntry[], view: CatalogView, q: Cata
   switch (q.filter) {
     case 'all': list = list.filter((e) => !e.shadowed); break;
     case 'builtin': list = list.filter((e) => e.origin === 'builtin'); break;
+    case 'packs': list = list.filter((e) => e.origin === 'pack'); break;
     case 'mine': list = list.filter((e) => e.origin === 'mine' || (e.origin === 'project' && !e.fromBuiltin)); break;
     case 'favorites': list = list.filter((e) => e.favorite); break;
     case 'recent': list = list.filter((e) => recentIdx.has(e.key)); break;
@@ -305,6 +332,7 @@ export function categoriesOf(entries: CatalogEntry[], view: CatalogView): Array<
 export function sectionOf(e: CatalogEntry): string {
   if (e.origin === 'project') return 'Neste projeto';
   if (e.origin === 'mine') return 'Minha biblioteca';
+  if (e.origin === 'pack') return `Pacote: ${e.packName ?? ''}`;
   return e.view === 'scenery' || e.view === 'objects' ? e.category : 'Elenco pronto';
 }
 

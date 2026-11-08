@@ -26,6 +26,7 @@ import { formatTime } from '../timeline/Timeline';
 import { MediaPanel } from './MediaPanel';
 import { bringBackgroundFromLibrary, bringObjectFromLibrary } from '@/state/creatorActions';
 import { CastPanel, ObjectsCatalogPanel, SceneryPanel } from './Catalog';
+import { PacksSection } from './PacksSection';
 
 /* ---------------------------------- CENAS ---------------------------------- */
 let sceneClipboard: Scene | null = null;
@@ -380,6 +381,8 @@ export function LibraryPanel() {
         <input ref={fileRef} hidden type="file" accept=".json" onChange={(e) => { const f = e.target.files?.[0]; if (f) void importLib(f); e.target.value = ''; }} />
       </div>
       <div className="panel-scroll">
+        <PacksSection />
+        <h3 className="group-title">Minha biblioteca</h3>
         {filtered.length === 0 && <p className="empty">Nada salvo ainda. Salve cenas, poses e personagens para reutilizar em outros projetos.</p>}
         {filtered.map((r) => (
           <div key={r.id} className="lib-row">
