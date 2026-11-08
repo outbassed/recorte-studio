@@ -1,6 +1,6 @@
 # Resultados de testes
 
-Versão 1.2.0, executados em 08/11/2026. Nada aqui é estimativa: são as saídas das execuções.
+Versão 1.2.0 (com os dois ajustes pré-lançamento), executados em 08/11/2026. Nada aqui é estimativa: são as saídas das execuções.
 
 ## Ambiente
 
@@ -14,9 +14,9 @@ Versão 1.2.0, executados em 08/11/2026. Nada aqui é estimativa: são as saída
 | --- | --- |
 | `npm run lint` | Sem erros nem avisos (`--max-warnings=0`) |
 | `npm run typecheck` | Sem erros (TypeScript estrito) |
-| `npm test` | **302 de 302** testes, 17 arquivos |
+| `npm test` | **318 de 318** testes, 18 arquivos |
 | `npm run build` | OK, 4,5 MB em `dist/` (inclui o WebAssembly da libarchive, ~1 MB, e as 23 capturas do manual, ~2 MB) |
-| `npm run test:e2e` | **73 de 73** testes, numa única execução (4,7 min) |
+| `npm run test:e2e` | **95 de 95** testes, numa única execução (7,0 min) |
 | `npm run shots` | 12 de 12, capturas em `docs/capturas/` |
 | `npm run manual:shots` | 2 de 2: refaz as 23 capturas do manual (`public/manual/`) e mede as marcações numeradas; falha se uma marcação ficar fora da imagem |
 
@@ -35,6 +35,12 @@ Versão 1.2.0, executados em 08/11/2026. Nada aqui é estimativa: são as saída
 **Unitários** (`library-bundles`, `creators`, `limb-depth`, `quick-actions`, `story-load`, `manual`, `v12`): pacotes de biblioteca (fecho de objetos aninhados, leitura de formatos antigos e de lixo, reaproveitar × copiar, ciclos); invalidação dos caches de objetos, cenários e miniaturas; quadro vertical, 1:1 e 4:3 nos modelos do Criador de Cenários; seleção de peças giradas, espelhadas e escaladas; mover, girar e escalar grupos sem deriva; profundidade de braços e mãos em 8 vistas × poses; ações rápidas do celular por tipo de seleção e por estado no tempo; história grande (validade, determinismo, preview × exportação, **120 quadros de uma cena com cenário de 80 peças e 10 figurantes abaixo de 25 ms por quadro**); manual (todo link, ajuda contextual, imagem e marcação existem; busca); validação do modo simples; pré-escuta de áudio com cancelamento.
 
 **E2E** (`stories`, `library`, mais os existentes adaptados às abas e ao dock): história de 5 cenas com cenário de 60+ peças exportada **inteira em 1080p** (29 s de vídeo em ~45 s, ~16 MB; duração, tamanho e o céu de cada horário conferidos com ffprobe/ffmpeg); .jrec da história aberto numa instalação limpa com o quadro PNG igual; vertical 9:16 em 1080p; cenário com personagem estático que sai no vídeo mas não aparece em Camadas nem na timeline; editar um objeto no criador muda a cena na hora; biblioteca 1.1 e registro ilegível; objeto com dependências e ciclos impedidos; celular (Editar fala × Falar, foco no campo certo, ações de câmera); seleção por desenho girado e grupos; **.7z, .rar, .tar.xz e .tar.bz2 reais** (fixtures criadas com 7-Zip e WinRAR), RAR com senha, 7z truncado e importação de .7z offline.
+
+## Ajustes pré-lançamento da 1.2
+
+**Prévia dos modelos (bug do modal que piscava).** Reproduzido primeiro, no build de produção e no servidor de desenvolvimento: com o mouse sobre o modal, o fundo media 303×176 (preso ao cartão) e a posição alternava entre y=25 e y=27. Causa: modal dentro do cartão com `transform` no `:hover` (veja o CHANGELOG). `previews.spec.ts` (14 testes, 4 janelas: 1280×800, 768×1024, 390×844 e 320×640) mede a estabilidade de verdade: posição e tamanho do modal e do fundo constantes com o mouse se movendo, o nó do modal não é remontado (marca no DOM), o fundo cobre a janela inteira, **capturas de tela em instantes diferentes são idênticas byte a byte**, todas as imagens decodificam, uma imagem por cena na ordem e com o nome do modelo, fechar e reabrir 10 vezes, fechar por X e por Esc, criar o projeto pela prévia e miniaturas dos cartões preenchendo o cartão. **Os testes de estabilidade falham sem a correção** (conferido desfazendo só o portal do modal) e passam com ela.
+
+**Keyframe universal por seção.** `section-keys.test.ts` (16 testes): só propriedades animáveis entram; valor atual e interpolado; instante arredondado; não duplica nem sobrescreve; não cria faixa vazia; não toca outras seções nem outro personagem; câmera; campos discretos; estado nenhum → parcial → todos; um único Ctrl+Z e refazer; convivência com os botões individuais. `section-keys.spec.ts` (8 testes): criação com valores conferidos na interface, desfazer e refazer pelos botões, segundo clique sem efeito nem histórico, keyframe existente preservado, seleção e seções respeitadas (Zeca, Rosto, Pose, Camadas), câmera, modo simples e avançado (marcas na timeline), seção de um campo sem botão universal, inspeção visual dos três estados (capturas em `test-results/e2e/keys-*.png`) e celular (390×844 com toque: botão ≥ 36 px, à direita do título, sem estouro).
 
 ## Verificações de mídia
 

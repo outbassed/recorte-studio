@@ -15,6 +15,7 @@ Tela inicial e Configurações novas, manual dentro do app, propriedades em abas
 - **Braços e mãos** na frente ou atrás da cabeça: automático (vitória, mãos no rosto, aceno) e manual por braço e por mão, animável. Poses novas: Mãos no rosto e Mãos atrás da cabeça.
 - **Celular:** dock por etapas da história, barra rápida contextual do elemento selecionado, barra superior que cabe em 320 px, painéis sem estouro horizontal.
 - **Câmera** selecionável no dock do celular; botão de ajuda em várias áreas.
+- **Keyframe universal por seção:** um losango ao lado do título das seções com várias propriedades animáveis (Posição e transformação, Escala separada, Profundidade, Olhar, Rosto, Pose e rig, Profundidade dos braços, Câmera) cria, no tempo atual, os keyframes que faltam em todas as propriedades da seção, com os valores de agora. Não duplica, não sobrescreve e não remove; é uma única ação de histórico (um Ctrl+Z); mostra o estado no instante (vazio, parcial ou cheio); funciona nos modos simples e avançado e no celular (36 px). Mecanismo reutilizável em `engine/model/sectionKeys.ts`.
 
 ### Correções
 
@@ -29,6 +30,7 @@ Tela inicial e Configurações novas, manual dentro do app, propriedades em abas
 - **Criador de Cenários em quadros não 16:9:** o guia mostra o quadro real (9:16, 1:1, 4:3…), a área fora dele fica escurecida, "Prévia final" recorta no quadro e os modelos se ajustam à largura.
 - **Ações rápidas do celular** de verdade contextuais: mudam com o tipo de seleção e com o estado no tempo atual ("Falar" vira "Editar fala"), e levam à aba, seção e campo certos.
 - **Seleção de peças giradas:** o clique e o contorno seguem rotação, espelho e escala; grupos têm caixa própria, pivô estável e controles para mover, girar e escalar em bloco; Shift alterna; setas, Ctrl+A, Ctrl+D e Delete no estúdio.
+- **Prévia dos modelos piscava** (tela inicial → Modelos → Prévia): o modal era desenhado dentro do cartão, que sobe 2 px no `:hover`; num ancestral com `transform`, `position: fixed` passa a ser relativo ao ancestral, então o fundo ficava preso ao cartão (303×176, recortado) e se deslocava com o mouse, o que alternava o `:hover` de novo, sem parar. Todos os modais agora são desenhados no `<body>` por portal. Também: as miniaturas dos cartões herdavam 72×42 do painel Modelos do editor, e a prévia mostrava no máximo 6 cenas; agora mostra todas, na ordem e com o nome (imagens estáticas, sem simular reprodução).
 
 ### Melhorias por iniciativa própria
 

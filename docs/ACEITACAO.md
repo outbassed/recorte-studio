@@ -123,6 +123,8 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | Cabelos longos nas 8 vistas | PASSOU | `hair-matrix` (geometria + folha visual) |
 | Celular: dock, barra rápida contextual, criadores | PASSOU* | `quick-actions`; E2E celular. *Janela emulada, sem aparelho físico |
 | História completa e exportação grande | PASSOU | E2E `stories` (1080p, 29 s, 5 cenas) |
+| Prévia dos modelos estável (sem piscar), todas as cenas, desktop e celular | PASSOU | `previews.spec.ts` (14 testes, 4 janelas); capturas idênticas com o mouse em movimento |
+| Keyframe universal por seção, com histórico único e sem duplicar | PASSOU | `section-keys` (unit e E2E, computador e celular) |
 
 ## Limitações importantes
 
