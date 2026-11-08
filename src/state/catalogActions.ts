@@ -30,6 +30,14 @@ import { setPref, usePrefs } from './prefs';
 import { seek, transport } from './transport';
 import { confirmDialog, promptDialog, toast, useUI } from './uiStore';
 import { usePacks } from './packActions';
+import { applyWearable, bringWearable, deleteWearable, duplicateWearable, editWearable, openWearCreator, saveWearableToLibrary, selectedCharacterId } from './wearActions';
+
+/** Veste a roupa/cabelo no personagem selecionado no palco. */
+function wearOnSelected(wearId: string): boolean {
+  const cid = selectedCharacterId();
+  if (!cid) { toast('Selecione um personagem no palco para vestir a peça (ou use o Criador de Personagens → Roupas).', 'error'); return false; }
+  return applyWearable(cid, wearId);
+}
 
 /* ------------------------------ biblioteca persistente (compartilhada pelos painéis) ------------------------------ */
 interface LibraryState { records: LibraryRecord[]; loaded: boolean; error: string | null; blobs: number }
@@ -122,6 +130,7 @@ export async function insertEntry(e: CatalogEntry, opts: { variant?: 'day' | 'ni
     case 'project-character': placeCharacter(ref.id); break;
     case 'builtin-prop': placeProp(ref.propId); break;
     case 'project-object': insertCustomObject(ref.id); break;
+    case 'project-wearable': ok = wearOnSelected(ref.id); break;
     case 'pack-item': {
       // Usar item de pacote = trazer uma CÓPIA (com imagens) para o projeto; o pacote pode sumir depois.
       const it = packItemOf(e);
@@ -165,7 +174,11 @@ export async function insertEntry(e: CatalogEntry, opts: { variant?: 'day' | 'ni
       const r = recordOf(e);
       if (!r) return false;
       if (e.kind === 'character' && e.character) placeCharacter(bringCharacter(e.character));
-      else if (e.kind === 'object') {
+      else if (e.kind === 'wearable') {
+        if (!selectedCharacterId()) { toast('Selecione um personagem no palco para vestir a peça.', 'error'); return false; }
+        const id = bringWearable(r.data);
+        ok = !!id && wearOnSelected(id);
+      } else if (e.kind === 'object') {
         const id = await bringObjectFromLibrary(r.data);
         if (id) insertCustomObject(id);
         ok = !!id;
@@ -302,6 +315,7 @@ export async function editEntry(e: CatalogEntry): Promise<void> {
     case 'builtin-character': case 'builtin-prop': case 'builtin-background': case 'builtin-object': case 'pack-item': await copyBuiltin(e); return;
     case 'project-character': useUI.setState({ dialog: 'creator', creatorCharacterId: ref.id }); return;
     case 'project-object': openObjectCreator(ref.id); return;
+    case 'project-wearable': openWearCreator(ref.id); return;
     case 'project-background': {
       const cb = currentProject().customBackgrounds[ref.id];
       openSceneCreator(ref.id, cb ? availableTimes(cb)[0] ?? 'day' : 'day');
@@ -314,6 +328,7 @@ export async function editEntry(e: CatalogEntry): Promise<void> {
       // "Salvar na biblioteca" atualiza este mesmo registro.
       if (e.kind === 'character' && e.character) useUI.setState({ dialog: 'creator', creatorCharacterId: bringCharacter(e.character) });
       else if (e.kind === 'object') { const id = await bringObjectFromLibrary(r.data, true); if (id) openObjectCreator(id); }
+      else if (e.kind === 'wearable') { const id = bringWearable(r.data); if (id) openWearCreator(id); }
       else if (e.kind === 'background') {
         const id = await bringBackgroundFromLibrary(r.data, true);
         const cb = id ? currentProject().customBackgrounds[id] : undefined;
@@ -325,7 +340,7 @@ export async function editEntry(e: CatalogEntry): Promise<void> {
 }
 
 /** Pode abrir num criador? (poses, sequências e cenas-molde não têm criador próprio.) */
-export const canEdit = (e: CatalogEntry) => !e.broken && ['character', 'prop', 'object', 'background'].includes(e.kind);
+export const canEdit = (e: CatalogEntry) => !e.broken && ['character', 'prop', 'object', 'background', 'wearable'].includes(e.kind);
 
 /* ------------------------------ duplicar, salvar, renomear, excluir, exportar ------------------------------ */
 export async function duplicateEntry(e: CatalogEntry): Promise<void> {
@@ -341,6 +356,8 @@ export async function duplicateEntry(e: CatalogEntry): Promise<void> {
     if (!o) return;
     const copy = { ...deepClone(o), id: uid('obj'), name: `${o.name} (cópia)`, createdAt: Date.now(), updatedAt: Date.now() };
     commit('Duplicar objeto', (d) => { d.customObjects[copy.id] = copy; });
+  } else if (ref.type === 'project-wearable') {
+    if (!duplicateWearable(ref.id)) return;
   } else if (ref.type === 'project-background') {
     const cb = p.customBackgrounds[ref.id];
     if (!cb) return;
@@ -354,6 +371,7 @@ export async function duplicateEntry(e: CatalogEntry): Promise<void> {
     if (r.kind === 'character') data.id = uid('char');
     if (r.kind === 'object' && data.object) (data.object as Record<string, unknown>).id = uid('obj');
     if (r.kind === 'background' && data.background) (data.background as Record<string, unknown>).id = uid('cbg');
+    if (r.kind === 'wearable') { data.id = uid('roupa'); data.name = `${r.name} (cópia)`; }
     const now = Date.now();
     await repo.putLibrary({ ...r, id: uid('lib'), name: `${r.name} (cópia)`, favorite: 0, createdAt: now, updatedAt: now, data });
     await reloadLibrary();
@@ -374,6 +392,7 @@ export async function saveEntryToLibrary(e: CatalogEntry): Promise<void> {
     const how = await upsertLibrary('character', c.id, c.name, { ...deepClone(c), builtinId: undefined, favorite: false }, libIdentity.character);
     toast(`"${c.name}" ${how === 'updated' ? 'atualizado na' : 'salvo na'} sua biblioteca, disponível em todos os projetos.`, 'success');
   } else if (ref.type === 'project-object') await saveObjectToLibrary(ref.id);
+  else if (ref.type === 'project-wearable') { if (!(await saveWearableToLibrary(ref.id))) return; }
   else if (ref.type === 'project-background') {
     const cb = p.customBackgrounds[ref.id];
     if (!cb || !availableTimes(cb).length) { toast('Adicione ao menos um horário antes de salvar o cenário.', 'error'); return; }
@@ -388,6 +407,7 @@ export async function renameEntry(e: CatalogEntry): Promise<void> {
   const ref = e.ref;
   if (ref.type === 'project-character') commit('Renomear personagem', (d) => { const c = d.characters[ref.id]; if (c) c.name = name; });
   else if (ref.type === 'project-object') commit('Renomear objeto', (d) => { const o = d.customObjects[ref.id]; if (o) { o.name = name; o.updatedAt = Date.now(); } });
+  else if (ref.type === 'project-wearable') editWearable(ref.id, 'Renomear peça', (w) => { w.name = name; });
   else if (ref.type === 'project-background') commit('Renomear cenário', (d) => { const c = d.customBackgrounds[ref.id]; if (c) c.name = name; });
   else if (ref.type === 'library') {
     const r = recordOf(e);
@@ -396,6 +416,7 @@ export async function renameEntry(e: CatalogEntry): Promise<void> {
     if (r.kind === 'character') data.name = name;
     if (r.kind === 'object' && data.object) (data.object as Record<string, unknown>).name = name;
     if (r.kind === 'background' && data.background) (data.background as Record<string, unknown>).name = name;
+    if (r.kind === 'wearable') data.name = name;
     await repo.putLibrary({ ...r, name, data, updatedAt: Date.now() });
     await reloadLibrary();
   }
@@ -423,6 +444,7 @@ export async function deleteEntry(e: CatalogEntry): Promise<void> {
     const ok = await confirmDialog({ title: 'Remover personagem', message: `Remover "${e.name}" deste projeto? Ctrl+Z desfaz.`, confirmLabel: 'Remover', danger: true });
     if (ok) commit('Remover personagem', (d) => void deleteCharacter(d as Project, ref.id));
   } else if (ref.type === 'project-object') await deleteCustomObject(ref.id);
+  else if (ref.type === 'project-wearable') await deleteWearable(ref.id);
   else if (ref.type === 'project-background') {
     const used = customBackgroundUsage(p, ref.id);
     const ok = await confirmDialog({ title: 'Excluir cenário', message: used ? `"${e.name}" é usado em ${used} cena(s); elas voltarão ao cenário neutro. Ctrl+Z desfaz.` : `Excluir "${e.name}"? Ctrl+Z desfaz.`, confirmLabel: 'Excluir', danger: true });
@@ -443,6 +465,9 @@ export function libraryFileOf(e: CatalogEntry): { name: string; json: string } |
   } else if (ref.type === 'project-object') {
     const b = buildObjectBundle(p, ref.id);
     if (b) item = { id: uid('lib'), kind: 'object', name: b.object.name, favorite: 0, createdAt: now, data: b };
+  } else if (ref.type === 'project-wearable') {
+    const w = p.wearables[ref.id];
+    if (w) item = { id: uid('lib'), kind: 'wearable', name: w.name, favorite: 0, createdAt: now, data: deepClone(w) };
   } else if (ref.type === 'project-background') {
     const b = buildBackgroundBundle(p, ref.id);
     if (b) item = { id: uid('lib'), kind: 'background', name: b.background.name, favorite: 0, createdAt: now, data: b };
