@@ -86,6 +86,14 @@ Executados em 08/11/2026 na branch `feature/recorte-studio-catalogo-biblioteca`,
 
 **Bugs encontrados pelos testes e corrigidos:** pedido de nome dentro do Criador aparecia por baixo dele; desagrupar grupo girado fazia os filhos pularem; elementos de grupos sumiam da timeline.
 
+## Fase 3b: roupas e cabelos
+
+Suíte inteira após a Fase 3b: typecheck e lint sem erros; unitários **419/419**; E2E **130/130 numa única execução** (14,1 min).
+
+**Novos unitários:** `wear.test.ts` (12: projetos e personagens antigos sem mudança no desenho, pontos de partida válidos, limites, guia de cada parte do corpo, 8 vistas, camada só de frente some de costas, acompanha a pose, escala criança × adulto, cabelo criado troca o outro e fica sobre as costas, cobertura neutra nos 6 manequins × 8 vistas e sob peça que substitui, catálogo com deduplicação e registro quebrado, JSON do .jrec).
+
+**Novos E2E:** `wear.spec.ts` (3: camiseta com texto criada no manequim, 8 vistas, troca de corpo sem mudar a Nina, salvar na biblioteca, vestir, cabelo, desfazer/refazer, itens no Elenco, recarregar, PNG exportado, detalhes na Biblioteca; Criador de Personagens vestir/tirar e manequim coberto; celular 390×844 com a prévia primeiro).
+
 ## Novos na 1.2
 
 **Unitários** (`library-bundles`, `creators`, `limb-depth`, `quick-actions`, `story-load`, `manual`, `v12`): pacotes de biblioteca (fecho de objetos aninhados, leitura de formatos antigos e de lixo, reaproveitar × copiar, ciclos); invalidação dos caches de objetos, cenários e miniaturas; quadro vertical, 1:1 e 4:3 nos modelos do Criador de Cenários; seleção de peças giradas, espelhadas e escaladas; mover, girar e escalar grupos sem deriva; profundidade de braços e mãos em 8 vistas × poses; ações rápidas do celular por tipo de seleção e por estado no tempo; história grande (validade, determinismo, preview × exportação, **120 quadros de uma cena com cenário de 80 peças e 10 figurantes abaixo de 25 ms por quadro**); manual (todo link, ajuda contextual, imagem e marcação existem; busca); validação do modo simples; pré-escuta de áudio com cancelamento.

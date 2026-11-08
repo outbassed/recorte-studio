@@ -24,8 +24,23 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | Item | Estado | Evidência |
 | --- | --- | --- |
 | 3a. Texto editável nos criadores (Objetos, Cenários) | PASSOU | unit e E2E `creator-text` |
-| 3b. Criador de roupas e cabelos com manequim | NÃO IMPLEMENTADO | próxima etapa |
+| 3b. Criador de roupas e cabelos com manequim | PASSOU | unit `wear` (12) e E2E `wear` (3); ver tabela abaixo |
 | 3c. Corpo modular, cores por parte, esclera por olho | NÃO IMPLEMENTADO | |
+
+## Fase 3b: Roupas e Cabelos
+
+| Item | Estado | Evidência |
+| --- | --- | --- |
+| Criador de Roupas dedicado, camadas, formas, texto, cor, contorno, posição, tamanho, giro | PASSOU | E2E `wear` (camiseta com "TRAQUINA") |
+| Adicionar, duplicar, reordenar e excluir camadas; desfazer/refazer | PASSOU* | botões no criador; E2E cobre desfazer/refazer do vestir. *Reordenar/duplicar camada sem E2E próprio |
+| Criador de Cabelos (frente/trás, profundidade, comprimento atrás do corpo) | PASSOU | unit (cabelo longo de costas); E2E cria e aplica |
+| Manequim: 6 corpos ou personagem do projeto, poses, 8 vistas, aplicar/remover só na prévia | PASSOU | E2E (troca de corpo sem mudar a Nina); unit |
+| Cobertura neutra no peito e quadril sem roupa; sem nudez | PASSOU | unit (6 manequins × 8 vistas) e E2E |
+| Segue pose, vista, animação; ajusta ao corpo | PASSOU | unit (pose, criança × adulto, 8 vistas) |
+| Salvar como item individual; Elenco e Biblioteca; editar, duplicar, renomear, exportar, importar, excluir | PASSOU* | unit (catálogo, deduplicação, registro quebrado); E2E salva e encontra na Biblioteca. *Renomear/exportar/importar de peça sem E2E próprio |
+| Vestir no personagem; reabrir projeto; exportar PNG | PASSOU | E2E (recarregar e PNG 854×480) |
+| Celular: prévia primeiro, controles abaixo | PASSOU | E2E 390×844 e captura |
+| Ajuste fino de caimento por personagem sem mudar a peça | PARCIAL | a peça escala pelo corpo; não há deslocamento por personagem (fica para 3c) |
 
 ## Fase 2.5: Biblioteca principal
 
@@ -39,7 +54,7 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | Toolbox compacta no Studio e acesso à Biblioteca completa | PASSOU | E2E `library-home` |
 | Mesmo catálogo e armazenamento nos dois lugares | PASSOU | E2E (Home → Studio e Studio → Biblioteca) |
 | Referências internas de pacote, falhas de armazenamento, importação grande | PASSOU | unit (recusa e mensagens); importação assíncrona com progresso sem teste de carga dedicado |
-| Tipos futuros (roupas, cabelos, veículos com rig) | NÃO IMPLEMENTADO | não aparecem na interface |
+| Tipos futuros (roupas, cabelos, veículos com rig) | PARCIAL | roupas e cabelos na Fase 3b; veículos com rig não implementados |
 
 ## Continuação do PR #3
 
