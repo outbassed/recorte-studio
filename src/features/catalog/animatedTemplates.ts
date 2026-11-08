@@ -5,7 +5,7 @@
 import { CustomObjectSchema, type CustomObject, type Piece } from '@/engine/model/schema';
 import { createPiece } from '@/engine/world/pieces';
 
-export interface AnimatedTemplate { id: string; label: string; keywords: string[]; make: () => CustomObject }
+export interface AnimatedTemplate { id: string; label: string; keywords: string[]; category?: string; make: () => CustomObject }
 export const TEMPLATE_PREFIX = 'tpl_';
 export const ANIMATED_CATEGORY = 'Efeitos animados';
 
@@ -63,7 +63,23 @@ function fan(): CustomObject {
   });
 }
 
+function boat(): CustomObject {
+  return CustomObjectSchema.parse({
+    id: `${TEMPLATE_PREFIX}barco`, name: 'Barco', width: 520, height: 300,
+    pieces: [
+      P('rect', 'Mastro', { x: 150, y: -170, w: 12, h: 200, fill: '#6e5038', stroke: '#23202b' }),
+      P('triangle', 'Vela', { x: 102, y: -185, w: 96, h: 150, fill: '#f4f1ea', stroke: '#23202b' }),
+      P('rect', 'Casco', { x: 0, y: -38, w: 500, h: 76, radius: 30, fill: '#8c5a3c', stroke: '#23202b' }),
+      P('rect', 'Faixa', { x: 0, y: -50, w: 470, h: 14, radius: 7, fill: '#e0b04c', stroke: 'none', strokeWidth: 0 }),
+      P('ellipse', 'Janela', { x: -150, y: -24, w: 26, h: 26, fill: '#a8d4e8', stroke: '#23202b', strokeWidth: 3 }),
+      P('ellipse', 'Janela 2', { x: -90, y: -24, w: 26, h: 26, fill: '#a8d4e8', stroke: '#23202b', strokeWidth: 3 }),
+    ],
+    createdAt: 0, updatedAt: 0,
+  });
+}
+
 export const ANIMATED_TEMPLATES: AnimatedTemplate[] = [
+  { id: 'barco', label: 'Barco', keywords: ['barco', 'bote', 'navio', 'veiculo', 'aquatico', 'mar'], category: 'Veículos', make: boat },
   { id: 'fogueira', label: 'Fogueira', keywords: ['fogo', 'chama', 'acampamento', 'efeito', 'animado'], make: fire },
   { id: 'ventilador', label: 'Ventilador', keywords: ['ventilador', 'girar', 'pás', 'animado'], make: fan },
 ];

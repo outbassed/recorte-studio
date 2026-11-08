@@ -234,7 +234,7 @@ export function buildCatalog({ project, library, favorites }: CatalogInput): Cat
     const key = keyOf(ref);
     const o = animatedTemplate(t.id)!;
     out.push({
-      key, view: 'objects', kind: 'object', category: CAT.animated, name: t.label, keywords: t.keywords, origin: 'builtin', editable: false,
+      key, view: 'objects', kind: 'object', category: t.category ?? CAT.animated, name: t.label, keywords: t.keywords, origin: 'builtin', editable: false,
       favorite: fav(key), updatedAt: 0, usage: customObjectUsage(project, o.id), inProject: false, shadowed: !!project.customObjects[o.id],
       states: o.clips.map((c) => ({ id: c.id, label: c.name })), ref,
     });

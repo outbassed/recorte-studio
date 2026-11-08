@@ -135,7 +135,7 @@ function legacyTestId(e: CatalogEntry): string {
     case 'builtin-background': return 'bg-card';
     case 'project-object': return 'my-object';
     case 'project-background': return 'custom-bg';
-    case 'builtin-object': return 'anim-card';
+    case 'builtin-object': return 'tpl-object';
     case 'library': return e.kind === 'object' ? 'obj-lib-row' : e.kind === 'background' ? 'cbg-lib-row' : 'catalog-card';
   }
 }

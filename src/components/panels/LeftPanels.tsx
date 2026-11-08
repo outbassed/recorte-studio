@@ -120,7 +120,7 @@ function LayerRow({ id, scene, selection, mv, setNode, del }: { id: string; scen
     const lp = useLongPress((x, y) => openContextMenu({ x, y, title: node.name, items: menu() }));
     const selected = selection.includes(id);
     return (
-      <div className={`layer-row${selected ? ' is-selected' : ''}${node.visible ? '' : ' is-hidden'}`} data-testid="layer-row" data-node-name={node.name} aria-selected={selected} onContextMenu={(e) => { e.preventDefault(); openContextMenu({ x: e.clientX, y: e.clientY, title: node.name, items: menu() }); }} {...lp}>
+      <div className={`layer-row${selected ? ' is-selected' : ''}${node.visible ? '' : ' is-hidden'}`} data-testid="layer-row" data-node-id={id} data-node-name={node.name} aria-selected={selected} onContextMenu={(e) => { e.preventDefault(); openContextMenu({ x: e.clientX, y: e.clientY, title: node.name, items: menu() }); }} {...lp}>
         <button type="button" className="layer-name" title={node.name} onClick={(e) => selectNodes(e.shiftKey ? (selected ? selection.filter((x) => x !== id) : [...selection, id]) : [id])}>
           {selected && <span className="sel-mark" aria-hidden="true">●</span>}
           <span>{node.name}</span>

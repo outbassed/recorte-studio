@@ -116,3 +116,80 @@ test('fogo de 4 quadros: 3 instâncias em 2 cenas, defasagem própria, recarrega
   }
   expect(errors.filter((e) => !/favicon/.test(e))).toEqual([]);
 });
+
+/** Centro, na tela, do desenho de um nó no palco. */
+const centerOf = (page: Page, id: string) => page.locator(`[data-testid="stage-svg"] [data-node-id="${id}"]`).first().evaluate((el) => {
+  const r = el.getBoundingClientRect();
+  return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+});
+const idOf = (page: Page, name: string) => page.locator(`[data-testid="layer-row"][data-node-name="${name}"]`).first().getAttribute('data-node-id');
+
+test('barco com passageiros: vincular sem salto, balançar o grupo, passageiros acompanham e mantêm as animações; igual após recarregar', async ({ page }) => {
+  test.setTimeout(120_000);
+  const errors = watchErrors(page);
+  await openDemo(page);
+  await tab(page, 'objects');
+  await page.getByTestId('prop-search').fill('barco');
+  await page.locator('[data-testid="tpl-object"][data-name="Barco"] .card-main').click();
+  await tab(page, 'layers');
+  const boat = (await idOf(page, 'Barco'))!;
+  const nina = (await idOf(page, 'Nina'))!;
+  const zeca = (await idOf(page, 'Zeca'))!;
+  // Agrupar barco + Zeca.
+  await page.locator(`[data-testid="layer-row"][data-node-id="${boat}"] .layer-name`).click();
+  await page.locator(`[data-testid="layer-row"][data-node-id="${zeca}"] .layer-name`).click({ modifiers: ['Shift'] });
+  await page.getByTestId('layers-panel').getByRole('button', { name: /Agrupar/ }).click();
+  const group = (await idOf(page, 'Grupo'))!;
+  expect(group).toBeTruthy();
+  // Vincular a Nina ao grupo pelo painel Propriedades: ela não pode pular na tela.
+  await page.locator(`[data-testid="layer-row"][data-node-id="${nina}"] .layer-name`).click();
+  await page.getByTestId('insp-tab-camadas').click();
+  const before = await centerOf(page, nina);
+  await page.getByTestId('node-parent').selectOption(group);
+  await expect(page.getByTestId('toasts')).toContainText('Vinculado');
+  const after = await centerOf(page, nina);
+  expect(Math.abs(after.x - before.x)).toBeLessThan(1.5);
+  expect(Math.abs(after.y - before.y)).toBeLessThan(1.5);
+  // Nina agora é desenhada DENTRO do grupo.
+  expect(await page.locator(`[data-testid="stage-svg"] [data-node-id="${group}"] [data-node-id="${nina}"]`).count()).toBe(1);
+
+  // Balançar o grupo: keyframes em 0 s e 1 s.
+  await tab(page, 'layers');
+  await page.locator(`[data-testid="layer-row"][data-node-id="${group}"] .layer-name`).click();
+  await page.getByTestId('insp-tab-transformar').click();
+  await go(page, '0');
+  await page.getByTestId('section-keys-transform').click();
+  await go(page, '1');
+  await setField(page, 'prop-transform.y', '-80');
+  await setField(page, 'prop-transform.rotationDeg', '8');
+  await page.keyboard.press('Escape');
+
+  const snap = async () => ({ n: await centerOf(page, nina), z: await centerOf(page, zeca), b: await centerOf(page, boat), ninaSvg: await page.locator(`[data-testid="stage-svg"] [data-node-id="${nina}"]`).first().innerHTML() });
+  await go(page, '0');
+  const t0 = await snap();
+  await go(page, '1');
+  const t1 = await snap();
+  // Todos subiram juntos (o grupo subiu 80 px no mundo e girou 8°: quem está à direita do pivô sobe menos).
+  for (const k of ['n', 'z', 'b'] as const) expect(t1[k].y, k).toBeLessThan(t0[k].y - 5);
+  // A distância entre os passageiros não muda (só gira junto): mesmo corpo rígido.
+  const dist = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.hypot(a.x - b.x, a.y - b.y);
+  expect(Math.abs(dist(t1.n, t1.b) - dist(t0.n, t0.b))).toBeLessThan(4);
+  // As faixas dos passageiros continuam na timeline, abaixo do grupo (falas e ações editáveis).
+  await expect(page.getByText('Grupo › Nina', { exact: true })).toBeVisible();
+  await expect(page.getByText('Grupo › Zeca', { exact: true })).toBeVisible();
+  // Fala da Nina continua animando dentro do grupo (desenho dela muda entre os instantes).
+  expect(t1.ninaSvg).not.toBe(t0.ninaSvg);
+
+  // Salvar e reabrir: mesmo lugar no mesmo instante.
+  await waitSaved(page);
+  await page.reload();
+  await expect(page.getByTestId('stage')).toBeVisible();
+  await go(page, '1');
+  const again = await snap();
+  for (const k of ['n', 'z', 'b'] as const) {
+    expect(Math.abs(again[k].x - t1[k].x)).toBeLessThan(1.5);
+    expect(Math.abs(again[k].y - t1[k].y)).toBeLessThan(1.5);
+  }
+  await page.screenshot({ path: `${OUT}/barco-passageiros.png` });
+  expect(errors.filter((e) => !/favicon/.test(e))).toEqual([]);
+});

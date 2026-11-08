@@ -13,6 +13,7 @@ import {
 import { BACKGROUNDS, getBackground } from '@/engine/world/backgrounds';
 import { getProp } from '@/engine/world/props';
 import { getPropertyDef, formatKeyValue } from '@/engine/model/properties';
+import { parentOptions, setParent } from '@/engine/model/hierarchy';
 import { addSectionKeys, animatablePaths, keyTime, previewRemoveSectionKeys, removeSectionKeys, sectionKeyState, type AddSectionKeysResult, type KeyOwner, type RemoveSectionKeysResult } from '@/engine/model/sectionKeys';
 import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type Transition } from '@/engine/model/schema';
 import { EXPRESSIONS, VISEMES } from '@/engine/character/expressions';
@@ -246,6 +247,21 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
       </Section>
       </Pane>
       <Pane tab="Camadas">
+      <Section title="Vínculo (grupo pai)" testId="sec-parent">
+        <SelectField
+          label="Vinculado a"
+          testId="node-parent"
+          value={node.parentId ?? ''}
+          options={[{ id: '', label: 'Nada (solto na cena)' }, ...parentOptions(scene, node.id).map((g) => ({ id: g.id, label: g.name }))]}
+          onChange={(v) => {
+            let err: string | null = null;
+            commit(v ? 'Vincular ao grupo' : 'Desvincular', (d) => { err = setParent(sceneOf(d as Project, scene.id), node.id, v || null); });
+            if (err) toast(err, 'error');
+            else toast(v ? 'Vinculado: acompanha o grupo (posição, giro, escala e keyframes) e mantém as próprias animações.' : 'Solto na cena, no mesmo lugar.');
+          }}
+        />
+        <p className="hint">Para um barco com passageiros: agrupe o barco (ou anime o grupo) e vincule os personagens a ele. Eles acompanham o balanço e continuam acenando, falando e piscando. Vincular e soltar não muda a posição na tela.</p>
+      </Section>
       <Section title="Profundidade, sombra e máscara" actions={<SectionKeys id="depth" scene={scene} target={node.id} kind={node.kind} paths={['parallax', 'blur']} />}>
         <PropField scene={scene} target={node.id} kind={node.kind} path="parallax" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="blur" />

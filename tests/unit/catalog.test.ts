@@ -191,6 +191,7 @@ describe('objetos animados padrão', () => {
     // O padrão fica escondido em Todos (já está no projeto), mas aparece em Padrão.
     const e = all();
     expect(queryCatalog(e, 'objects', DEFAULT_QUERY).filter((x) => x.name === 'Fogueira').map((x) => x.origin)).toEqual(['project']);
+    expect(e.find((x) => x.key === 'builtin:object:barco')?.category).toBe('Veículos');
     expect(queryCatalog(e, 'objects', { ...DEFAULT_QUERY, filter: 'builtin' }).some((x) => x.key === 'builtin:object:fogueira')).toBe(true);
   });
 });
