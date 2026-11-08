@@ -4,6 +4,7 @@
  *  - a exportação serializa o plano para SVG e rasteriza em canvas (toSvgString).
  * Guias, seleção, gizmos e máscara fora do quadro NUNCA fazem parte do plano.
  */
+import { apply, IDENTITY, invert, parentWorldMatrix } from '../model/hierarchy';
 import { customObjectBounds, isCustomObjectId, renderCustomObject } from '../world/pieces';
 import { frameSize, type Project, type Scene, type SceneNode, WORLD_HEIGHT } from '../model/schema';
 import { evaluateScene, type ResolvedScene } from '../animation/evaluate';
@@ -307,7 +308,14 @@ function heldPosition(node: Extract<SceneNode, { kind: 'prop' }>, ctx: NodeRende
   const s = Math.sin(rad(ot.rotationDeg));
   const sx = hx * ot.scaleX;
   const sy = hy * ot.scaleY;
-  return { x: ot.x + sx * c - sy * s, y: ot.y + sx * s + sy * c };
+  const local = { x: ot.x + sx * c - sy * s, y: ot.y + sx * s + sy * c };
+  // Dono ou objeto dentro de grupos: mão no mundo → espaço do pai do objeto.
+  const ownerParent = parentWorldMatrix(ctx.scene, owner.id, ctx.resolved.nodes);
+  const propParent = parentWorldMatrix(ctx.scene, node.id, ctx.resolved.nodes);
+  if (ownerParent === IDENTITY && propParent === IDENTITY) return local;
+  const [wx, wy] = apply(ownerParent, local.x, local.y);
+  const [lx, ly] = apply(invert(propParent), wx, wy);
+  return { x: lx, y: ly };
 }
 
 function planEntry(node: SceneNode, ctx: NodeRenderCtx, filters: Set<number>): PlanEntry | null {
@@ -365,7 +373,7 @@ export function planScene(project: Project, scene: Scene, timeMs: number, assets
     // Cenário do usuário: uma imagem por horário, no mesmo retângulo do mundo.
     const blur = bg.blur > 0.01 ? bg.blur : 0;
     if (blur) filters.add(Math.round(blur * 2) / 2);
-    entries.push({ key: 'bg-custom', transform: cameraTransform(cam, bg.parallax), opacity: 1, filter: blur ? blurFilter(blur) : '', clip: '', blend: '', inner: renderCustomBackground(project, bg, assets) });
+    entries.push({ key: 'bg-custom', transform: cameraTransform(cam, bg.parallax), opacity: 1, filter: blur ? blurFilter(blur) : '', clip: '', blend: '', inner: renderCustomBackground(project, bg, assets, timeMs) });
   } else if (!transparent) {
     const layers = cachedBackground(bg, scene.id);
     const def = getBackground(bg.presetId);

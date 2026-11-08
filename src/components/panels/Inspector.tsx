@@ -13,7 +13,17 @@ import {
 import { BACKGROUNDS, getBackground } from '@/engine/world/backgrounds';
 import { getProp } from '@/engine/world/props';
 import { getPropertyDef, formatKeyValue } from '@/engine/model/properties';
-import { parentOptions, setParent } from '@/engine/model/hierarchy';
+import { decompose, localMatrix, parentOptions, setParent } from '@/engine/model/hierarchy';
+
+/** Muda o pivô sem o desenho pular: recalcula x/y para a mesma matriz (giro e escala mantidos). */
+function movePivot(n: SceneNode, px: number, py: number): void {
+  const m = localMatrix(n.transform);
+  n.transform.pivotX = px;
+  n.transform.pivotY = py;
+  const d = decompose(m, px, py);
+  n.transform.x = d.x;
+  n.transform.y = d.y;
+}
 import { addSectionKeys, animatablePaths, keyTime, previewRemoveSectionKeys, removeSectionKeys, sectionKeyState, type AddSectionKeysResult, type KeyOwner, type RemoveSectionKeysResult } from '@/engine/model/sectionKeys';
 import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type Transition } from '@/engine/model/schema';
 import { EXPRESSIONS, VISEMES } from '@/engine/character/expressions';
@@ -243,8 +253,9 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
       <Section title="Escala separada e pivô" actions={<SectionKeys id="scale" scene={scene} target={node.id} kind={node.kind} paths={['transform.scaleX', 'transform.scaleY']} />}>
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.scaleX" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.scaleY" />
-        <SliderNumberField label="Pivô X" unit="px" value={node.transform.pivotX} sliderMin={-300} sliderMax={300} onChange={(v) => set('Alterar pivô', (n) => { n.transform.pivotX = v; })} />
-        <SliderNumberField label="Pivô Y" unit="px" value={node.transform.pivotY} sliderMin={-300} sliderMax={300} onChange={(v) => set('Alterar pivô', (n) => { n.transform.pivotY = v; })} />
+        <SliderNumberField label="Pivô X" unit="px" testId="pivot-x" value={node.transform.pivotX} sliderMin={-600} sliderMax={600} onChange={(v) => set('Alterar pivô', (n) => movePivot(n, v, n.transform.pivotY))} />
+        <SliderNumberField label="Pivô Y" unit="px" testId="pivot-y" value={node.transform.pivotY} sliderMin={-600} sliderMax={600} onChange={(v) => set('Alterar pivô', (n) => movePivot(n, n.transform.pivotX, v))} />
+        <p className="hint">O pivô é o centro de giro e escala{node.kind === 'group' ? ' e o lugar da bolinha laranja que move o grupo no palco' : ''}. Mudar o pivô não mexe no desenho.</p>
       </Section>
       </Pane>
       <Pane tab="Camadas">

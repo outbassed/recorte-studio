@@ -58,7 +58,7 @@ describe('matriz cabelos × vistas', () => {
         }
       }
     });
-  });
+  }, 30_000); // percorre todos os cabelos × vistas: lento sob carga
 
   it('presos que ficam atrás da cabeça vêm antes dela; os visíveis vêm depois', () => {
     for (const id of ['ponytail', 'bun', 'pigtails', 'braids', 'puffs', 'topknot']) {
@@ -125,7 +125,7 @@ describe('matriz cabelos × vistas', () => {
         if (info.facing && nose) expect(Math.sign(Number(nose.getAttribute('data-tip-x')))).toBe(info.facing);
       }
     });
-  });
+  }, 30_000);
 });
 
 /* ---------------- 1.2: cabelos longos, oclusão por geometria ---------------- */

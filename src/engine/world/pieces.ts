@@ -42,6 +42,8 @@ export interface PieceEnv {
   /** Prefixo para ids internos (gradientes, máscaras) não colidirem. */
   idPrefix: string;
   depth?: number;
+  /** Tempo local (ms) para objetos animados aninhados; sem ele, usam o primeiro quadro. */
+  timeMs?: number;
 }
 
 const charCache = new WeakMap<StaticCharacter, Map<string, string>>();
@@ -93,7 +95,9 @@ function pieceInner(p: Piece, env: PieceEnv): string {
       const obj = p.refId ? env.project.customObjects[p.refId] : undefined;
       // Um objeto dentro dele mesmo (ou ciclos) para na profundidade 4.
       if (!obj || (env.depth ?? 0) >= 4) return `<rect x="-40" y="-80" width="80" height="80" fill="none" stroke="#d65f5f" stroke-width="4" stroke-dasharray="10 8"/>`;
-      return renderObjectBody(obj, { ...env, depth: (env.depth ?? 0) + 1, idPrefix: `${env.idPrefix}-${p.id}` });
+      // Objeto animado dentro de outro (ou num cenário): toca a animação padrão no tempo de quem o contém.
+      const at = objectPiecesAt(obj, '', env.timeMs ?? 0);
+      return renderObjectBody(obj, { ...env, depth: (env.depth ?? 0) + 1, idPrefix: `${env.idPrefix}-${p.id}` }, at.pieces);
     }
     case 'character': return p.character ? renderStaticCharacter(p.character, `${env.idPrefix}-${p.id}`) : '';
   }
@@ -164,6 +168,23 @@ export function objectPiecesAt(obj: CustomObject, clipId: string, localMs: numbe
   return { pieces: c.frames[i]!.pieces, clip: c.id, frame: i };
 }
 
+/**
+ * Quadros dos objetos animados ANINHADOS numa lista de peças, no tempo dado (ex.: "o1:2(o2:0)").
+ * Entra na chave dos caches: o desenho só é refeito quando algum quadro aninhado muda.
+ */
+export function nestedFrameKey(project: Pick<Project, 'customObjects'>, pieces: Piece[], timeMs: number, depth = 0): string {
+  let k = '';
+  for (const p of pieces) {
+    if (p.kind !== 'object' || !p.refId || depth >= 4) continue;
+    const o = project.customObjects[p.refId];
+    if (!o) continue;
+    const at = objectPiecesAt(o, '', timeMs);
+    const inner = nestedFrameKey(project, at.pieces, timeMs, depth + 1);
+    if (at.frame >= 0 || inner) k += `${o.id}:${at.frame}${inner ? `(${inner})` : ''};`;
+  }
+  return k;
+}
+
 /** Corpo do objeto: peças deslocadas pelo pivô (o pivô vira a origem do nó na cena). */
 export function renderObjectBody(obj: CustomObject, env: PieceEnv, pieces: Piece[] = obj.pieces): string {
   const body = renderPieces(pieces, env);
@@ -202,10 +223,11 @@ export function renderCustomObject(project: Project, propId: string, url: PieceE
   const at = objectPiecesAt(obj, anim?.clip ?? '', anim?.localMs ?? 0);
   let m = objCache.get(project.customObjects);
   if (!m) objCache.set(project.customObjects, (m = new Map()));
-  const key = `${propId}|${nodeId}|${at.clip}:${at.frame}|${availabilityKey(project, at.pieces, url)}`;
+  const localMs = anim?.localMs ?? 0;
+  const key = `${propId}|${nodeId}|${at.clip}:${at.frame}|${nestedFrameKey(project, at.pieces, localMs)}|${availabilityKey(project, at.pieces, url)}`;
   let v = m.get(key);
   if (v === undefined) {
-    const body = renderObjectBody(obj, { project, url, idPrefix: `o${nodeId}${at.frame >= 0 ? `f${at.frame}` : ''}` }, at.pieces);
+    const body = renderObjectBody(obj, { project, url, idPrefix: `o${nodeId}${at.frame >= 0 ? `f${at.frame}` : ''}`, timeMs: localMs }, at.pieces);
     v = at.frame >= 0 ? `<g data-obj-clip="${esc(at.clip)}" data-obj-frame="${at.frame}">${body}</g>` : body;
     if (m.size > 400) m.clear();
     m.set(key, v);

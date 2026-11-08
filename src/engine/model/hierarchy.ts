@@ -57,6 +57,12 @@ export function worldMatrix(scene: Scene, id: string, nodes: Record<string, Scen
   return m;
 }
 
+/** Matriz de mundo do PAI do nó (identidade se o nó está solto na cena). */
+export function parentWorldMatrix(scene: Scene, id: string, nodes: Record<string, SceneNode> = scene.nodes): Mat {
+  const p = scene.nodes[id]?.parentId;
+  return p && scene.nodes[p] ? worldMatrix(scene, p, nodes) : IDENTITY;
+}
+
 /** Decompõe uma matriz local em x, y, rotação e escala, respeitando o pivô do nó. */
 export function decompose(m: Mat, pivotX: number, pivotY: number): Pick<SceneNode['transform'], 'x' | 'y' | 'rotationDeg' | 'scaleX' | 'scaleY'> {
   const sx = Math.hypot(m[0], m[1]) || 1e-6;
