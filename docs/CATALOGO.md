@@ -44,6 +44,16 @@ O desenho já aninhava os filhos dentro do `<g>` dos grupos; o que faltava eram 
 - Registros antigos da biblioteca (1.1 e 1.2) continuam lidos; o campo opcional `updatedAt` é só acrescentado ao salvar.
 - `LibraryRecord.kind` não mudou; nenhum índice novo no IndexedDB.
 
+## Biblioteca principal e Toolbox (Fase 2.5)
+
+- **Biblioteca principal** (`src/components/library/LibraryHome.tsx`): seção da tela inicial (sem projeto aberto) e sobreposição no editor (`openLibrary()`; o projeto continua aberto e "Inserir na cena" funciona). Usa o MESMO catálogo (`buildCatalog`, visão `'all'` com filtro por tipo) e o MESMO armazenamento (IndexedDB) das abas do Studio.
+- **Itens individuais:** cada personagem, objeto, cenário, pose, sequência ou cena salvo é um registro próprio; pacote não é necessário. Importar um arquivo de biblioteca atualiza itens com a mesma identidade em vez de duplicar.
+- **Permissões:** itens próprios (editar, duplicar, renomear, favoritar, exportar, apagar); padrão e pacote (copiar para minha biblioteca, editar uma cópia, favoritar).
+- **Criar/editar sem projeto:** os criadores vivem dentro de um projeto; sem projeto aberto, a Biblioteca abre a "Oficina da Biblioteca" (projeto comum, reaproveitado pelo ID em `prefs.workshopProjectId`).
+- **Pacotes** (`src/components/library/PackPage.tsx`): lista dos instalados, página com capa, metadados, contagens, dependências com estado, todos os itens com miniatura e animações e busca; abrir um `.rspack` **inspeciona** (valida tudo e mostra o conteúdo, sem gravar nada) e só instala ao confirmar.
+- **Toolbox no Studio:** a aba Biblioteca virou uma lista compacta (busca, tipo, origem, clique para inserir, salvar cena atual). As abas Elenco, Cenários e Objetos continuam como visões simplificadas, com o botão "Abrir a Biblioteca completa".
+- **Riscos tratados:** pacote com objeto aninhado ou imagem usada por peça que não veio no item é recusado; leitura de pacote assíncrona (descompactação fora da thread principal quando possível, pausas e progresso); falhas de armazenamento viram mensagens claras.
+
 ## Pacotes opcionais (.rspack)
 
 Arquivo ZIP com `manifest.json`, `items/*.json` (pacotes de objeto ou cenário no mesmo formato v2 da biblioteca) e `media/*` (imagens). O manifesto traz `format: "recorte-studio-pack"`, `formatVersion: 1`, ID (`[a-z0-9._-]`), nome, versão `x.y.z`, descrição, autor, **licença obrigatória**, categoria, dependências (`{ id, version }`), itens (`id, kind, name, file, sha256`) e mídias (`id, file, mime, size, sha256`).

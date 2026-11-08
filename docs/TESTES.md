@@ -30,6 +30,21 @@ Versão 1.2.0 (com os dois ajustes pré-lançamento), executados em 08/11/2026. 
 
 **E2E novos na 1.1:** salvar .jrec e reabrir em contexto limpo com áudio; projeto 0.4 regravado em .jrec; mídia ausente (aviso, "Salvar incompleto", lista no manifest, alerta em Mídias); aba Mídias (importar por categoria, reaproveitar arquivo repetido, usar na cena, remover com aviso de uso e desfazer); cenário próprio com 1, 3 e 5 horários, troca de horário e persistência; modo simples × avançado sobre os mesmos dados, com desfazer; PWA recarregando offline no mesmo link `?projeto=`; 390×844 com Salvar, Áudio e modo simples sem estourar a tela.
 
+## Fase 2.5: Biblioteca principal
+
+Executados em 08/11/2026, mesmo ambiente (Windows 10, Chrome 156, build de produção).
+
+| Comando | Resultado |
+| --- | --- |
+| `npm run typecheck` e `npm run lint` | Sem erros nem avisos |
+| `npm test` | **400 de 400**, 24 arquivos |
+| `npm run test:e2e` | **125 de 125 numa única execução** (10,6 min), suíte inteira |
+| `npm run manual:shots` | 4 de 4; capturas novas da Biblioteca principal e da inspeção de pacote |
+
+**Novos unitários** (`library-home.test.ts`, 8): visão de todos os tipos com busca por palavra-chave e categoria; copiar item padrão para a minha biblioteca sem projeto aberto; duplicar e apagar; importar o mesmo arquivo duas vezes atualiza em vez de duplicar; falha de armazenamento vira mensagem; pacote com objeto aninhado ou imagem fora do item é recusado; progresso da verificação.
+
+**Novos E2E** (`library-home.spec.ts`, 4; `packs.spec.ts` reescrito, 2): explorar sem projeto (busca, tipo, origem, detalhes, grade/lista); item individual copiado, renomeado, favoritado, duplicado e apagado na Biblioteca principal e usado no Studio, e item do projeto salvo pelo Studio aparecendo na Biblioteca sobre o editor, com Inserir na cena; Toolbox compacta e ida/volta à Biblioteca completa; celular com detalhes em tela cheia; pacote inspecionado antes de instalar (nada gravado até confirmar), instalado, usado, desativado, reativado, exportado, removido e reimportado; arquivo inválido recusado na inspeção.
+
 ## Continuação do PR #3 (rolagem, bolinha do grupo, modelos, pacotes)
 
 Executados em 08/11/2026, mesma máquina e navegador (Windows 10, Chrome 156 via Playwright, build de produção).

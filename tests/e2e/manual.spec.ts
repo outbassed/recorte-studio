@@ -138,12 +138,6 @@ test('capturas do manual (computador)', async ({ page }) => {
   await capture(page, 'criador-cenarios', [t('scenery-time-morning'), t('scene-studio-canvas'), t('scene-studio-tab-add'), t('scene-studio-tab-props'), t('scenery-apply')]);
   await page.getByTestId('scene-creator-close').click();
 
-  // Pacotes (Biblioteca)
-  await tab(page, 'library');
-  await page.getByTestId('pack-demo').click();
-  await expect(page.locator('[data-testid="pack-row"]')).toHaveCount(1);
-  await capture(page, 'pacotes', [t('pack-import'), t('pack-enabled'), t('pack-export'), t('pack-remove')]);
-
   // Exportar e salvar
   await page.getByTestId('open-export').click();
   await capture(page, 'exportar', [t('export-kind'), t('export-run')]);
@@ -153,6 +147,18 @@ test('capturas do manual (computador)', async ({ page }) => {
   await page.getByTestId('open-app-settings').click();
   await capture(page, 'configuracoes', [t('settings-geral'), t('settings-aparencia'), t('settings-armazenamento'), t('overlay-close')]);
   await page.getByTestId('overlay-close').click();
+});
+
+test('capturas do manual: Biblioteca principal e pacote', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('home-nav-library').click();
+  await page.getByTestId('library-search').fill('fog');
+  await page.locator('[data-testid="library-item"][data-name="Fogueira"]').click();
+  await capture(page, 'biblioteca', [t('library-search'), t('library-kinds'), t('library-origins'), '[data-testid="library-item"][data-name="Fogueira"]', t('library-detail'), t('library-import')]);
+  await page.getByTestId('library-tab-packs').click();
+  await page.getByTestId('pack-demo').click();
+  await expect(page.getByTestId('pack-page')).toBeVisible();
+  await capture(page, 'pacotes', [t('pack-inspect-note'), t('pack-counts'), t('pack-install'), t('pack-items')]);
 });
 
 test('captura do manual: bolinha do grupo', async ({ page }) => {

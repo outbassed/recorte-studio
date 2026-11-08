@@ -19,6 +19,20 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | 11 | Timeline real e vídeo real | PASSOU | E2E 14 com `ffprobe` |
 | 12 | Salvamento seguro, migração, regressão | PASSOU | E2E 1, 11; `migration.test.ts` |
 
+## Fase 2.5: Biblioteca principal
+
+| Item | Estado | Evidência |
+| --- | --- | --- |
+| Biblioteca na tela inicial, sem projeto | PASSOU | E2E `library-home` |
+| Busca por nome, categoria, tipo e palavra-chave; filtros; grade/lista | PASSOU | unit e E2E |
+| Detalhes completos e ações por permissão | PASSOU | E2E (padrão protegido; próprio com todas as ações) |
+| Itens individuais sem pacote; importar sem duplicar | PASSOU | unit `library-home` |
+| Página de pacote e inspeção antes de instalar | PASSOU | E2E `packs` |
+| Toolbox compacta no Studio e acesso à Biblioteca completa | PASSOU | E2E `library-home` |
+| Mesmo catálogo e armazenamento nos dois lugares | PASSOU | E2E (Home → Studio e Studio → Biblioteca) |
+| Referências internas de pacote, falhas de armazenamento, importação grande | PASSOU | unit (recusa e mensagens); importação assíncrona com progresso sem teste de carga dedicado |
+| Tipos futuros (roupas, cabelos, veículos com rig) | NÃO IMPLEMENTADO | não aparecem na interface |
+
 ## Continuação do PR #3
 
 | Fase | Item | Estado | Evidência |

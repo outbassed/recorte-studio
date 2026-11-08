@@ -14,6 +14,14 @@ Branch `feature/recorte-studio-catalogo-biblioteca`, sobre a 1.2. Sem lançament
 - **Vínculo pai/filho:** Propriedades → Camadas → Vinculado a. O elemento acompanha o grupo (posição, giro, escala, keyframes) e mantém as próprias falas, ações e piscadas. Vincular e soltar não mudam a posição na tela.
 - **Shift+clique no losango da seção** (ou toque longo) remove só os keyframes daquela seção no instante atual, com um único Ctrl+Z e confirmação quando acaba com a animação de uma propriedade.
 
+### Fase 2.5: Biblioteca principal
+
+- **Biblioteca na tela inicial**, sem abrir projeto (e por cima do editor): explorar itens padrão, meus e de pacotes, buscar por nome, categoria, tipo e palavra-chave, filtrar por tipo e origem, grade ou lista, detalhes completos (origem, criador, licença, versão, compatibilidade, tamanho, animações, vistas) e ações conforme a permissão.
+- **Itens individuais:** salvar, copiar, duplicar, renomear, favoritar, exportar, importar e apagar um item sozinho, sem pacote; importar de novo atualiza em vez de duplicar.
+- **Pacotes exploráveis:** página de cada pacote com capa, metadados, todos os itens, busca, contagens e dependências; abrir um .rspack mostra o conteúdo antes de instalar.
+- **Studio mais leve:** a aba Biblioteca virou uma Toolbox compacta; a gestão completa abre na Biblioteca principal.
+- **Segurança e robustez:** pacotes com referências internas incompletas são recusados; importação de pacote grande não trava a tela e mostra progresso; falhas de armazenamento aparecem como mensagens claras.
+
 ### Continuação (correções do preview e expansão)
 
 - **Faixas horizontais com rolagem visível:** abas das Propriedades, filtros do catálogo e categorias dos Modelos ganham barra fina visível, setas nas pontas (desabilitadas no fim), roda do mouse na horizontal e aba/filtro ativo sempre à vista. As barras escondidas da barra rápida do celular, das configurações, da timeline e do palco voltaram a aparecer.
