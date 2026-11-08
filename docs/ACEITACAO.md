@@ -19,6 +19,20 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | 11 | Timeline real e vídeo real | PASSOU | E2E 14 com `ffprobe` |
 | 12 | Salvamento seguro, migração, regressão | PASSOU | E2E 1, 11; `migration.test.ts` |
 
+## Continuação do PR #3
+
+| Fase | Item | Estado | Evidência |
+| --- | --- | --- | --- |
+| 1a | Rolagem horizontal visível (Inspector, catálogo e demais faixas) | PASSOU | E2E `ui-strips` em 1024, 320 e 390 px |
+| 1b | Bolinha do grupo: mover conjunto, histórico, Esc, fora da exportação | PASSOU | E2E `group-handle` (inclui PNG exportado) |
+| 1c | Modelos Mar e Barco e Acampamento | PASSOU | unit `showcase` e E2E `group-handle` |
+| 1d | Arraste em grupo girado, pivô sem salto, animação aninhada | PASSOU | E2E de grupo aninhado girado; unit de objeto em objeto e em cenário |
+| 2f | Praia, Cidade, Quarto, Floresta, Sala de aula, Laboratório | PASSOU | unit `showcase` (válidos, renderizam) |
+| 2g | Olhar/segurar com posição de mundo; cópia de cenário em um passo | PASSOU | código + E2E da cópia (um Ctrl+Z); olhar/segurar sem teste dedicado com grupo (coberto só pela regressão) |
+| 2h | Pacotes opcionais com demonstração | PASSOU | unit `packs` e E2E `packs` |
+| 3 | Texto nos criadores, roupa/cabelo, corpo modular, cores por parte, esclera | NÃO IMPLEMENTADO | |
+| 4 | Rigs de animais/veículos, encaixes nomeados, oclusão entre personagens | NÃO IMPLEMENTADO | |
+
 ## Super Prompt: catálogo, biblioteca e expansão (branch do catálogo)
 
 | # | Caso | Estado | Evidência |
@@ -27,9 +41,9 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | 2 | Cópia ao editar | PASSOU | E2E e unit |
 | 3 | Uso entre projetos | PASSOU | E2E e unit |
 | 4 | Migração e .jrec da 1.2 | PASSOU | Suíte de regressão; campos novos com padrão |
-| 5 | Pacotes opcionais | NÃO IMPLEMENTADO | |
+| 5 | Pacotes opcionais | PASSOU | unit e E2E `packs` |
 | 6 | Fogo animado em 3 cópias, 2 cenas, vídeo | PASSOU | E2E `object-anim.spec.ts` com pixels do vídeo |
-| 7 | Barco com passageiros | PARCIAL | Interface e renderizador testados; sem vídeo do barco conferido; sem pontos de encaixe nomeados |
+| 7 | Barco com passageiros | PASSOU* | Bolinha, balanço, reabrir e PNG testados. *Sem vídeo do barco conferido em pixel; sem encaixes nomeados |
 | 8 | Roupa com texto e manequim | NÃO IMPLEMENTADO | |
 | 9 | Cor por parte do corpo e esclera por olho | NÃO IMPLEMENTADO | |
 | 10 | Pose especial e compatibilidade por rig | NÃO IMPLEMENTADO | |

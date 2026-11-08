@@ -14,6 +14,14 @@ Branch `feature/recorte-studio-catalogo-biblioteca`, sobre a 1.2. Sem lançament
 - **Vínculo pai/filho:** Propriedades → Camadas → Vinculado a. O elemento acompanha o grupo (posição, giro, escala, keyframes) e mantém as próprias falas, ações e piscadas. Vincular e soltar não mudam a posição na tela.
 - **Shift+clique no losango da seção** (ou toque longo) remove só os keyframes daquela seção no instante atual, com um único Ctrl+Z e confirmação quando acaba com a animação de uma propriedade.
 
+### Continuação (correções do preview e expansão)
+
+- **Faixas horizontais com rolagem visível:** abas das Propriedades, filtros do catálogo e categorias dos Modelos ganham barra fina visível, setas nas pontas (desabilitadas no fim), roda do mouse na horizontal e aba/filtro ativo sempre à vista. As barras escondidas da barra rápida do celular, das configurações, da timeline e do palco voltaram a aparecer.
+- **Bolinha do grupo:** com um grupo selecionado, uma bolinha laranja no pivô move o conjunto inteiro; cada arraste é um passo de desfazer e Esc cancela. Ela é só do editor (não sai no PNG nem no vídeo). Botão direito num elemento → Selecionar o grupo.
+- **Modelos prontos:** Mar e Barco (barco com passageiros vinculados, balanço, ondas animadas), Acampamento (fogueira animada, luz tremulando), Praia, Cidade e rua, Quarto, Floresta, Sala de aula e Laboratório de animação; categorias e "O que testar neste modelo" na tela Modelos. Objetos novos: Ondas, Barraca, Guarda-sol, Palmeira e Pedras.
+- **Pacotes opcionais (.rspack):** instalar, atualizar, ativar/desativar, exportar e remover, com validação completa (manifesto, licença, sha256, caminhos, SVG, tamanhos, dependências) e o pacote de demonstração Kit Cozinha Retrô.
+- **Correções:** arrastar um elemento dentro de um grupo girado agora segue o cursor; caixas de seleção certas para filhos de grupos; mudar o pivô não faz o desenho pular; objeto animado dentro de outro objeto ou de um cenário anima no tempo certo; olhar e "segurado por" usam a posição real quando há grupos; copiar um cenário padrão é um único passo de desfazer; a caixa "Ativo" dos pacotes responde na hora.
+
 ### Correções
 
 - Diálogos de nome e confirmação abertos dentro dos criadores apareciam por baixo do criador.

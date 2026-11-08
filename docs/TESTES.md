@@ -30,6 +30,26 @@ Versão 1.2.0 (com os dois ajustes pré-lançamento), executados em 08/11/2026. 
 
 **E2E novos na 1.1:** salvar .jrec e reabrir em contexto limpo com áudio; projeto 0.4 regravado em .jrec; mídia ausente (aviso, "Salvar incompleto", lista no manifest, alerta em Mídias); aba Mídias (importar por categoria, reaproveitar arquivo repetido, usar na cena, remover com aviso de uso e desfazer); cenário próprio com 1, 3 e 5 horários, troca de horário e persistência; modo simples × avançado sobre os mesmos dados, com desfazer; PWA recarregando offline no mesmo link `?projeto=`; 390×844 com Salvar, Áudio e modo simples sem estourar a tela.
 
+## Continuação do PR #3 (rolagem, bolinha do grupo, modelos, pacotes)
+
+Executados em 08/11/2026, mesma máquina e navegador (Windows 10, Chrome 156 via Playwright, build de produção).
+
+| Comando | Resultado |
+| --- | --- |
+| `npm run typecheck` e `npm run lint` | Sem erros nem avisos |
+| `npm test` | **392 de 392**, 23 arquivos (24 novos nesta rodada) |
+| `npm run test:e2e` | **121 de 121 numa única execução** (10,5 min), suíte inteira, sem repetição nem teste instável |
+| `npm run shots` | 12 de 12 |
+| `npm run manual:shots` | 3 de 3; 2 capturas novas (bolinha do grupo, pacotes) |
+
+**Novos unitários:** `showcase.test.ts` (14: cada modelo válido, sem referência quebrada e renderizando em 3 instantes; barco com passageiros no grupo; ondas animadas dentro do cenário; fogo sem keyframes; objeto animado dentro de objeto), `packs.test.ts` (10: formato, path traversal, sha256, SVG com script, manifesto inválido, imagem de fora, ciclo de vida completo, item protegido, dependências, exportar e reimportar).
+
+**Novos E2E:** `ui-strips.spec.ts` (7: abas do Inspector e filtros do catálogo em 1024, 320 e 390 px: setas, roda, teclado, item ativo à vista, página sem rolar; barra fina visível), `group-handle.spec.ts` (3: Mar e Barco com a bolinha movendo barco e passageiros pelo mesmo deslocamento, desfazer/refazer, Esc, balanço, PNG exportado sem a bolinha, reabrir; grupo dentro de grupo girado 30° segue o cursor; Acampamento com o fogo trocando de quadro), `packs.spec.ts` (2: ciclo completo em dois projetos com recarga, exportação e reimportação; arquivo inválido).
+
+**Ajustes de teste com motivo:** dois testes pesados de cabelo (`hair-matrix`) tiveram o limite de 5 para 30 s: passam isolados e estouravam o tempo sob carga, sem mudança de asserção. O teste unitário de cópia de cenário padrão passou a verificar que nada fica pela metade quando o SVG não pode ser gerado (jsdom); a cópia completa com um único Ctrl+Z é verificada no E2E.
+
+**Bugs encontrados e corrigidos nesta rodada:** a caixa "Ativo" dos pacotes voltava visualmente até o banco responder; a timeline e o palco tratavam filhos de grupo como soltos (seleção e arraste).
+
 ## Branch do catálogo e da biblioteca (sobre a 1.2)
 
 Executados em 08/11/2026 na branch `feature/recorte-studio-catalogo-biblioteca`, mesmo ambiente.

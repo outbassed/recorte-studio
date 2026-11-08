@@ -138,6 +138,12 @@ test('capturas do manual (computador)', async ({ page }) => {
   await capture(page, 'criador-cenarios', [t('scenery-time-morning'), t('scene-studio-canvas'), t('scene-studio-tab-add'), t('scene-studio-tab-props'), t('scenery-apply')]);
   await page.getByTestId('scene-creator-close').click();
 
+  // Pacotes (Biblioteca)
+  await tab(page, 'library');
+  await page.getByTestId('pack-demo').click();
+  await expect(page.locator('[data-testid="pack-row"]')).toHaveCount(1);
+  await capture(page, 'pacotes', [t('pack-import'), t('pack-enabled'), t('pack-export'), t('pack-remove')]);
+
   // Exportar e salvar
   await page.getByTestId('open-export').click();
   await capture(page, 'exportar', [t('export-kind'), t('export-run')]);
@@ -147,6 +153,16 @@ test('capturas do manual (computador)', async ({ page }) => {
   await page.getByTestId('open-app-settings').click();
   await capture(page, 'configuracoes', [t('settings-geral'), t('settings-aparencia'), t('settings-armazenamento'), t('overlay-close')]);
   await page.getByTestId('overlay-close').click();
+});
+
+test('captura do manual: bolinha do grupo', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('home-nav-templates').click();
+  await page.locator('[data-template="mar-barco"]').click();
+  await expect(page.getByTestId('stage')).toBeVisible();
+  await tab(page, 'layers');
+  await page.locator('[data-testid="layer-row"][data-node-name="Barco com passageiros"] .layer-name').click();
+  await capture(page, 'grupo-bolinha', [t('group-handle'), '[data-testid="layer-row"][data-node-name="Barco com passageiros"]']);
 });
 
 test('capturas do manual (celular)', async ({ page }) => {

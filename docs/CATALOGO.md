@@ -44,9 +44,25 @@ O desenho já aninhava os filhos dentro do `<g>` dos grupos; o que faltava eram 
 - Registros antigos da biblioteca (1.1 e 1.2) continuam lidos; o campo opcional `updatedAt` é só acrescentado ao salvar.
 - `LibraryRecord.kind` não mudou; nenhum índice novo no IndexedDB.
 
-## Formato de pacote opcional
+## Pacotes opcionais (.rspack)
 
-**Não implementado nesta etapa.** O catálogo já separa a origem "Padrão" e reserva o espaço para "Pacotes", mas não há instalação, ativação, desinstalação nem manifesto. O filtro "Pacotes" não aparece na interface para não fingir uma função que não existe.
+Arquivo ZIP com `manifest.json`, `items/*.json` (pacotes de objeto ou cenário no mesmo formato v2 da biblioteca) e `media/*` (imagens). O manifesto traz `format: "recorte-studio-pack"`, `formatVersion: 1`, ID (`[a-z0-9._-]`), nome, versão `x.y.z`, descrição, autor, **licença obrigatória**, categoria, dependências (`{ id, version }`), itens (`id, kind, name, file, sha256`) e mídias (`id, file, mime, size, sha256`).
+
+Verificado antes de gravar qualquer coisa (`src/features/packs/format.ts`): caminhos só em `items/` e `media/` (sem `..`, barra invertida ou absoluto), limites (60 MB compactado, 120 MB descompactado, 25 MB por mídia, 2 MB por item, 500 entradas), sha256 de cada arquivo, ID da mídia igual ao do conteúdo (`media_<sha256>`), tipo real da imagem, SVG recusado se o limpador removeria algo (script, eventos, links externos), itens lidos pelos leitores tolerantes da biblioteca e só com imagens do próprio pacote, dependências instaladas na versão mínima, versão repetida ou mais velha recusada.
+
+Ciclo de vida (`src/state/packActions.ts`, aba Biblioteca → Pacotes opcionais): instalar (transacional: mídias gravadas são apagadas se o registro falhar; aviso de espaço), atualizar para versão mais nova (mantém ativo/inativo), ativar/desativar, exportar (reempacota com as mídias do navegador) e remover (com confirmação; recusado se outro pacote depende dele; a limpeza de mídias só apaga o que nenhum projeto, biblioteca ou pacote usa). O banco foi para a versão 2 só com a tabela `packs` nova.
+
+**Política:** itens de pacote são protegidos (editar cria cópia pessoal com ID novo). Usar um item copia o item e as imagens para o projeto, então desativar ou remover o pacote nunca muda um projeto. O filtro "Pacotes" só aparece quando há pacote ativo com itens daquela aba.
+
+Pacote de demonstração (original, CC0): **Kit Cozinha Retrô** — panela, chaleira fervendo (animada), painel de azulejos (imagem SVG) e parede de azulejos (cenário).
+
+## Modelos prontos (`src/features/templates/showcase.ts`)
+
+Mar e Barco, Acampamento, Praia, Cidade e rua, Quarto, Floresta, Sala de aula e Laboratório de animação. Cada um cria um projeto novo; os objetos padrão usados (`tpl_*`) entram no projeto como cópia. A tela Modelos filtra por Ambientes, Técnicos e Formatos e mostra "O que testar neste modelo". Objetos originais novos no catálogo: Ondas (animadas), Barraca, Guarda-sol, Palmeira e Pedras.
+
+## Bolinha do grupo e coordenadas
+
+O palco calcula a matriz câmera × pais × nó (a mesma composição do renderizador). Selecionar um grupo mostra uma bolinha laranja no pivô do grupo; arrastar move a transformação do grupo (autokey no tempo atual quando a posição já é animada), um gesto = um passo de histórico, Esc desfaz o gesto. A bolinha fica na camada de edição (SVG separado), nunca no plano exportado. O mesmo cálculo corrige o arraste de filhos dentro de grupos girados/escalados, as caixas de seleção e a posição do pivô. Mudar o pivô recalcula x/y (sem salto). Olhar e "segurado por" usam a matriz dos pais.
 
 ## Estado por critério de aceitação do Super Prompt
 
@@ -56,9 +72,9 @@ O desenho já aninhava os filhos dentro do `<g>` dos grupos; o que faltava eram 
 | 2 | Cópia ao editar de objeto padrão, cor muda só na cópia, cópia inserível | PASSOU | E2E `catalog.spec.ts`; unit `catalog.test.ts` |
 | 3 | Uso entre projetos | PASSOU | E2E (outro projeto novo); unit |
 | 4 | Migração e .jrec da 1.2 | PASSOU (regressão) | Suíte E2E de histórias e migração; unit de compatibilidade dos campos novos |
-| 5 | Pacote importável/desativável | NÃO IMPLEMENTADO | — |
+| 5 | Pacote importável/desativável | PASSOU | unit `packs.test.ts` (formato, segurança, ciclo de vida, dependências, reimportação) e E2E `packs.spec.ts` (instalar, usar em dois projetos, desativar, reativar, recarregar, exportar, remover, reimportar) |
 | 6 | Fogo com 4+ quadros, 3 instâncias em 2 cenas, defasagem, vídeo | PASSOU | E2E `object-anim.spec.ts`: cor de cada fogo conferida pixel a pixel em 5 instantes do vídeo exportado |
-| 7 | Barco com passageiros | PARCIAL | E2E pela interface (vincular sem salto, balanço, fala continua, recarregar) e unit no renderizador (o mesmo da exportação). Não há vídeo exportado do barco conferido em pixel; não há pontos de encaixe nomeados |
+| 7 | Barco com passageiros | PASSOU* | Modelo Mar e Barco; E2E da bolinha (move barco e passageiros juntos, desfazer/refazer, Esc, grupo aninhado girado, salvar/reabrir, PNG exportado sem a bolinha) e unit no renderizador. *Vídeo do barco não conferido em pixel (o vídeo usa o mesmo renderizador, provado no teste do fogo); pontos de encaixe nomeados ainda não existem |
 | 8 | Roupa com texto, manequim | NÃO IMPLEMENTADO | — |
 | 9 | Cor por parte do corpo, esclera por olho | NÃO IMPLEMENTADO | — |
 | 10 | Pose especial e compatibilidade por rig | NÃO IMPLEMENTADO | — |
@@ -69,8 +85,8 @@ O desenho já aninhava os filhos dentro do `<g>` dos grupos; o que faltava eram 
 
 ## Limitações conhecidas
 
-- Objeto animado usado dentro de outro objeto ou de uma composição de cenário aparece parado no primeiro quadro.
-- Arrastar no palco um filho de grupo girado move no sentido do grupo (os campos numéricos ficam exatos).
-- Olhar para um elemento e "segurado por" usam a posição local de quem está dentro de grupo.
 - A decomposição de matrizes não representa cisalhamento (pai com escala não uniforme e filho girado).
-- Criar cópia de cenário padrão gera três passos no histórico (criar, Dia, Noite).
+- Mudar o pivô de um elemento cuja posição já é animada recalcula só o valor-base; os keyframes de posição não são deslocados.
+- Arrastar a bolinha num grupo com posição animada grava o keyframe do tempo atual (autokey); não desloca a animação inteira.
+- Pacotes trazem objetos e cenários (com imagens). Personagens, poses, sons e fontes em pacote ainda não.
+- O celular foi testado só com emulação no Chrome de desktop.
