@@ -14,6 +14,10 @@ Branch `feature/recorte-studio-catalogo-biblioteca`, sobre a 1.2. Sem lançament
 - **Vínculo pai/filho:** Propriedades → Camadas → Vinculado a. O elemento acompanha o grupo (posição, giro, escala, keyframes) e mantém as próprias falas, ações e piscadas. Vincular e soltar não mudam a posição na tela.
 - **Shift+clique no losango da seção** (ou toque longo) remove só os keyframes daquela seção no instante atual, com um único Ctrl+Z e confirmação quando acaba com a animação de uma propriedade.
 
+### Fase 3a: texto nos criadores
+
+- **Texto editável** como peça nos Criadores de Objetos e de Cenários: conteúdo com várias linhas, fonte, tamanho, peso, itálico, alinhamento, espaçamento, cor e contorno; continua texto na biblioteca, em pacotes e no .jrec, e entra na busca da Biblioteca.
+
 ### Fase 2.5: Biblioteca principal
 
 - **Biblioteca na tela inicial**, sem abrir projeto (e por cima do editor): explorar itens padrão, meus e de pacotes, buscar por nome, categoria, tipo e palavra-chave, filtrar por tipo e origem, grade ou lista, detalhes completos (origem, criador, licença, versão, compatibilidade, tamanho, animações, vistas) e ações conforme a permissão.

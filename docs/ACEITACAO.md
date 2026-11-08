@@ -19,6 +19,14 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | 11 | Timeline real e vídeo real | PASSOU | E2E 14 com `ffprobe` |
 | 12 | Salvamento seguro, migração, regressão | PASSOU | E2E 1, 11; `migration.test.ts` |
 
+## Fase 3
+
+| Item | Estado | Evidência |
+| --- | --- | --- |
+| 3a. Texto editável nos criadores (Objetos, Cenários) | PASSOU | unit e E2E `creator-text` |
+| 3b. Criador de roupas e cabelos com manequim | NÃO IMPLEMENTADO | próxima etapa |
+| 3c. Corpo modular, cores por parte, esclera por olho | NÃO IMPLEMENTADO | |
+
 ## Fase 2.5: Biblioteca principal
 
 | Item | Estado | Evidência |

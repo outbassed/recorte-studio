@@ -30,6 +30,10 @@ Versão 1.2.0 (com os dois ajustes pré-lançamento), executados em 08/11/2026. 
 
 **E2E novos na 1.1:** salvar .jrec e reabrir em contexto limpo com áudio; projeto 0.4 regravado em .jrec; mídia ausente (aviso, "Salvar incompleto", lista no manifest, alerta em Mídias); aba Mídias (importar por categoria, reaproveitar arquivo repetido, usar na cena, remover com aviso de uso e desfazer); cenário próprio com 1, 3 e 5 horários, troca de horário e persistência; modo simples × avançado sobre os mesmos dados, com desfazer; PWA recarregando offline no mesmo link `?projeto=`; 390×844 com Salvar, Áudio e modo simples sem estourar a tela.
 
+## Fase 3a: texto nos criadores
+
+Suíte inteira depois da Fase 3a (08/11/2026, mesmo ambiente): typecheck e lint sem erros; **407 de 407** unitários (25 arquivos); **127 de 127** E2E numa única execução (10,7 min). Novos: `creator-text.test.ts` (7: padrões em peças antigas, estilo completo, várias linhas, escape de HTML, limite de conteúdo, caixa de seleção e escala, cena/exportação, busca no catálogo, pacote e .jrec) e `creator-text.spec.ts` (2: camiseta TRAQUINA/10 criada, estilizada, salva, inserida, editada depois e desfeita; letreiro no Criador de Cenários).
+
 ## Fase 2.5: Biblioteca principal
 
 Executados em 08/11/2026, mesmo ambiente (Windows 10, Chrome 156, build de produção).
