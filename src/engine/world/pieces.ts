@@ -9,6 +9,7 @@ import { renderCharacter } from '../character/render';
 import { getPose, poseRig } from '../character/presets';
 import { getProp, propBounds, renderProp } from './props';
 import { esc, n } from '../render/svg';
+import { FONT_STACKS } from '../render/fonts';
 
 export const OBJECT_PREFIX = 'obj:';
 export const isCustomObjectId = (propId: string) => propId.startsWith(OBJECT_PREFIX);
@@ -19,7 +20,7 @@ const color = (c: string, fb: string) => (COLOR.test(c) ? c : fb);
 
 export const PIECE_LABELS: Record<PieceKind, string> = {
   rect: 'Retângulo', ellipse: 'Elipse', triangle: 'Triângulo', polygon: 'Polígono', star: 'Estrela', line: 'Linha',
-  image: 'Imagem', prop: 'Objeto pronto', object: 'Meu objeto', character: 'Personagem estático',
+  image: 'Imagem', prop: 'Objeto pronto', object: 'Meu objeto', character: 'Personagem estático', text: 'Texto',
 };
 
 export function createPiece(kind: PieceKind, o: Partial<Piece> = {}): Piece {
@@ -100,12 +101,21 @@ function pieceInner(p: Piece, env: PieceEnv): string {
       return renderObjectBody(obj, { ...env, depth: (env.depth ?? 0) + 1, idPrefix: `${env.idPrefix}-${p.id}` }, at.pieces);
     }
     case 'character': return p.character ? renderStaticCharacter(p.character, `${env.idPrefix}-${p.id}`) : '';
+    case 'text': {
+      // Texto estruturado: escapado (nada de HTML), linhas centradas no ponto da peça.
+      const lines = textLines(p);
+      const lh = p.fontSize * 1.2;
+      const top = -((lines.length - 1) * lh) / 2;
+      const sw = Math.max(0, p.strokeWidth);
+      const outline = sw > 0 ? ` stroke="${stroke}" stroke-width="${n(sw)}" paint-order="stroke" stroke-linejoin="round"` : '';
+      return `<text text-anchor="${p.align}" dominant-baseline="central" font-family="${FONT_STACKS[p.fontFamily].replace(/"/g, '')}" font-size="${n(Math.max(1, p.fontSize))}" font-weight="${p.fontWeight}"${p.italic ? ' font-style="italic"' : ''}${p.letterSpacing ? ` letter-spacing="${n(p.letterSpacing)}"` : ''} fill="${fill}"${outline}>${lines.map((l, i) => `<tspan x="0" y="${n(top + i * lh)}">${esc(l) || ' '}</tspan>`).join('')}</text>`;
+    }
   }
 }
 
 export function pieceTransform(p: Piece): string {
-  const sx = (p.flipX ? -1 : 1) * (p.kind === 'prop' || p.kind === 'object' || p.kind === 'character' ? p.scale : 1);
-  const sy = (p.flipY ? -1 : 1) * (p.kind === 'prop' || p.kind === 'object' || p.kind === 'character' ? p.scale : 1);
+  const sx = (p.flipX ? -1 : 1) * (p.kind === 'prop' || p.kind === 'object' || p.kind === 'character' || p.kind === 'text' ? p.scale : 1);
+  const sy = (p.flipY ? -1 : 1) * (p.kind === 'prop' || p.kind === 'object' || p.kind === 'character' || p.kind === 'text' ? p.scale : 1);
   return `translate(${n(p.x)} ${n(p.y)})${p.rotation ? ` rotate(${n(p.rotation)})` : ''}${sx !== 1 || sy !== 1 ? ` scale(${n(sx)} ${n(sy)})` : ''}`;
 }
 
@@ -245,10 +255,20 @@ export function customObjectBounds(project: Project, propId: string): { x: numbe
 export type Box = { x: number; y: number; w: number; h: number };
 export type Pt2 = [number, number];
 const rad = (d: number) => (d * Math.PI) / 180;
-const usesScale = (p: Piece) => p.kind === 'prop' || p.kind === 'object' || p.kind === 'character';
+const usesScale = (p: Piece) => p.kind === 'prop' || p.kind === 'object' || p.kind === 'character' || p.kind === 'text';
 
 /** Caixa da peça no espaço dela (antes de girar, espelhar e escalar). */
+const textLines = (p: Piece) => (p.text || ' ').split('\n').slice(0, 20);
+
 export function pieceLocalBox(p: Piece, project: Project): Box {
+  if (p.kind === 'text') {
+    // Caixa aproximada (largura média de caractere) só para selecionar e encaixar no estúdio.
+    const lines = textLines(p);
+    const longest = Math.max(1, ...lines.map((l) => [...l].length));
+    const w = longest * (p.fontSize * 0.58 + p.letterSpacing);
+    const h = lines.length * p.fontSize * 1.2;
+    return { x: p.align === 'start' ? 0 : p.align === 'end' ? -w : -w / 2, y: -h / 2, w, h };
+  }
   if (p.kind === 'prop' && p.refId) {
     const d = getProp(p.refId);
     return d ? propBounds(d) : { x: -50, y: -100, w: 100, h: 100 };

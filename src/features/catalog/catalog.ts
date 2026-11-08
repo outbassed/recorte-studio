@@ -175,7 +175,7 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     const ref: CatalogRef = { type: 'project-object', id: o.id };
     const key = keyOf(ref);
     out.push({
-      key, view: 'objects', kind: 'object', category: o.clips.length ? CAT.animated : CAT.objects, name: o.name, keywords: o.pieces.map((p) => p.name),
+      key, view: 'objects', kind: 'object', category: o.clips.length ? CAT.animated : CAT.objects, name: o.name, keywords: o.pieces.flatMap((p) => (p.kind === 'text' ? [p.name, p.text] : [p.name])),
       origin: 'project', editable: true, favorite: fav(key), updatedAt: o.updatedAt || o.createdAt, usage: customObjectUsage(project, o.id),
       inProject: true, libId: libObj.get(o.id)?.id, states: o.clips.map((c) => ({ id: c.id, label: c.name })), ref, fromBuiltin: o.id.startsWith(TEMPLATE_PREFIX),
     });
@@ -213,7 +213,7 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     } else if (r.kind === 'object') {
       const read = readObjectBundle(r.data);
       if (read.ok && project.customObjects[read.bundle.object.id]) continue;
-      out.push({ ...base, view: 'objects', kind: 'object', category: CAT.objects, keywords: read.ok ? read.bundle.object.pieces.map((p) => p.name) : [], objectBundle: read.ok ? read.bundle : undefined, broken: read.ok ? undefined : read.reason });
+      out.push({ ...base, view: 'objects', kind: 'object', category: CAT.objects, keywords: read.ok ? read.bundle.object.pieces.flatMap((p) => (p.kind === 'text' ? [p.name, p.text] : [p.name])) : [], objectBundle: read.ok ? read.bundle : undefined, broken: read.ok ? undefined : read.reason });
     } else if (r.kind === 'background') {
       const read = readBackgroundBundle(r.data);
       if (read.ok && project.customBackgrounds[read.bundle.background.id]) continue;

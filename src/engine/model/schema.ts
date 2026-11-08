@@ -602,7 +602,7 @@ export const StaticCharacterSchema = z.object({
 });
 export type StaticCharacter = z.infer<typeof StaticCharacterSchema>;
 
-export const PieceKindSchema = z.enum(['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line', 'image', 'prop', 'object', 'character']);
+export const PieceKindSchema = z.enum(['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line', 'image', 'prop', 'object', 'character', 'text']);
 export type PieceKind = z.infer<typeof PieceKindSchema>;
 export const PieceSchema = z.object({
   id: z.string(),
@@ -630,6 +630,14 @@ export const PieceSchema = z.object({
   colorB: z.string().default(''),
   state: z.string().default(''),
   character: StaticCharacterSchema.optional(),
+  /** Peça de texto (criadores): conteúdo e estilo ficam estruturados e editáveis; cor = fill, contorno = stroke. */
+  text: z.string().max(500).default(''),
+  fontFamily: z.enum(['sans', 'serif', 'hand', 'mono']).default('sans'),
+  fontSize: finite.default(64),
+  fontWeight: z.enum(['400', '700', '900']).default('700'),
+  italic: z.boolean().default(false),
+  align: z.enum(['start', 'middle', 'end']).default('middle'),
+  letterSpacing: finite.default(0),
   group: z.string().optional(),
   visible: z.boolean().default(true),
 });

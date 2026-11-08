@@ -4,8 +4,10 @@
  * Arrastar no palco também move as peças. Tudo passa por commit(): Ctrl+Z funciona.
  */
 import { useMemo, useRef, useState, type ReactNode } from 'react';
+import { FONT_OPTIONS } from '@/engine/render/fonts';
 import {
   ArrowDown, ArrowUp, ChevronsDown, ChevronsUp, Copy, Eye, EyeOff, FlipHorizontal2, FlipVertical2, Group, ImagePlus, Pencil, Trash2, Ungroup,
+  Type,
 } from 'lucide-react';
 import type { Piece, PieceKind, Project } from '@/engine/model/schema';
 import { uid, deepClone } from '@/engine/model/ids';
@@ -19,7 +21,7 @@ import { IMAGE_ACCEPT, importImageFile, previewAssetUrl, registerAssetBlob } fro
 import { doRedo, doUndo } from '@/state/actions';
 import { promptDialog, toast } from '@/state/uiStore';
 import { repo } from '@/storage/db';
-import { ColorField, IconButton, SelectField, ToggleField } from '../controls/fields';
+import { ColorField, IconButton, SelectField, TextField, ToggleField } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
 
 export interface StudioProps {
@@ -150,6 +152,8 @@ export function PieceStudio(p: StudioProps) {
           <div className="studio-chips">{p.presets.map((x) => <button key={x.label} type="button" className="chip" data-testid={`add-preset-${x.label}`} onClick={() => add(x.make())}>{x.label}</button>)}</div>
         </>
       )}
+      <h4>Texto</h4>
+      <button type="button" className="btn btn-sm" data-testid="add-text-piece" onClick={() => add(createPiece('text', { name: 'Texto', text: 'Texto', fontSize: 72, fill: '#23202b', stroke: '#ffffff', strokeWidth: 0, x: center.x, y: center.y }))}><Type size={14} /> Adicionar texto</button>
       <h4>Imagem (SVG, PNG, JPEG, WebP)</h4>
       <button type="button" className="btn btn-sm" data-testid="add-image" onClick={() => fileRef.current?.click()}><ImagePlus size={14} /> Importar imagem</button>
       <input ref={fileRef} hidden type="file" accept={IMAGE_ACCEPT} data-testid={`${p.testId}-image-input`} onChange={(e) => {
@@ -221,7 +225,7 @@ export function PieceStudio(p: StudioProps) {
       </div>
       {num('X', 'x')}
       {num('Y', 'y')}
-      {one.kind === 'prop' || one.kind === 'object' || one.kind === 'character'
+      {one.kind === 'prop' || one.kind === 'object' || one.kind === 'character' || one.kind === 'text'
         ? <SliderNumberField label="Escala" unit="%" display={100} min={0.05} max={10} sliderMin={10} sliderMax={300} value={one.scale} testId="piece-scale" onChange={(v) => editSel('Escala', (pc) => { pc.scale = v; }, `pc-${one.id}-s`)} />
         : <>{num('Largura', 'w', 1)}{num('Altura', 'h', 1)}</>}
       {num('Rotação', 'rotation')}
@@ -238,6 +242,21 @@ export function PieceStudio(p: StudioProps) {
           {one.kind === 'rect' && <SliderNumberField label="Cantos" unit="px" min={0} sliderMin={0} sliderMax={120} value={one.radius} onChange={(v) => editSel('Cantos', (pc) => { pc.radius = v; }, `pc-${one.id}-r`)} />}
           {(one.kind === 'polygon' || one.kind === 'star') && <SliderNumberField label={one.kind === 'star' ? 'Pontas' : 'Lados'} min={3} max={12} sliderMin={3} sliderMax={12} decimals={0} value={one.sides} onChange={(v) => editSel('Lados', (pc) => { pc.sides = Math.round(Math.min(12, Math.max(3, v))); }, `pc-${one.id}-n`)} />}
         </>
+      )}
+      {one.kind === 'text' && (
+        <div className="studio-text" data-testid="piece-text-controls">
+          <TextField label="Texto" multiline value={one.text} testId="piece-text" onChange={(v) => editSel('Texto', (pc) => { pc.text = v.slice(0, 500); }, `pc-${one.id}-txt`)} />
+          <SelectField label="Fonte" value={one.fontFamily} testId="piece-font" options={FONT_OPTIONS} onChange={(v) => editSel('Fonte', (pc) => { pc.fontFamily = v as typeof pc.fontFamily; })} />
+          <SliderNumberField label="Tamanho" unit="px" min={4} max={600} sliderMin={8} sliderMax={240} decimals={0} value={one.fontSize} testId="piece-font-size" onChange={(v) => editSel('Tamanho do texto', (pc) => { pc.fontSize = Math.max(4, Math.min(600, v)); }, `pc-${one.id}-fs`)} />
+          <SelectField label="Peso" value={one.fontWeight} testId="piece-font-weight" options={[{ id: '400', label: 'Normal' }, { id: '700', label: 'Negrito' }, { id: '900', label: 'Extra negrito' }]} onChange={(v) => editSel('Peso do texto', (pc) => { pc.fontWeight = v as typeof pc.fontWeight; })} />
+          <SelectField label="Alinhamento" value={one.align} testId="piece-align" options={[{ id: 'start', label: 'À esquerda' }, { id: 'middle', label: 'Centro' }, { id: 'end', label: 'À direita' }]} onChange={(v) => editSel('Alinhamento', (pc) => { pc.align = v as typeof pc.align; })} />
+          <ToggleField label="Itálico" checked={one.italic} testId="piece-italic" onChange={(v) => editSel('Itálico', (pc) => { pc.italic = v; })} />
+          <SliderNumberField label="Espaçamento" unit="px" min={-20} max={80} sliderMin={-10} sliderMax={40} value={one.letterSpacing} testId="piece-letter-spacing" onChange={(v) => editSel('Espaçamento', (pc) => { pc.letterSpacing = v; }, `pc-${one.id}-ls`)} />
+          <ColorField label="Cor do texto" value={one.fill} testId="piece-text-color" onChange={(v) => editSel('Cor do texto', (pc) => { pc.fill = v; }, `pc-${one.id}-tf`)} />
+          <ColorField label="Contorno" value={one.stroke} testId="piece-text-stroke" onChange={(v) => editSel('Contorno do texto', (pc) => { pc.stroke = v; }, `pc-${one.id}-ts`)} />
+          <SliderNumberField label="Espessura do contorno" unit="px" min={0} max={40} sliderMin={0} sliderMax={20} value={one.strokeWidth} testId="piece-text-stroke-width" onChange={(v) => editSel('Contorno do texto', (pc) => { pc.strokeWidth = Math.max(0, v); }, `pc-${one.id}-tw`)} />
+          <p className="hint">O texto continua editável depois de salvo (na biblioteca, em pacotes e no .jrec). Usa fontes do sistema, sem baixar nada.</p>
+        </div>
       )}
       {one.kind === 'prop' && (
         <>

@@ -271,7 +271,7 @@ export const MANUAL_CHAPTERS: Chapter[] = [
     blocks: [
       { img: 'criador-objetos.jpg', alt: 'Criador de Objetos', legend: ['Tamanho e pivô do objeto.', 'Prévia: a caixa tracejada é o objeto; a base fica na linha do chão.', 'Adicionar peças.', 'Camadas: ordem, agrupar, desagrupar, duplicar, excluir.', 'Inserir na cena.'] },
       { list: [
-        'Peças: retângulo, elipse, triângulo, polígono, estrela, linha, imagem SVG/PNG/JPEG/WebP, objetos prontos e outros objetos seus.',
+        'Peças: retângulo, elipse, triângulo, polígono, estrela, linha, **texto**, imagem SVG/PNG/JPEG/WebP, objetos prontos e outros objetos seus.',
         'Cada peça: posição, tamanho, rotação, espelhar, virar, opacidade, preenchimento, contorno e cantos.',
         'O **pivô** é o ponto de giro e de escala quando o objeto está na cena.',
         'Na cena, o objeto se comporta como os prontos: posição, escala, rotação, opacidade, camadas e keyframes.',
@@ -279,6 +279,8 @@ export const MANUAL_CHAPTERS: Chapter[] = [
         'Editar o objeto atualiza todas as cópias. Excluir avisa quantas vezes ele está em uso.',
       ] },
       { tip: 'Ctrl+Z desfaz também dentro dos criadores.' },
+      { h: 'Texto (número de camisa, rótulo, placa)' },
+      { p: 'Em **Adicionar → Adicionar texto**, escreva o conteúdo (pode ter várias linhas) e ajuste fonte, tamanho, peso, itálico, alinhamento, espaçamento, cor e contorno; posição, giro, escala, opacidade e camada funcionam como em qualquer peça. O texto fica **editável** para sempre: na biblioteca, em pacotes e no .jrec ele continua texto, não vira imagem. O mesmo vale no **Criador de Cenários** (letreiros, placas, cartazes). As fontes são do sistema (sem download), e o conteúdo entra na busca da Biblioteca.' },
       { h: 'Animação por quadros (fogo, porta, água…)' },
       { p: 'A animação fica salva **no objeto**: toda cópia na cena anima sozinha, sem keyframes, também no PNG e no vídeo. Um objeto sem animação continua estático e simples.' },
       { img: 'criador-objetos-quadros.jpg', alt: 'Quadros de uma animação', legend: ['Escolha o que editar: o desenho estático ou uma animação.', 'Quadros: clique para editar um; o selecionado tem borda laranja.', '+ Quadro duplica o atual logo depois dele.', 'Duração do quadro em milissegundos (Todos ajusta todos).', 'Tocar a prévia.'] },

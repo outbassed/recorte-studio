@@ -198,12 +198,7 @@ function renderShape(node: Extract<SceneNode, { kind: 'shape' }>): string {
   }
 }
 
-const FONT_STACKS: Record<string, string> = {
-  sans: "'Trebuchet MS','Segoe UI',Arial,sans-serif",
-  serif: "Georgia,'Times New Roman',serif",
-  hand: "'Comic Sans MS','Segoe Print','Trebuchet MS',cursive",
-  mono: "Consolas,'Courier New',monospace",
-};
+import { FONT_STACKS } from './fonts';
 
 const propCache = new Map<string, string>();
 function cachedProp(id: string, a: string, b: string, state: string): string {
