@@ -30,6 +30,7 @@ import { setPref, usePrefs } from '@/state/prefs';
 import { promptDialog, toast, useUI } from '@/state/uiStore';
 import { repo } from '@/storage/db';
 import { IconButton, MoreButton, SearchBox } from '../controls/fields';
+import { ScrollStrip } from '../controls/ScrollStrip';
 import { Modal } from '../dialogs/Modal';
 import { HelpLink } from '../manual/HelpLink';
 import { backgroundThumbUrl, CharacterThumb, PropThumb, sceneThumbUrl } from './thumbs';
@@ -385,11 +386,11 @@ export function CatalogPanel({ view }: { view: CatalogView }) {
       </header>
       <div className="panel-sub cat-sub-head">
         <SearchBox value={q.text} onChange={(text) => set({ text })} placeholder={PLACEHOLDER[view]} testId={SEARCH_ID[view]} />
-        <div className="chip-row is-scroll" role="group" aria-label="Origem" data-testid="catalog-filters">
+        <ScrollStrip className="chip-row" role="group" ariaLabel="Origem" testId="catalog-filters" watch={q.filter}>
           {FILTERS.map((f) => (
             <button key={f} type="button" className={`chip${q.filter === f ? ' is-active' : ''}`} aria-pressed={q.filter === f} data-filter={f} onClick={() => set({ filter: f })}>{f === 'favorites' && <Star size={11} />}{FILTER_LABELS[f]}</button>
           ))}
-        </div>
+        </ScrollStrip>
         <div className="cat-row2">
           <select className="cat-select" aria-label="Categoria" data-testid="catalog-category" value={q.category ?? ''} onChange={(ev) => set({ category: ev.target.value || null })}>
             <option value="">Todas as categorias</option>

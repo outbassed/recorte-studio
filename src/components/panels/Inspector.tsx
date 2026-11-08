@@ -32,6 +32,7 @@ import { confirmDialog, openContextMenu, promptDialog, useUI, toast } from '@/st
 import { deleteSelection } from '@/state/actions';
 import { ColorField, IconButton, Section, SelectField, TextField, ToggleField, useLongPress } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
+import { ScrollStrip } from '../controls/ScrollStrip';
 
 const useTimeMs = () => useTransport((s) => (s.playing ? -1 : s.timeMs));
 const nowMs = () => transport.getState().timeMs;
@@ -831,7 +832,8 @@ function Tabs({ ctx, tabs, children, help }: { ctx: string; tabs: string[]; chil
   const set = (t: string) => useUI.setState((s) => ({ inspectorTabs: { ...s.inspectorTabs, [ctx]: t } }));
   return (
     <>
-      <div className="insp-tabs" role="tablist" aria-label="Grupos de propriedades">
+      <div className="insp-tabs">
+        <ScrollStrip className="insp-tabs-row" role="tablist" ariaLabel="Grupos de propriedades" testId="insp-tabs" watch={active}>
         {tabs.map((t, i) => (
           <button key={t} type="button" role="tab" id={`itab-${slug(t)}`} aria-selected={t === active} aria-controls="insp-pane" tabIndex={t === active ? 0 : -1} className={t === active ? 'is-active' : ''} data-testid={`insp-tab-${slug(t)}`}
             onClick={() => set(t)}
@@ -844,6 +846,7 @@ function Tabs({ ctx, tabs, children, help }: { ctx: string; tabs: string[]; chil
               (e.currentTarget.parentElement?.querySelector(`#itab-${slug(next)}`) as HTMLElement | null)?.focus();
             }}>{t}</button>
         ))}
+        </ScrollStrip>
         {help && <HelpLink chapter={help} label="Ajuda sobre estas propriedades" />}
       </div>
       <div className="insp-pane" role="tabpanel" id="insp-pane" aria-labelledby={`itab-${slug(active)}`} data-tab={active}>
