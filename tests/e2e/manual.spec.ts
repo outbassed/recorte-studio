@@ -26,7 +26,7 @@ async function capture(page: Page, name: string, targets: string[] = []) {
     // Marcação fora da imagem é erro: a captura teria de ser refeita com o alvo visível.
     const cx = box.x + box.width / 2;
     const cy = box.y + Math.min(box.height, 40) / 2;
-    if (cx < 0 || cx > vp.width || cy < 0 || cy > vp.height) throw new Error(`Marcação ${i + 1} de ${name} fora da imagem: ${sel}`);
+    if (cx < 0 || cx > vp.width || cy < 0 || cy > vp.height) throw new Error(`Marcação ${i + 1} de ${name} fora da imagem: ${sel} (${Math.round(cx)},${Math.round(cy)} em ${vp.width}x${vp.height})`);
     list.push({ n: i + 1, x: +(((box.x + box.width / 2) / vp.width) * 100).toFixed(1), y: +(((box.y + Math.min(box.height, 40) / 2) / vp.height) * 100).toFixed(1) });
   }
   marks[`${name}.jpg`] = list;
@@ -62,11 +62,14 @@ test('capturas do manual (computador)', async ({ page }) => {
   await capture(page, 'rosto', ['[data-testid="sec-gaze"] .section-title', t('expression')]);
   await page.getByTestId('insp-tab-pose').click();
   await page.locator('[data-testid="sec-secondary"] .section-title').click();
-  await capture(page, 'pose', [t('sec-limb-depth'), t('pose')]);
+  // A seção de profundidade é alta: uma janela mais alta mostra o título dela e o da pose juntos.
+  await page.setViewportSize({ width: 1280, height: 1060 });
+  await page.evaluate(() => document.querySelectorAll('*').forEach((e) => { if (e.scrollTop) e.scrollTop = 0; }));
+  await capture(page, 'pose', ['[data-testid="sec-limb-depth"] .section-title', '[data-testid="sec-rig"] .section-title']);
+  await page.setViewportSize({ width: 1280, height: 800 });
   await page.getByTestId('insp-tab-rosto').click();
-  await page.locator('[data-testid="sec-identity"] .section-title').click();
   await page.getByTestId('edit-library').click();
-  await capture(page, 'criador-personagem', []);
+  await capture(page, 'criador-personagem', [t('creator-tab-cabelo'), t('creator-preview'), t('creator-done')]);
   await page.keyboard.press('Escape');
 
   // Painéis

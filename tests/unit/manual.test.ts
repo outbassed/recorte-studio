@@ -43,8 +43,20 @@ describe('manual', () => {
       if (!('img' in b)) continue;
       expect(existsSync(join('public/manual', b.img)), b.img).toBe(true);
       const marks = MARKS[b.img] ?? [];
-      if (b.legend) expect(b.legend.length, `${b.img}: legenda × marcações`).toBe(marks.length);
+      // Toda captura tem marcações medidas e uma legenda numerada para cada uma.
+      expect(marks.length, `${b.img}: sem marcações`).toBeGreaterThan(0);
+      expect(b.legend?.length ?? 0, `${b.img}: legenda × marcações`).toBe(marks.length);
+      for (const m of marks) {
+        expect(m.x).toBeGreaterThanOrEqual(0);
+        expect(m.x).toBeLessThanOrEqual(100);
+        expect(m.y).toBeGreaterThanOrEqual(0);
+        expect(m.y).toBeLessThanOrEqual(100);
+      }
     }
+  });
+  it('toda imagem de public/manual é usada por algum capítulo (sem arquivo órfão)', () => {
+    const used = new Set(CHAPTERS.flatMap((c) => c.blocks.flatMap((b) => ('img' in b ? [b.img] : []))));
+    for (const f of readdirSync('public/manual')) expect(used.has(f), f).toBe(true);
   });
   it('busca sem acento encontra pelo título e pelo texto', () => {
     expect(searchManual('camera')[0]?.id).toBe('camera');

@@ -60,7 +60,7 @@ export const MANUAL_CHAPTERS: Chapter[] = [
         '**Excluir** pede confirmação e não pode ser desfeito. Salve um .jrec antes, se tiver dúvida.',
       ] },
       { warn: 'O **link local** abre o projeto só neste navegador. Ele não serve para compartilhar com outra pessoa ou outro aparelho: para isso use o [.jrec](#jrec).' },
-      { img: 'modelos.jpg', alt: 'Modelos', caption: 'Modelos: as miniaturas são as cenas reais de cada modelo. "Prévia" mostra todas as cenas antes de criar.' },
+      { img: 'modelos.jpg', alt: 'Modelos', legend: ['Cartão de modelo: miniatura real, descrição, formato, número de cenas e duração. Toque para criar o projeto, ou use Prévia para ver todas as cenas.'], caption: 'Modelos: as miniaturas são as cenas reais de cada modelo. "Prévia" mostra todas as cenas antes de criar.' },
     ],
     related: ['jrec', 'salvamento'],
   },
@@ -83,7 +83,7 @@ export const MANUAL_CHAPTERS: Chapter[] = [
     id: 'criador-personagens', group: 'personagens', title: 'Criador de Personagens',
     summary: 'Corpo, rosto, cabelo, roupas e acessórios, com prévia nas 8 vistas.',
     blocks: [
-      { img: 'criador-personagem.jpg', alt: 'Criador de Personagens', caption: 'Abra pelo botão "Editar personagem da biblioteca" nas propriedades do personagem, ou criando um personagem novo no Elenco.' },
+      { img: 'criador-personagem.jpg', alt: 'Criador de Personagens', legend: ['Abas: corpo, rosto, cabelo, roupas e acessórios.', 'Prévia do personagem em tempo real.', 'Concluir e voltar ao editor.'], caption: 'Abra pelo botão "Editar personagem da biblioteca" nas propriedades do personagem, ou criando um personagem novo no Elenco.' },
       { list: [
         '**Corpo:** altura, idade, constituição, comprimento dos braços, barriga e tom de pele.',
         '**Rosto:** 8 formatos de cabeça, 8 olhos, 8 sobrancelhas, 10 narizes.',
@@ -134,7 +134,7 @@ export const MANUAL_CHAPTERS: Chapter[] = [
     id: 'poses', group: 'personagens', title: 'Poses, braços e movimento natural',
     summary: 'Poses prontas, rig, mãos, profundidade dos braços e movimentos automáticos sutis.',
     blocks: [
-      { img: 'pose.jpg', alt: 'Aba Pose', legend: ['Braços e mãos: na frente ou atrás da cabeça.', 'Pose pronta.'] },
+      { img: 'pose.jpg', alt: 'Aba Pose', legend: ['Braços e mãos: na frente ou atrás da cabeça (esquerdo e direito são os lados do personagem).', 'Pose e rig: pose pronta e ajuste de cada articulação.'] },
       { p: '**Poses prontas** ajustam braços, pernas e mãos de uma vez (em pé, vitória, acenando, braços cruzados, mãos no rosto, mãos atrás da cabeça, sentado e outras). Depois, cada articulação do **rig** pode ser ajustada e animada.' },
       { h: 'Frente ou atrás da cabeça' },
       { p: 'Braço esquerdo, mão esquerda, braço direito e mão direita têm cada um: **Automático**, **Na frente da cabeça** ou **Atrás da cabeça**. Esquerdo e direito são os lados do personagem, não da tela.' },
@@ -153,7 +153,7 @@ export const MANUAL_CHAPTERS: Chapter[] = [
     id: 'cenas', group: 'mundo', title: 'Cenas',
     summary: 'Criar, ordenar, duplicar e ligar cenas com transições.',
     blocks: [
-      { img: 'cenas.jpg', alt: 'Painel de cenas', caption: 'Cada cena tem miniatura, duração e número de ações. O menu "…" ou o toque longo mostram duplicar, mover e excluir.' },
+      { img: 'cenas.jpg', alt: 'Painel de cenas', legend: ['Uma cena: miniatura, duração e número de ações. A cena aberta fica destacada.'], caption: 'Cada cena tem miniatura, duração e número de ações. O menu "…" ou o toque longo mostram duplicar, mover e excluir.' },
       { list: [
         'Cada cena tem seus próprios elementos, posições, câmera e duração.',
         'Na aba **Cena** das propriedades (sem nada selecionado): nome, duração e anotações.',
@@ -234,7 +234,7 @@ export const MANUAL_CHAPTERS: Chapter[] = [
     id: 'camadas', group: 'mundo', title: 'Camadas',
     summary: 'Ordem, visibilidade, bloqueio, sombra, máscara e profundidade.',
     blocks: [
-      { img: 'camadas.jpg', alt: 'Painel de camadas', caption: 'O que está mais acima na lista aparece na frente.' },
+      { img: 'camadas.jpg', alt: 'Painel de camadas', legend: ['Uma camada: visibilidade, bloqueio, ordem e exclusão.'], caption: 'O que está mais acima na lista aparece na frente.' },
       { list: [
         'Use Subir, Descer, Topo e Fundo na aba **Camadas** das propriedades.',
         'Ocultar, bloquear (não move no palco) e renomear.',
