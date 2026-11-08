@@ -4,7 +4,7 @@
  * Rode com: npm run manual:shots
  */
 import { expect, test, type Page } from '@playwright/test';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { makeWav, openDemo, selectLayer, tab } from './helpers';
 
@@ -171,6 +171,23 @@ test('captura do manual: bolinha do grupo', async ({ page }) => {
   await capture(page, 'grupo-bolinha', [t('group-handle'), '[data-testid="layer-row"][data-node-name="Barco com passageiros"]']);
 });
 
+test('capturas do manual: Criador de Roupas e Cabelos', async ({ page }) => {
+  await openDemo(page);
+  await selectLayer(page, 'Nina');
+  await tab(page, 'characters');
+  await page.getByTestId('create-clothing').click();
+  await page.getByTestId('prompt-input').fill('Camiseta do time');
+  await page.getByTestId('prompt-ok').click();
+  await page.getByTestId('wear-studio-tab-add').click();
+  await page.getByTestId('add-text-piece').click();
+  await page.getByTestId('piece-text').fill('10');
+  await page.getByTestId('wear-studio-tab-add').click();
+  await capture(page, 'criador-roupas', [t('wear-name'), t('wear-starter'), t('wear-layer-list'), t('wear-model'), t('wear-views'), t('wear-studio-canvas'), t('wear-save-lib')]);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForTimeout(300);
+  await capture(page, 'criador-roupas-celular', [t('wear-big')]);
+});
+
 test('capturas do manual (celular)', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await openDemo(page);
@@ -184,6 +201,9 @@ test('capturas do manual (celular)', async ({ page }) => {
 });
 
 test.afterAll(() => {
+  // Rodar só parte das capturas (-g) preserva as marcações das outras.
+  const old = readFileSync(resolve('src/features/manual/marks.generated.ts'), 'utf8');
+  for (const m of old.matchAll(/^  '([^']+)': (\[.*\]),$/gm)) if (!marks[m[1]!]) marks[m[1]!] = JSON.parse(m[2]!);
   const keys = Object.keys(marks).sort();
   const body = keys.map((k) => `  '${k}': ${JSON.stringify(marks[k])},`).join('\n');
   writeFileSync(resolve('src/features/manual/marks.generated.ts'), `/* Gerado por tests/e2e/manual.spec.ts: posições medidas nas capturas reais. Não edite à mão. */\nexport const MARKS: Record<string, Array<{ n: number; x: number; y: number }>> = {\n${body}\n};\n`);
