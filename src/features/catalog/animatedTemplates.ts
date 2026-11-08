@@ -78,10 +78,75 @@ function boat(): CustomObject {
   });
 }
 
+/** Faixa de ondas (2200 px): 3 quadros deslocados de 1/3 do passo, em loop sem emenda. */
+function waves(): CustomObject {
+  const STEP = 130;
+  const row = (shift: number, fill: string): Piece[] => Array.from({ length: 19 }, (_, i) => P('ellipse', `Onda ${i + 1}`, { x: -1170 + i * STEP + shift, y: -17, w: 160, h: 34, fill, stroke: 'none', strokeWidth: 0 }));
+  const frames = [0, 1, 2].map((k) => ({ id: `onda_f${k}`, durationMs: 240, pieces: [P('rect', 'Água', { x: 0, y: -6, w: 2300, h: 14, fill: '#2f86c0', stroke: 'none', strokeWidth: 0 }), ...row((k * STEP) / 3, '#7cc4ea')] }));
+  return CustomObjectSchema.parse({
+    id: `${TEMPLATE_PREFIX}ondas`, name: 'Ondas', width: 2200, height: 40, pieces: frames[0]!.pieces,
+    clips: [{ id: 'mar', name: 'Mar', mode: 'loop', frames }], defaultClip: 'mar', createdAt: 0, updatedAt: 0,
+  });
+}
+
+function tent(): CustomObject {
+  return CustomObjectSchema.parse({
+    id: `${TEMPLATE_PREFIX}barraca`, name: 'Barraca', width: 360, height: 230,
+    pieces: [
+      P('triangle', 'Lona', { x: 0, y: -110, w: 360, h: 220, fill: '#e0b04c', stroke: '#23202b' }),
+      P('triangle', 'Porta', { x: 0, y: -60, w: 120, h: 120, fill: '#5e4635', stroke: '#23202b', strokeWidth: 3 }),
+      P('line', 'Corda', { x: 210, y: -60, w: 140, h: 0, rotation: 40, stroke: '#f4f1ea', strokeWidth: 3 }),
+    ],
+    createdAt: 0, updatedAt: 0,
+  });
+}
+
+function umbrella(): CustomObject {
+  return CustomObjectSchema.parse({
+    id: `${TEMPLATE_PREFIX}guardasol`, name: 'Guarda-sol', width: 320, height: 320,
+    pieces: [
+      P('rect', 'Haste', { x: 0, y: -140, w: 10, h: 280, fill: '#8c6a4f', stroke: '#23202b', strokeWidth: 2 }),
+      P('triangle', 'Lona', { x: 0, y: -300, w: 320, h: 90, fill: '#d65f5f', stroke: '#23202b' }),
+      P('triangle', 'Faixa', { x: 0, y: -300, w: 110, h: 90, fill: '#f4f1ea', stroke: '#23202b', strokeWidth: 2 }),
+    ],
+    createdAt: 0, updatedAt: 0,
+  });
+}
+
+function palm(): CustomObject {
+  const leaf = (i: number, rot: number) => P('ellipse', `Folha ${i}`, { x: Math.cos((rot * Math.PI) / 180) * 80, y: -420 + Math.sin((rot * Math.PI) / 180) * 40, w: 190, h: 46, rotation: rot, fill: '#3f9a52', stroke: '#1f4d2a', strokeWidth: 3 });
+  return CustomObjectSchema.parse({
+    id: `${TEMPLATE_PREFIX}palmeira`, name: 'Palmeira', width: 360, height: 470,
+    pieces: [
+      P('rect', 'Tronco', { x: 0, y: -210, w: 34, h: 420, rotation: 4, fill: '#9a7048', stroke: '#4a3220', strokeWidth: 3 }),
+      ...[-160, -110, -40, 20, 200].map((r, i) => leaf(i + 1, r)),
+      P('ellipse', 'Coco', { x: -10, y: -400, w: 34, h: 34, fill: '#6e5038', stroke: '#23202b', strokeWidth: 2 }),
+    ],
+    createdAt: 0, updatedAt: 0,
+  });
+}
+
+function rocks(): CustomObject {
+  return CustomObjectSchema.parse({
+    id: `${TEMPLATE_PREFIX}pedras`, name: 'Pedras', width: 260, height: 80,
+    pieces: [
+      P('ellipse', 'Pedra 1', { x: -80, y: -26, w: 110, h: 54, fill: '#8a8f99', stroke: '#2b2f37', strokeWidth: 3 }),
+      P('ellipse', 'Pedra 2', { x: 30, y: -34, w: 120, h: 70, fill: '#a3a8b2', stroke: '#2b2f37', strokeWidth: 3 }),
+      P('ellipse', 'Pedra 3', { x: 110, y: -18, w: 70, h: 38, fill: '#7a7f88', stroke: '#2b2f37', strokeWidth: 3 }),
+    ],
+    createdAt: 0, updatedAt: 0,
+  });
+}
+
 export const ANIMATED_TEMPLATES: AnimatedTemplate[] = [
   { id: 'barco', label: 'Barco', keywords: ['barco', 'bote', 'navio', 'veiculo', 'aquatico', 'mar'], category: 'Veículos', make: boat },
   { id: 'fogueira', label: 'Fogueira', keywords: ['fogo', 'chama', 'acampamento', 'efeito', 'animado'], make: fire },
   { id: 'ventilador', label: 'Ventilador', keywords: ['ventilador', 'girar', 'pás', 'animado'], make: fan },
+  { id: 'ondas', label: 'Ondas', keywords: ['mar', 'agua', 'onda', 'oceano', 'animado'], make: waves },
+  { id: 'barraca', label: 'Barraca', keywords: ['barraca', 'acampamento', 'camping', 'tenda'], category: 'Natureza', make: tent },
+  { id: 'guardasol', label: 'Guarda-sol', keywords: ['guarda-sol', 'praia', 'sombrinha'], category: 'Natureza', make: umbrella },
+  { id: 'palmeira', label: 'Palmeira', keywords: ['palmeira', 'coqueiro', 'praia', 'arvore'], category: 'Natureza', make: palm },
+  { id: 'pedras', label: 'Pedras', keywords: ['pedra', 'rocha', 'natureza'], category: 'Natureza', make: rocks },
 ];
 
 const cache = new Map<string, CustomObject>();

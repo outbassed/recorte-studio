@@ -3,6 +3,7 @@
  * Navegação lateral no computador e barra inferior no celular.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { ScrollStrip } from '../controls/ScrollStrip';
 import {
   Archive, ArchiveRestore, BookOpen, Clapperboard, Copy, Download, Eye, FilePlus2, FileUp, FolderOpen, Home, LayoutTemplate, Link2, Pencil, Settings, Sparkles, Trash2,
 } from 'lucide-react';
@@ -29,11 +30,13 @@ export function Logo({ size = 32 }: { size?: number }) {
 }
 
 /* ----------------------------- modelos ----------------------------- */
-export interface TemplateInfo { id: string; name: string; description: string; make: () => Project; demo?: boolean }
+export type TemplateCategory = 'Formatos' | 'Ambientes' | 'Técnicos';
+export interface TemplateInfo { id: string; name: string; description: string; make: () => Project; demo?: boolean; category: TemplateCategory; whatToTest?: string[] }
 export const TEMPLATES: TemplateInfo[] = [
-  { id: 'demo', name: 'Exemplo: Você sabe dançar?', description: 'Nina e Zeca conversando, com fala, olhar e dança. Bom para conhecer o editor.', make: createDemoProject, demo: true },
-  ...PROJECT_TEMPLATES.map((t) => ({ id: t.id, name: t.name, description: t.description, make: () => createFromProjectTemplate(t.id) })),
+  { id: 'demo', name: 'Exemplo: Você sabe dançar?', description: 'Nina e Zeca conversando, com fala, olhar e dança. Bom para conhecer o editor.', make: createDemoProject, demo: true, category: 'Formatos' },
+  ...PROJECT_TEMPLATES.map((t) => ({ id: t.id, name: t.name, description: t.description, category: t.category ?? 'Formatos', whatToTest: t.whatToTest, make: () => createFromProjectTemplate(t.id) })),
 ];
+const TEMPLATE_CATEGORIES: Array<TemplateCategory | 'Todos'> = ['Todos', 'Ambientes', 'Técnicos', 'Formatos'];
 interface TemplateInfoCache { thumbs: string[]; names: string[]; format: string; scenes: number; durationMs: number }
 const previewCache = new Map<string, TemplateInfoCache>();
 /**
@@ -88,6 +91,12 @@ function TemplateCard({ t, compact }: { t: TemplateInfo; compact?: boolean }) {
       {preview && (
         <Modal title={t.name} testId="template-preview" onClose={() => setPreview(false)} footer={<button type="button" className="btn btn-primary" data-testid="template-preview-create" onClick={() => { setPreview(false); void createAndOpen(t.make()); }}>Criar projeto com este modelo</button>}>
           <p className="hint">{t.description} {info.format}, {info.scenes} cena(s), {formatTime(info.durationMs).slice(0, 5)}. As imagens são um quadro de cada cena, não uma reprodução.</p>
+          {t.whatToTest?.length ? (
+            <div className="tpl-test" data-testid="template-what-to-test">
+              <strong>O que testar neste modelo</strong>
+              <ul>{t.whatToTest.map((w) => <li key={w}>{w}</li>)}</ul>
+            </div>
+          ) : null}
           <ol className="tpl-preview-grid" data-testid="template-preview-scenes">
             {info.thumbs.map((u, i) => (
               <li key={i} data-testid="template-preview-scene">
@@ -267,10 +276,17 @@ function HomePage({ rows, reload, onNew, onImport }: { rows: ProjectRow[] | null
 }
 
 function TemplatesPage() {
+  const [cat, setCat] = useState<TemplateCategory | 'Todos'>('Todos');
+  const list = TEMPLATES.filter((t) => cat === 'Todos' || t.category === cat);
   return (
     <div className="home-page">
-      <header className="page-head"><div><h1>Modelos</h1><p>Cada modelo vira um projeto seu, editável. As miniaturas são as cenas reais do modelo.</p></div></header>
-      <div className="tpl-grid is-large">{TEMPLATES.map((t) => <TemplateCard key={t.id} t={t} />)}</div>
+      <header className="page-head"><div><h1>Modelos</h1><p>Cada modelo vira um projeto NOVO e seu, editável; o projeto aberto não muda. As miniaturas são as cenas reais do modelo.</p></div></header>
+      <ScrollStrip className="chip-row" role="group" ariaLabel="Categoria dos modelos" testId="template-categories" watch={cat}>
+        {TEMPLATE_CATEGORIES.map((c) => (
+          <button key={c} type="button" className={`chip${cat === c ? ' is-active' : ''}`} aria-pressed={cat === c} data-category={c} onClick={() => setCat(c)}>{c}</button>
+        ))}
+      </ScrollStrip>
+      <div className="tpl-grid is-large">{list.map((t) => <TemplateCard key={t.id} t={t} />)}</div>
     </div>
   );
 }

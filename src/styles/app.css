@@ -848,3 +848,7 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
 .hstrip-scroll::-webkit-scrollbar-thumb, .m-quick::-webkit-scrollbar-thumb, .settings-nav::-webkit-scrollbar-thumb, .tl-transport::-webkit-scrollbar-thumb, .stage-tools::-webkit-scrollbar-thumb, .anim-frames::-webkit-scrollbar-thumb, .creator-times::-webkit-scrollbar-thumb, .tabs::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 3px; }
 .hstrip-scroll::-webkit-scrollbar-track, .m-quick::-webkit-scrollbar-track, .settings-nav::-webkit-scrollbar-track, .tl-transport::-webkit-scrollbar-track, .stage-tools::-webkit-scrollbar-track, .anim-frames::-webkit-scrollbar-track, .creator-times::-webkit-scrollbar-track, .tabs::-webkit-scrollbar-track { background: transparent; }
 .m-quick, .settings-nav, .tl-transport, .stage-tools, .anim-frames, .creator-times, .tabs { scrollbar-width: thin; scrollbar-color: var(--line-2) transparent; }
+.tpl-test { margin-top: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-3); }
+.tpl-test strong { display: block; margin-bottom: 4px; }
+.tpl-test ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; color: var(--text-2); }
+.home-page > .hstrip { margin-bottom: 12px; }
