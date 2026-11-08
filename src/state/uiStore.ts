@@ -16,7 +16,7 @@ export type Screen = 'projects' | 'editor';
 export type HomeSection = 'home' | 'projects' | 'library' | 'templates' | 'manual' | 'settings';
 /** Manual e Configurações abertos por cima do editor, sem sair do projeto. */
 export type Overlay = null | { kind: 'manual'; chapter?: string } | { kind: 'settings'; section?: string } | { kind: 'library' };
-export type DialogKind = null | 'export' | 'settings' | 'shortcuts' | 'creator' | 'import-report' | 'object-creator' | 'scene-creator';
+export type DialogKind = null | 'export' | 'settings' | 'shortcuts' | 'creator' | 'import-report' | 'object-creator' | 'scene-creator' | 'wear-creator';
 
 interface UIState extends Selection {
   screen: Screen;
@@ -29,6 +29,8 @@ interface UIState extends Selection {
   dialog: DialogKind;
   creatorCharacterId: string | null;
   objectCreatorId: string | null;
+  /** Roupa ou cabelo aberto no Criador de Roupas e Cabelos. */
+  wearCreatorId: string | null;
   sceneCreatorId: string | null;
   sceneCreatorTime: 'morning' | 'day' | 'afternoon' | 'sunset' | 'night';
   leftTab: LeftTab;
@@ -77,6 +79,7 @@ export const useUI = create<UIState>(() => ({
   dialog: null,
   creatorCharacterId: null,
   objectCreatorId: null,
+  wearCreatorId: null,
   sceneCreatorId: null,
   sceneCreatorTime: 'day',
   nodeIds: [],

@@ -38,6 +38,17 @@ import { HelpLink } from '../manual/HelpLink';
 import { backgroundThumbUrl, CharacterThumb, PropThumb, sceneThumbUrl } from './thumbs';
 import { CustomBackgroundCard } from './CustomBackgrounds';
 import { animatedTemplate } from '@/features/catalog/animatedTemplates';
+import { MANNEQUINS, wearOn } from '@/engine/character/wear';
+import type { Wearable } from '@/engine/model/schema';
+import { newWearableInProject } from '@/state/wearActions';
+
+/** Manequim neutro vestindo a peça (miniaturas e prévias de roupas e cabelos). */
+const wearDefCache = new WeakMap<Wearable, CharacterDefinition>();
+function mannequinWearing(w: Wearable): CharacterDefinition {
+  let d = wearDefCache.get(w);
+  if (!d) { d = deepClone(MANNEQUINS[0]!.def); wearOn(d, w); wearDefCache.set(w, d); }
+  return d;
+}
 
 const MANNEQUIN = BUILTIN_CHARACTERS[0]!;
 const PAGE = 60;
@@ -125,6 +136,7 @@ export function EntryThumb({ e, project, size = 64, variant = 'day', state, view
       return cb ? <CustomBgThumb project={libProject} cb={cb} time={state} width={wide} blobs={blobs} /> : null;
     }
     case 'scene': return <SceneMoldThumb project={project} e={e} width={wide} />;
+    case 'wearable': return e.wearable ? <CharacterThumb def={mannequinWearing(e.wearable)} size={size} view={view} portrait={e.wearable.kind === 'hair' && !full} /> : <span className="cat-icon" aria-hidden="true">?</span>;
   }
 }
 
@@ -137,6 +149,7 @@ function legacyTestId(e: CatalogEntry): string {
     case 'builtin-prop': return 'prop-card';
     case 'builtin-background': return 'bg-card';
     case 'project-object': return 'my-object';
+    case 'project-wearable': return 'my-wearable';
     case 'project-background': return 'custom-bg';
     case 'builtin-object': return 'tpl-object';
     case 'pack-item': return 'pack-item';
@@ -146,7 +159,7 @@ function legacyTestId(e: CatalogEntry): string {
 
 function menuOf(e: CatalogEntry, openDetails: () => void) {
   const items: Array<{ label: string; onSelect: () => void; danger?: boolean }> = [];
-  if (!e.broken) items.push({ label: e.kind === 'pose' || e.kind === 'sequence' ? 'Aplicar ao personagem selecionado' : e.kind === 'background' ? 'Usar nesta cena' : 'Inserir na cena', onSelect: () => void insertEntry(e) });
+  if (!e.broken) items.push({ label: e.kind === 'wearable' ? 'Vestir no personagem selecionado' : e.kind === 'pose' || e.kind === 'sequence' ? 'Aplicar ao personagem selecionado' : e.kind === 'background' ? 'Usar nesta cena' : 'Inserir na cena', onSelect: () => void insertEntry(e) });
   items.push({ label: 'Detalhes e prévia', onSelect: openDetails });
   if (canEdit(e)) items.push({ label: e.editable ? 'Editar' : 'Criar cópia editável', onSelect: () => void editEntry(e) });
   if (e.editable && !e.broken) items.push({ label: 'Duplicar', onSelect: () => void duplicateEntry(e) });
@@ -160,7 +173,7 @@ function menuOf(e: CatalogEntry, openDetails: () => void) {
 
 function CatalogCard({ e, project, list, variant, active, onDetails }: { e: CatalogEntry; project: Project; list: boolean; variant: 'day' | 'night'; active: boolean; onDetails: () => void }) {
   const tid = legacyTestId(e);
-  const insertLabel = e.kind === 'pose' || e.kind === 'sequence' ? `Aplicar ${e.name} ao personagem selecionado` : e.kind === 'background' || e.kind === 'scene' ? `Usar ${e.name}` : `Inserir ${e.name} na cena`;
+  const insertLabel = e.kind === 'wearable' ? `Vestir ${e.name} no personagem selecionado` : e.kind === 'pose' || e.kind === 'sequence' ? `Aplicar ${e.name} ao personagem selecionado` : e.kind === 'background' || e.kind === 'scene' ? `Usar ${e.name}` : `Inserir ${e.name} na cena`;
   const extra: Record<string, string> = {};
   if (e.ref.type === 'builtin-prop') extra['data-prop'] = e.ref.propId;
   if (e.ref.type === 'builtin-background') extra['data-bg'] = e.ref.presetId;
@@ -179,7 +192,7 @@ function CatalogCard({ e, project, list, variant, active, onDetails }: { e: Cata
         {canEdit(e) && (
           <IconButton
             label={e.editable ? `Editar ${e.name}` : `Criar cópia editável de ${e.name}`}
-            testId={e.ref.type === 'project-character' ? 'edit-character' : e.ref.type === 'project-object' ? 'my-object-edit' : 'catalog-edit'}
+            testId={e.ref.type === 'project-character' ? 'edit-character' : e.ref.type === 'project-object' ? 'my-object-edit' : e.ref.type === 'project-wearable' ? 'my-wearable-edit' : 'catalog-edit'}
             onClick={() => void editEntry(e)}
           >{e.editable ? <Pencil size={14} /> : <Copy size={14} />}</IconButton>
         )}
@@ -194,6 +207,9 @@ const VIEWS: Array<{ id: ViewId; label: string }> = [{ id: 'front', label: 'Fren
 
 export function DetailPreview({ e, project }: { e: CatalogEntry; project: Project }) {
   if (e.broken) return <p className="lib-error" role="alert">Indisponível: {e.broken} Você pode apagar este registro.</p>;
+  if (e.kind === 'wearable') {
+    return <div className="cat-views" data-testid="catalog-views">{VIEWS.map((v) => <figure key={v.id}><EntryThumb e={e} project={project} size={84} view={v.id} full /><figcaption>{v.label}</figcaption></figure>)}</div>;
+  }
   if (e.kind === 'character') {
     return <div className="cat-views" data-testid="catalog-views">{VIEWS.map((v) => <figure key={v.id}><EntryThumb e={e} project={project} size={84} view={v.id} full /><figcaption>{v.label}</figcaption></figure>)}</div>;
   }
@@ -235,7 +251,7 @@ export function policyText(e: CatalogEntry): string {
 }
 
 function CatalogDetails({ e, project, variant, onClose }: { e: CatalogEntry; project: Project; variant: 'day' | 'night'; onClose: () => void }) {
-  const useLabel = e.kind === 'pose' || e.kind === 'sequence' ? 'Aplicar ao selecionado' : e.kind === 'background' ? 'Usar nesta cena' : e.kind === 'scene' ? 'Adicionar como nova cena' : 'Inserir na cena';
+  const useLabel = e.kind === 'wearable' ? 'Vestir no selecionado' : e.kind === 'pose' || e.kind === 'sequence' ? 'Aplicar ao selecionado' : e.kind === 'background' ? 'Usar nesta cena' : e.kind === 'scene' ? 'Adicionar como nova cena' : 'Inserir na cena';
   const prop = e.ref.type === 'builtin-prop' ? getProp(e.ref.propId) : undefined;
   return (
     <Modal title={e.name} onClose={onClose} testId="catalog-details" size="md" footer={(
@@ -280,6 +296,8 @@ function FooterFor({ view, onCreatedBackground }: { view: CatalogView; onCreated
           commit('Criar personagem', (d) => { d.characters[def.id] = def; });
           useUI.setState({ dialog: 'creator', creatorCharacterId: def.id });
         }}><UserPlus size={15} /> Criar personagem</button>
+          <button type="button" className="btn btn-sm" data-testid="create-clothing" onClick={() => void newWearableInProject('clothing', 'tshirt')}><Shapes size={14} /> Criar roupa</button>
+          <button type="button" className="btn btn-sm" data-testid="create-hair" onClick={() => void newWearableInProject('hair', 'hair-short')}><Wand2 size={14} /> Criar cabelo</button>
           <button type="button" className="btn btn-sm" data-testid="catalog-save-pose" disabled={!selChar} title={selChar ? undefined : 'Selecione um personagem no palco'} onClick={async () => {
             if (selChar?.kind !== 'character') return;
             const name = await promptDialog('Salvar pose', 'Nome da pose', `Pose de ${selChar.name}`);

@@ -14,6 +14,16 @@ Branch `feature/recorte-studio-catalogo-biblioteca`, sobre a 1.2. Sem lançament
 - **Vínculo pai/filho:** Propriedades → Camadas → Vinculado a. O elemento acompanha o grupo (posição, giro, escala, keyframes) e mantém as próprias falas, ações e piscadas. Vincular e soltar não mudam a posição na tela.
 - **Shift+clique no losango da seção** (ou toque longo) remove só os keyframes daquela seção no instante atual, com um único Ctrl+Z e confirmação quando acaba com a animação de uma propriedade.
 
+### Fase 3b: Criadores de Roupas e Cabelos com manequim
+
+- **Criador de Roupas e Criador de Cabelos** (Elenco → Criar roupa / Criar cabelo; Biblioteca → + Roupa / + Cabelo): peças por camadas, cada camada presa a uma parte do corpo (cabeça, tronco, quadril, braço, antebraço, coxa, canela). Formas (incluindo o novo **trapézio**), texto, cor, contorno, posição, tamanho, giro, ordem; adicionar, duplicar, reordenar e excluir camadas; desfazer/refazer.
+- **Pontos de partida originais:** camiseta, camisa de manga longa, casaco aberto, vestido, calça, bermuda, saia, macacão; cabelo curto, longo, cacheado, black e coque.
+- **Manequim de referência** em 6 corpos (adulto, robusto, esguio, adolescente, criança, idoso) ou qualquer personagem do projeto, com pose, as 8 vistas, zoom, foco na cabeça e "Sem a peça". Experimentar no manequim não muda nenhum personagem. **Sem roupa, cobertura neutra opaca no peito e no quadril; sem nudez.**
+- **Acompanha o corpo:** a peça segue pose, vista, animação, reprodução e exportação; ajusta-se ao tamanho de cada corpo; cabelo comprido fica atrás do corpo de frente e por cima das costas de costas; camadas só de frente/só de costas, "desliza ao virar" e espelhamento. Peças que substituem a roupa ou o cabelo padrão deixam uma base neutra por baixo.
+- **Itens individuais:** cada roupa/cabelo aparece no Elenco e na Biblioteca com miniatura, categoria (Roupas, Cabelos) e informações; vestir no personagem selecionado, editar, duplicar, renomear, salvar na biblioteca (mesmo registro ao salvar de novo), exportar, importar e excluir. Editar uma peça atualiza todos os personagens do projeto que a vestem; cada personagem guarda a própria cópia.
+- **Criador de Personagens → Roupas/Cabelo:** lista as peças criadas para vestir e tirar, e cria novas.
+- **Compatibilidade:** projetos e personagens antigos abrem iguais (`wear` e `wearables` vazios por padrão); .jrec, pacotes e biblioteca existentes não mudam.
+
 ### Fase 3a: texto nos criadores
 
 - **Texto editável** como peça nos Criadores de Objetos e de Cenários: conteúdo com várias linhas, fonte, tamanho, peso, itálico, alinhamento, espaçamento, cor e contorno; continua texto na biblioteca, em pacotes e no .jrec, e entra na busca da Biblioteca.

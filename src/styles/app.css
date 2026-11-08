@@ -918,3 +918,40 @@ button.libh-card:hover { background: var(--bg-3); border-color: var(--line-2); }
   .pack-hero { grid-template-columns: 1fr; }
   .libh-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }
+
+/* ---------- 3b: Criadores de Roupas e Cabelos ---------- */
+[data-testid="wear-creator"] { grid-template-rows: auto auto auto minmax(0, 1fr); overflow: auto; }
+.wear-layers { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 6px 12px; padding: 6px 14px; border-bottom: 1px solid var(--line); background: var(--bg-2); }
+.wear-layers > .chip-row, .wear-layers .scroll-strip { flex: 1 1 320px; min-width: 0; }
+.wear-layer-tools { display: flex; align-items: flex-end; gap: 4px; }
+.wear-layer-tools .field { width: 170px; margin: 0; }
+.wear-layer-props { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: flex-end; width: 100%; }
+.wear-layer-props > .field { width: 180px; margin: 0; }
+.wear-main { display: grid; grid-template-columns: minmax(300px, 40%) 1fr; min-height: 560px; }
+.wear-preview { display: grid; grid-template-rows: auto auto minmax(260px, 1fr) auto; gap: 6px; padding: 8px 12px; min-width: 0; min-height: 0; border-right: 1px solid var(--line); background: var(--bg-3); }
+.wear-preview-tools { display: flex; flex-wrap: wrap; gap: 4px 10px; }
+.wear-preview-tools .field { flex: 1 1 120px; margin: 0; }
+.wear-quick { flex-wrap: wrap; gap: 6px; align-items: center; }
+.wear-big { width: 100%; height: 100%; min-height: 0; display: block; background: var(--bg-2); border-radius: 12px; border: 1px solid var(--line); }
+.wear-views { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; }
+.wear-views button { width: 100%; aspect-ratio: 0.7; padding: 2px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg-2); }
+.wear-views button.is-active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.wear-views svg { width: 100%; height: 100%; display: block; }
+.wear-edit { display: grid; grid-template-rows: auto minmax(0, 1fr); min-width: 0; min-height: 0; }
+.wear-edit > .hint { margin: 0; padding: 6px 12px; border-bottom: 1px solid var(--line); }
+.wear-edit .studio { min-height: 480px; }
+.created-wear { display: grid; gap: 6px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+.created-wear h4 { margin: 0; font-size: calc(13px * var(--ui-scale, 1)); }
+@media (max-width: 860px) {
+  [data-testid="wear-creator"] { display: flex; flex-direction: column; }
+  [data-testid="wear-creator"] > *, .wear-preview, .wear-edit { flex: none; }
+  .wear-main { display: contents; }
+  .wear-strip { order: 2; }
+  .wear-layers { order: 3; }
+  .wear-edit { order: 4; }
+  .wear-preview { order: 1; border-right: 0; border-bottom: 1px solid var(--line); grid-template-rows: auto auto 46dvh auto; }
+  .wear-views { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .wear-layer-tools .field, .wear-layer-props > .field { width: calc(50% - 8px); }
+  .wear-layer-tools { flex-wrap: wrap; width: 100%; }
+  .wear-edit .studio { min-height: 0; height: 88dvh; }
+}

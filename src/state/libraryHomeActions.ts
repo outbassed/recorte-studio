@@ -17,6 +17,7 @@ import { repo, StorageQuotaError, type LibraryKind, type LibraryRecord } from '@
 import { editEntry, reloadLibrary, useLibrary } from './catalogActions';
 import { libIdentity, newCustomObject, newScenery } from './creatorActions';
 import { usePacks } from './packActions';
+import { newWearableInProject } from './wearActions';
 import { setPref, usePrefs } from './prefs';
 import { commit, useProjectStore } from './projectStore';
 import { closeOverlay, confirmDialog, promptDialog, toast, useUI } from './uiStore';
@@ -51,9 +52,10 @@ export async function ensureWorkshop(): Promise<boolean> {
   return true;
 }
 
-export async function createInLibrary(kind: 'object' | 'background' | 'character'): Promise<void> {
+export async function createInLibrary(kind: 'object' | 'background' | 'character' | 'clothing' | 'hair'): Promise<void> {
   await ensureWorkshop();
-  if (kind === 'object') await newCustomObject();
+  if (kind === 'clothing' || kind === 'hair') { if (!(await newWearableInProject(kind, kind === 'hair' ? 'hair-short' : 'tshirt'))) return; }
+  else if (kind === 'object') await newCustomObject();
   else if (kind === 'background') await newScenery();
   else {
     const def = newCharacterDefinition('Novo personagem', {});
@@ -113,6 +115,7 @@ export async function renameRecord(libId: string): Promise<void> {
   if (r.kind === 'character') (data as Record<string, unknown>).name = name;
   if (r.kind === 'object' && data.object) (data.object as Record<string, unknown>).name = name;
   if (r.kind === 'background' && data.background) (data.background as Record<string, unknown>).name = name;
+  if (r.kind === 'wearable') (data as Record<string, unknown>).name = name;
   if (await safePut({ ...r, name, data, updatedAt: Date.now() }, 'Não foi possível renomear')) await reloadLibrary();
 }
 
@@ -123,6 +126,7 @@ export async function duplicateRecord(libId: string): Promise<void> {
   if (r.kind === 'character') data.id = uid('char');
   if (r.kind === 'object' && data.object) (data.object as Record<string, unknown>).id = uid('obj');
   if (r.kind === 'background' && data.background) (data.background as Record<string, unknown>).id = uid('cbg');
+  if (r.kind === 'wearable') { data.id = uid('roupa'); data.name = `${r.name} (cópia)`; }
   const now = Date.now();
   if (await safePut({ ...r, id: uid('lib'), name: `${r.name} (cópia)`, favorite: 0, createdAt: now, updatedAt: now, data }, 'Não foi possível duplicar')) {
     await reloadLibrary();
@@ -158,7 +162,7 @@ export function exportRecords(records: LibraryRecord[], fileName = 'biblioteca-r
   downloadJson(fileName, JSON.stringify({ format: 'recorte-studio-library', version: 1, items: records }, null, 2));
 }
 
-const IDENTITY: Partial<Record<LibraryKind, (d: unknown) => string | undefined>> = { object: libIdentity.object, background: libIdentity.background, character: libIdentity.character };
+const IDENTITY: Partial<Record<LibraryKind, (d: unknown) => string | undefined>> = { object: libIdentity.object, background: libIdentity.background, character: libIdentity.character, wearable: (d) => (d && typeof d === 'object' && typeof (d as { id?: unknown }).id === 'string' ? (d as { id: string }).id : undefined) };
 
 /**
  * Importa um arquivo de biblioteca (.json). Item com a mesma identidade de um já salvo ATUALIZA o

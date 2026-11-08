@@ -33,6 +33,7 @@ const COMPAT: Record<CatalogKind, string> = {
   object: 'Objeto montado (formato de biblioteca v2, com imagens e objetos usados)',
   background: 'Cenário personalizado (horários, formato v2)',
   scene: 'Cena completa com o elenco dela',
+  wearable: 'Personagens do Criador (acompanha corpo, poses e as 8 vistas; tamanho ajustado a cada corpo)',
 };
 
 /** Metadados exibidos nos detalhes, conforme a origem. */
@@ -43,9 +44,9 @@ function metaOf(e: CatalogEntry, packs: ReturnType<typeof usePacks.getState>['pa
   const creator = e.origin === 'builtin' ? 'Recorte Studio' : e.origin === 'pack' ? pack?.manifest.author || pack?.name || 'Pacote' : e.origin === 'mine' ? 'Você' : 'Este projeto';
   const license = e.origin === 'builtin' ? 'Original do Recorte Studio (livre nos seus projetos)' : e.origin === 'pack' ? pack?.manifest.license ?? '—' : 'Sua criação';
   const version = e.origin === 'pack' ? `${pack?.version ?? '—'} (pacote)` : e.origin === 'builtin' ? 'Embutido no app' : e.updatedAt ? `Atualizado em ${new Date(e.updatedAt).toLocaleDateString('pt-BR')}` : '—';
-  const size = e.origin === 'builtin' ? 'Embutido no app' : fmtSize(recordBytes(rec?.data ?? e.objectBundle ?? e.backgroundBundle ?? e.character ?? e.sceneData ?? {}, assets));
+  const size = e.origin === 'builtin' ? 'Embutido no app' : fmtSize(recordBytes(rec?.data ?? e.objectBundle ?? e.backgroundBundle ?? e.character ?? e.sceneData ?? e.wearable ?? {}, assets));
   const anims = e.kind === 'object' && e.states.length ? e.states.map((s) => s.label).join(', ') : e.kind === 'prop' && e.states.length ? `Estados: ${e.states.map((s) => s.label).join(', ')}` : 'Nenhuma';
-  const views = e.kind === 'character' ? '8 vistas (frente, lados, costas e diagonais)' : e.kind === 'background' ? (e.ref.type === 'builtin-background' ? 'Dia e noite' : `Horários: ${(e.times ?? []).length || 'nenhum'}`) : e.kind === 'pose' ? 'Frente (aplicável em qualquer vista)' : 'Uma vista';
+  const views = e.kind === 'character' || e.kind === 'wearable' ? '8 vistas (frente, lados, costas e diagonais)' : e.kind === 'background' ? (e.ref.type === 'builtin-background' ? 'Dia e noite' : `Horários: ${(e.times ?? []).length || 'nenhum'}`) : e.kind === 'pose' ? 'Frente (aplicável em qualquer vista)' : 'Uma vista';
   return { creator, license, version, size, anims, views };
 }
 
@@ -155,6 +156,8 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
           <button type="button" className="btn btn-sm" data-testid="library-create-object" onClick={() => void createInLibrary('object')}><Plus size={14} /> Objeto</button>
           <button type="button" className="btn btn-sm" data-testid="library-create-background" onClick={() => void createInLibrary('background')}><Plus size={14} /> Cenário</button>
           <button type="button" className="btn btn-sm" data-testid="library-create-character" onClick={() => void createInLibrary('character')}><Plus size={14} /> Personagem</button>
+          <button type="button" className="btn btn-sm" data-testid="library-create-clothing" onClick={() => void createInLibrary('clothing')}><Plus size={14} /> Roupa</button>
+          <button type="button" className="btn btn-sm" data-testid="library-create-hair" onClick={() => void createInLibrary('hair')}><Plus size={14} /> Cabelo</button>
           <button type="button" className="btn btn-sm btn-primary" data-testid="library-import" disabled={!!busy} onClick={() => fileRef.current?.click()}><FileUp size={14} /> Importar</button>
           <input ref={fileRef} hidden type="file" accept=".json,.rspack,.zip" data-testid="library-input" onChange={(ev) => { const f = ev.target.files?.[0]; ev.target.value = ''; if (f) void onFile(f); }} />
         </div>

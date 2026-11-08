@@ -93,6 +93,14 @@ O palco calcula a matriz câmera × pais × nó (a mesma composição do renderi
 | 13 | Undo/redo e Shift+clique da seção | PASSOU | unit e E2E (remove só o instante, um Ctrl+Z, confirmação) |
 | 14 | Centenas de itens | PASSOU | E2E com 400 registros: abrir ~160–400 ms, buscar ~40–70 ms, só a 1ª página desenhada |
 
+## Roupas e cabelos criados (Fase 3b)
+
+- **Formato:** `Wearable` (`src/engine/model/schema.ts`): `kind` (roupa ou cabelo), `category`, `hides` (substitui parte de cima, de baixo, cabelo) e até 40 `layers`. Cada camada tem `anchor` (cabeça, tronco, quadril, braço, antebraço, coxa, canela), `depth` (na frente, atrás da cabeça, atrás do corpo), `side` (todas, só frente, só costas), `followTurn`, `mirror` e até 200 peças vetoriais (as mesmas dos criadores, sem imagem).
+- **Onde fica:** o projeto guarda o registro em `project.wearables`; cada personagem que veste guarda uma **cópia** em `CharacterDefinition.wear` (até 12). Editar a peça atualiza as cópias de todos os personagens do projeto. Na biblioteca, o tipo é `wearable` e a identidade é o `id` da peça (salvar de novo atualiza o mesmo registro).
+- **Renderização** (`src/engine/character/wear.ts` + `render.ts`): as camadas são desenhadas dentro do grupo da parte do corpo, no espaço do corpo de referência (adulto padrão) e escaladas pela medida real da parte em cada personagem e vista. Por isso acompanham pose, vista, animação, prévia e exportação. Mangas e pernas usam o mesmo desenho nos dois lados.
+- **Cobertura:** quando a peça substitui a roupa ou o cabelo padrão, a parte de cima vira base neutra sem manga, o quadril vira base neutra e o cabelo vira careca; nada fica descoberto. Os manequins usam essa base também (peito e quadril).
+- **Limitações (para a Fase 3c):** sem caimento por personagem (só escala); sem dobra de tecido; partes do corpo fixas (sem corpo modular); camadas de braço e perna iguais nos dois lados; cabelo criado e chapéus não se recortam entre si.
+
 ## Limitações conhecidas
 
 - A decomposição de matrizes não representa cisalhamento (pai com escala não uniforme e filho girado).

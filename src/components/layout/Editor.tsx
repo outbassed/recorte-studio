@@ -14,6 +14,7 @@ import { copyProjectLink } from '@/features/projects/urls';
 import { closeDialog, clearSelection, closeOverlay, openAppSettings, openDialog, openManual, selectNodes, useUI, useFeedback, toast, type LeftTab, type MobilePanel } from '@/state/uiStore';
 import { ManualView } from '../manual/ManualView';
 import { ObjectCreator, SceneCreator } from '../creators/Creators';
+import { WearCreator } from '../creators/WearCreator';
 import { quickActions, runQuick, type QuickAction } from './quickActions';
 import { findClip } from '@/engine/model/ops';
 import { SettingsView } from '../settings/SettingsView';
@@ -303,6 +304,7 @@ function Dialogs() {
       {dialog === 'creator' && <CreatorDialog />}
       {dialog === 'import-report' && <ImportReportDialog />}
       {dialog === 'object-creator' && <ObjectCreator />}
+      {dialog === 'wear-creator' && <WearCreator />}
       {dialog === 'scene-creator' && <SceneCreator />}
     </>
   );

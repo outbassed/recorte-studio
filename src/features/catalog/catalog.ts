@@ -11,7 +11,7 @@
  *
  * Tudo aqui é puro (sem React nem IndexedDB) para ser testado em unidade.
  */
-import { CharacterDefinitionSchema, RigSchema, SceneSchema, type CharacterDefinition, type Rig, type CustomBackground, type Project, type Scene } from '@/engine/model/schema';
+import { CharacterDefinitionSchema, RigSchema, SceneSchema, WearableSchema, type Wearable, type CharacterDefinition, type Rig, type CustomBackground, type Project, type Scene } from '@/engine/model/schema';
 import { BUILTIN_CHARACTERS } from '@/engine/character/presets';
 import { BACKGROUNDS } from '@/engine/world/backgrounds';
 import { PROPS, PROP_CATEGORY_LABELS } from '@/engine/world/props';
@@ -27,13 +27,14 @@ export type CatalogView = 'cast' | 'scenery' | 'objects';
 export type CatalogOrigin = 'builtin' | 'project' | 'mine' | 'pack';
 export type CatalogFilter = 'all' | 'builtin' | 'packs' | 'mine' | 'favorites' | 'recent' | 'project';
 export type CatalogSort = 'default' | 'name' | 'updated' | 'favorites';
-export type CatalogKind = 'character' | 'pose' | 'sequence' | 'prop' | 'object' | 'background' | 'scene';
+export type CatalogKind = 'character' | 'pose' | 'sequence' | 'prop' | 'object' | 'background' | 'scene' | 'wearable';
 
 export type CatalogRef =
   | { type: 'builtin-character'; builtinId: string }
   | { type: 'project-character'; id: string }
   | { type: 'builtin-prop'; propId: string }
   | { type: 'project-object'; id: string }
+  | { type: 'project-wearable'; id: string }
   | { type: 'builtin-background'; presetId: string }
   | { type: 'project-background'; id: string }
   | { type: 'builtin-object'; tplId: string }
@@ -78,6 +79,8 @@ export interface CatalogEntry {
   pose?: PoseData;
   sequenceSteps?: number;
   sceneData?: SceneData;
+  /** Roupa ou cabelo criado (Fase 3b). */
+  wearable?: Wearable;
   times?: string[];
 }
 
@@ -88,6 +91,8 @@ export const SORT_LABELS: Record<CatalogSort, string> = { default: 'Por seção'
 
 export const CAT = {
   characters: 'Personagens',
+  clothing: 'Roupas',
+  hair: 'Cabelos',
   poses: 'Poses',
   sequences: 'Sequências',
   objects: 'Objetos montados',
@@ -116,6 +121,7 @@ const keyOf = (ref: CatalogRef): string => {
     case 'project-character': return `project:character:${ref.id}`;
     case 'builtin-prop': return `builtin:prop:${ref.propId}`;
     case 'project-object': return `project:object:${ref.id}`;
+    case 'project-wearable': return `project:wearable:${ref.id}`;
     case 'builtin-background': return `builtin:background:${ref.presetId}`;
     case 'project-background': return `project:background:${ref.id}`;
     case 'builtin-object': return `builtin:object:${ref.tplId}`;
@@ -153,10 +159,12 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
   const libChar = new Map<string, LibraryRecord>();
   const libObj = new Map<string, LibraryRecord>();
   const libBg = new Map<string, LibraryRecord>();
+  const libWear = new Map<string, LibraryRecord>();
   for (const r of library) {
     if (r.kind === 'character' && isObj(r.data) && typeof r.data.id === 'string') libChar.set(r.data.id, r);
     if (r.kind === 'object' && isObj(r.data) && isObj(r.data.object) && typeof r.data.object.id === 'string') libObj.set(r.data.object.id, r);
     if (r.kind === 'background' && isObj(r.data) && isObj(r.data.background) && typeof r.data.background.id === 'string') libBg.set(r.data.background.id, r);
+    if (r.kind === 'wearable' && isObj(r.data) && typeof r.data.id === 'string') libWear.set(r.data.id, r);
   }
 
   /* ---------------- projeto ---------------- */
@@ -169,6 +177,16 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
       keywords: [c.hair.style, c.outfit.top, c.builtinId ?? ''], origin: 'project', editable: true, favorite: c.favorite,
       updatedAt: project.updatedAt, usage: characterUsage(project, c.id), inProject: true, libId: libChar.get(c.id)?.id,
       fromBuiltin: !!c.builtinId, states: [], ref, character: c,
+    });
+  }
+  for (const w of Object.values(project.wearables ?? {})) {
+    const ref: CatalogRef = { type: 'project-wearable', id: w.id };
+    const key = keyOf(ref);
+    out.push({
+      key, view: 'cast', kind: 'wearable', category: w.kind === 'hair' ? CAT.hair : CAT.clothing, name: w.name, keywords: [w.category, w.kind === 'hair' ? 'cabelo' : 'roupa', ...w.layers.flatMap((l) => l.pieces.flatMap((p) => (p.kind === 'text' ? [p.text] : [])))],
+      origin: 'project', editable: true, favorite: fav(key), updatedAt: w.updatedAt || w.createdAt,
+      usage: Object.values(project.characters).filter((c) => c.wear.some((x) => x.id === w.id)).length,
+      inProject: true, libId: libWear.get(w.id)?.id, states: [], ref, wearable: w,
     });
   }
   for (const o of Object.values(project.customObjects)) {
@@ -220,6 +238,10 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
       out.push({ ...base, view: 'scenery', kind: 'background', category: CAT.custom, backgroundBundle: read.ok ? read.bundle : undefined, times: read.ok ? cbTimes(read.bundle.background) : [], broken: read.ok ? undefined : read.reason });
     } else if (r.kind === 'scene') {
       out.push({ ...base, view: 'scenery', kind: 'scene', category: CAT.scenes, ...readSceneData(r.data) });
+    } else if (r.kind === 'wearable') {
+      const w = WearableSchema.safeParse(r.data);
+      if (w.success && project.wearables?.[w.data.id]) continue; // já no projeto (mesma identidade)
+      out.push({ ...base, view: 'cast', kind: 'wearable', category: w.success && w.data.kind === 'hair' ? CAT.hair : CAT.clothing, keywords: w.success ? [w.data.category] : [], wearable: w.success ? w.data : undefined, broken: w.success ? undefined : 'A roupa/cabelo salva está ilegível ou é de uma versão incompatível.' });
     }
     // 'prop' e 'audio' nunca foram gravados por nenhuma versão; não há o que mostrar.
   }
@@ -290,7 +312,7 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
 export interface CatalogQuery { text: string; filter: CatalogFilter; category: string | null; sort: CatalogSort; kind?: CatalogKind | null }
 export const DEFAULT_QUERY: CatalogQuery = { text: '', filter: 'all', category: null, sort: 'default', kind: null };
 /** Nomes dos tipos de item (Biblioteca principal e Toolbox). */
-export const KIND_LABELS: Record<CatalogKind, string> = { character: 'Personagens', pose: 'Poses', sequence: 'Sequências', prop: 'Objetos prontos', object: 'Objetos montados', background: 'Cenários', scene: 'Cenas-molde' };
+export const KIND_LABELS: Record<CatalogKind, string> = { wearable: 'Roupas e cabelos', character: 'Personagens', pose: 'Poses', sequence: 'Sequências', prop: 'Objetos prontos', object: 'Objetos montados', background: 'Cenários', scene: 'Cenas-molde' };
 export type CatalogScope = CatalogView | 'all';
 
 const ORIGIN_RANK: Record<CatalogOrigin, number> = { project: 0, mine: 1, pack: 2, builtin: 3 };
@@ -323,7 +345,7 @@ export function queryCatalog(entries: CatalogEntry[], view: CatalogScope, q: Cat
 export function categoriesOf(entries: CatalogEntry[], view: CatalogScope): Array<{ id: string; count: number }> {
   const m = new Map<string, number>();
   for (const e of entries) if ((view === 'all' || e.view === view) && !e.shadowed) m.set(e.category, (m.get(e.category) ?? 0) + 1);
-  const pinned: string[] = view === 'cast' ? [CAT.characters, CAT.poses, CAT.sequences] : view === 'scenery' ? [CAT.custom, CAT.scenes] : [CAT.objects, CAT.animated];
+  const pinned: string[] = view === 'cast' ? [CAT.characters, CAT.clothing, CAT.hair, CAT.poses, CAT.sequences] : view === 'scenery' ? [CAT.custom, CAT.scenes] : [CAT.objects, CAT.animated];
   const keys = [...m.keys()].sort((a, b) => {
     const ia = pinned.indexOf(a);
     const ib = pinned.indexOf(b);

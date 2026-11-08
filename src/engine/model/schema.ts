@@ -96,6 +96,84 @@ export const AccessorySchema = z.object({
   color: z.string().default('#d65f5f'),
 });
 
+export const PieceKindSchema = z.enum(['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line', 'image', 'prop', 'object', 'character', 'text', 'trapezoid']);
+export type PieceKind = z.infer<typeof PieceKindSchema>;
+/** Campos de peça sem o personagem estático (usado também pelas camadas de roupas e cabelos). */
+export const PieceBaseSchema = z.object({
+  id: z.string(),
+  name: z.string().default('Peça'),
+  kind: PieceKindSchema,
+  x: finite.default(0),
+  y: finite.default(0),
+  /** Largura e altura (formas e imagens). Para objetos e personagens, use `scale`. */
+  w: finite.default(120),
+  h: finite.default(120),
+  scale: finite.default(1),
+  rotation: finite.default(0),
+  flipX: z.boolean().default(false),
+  flipY: z.boolean().default(false),
+  opacity: finite.default(1),
+  fill: z.string().default('#f2a65a'),
+  stroke: z.string().default('#23202b'),
+  strokeWidth: finite.default(4),
+  radius: finite.default(0),
+  sides: z.number().int().min(3).max(12).default(6),
+  assetId: z.string().optional(),
+  /** Objeto nativo (prop) ou objeto personalizado (object). */
+  refId: z.string().optional(),
+  colorA: z.string().default(''),
+  colorB: z.string().default(''),
+  state: z.string().default(''),
+  /** Peça de texto (criadores): conteúdo e estilo ficam estruturados e editáveis; cor = fill, contorno = stroke. */
+  text: z.string().max(500).default(''),
+  fontFamily: z.enum(['sans', 'serif', 'hand', 'mono']).default('sans'),
+  fontSize: finite.default(64),
+  fontWeight: z.enum(['400', '700', '900']).default('700'),
+  italic: z.boolean().default(false),
+  align: z.enum(['start', 'middle', 'end']).default('middle'),
+  letterSpacing: finite.default(0),
+  /** Trapézio (roupas e cabelos): largura do topo em relação à base (1 = retângulo). */
+  taper: finite.default(1),
+  group: z.string().optional(),
+  visible: z.boolean().default(true),
+});
+/* -------------------------------------------------------------------------- */
+/* Roupas e cabelos criados (Fase 3b)                                           */
+/* -------------------------------------------------------------------------- */
+
+/** Parte do corpo em que uma camada fica presa: ela acompanha a pose, a vista e a animação dessa parte. */
+export const WEAR_ANCHORS = ['head', 'torso', 'hips', 'upperArm', 'forearm', 'thigh', 'shin'] as const;
+export type WearAnchor = (typeof WEAR_ANCHORS)[number];
+
+export const WearLayerSchema = z.object({
+  id: z.string(),
+  name: z.string().default('Camada'),
+  anchor: z.enum(WEAR_ANCHORS).default('torso'),
+  /** Cabeça: na frente do rosto, atrás da cabeça ou atrás do corpo (cabelo comprido). Demais partes: sempre por cima. */
+  depth: z.enum(['front', 'behindHead', 'behindBody']).default('front'),
+  /** Vistas em que aparece: todas, só as que mostram o rosto (frente/3/4/perfil) ou só as de costas. */
+  side: z.enum(['both', 'front', 'back']).default('both'),
+  /** Em 3/4 e perfil, desliza para o lado em que o personagem está virado (botões, estampas, franja). */
+  followTurn: z.boolean().default(false),
+  /** Espelha quando o personagem vira para a esquerda (franja de lado, bolso de um lado só). */
+  mirror: z.boolean().default(false),
+  /** Peças vetoriais desenhadas no tamanho do corpo de referência (adulto padrão). */
+  pieces: z.array(PieceBaseSchema).max(200).default([]),
+});
+
+export const WearableSchema = z.object({
+  id: z.string(),
+  name: z.string().default('Roupa'),
+  kind: z.enum(['clothing', 'hair']).default('clothing'),
+  /** Tipo livre para organizar (Camiseta, Calça, Vestido, Cabelo longo…). */
+  category: z.string().max(40).default(''),
+  /** O que esta peça substitui no personagem (a parte nativa vira cobertura neutra / some). */
+  hides: z.object({ top: z.boolean().default(false), bottom: z.boolean().default(false), hair: z.boolean().default(false) }).prefault({}),
+  layers: z.array(WearLayerSchema).max(40).default([]),
+  createdAt: z.number().default(0),
+  updatedAt: z.number().default(0),
+});
+
 export const CharacterDefinitionSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -108,12 +186,16 @@ export const CharacterDefinitionSchema = z.object({
   hair: HairSchema.prefault({}),
   outfit: OutfitSchema.prefault({}),
   accessories: z.array(AccessorySchema).default([]),
+  /** Roupas e cabelos criados que este personagem veste (cópias; a ordem é a de desenho). */
+  wear: z.array(WearableSchema).max(12).default([]),
   /** Sprite importado (PNG/SVG) usado no lugar do rig: não é articulável. */
   spriteAssetId: z.string().optional(),
   notes: z.string().default(''),
   favorite: z.boolean().default(false),
 });
 export type CharacterDefinition = z.infer<typeof CharacterDefinitionSchema>;
+export type Wearable = z.infer<typeof WearableSchema>;
+export type WearLayer = z.infer<typeof WearLayerSchema>;
 
 export const AppearanceOverridesSchema = z
   .object({
@@ -602,45 +684,7 @@ export const StaticCharacterSchema = z.object({
 });
 export type StaticCharacter = z.infer<typeof StaticCharacterSchema>;
 
-export const PieceKindSchema = z.enum(['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line', 'image', 'prop', 'object', 'character', 'text']);
-export type PieceKind = z.infer<typeof PieceKindSchema>;
-export const PieceSchema = z.object({
-  id: z.string(),
-  name: z.string().default('Peça'),
-  kind: PieceKindSchema,
-  x: finite.default(0),
-  y: finite.default(0),
-  /** Largura e altura (formas e imagens). Para objetos e personagens, use `scale`. */
-  w: finite.default(120),
-  h: finite.default(120),
-  scale: finite.default(1),
-  rotation: finite.default(0),
-  flipX: z.boolean().default(false),
-  flipY: z.boolean().default(false),
-  opacity: finite.default(1),
-  fill: z.string().default('#f2a65a'),
-  stroke: z.string().default('#23202b'),
-  strokeWidth: finite.default(4),
-  radius: finite.default(0),
-  sides: z.number().int().min(3).max(12).default(6),
-  assetId: z.string().optional(),
-  /** Objeto nativo (prop) ou objeto personalizado (object). */
-  refId: z.string().optional(),
-  colorA: z.string().default(''),
-  colorB: z.string().default(''),
-  state: z.string().default(''),
-  character: StaticCharacterSchema.optional(),
-  /** Peça de texto (criadores): conteúdo e estilo ficam estruturados e editáveis; cor = fill, contorno = stroke. */
-  text: z.string().max(500).default(''),
-  fontFamily: z.enum(['sans', 'serif', 'hand', 'mono']).default('sans'),
-  fontSize: finite.default(64),
-  fontWeight: z.enum(['400', '700', '900']).default('700'),
-  italic: z.boolean().default(false),
-  align: z.enum(['start', 'middle', 'end']).default('middle'),
-  letterSpacing: finite.default(0),
-  group: z.string().optional(),
-  visible: z.boolean().default(true),
-});
+export const PieceSchema = PieceBaseSchema.extend({ character: StaticCharacterSchema.optional() });
 export type Piece = z.infer<typeof PieceSchema>;
 
 /** Quadro de uma animação do objeto: desenho completo (peças) e duração própria. */
@@ -741,6 +785,8 @@ export const ProjectSchema = z.object({
   customBackgrounds: z.record(z.string(), CustomBackgroundSchema).default({}),
   /** 1.2: objetos do Criador de Objetos. */
   customObjects: z.record(z.string(), CustomObjectSchema).default({}),
+  /** Fase 3b: roupas e cabelos criados neste projeto (os personagens guardam cópias do que vestem). */
+  wearables: z.record(z.string(), WearableSchema).default({}),
   currentSceneId: z.string().nullable().default(null),
   metadata: z
     .object({
