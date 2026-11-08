@@ -13,6 +13,7 @@ import {
 import { BACKGROUNDS, getBackground } from '@/engine/world/backgrounds';
 import { getProp } from '@/engine/world/props';
 import { getPropertyDef, formatKeyValue } from '@/engine/model/properties';
+import { addSectionKeys, animatablePaths, keyTime, sectionKeyState, type AddSectionKeysResult, type KeyOwner } from '@/engine/model/sectionKeys';
 import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type Transition } from '@/engine/model/schema';
 import { EXPRESSIONS, VISEMES } from '@/engine/character/expressions';
 import { POSES } from '@/engine/character/presets';
@@ -89,6 +90,53 @@ function KeyButton({ scene, target, path, active, animated, label }: { scene: Sc
   );
 }
 
+/**
+ * Keyframe universal da seção: cria, no instante atual, os keyframes que faltam em TODAS as propriedades
+ * animáveis que a seção mostra. Não remove nada, não duplica e não sobrescreve; é uma única ação no histórico.
+ * Só aparece quando a seção tem 2 ou mais propriedades animáveis (com uma só, o botão do campo basta).
+ */
+function SectionKeys({ id, scene, target, kind, paths }: { id: string; scene: Scene; target: string; kind: KeyOwner; paths: readonly string[] }) {
+  const t = useTimeMs();
+  const list = animatablePaths(kind, paths);
+  if (list.length < 2) return null;
+  const time = t < 0 ? nowMs() : t;
+  const st = sectionKeyState(scene, target, list, time);
+  const hint = 'Criar keyframes de todas as propriedades desta seção';
+  const summary = st.status === 'all' ? `as ${st.total} propriedades já têm keyframe neste instante` : st.status === 'partial' ? `${st.withKey} de ${st.total} já têm keyframe neste instante` : 'nenhuma tem keyframe neste instante';
+  const secs = (ms: number) => (ms / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  return (
+    <button
+      type="button"
+      className={`key-btn section-key is-${st.status}${st.animated ? ' is-animated' : ''}`}
+      aria-pressed={st.status === 'all' ? 'true' : st.status === 'partial' ? 'mixed' : 'false'}
+      aria-label={`${hint}. Neste instante: ${summary}`}
+      title={`${hint} (${summary})`}
+      data-testid={`section-keys-${id}`}
+      data-status={st.status}
+      data-count={`${st.withKey}/${st.total}`}
+      onClick={(e) => {
+        e.stopPropagation();
+        const at = keyTime(nowMs());
+        if (st.missing.length === 0 && keyTime(time) === at) {
+          toast(`Todas as propriedades desta seção já têm keyframe em ${secs(at)} s. Nada foi alterado.`);
+          return;
+        }
+        const out: { r: AddSectionKeysResult | null } = { r: null };
+        commit('Criar keyframes da seção', (d) => { out.r = addSectionKeys(sceneOf(d as Project, scene.id), target, kind, list, at); });
+        const r = out.r;
+        if (!r) return;
+        toast(`${r.created.length} keyframe(s) criado(s) em ${secs(at)} s${r.kept.length ? `; ${r.kept.length} já existia(m) e foi(ram) mantido(s)` : ''}.`, 'success');
+      }}
+    >
+      <Diamond size={13} fill={st.status === 'none' ? 'none' : 'currentColor'} fillOpacity={st.status === 'partial' ? 0.4 : 1} />
+    </button>
+  );
+}
+
+const TRANSFORM_KEYS = ['transform.x', 'transform.y', 'transform.scaleX', 'transform.scaleY', 'transform.rotationDeg', 'opacity'] as const;
+const RIG_KEYS = ['armLUpper', 'armLLower', 'armRUpper', 'armRLower', 'legLUpper', 'legLLower', 'legRUpper', 'legRLower', 'torsoLean', 'headTilt', 'headNod', 'bodyY', 'sit'] as const;
+const LIMB_DEPTH_KEYS = ['limbDepth.armL', 'limbDepth.handL', 'limbDepth.armR', 'limbDepth.handR'] as const;
+
 function DiscreteField({ scene, target, path, label, options, testId }: { scene: Scene; target: string; path: string; label: string; options: Array<{ id: string; label: string }>; testId?: string }) {
   const t = useTimeMs();
   const time = t < 0 ? nowMs() : t;
@@ -143,7 +191,7 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
   return (
     <>
       <Pane tab="Transformar">
-      <Section title="Posição e transformação" testId="sec-transform">
+      <Section title="Posição e transformação" testId="sec-transform" actions={<SectionKeys id="transform" scene={scene} target={node.id} kind={node.kind} paths={TRANSFORM_KEYS} />}>
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.x" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.y" />
         <UniformScale scene={scene} target={node.id} kind={node.kind} />
@@ -154,7 +202,7 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
           <button type="button" className="btn btn-sm" onClick={() => commit('Centralizar', (d) => writeProperty(sceneOf(d as Project, scene.id), node.id, 'transform.y', 0, nowMs()))}>Centro vertical</button>
         </div>
       </Section>
-      <Section title="Escala separada e pivô">
+      <Section title="Escala separada e pivô" actions={<SectionKeys id="scale" scene={scene} target={node.id} kind={node.kind} paths={['transform.scaleX', 'transform.scaleY']} />}>
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.scaleX" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.scaleY" />
         <SliderNumberField label="Pivô X" unit="px" value={node.transform.pivotX} sliderMin={-300} sliderMax={300} onChange={(v) => set('Alterar pivô', (n) => { n.transform.pivotX = v; })} />
@@ -162,7 +210,7 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
       </Section>
       </Pane>
       <Pane tab="Camadas">
-      <Section title="Profundidade, sombra e máscara">
+      <Section title="Profundidade, sombra e máscara" actions={<SectionKeys id="depth" scene={scene} target={node.id} kind={node.kind} paths={['parallax', 'blur']} />}>
         <PropField scene={scene} target={node.id} kind={node.kind} path="parallax" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="blur" />
         <ToggleField label="Escala pela profundidade" hint="Quanto mais abaixo no palco, maior (ative na cena)." checked={node.useDepthScale} onChange={(v) => set('Profundidade', (n) => { n.useDepthScale = v; })} />
@@ -206,7 +254,7 @@ const DEPTH_OPTIONS = [{ id: 'auto', label: 'Automático' }, { id: 'front', labe
 /** Profundidade de braços e mãos: lados do personagem, não da tela. Animável por keyframes. */
 function ArmDepthSection({ scene, node }: { scene: Scene; node: CharacterNode }) {
   return (
-    <Section title="Braços e mãos: frente ou atrás da cabeça" testId="sec-limb-depth" actions={<HelpLink chapter="poses" label="Ajuda sobre profundidade dos braços" />}>
+    <Section title="Braços e mãos: frente ou atrás da cabeça" testId="sec-limb-depth" actions={<><SectionKeys id="limb-depth" scene={scene} target={node.id} kind="character" paths={LIMB_DEPTH_KEYS} /><HelpLink chapter="poses" label="Ajuda sobre profundidade dos braços" /></>}>
       <p className="hint">Esquerdo e direito são os lados do personagem. No automático, o braço que cruza a cabeça passa na frente dela.</p>
       <DiscreteField scene={scene} target={node.id} path="limbDepth.armL" label="Braço esquerdo" testId="depth-armL" options={DEPTH_OPTIONS} />
       <DiscreteField scene={scene} target={node.id} path="limbDepth.handL" label="Mão esquerda" testId="depth-handL" options={DEPTH_OPTIONS} />
@@ -227,6 +275,8 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
   const others = Object.values(scene.nodes).filter((n) => n.id !== node.id);
   const [action, setAction] = useState('wave');
   const [speech, setSpeech] = useState('');
+  // Os mesmos campos que a seção mostra agora: alvo e ponto só existem em alguns modos de olhar.
+  const gazePaths = ['bodyView', 'headView', 'gaze.mode', ...(node.gaze.mode === 'node' ? ['gaze.targetId'] : []), ...(node.gaze.mode === 'point' || node.gaze.mode === 'manual' ? ['gaze.x', 'gaze.y'] : []), 'gaze.strength', 'gaze.headStrength', 'blinkMode'];
   const hairColor = node.appearanceOverrides.hairColor ?? def?.hair.color ?? '#3a2b28';
   const topColor = node.appearanceOverrides.topColor ?? def?.outfit.topColor ?? '#5b8dbe';
   return (
@@ -242,7 +292,7 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
           <button type="button" className="btn btn-sm" onClick={() => set('Limpar sobrescritas', (n) => { n.appearanceOverrides = {}; })}>Voltar ao original</button>
         </details>
       </Section>
-      <Section title="Orientação e olhar" testId="sec-gaze">
+      <Section title="Orientação e olhar" testId="sec-gaze" actions={<SectionKeys id="gaze" scene={scene} target={node.id} kind="character" paths={gazePaths} />}>
         <DiscreteField scene={scene} target={node.id} path="bodyView" label="Vista do corpo" options={VIEW_OPTIONS} />
         <DiscreteField scene={scene} target={node.id} path="headView" label="Vista da cabeça" options={VIEW_OPTIONS} />
         <DiscreteField scene={scene} target={node.id} path="gaze.mode" label="Olhar" testId="gaze-mode" options={[{ id: 'camera', label: 'Para a câmera' }, { id: 'node', label: 'Para um elemento' }, { id: 'point', label: 'Para um ponto X/Y' }, { id: 'manual', label: 'Manual' }, { id: 'none', label: 'Sem alvo' }]} />
@@ -260,7 +310,7 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
         <PropField scene={scene} target={node.id} kind="character" path="gaze.headStrength" />
         <DiscreteField scene={scene} target={node.id} path="blinkMode" label="Piscar" options={[{ id: 'auto', label: 'Automático' }, { id: 'open', label: 'Sempre aberto' }, { id: 'closed', label: 'Fechado' }]} />
       </Section>
-      <Section title="Expressão e boca" testId="sec-face">
+      <Section title="Expressão e boca" testId="sec-face" actions={<SectionKeys id="face" scene={scene} target={node.id} kind="character" paths={['expression', 'expressionIntensity', 'mouthShape']} />}>
         <DiscreteField scene={scene} target={node.id} path="expression" label="Expressão" testId="expression" options={EXPRESSIONS.map((e) => ({ id: e.id, label: e.label }))} />
         <PropField scene={scene} target={node.id} kind="character" path="expressionIntensity" />
         <DiscreteField scene={scene} target={node.id} path="mouthShape" label="Boca (visema manual)" options={[{ id: 'auto', label: 'Automática (fala ou expressão)' }, ...Object.entries(VISEMES).map(([id, v]) => ({ id, label: v.label }))]} />
@@ -279,9 +329,9 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
         )}
       </Section>
       <ArmDepthSection scene={scene} node={node} />
-      <Section title="Pose e rig" testId="sec-rig">
+      <Section title="Pose e rig" testId="sec-rig" actions={<SectionKeys id="rig" scene={scene} target={node.id} kind="character" paths={RIG_KEYS.map((k) => `rig.${k}`)} />}>
         <SelectField label="Pose pronta" value={node.poseId} testId="pose" options={POSES.map((p) => ({ id: p.id, label: p.label }))} onChange={(v) => set('Aplicar pose', (n) => applyPose(n, v))} />
-        {(['armLUpper', 'armLLower', 'armRUpper', 'armRLower', 'legLUpper', 'legLLower', 'legRUpper', 'legRLower', 'torsoLean', 'headTilt', 'headNod', 'bodyY', 'sit'] as const).map((k) => (
+        {RIG_KEYS.map((k) => (
           <PropField key={k} scene={scene} target={node.id} kind="character" path={`rig.${k}`} />
         ))}
         <SelectField label="Mão esquerda" value={node.handL} options={[{ id: 'open', label: 'Aberta' }, { id: 'fist', label: 'Fechada' }, { id: 'point', label: 'Apontando' }]} onChange={(v) => set('Mão', (n) => { n.handL = v as CharacterNode['handL']; })} />
@@ -335,7 +385,7 @@ function PropSections({ scene, node }: { scene: Scene; node: Extract<SceneNode, 
         <button type="button" className="btn btn-block" data-testid="edit-custom-object" onClick={() => openObjectCreator(customObjectIdOf(node.propId))}>Editar no Criador de Objetos</button>
       </Section>
     )}
-    <Section title="Aparência do objeto" testId="sec-prop">
+    <Section title="Aparência do objeto" testId="sec-prop" actions={<SectionKeys id="prop" scene={scene} target={node.id} kind="prop" paths={[...(def?.states ? ['state'] : []), ...(def?.handheld ? ['heldBy'] : [])]} />}>
       <ColorField label="Cor principal" value={node.colorA || def?.a || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorA = v; })} />
       <ColorField label="Cor secundária" value={node.colorB || def?.b || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorB = v; })} />
       {def?.states && <DiscreteField scene={scene} target={node.id} path="state" label="Estado" options={def.states} testId="prop-state" />}
@@ -415,7 +465,7 @@ function CameraSections({ scene }: { scene: Scene }) {
     <>
       <div className="insp-title"><strong>Câmera 2D</strong><small>Só muda o enquadramento exportado. O zoom do editor é outro.</small></div>
       <Pane tab="Enquadramento">
-      <Section title="Enquadramento" testId="sec-camera">
+      <Section title="Enquadramento" testId="sec-camera" actions={<SectionKeys id="camera" scene={scene} target={CAMERA_TARGET} kind="camera" paths={['x', 'y', 'zoom', 'rotationDeg']} />}>
         <PropField scene={scene} target={CAMERA_TARGET} kind="camera" path="x" />
         <PropField scene={scene} target={CAMERA_TARGET} kind="camera" path="y" />
         <PropField scene={scene} target={CAMERA_TARGET} kind="camera" path="zoom" testId="camera-zoom" />

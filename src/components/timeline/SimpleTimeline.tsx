@@ -90,6 +90,10 @@ export function SimpleTimeline() {
     setAt(sec(startMs + durMs));
   };
 
+  // Keyframes de propriedades (criados em Propriedades) não são passos: ficam na timeline avançada.
+  const keyTracks = scene.tracks.filter((t) => t.type === 'property' && t.keyframes.length);
+  const keyCount = keyTracks.reduce((n, t) => n + (t.type === 'property' ? t.keyframes.length : 0), 0);
+
   const editClip = (id: string, field: 'startMs' | 'durationMs', value: string) => {
     const v = parseNumberInput(value);
     const problem = field === 'startMs' ? validateStep(v, 1) : validateStep(0, v);
@@ -145,6 +149,7 @@ export function SimpleTimeline() {
             </li>
           ))}
         </ol>
+        {keyCount > 0 && <p className="hint" data-testid="simple-keys-note">{keyCount} keyframe(s) em {keyTracks.length} propriedade(s) desta cena. Edite no modo Avançado.</p>}
       </div>
     </section>
   );

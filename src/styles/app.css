@@ -753,3 +753,11 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
 .gc-row .input { width: 64px; text-align: right; }
 .gc-pad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .gc-pad .btn, .gc-row .btn { min-width: 40px; min-height: 36px; }
+
+/* ---------- keyframe universal da seção ---------- */
+.section-key { width: 24px; height: 24px; margin-right: 2px; flex: none; }
+.section-key.is-none { color: var(--text-3); }
+.section-key.is-none.is-animated { color: var(--accent-2); }
+.section-key.is-partial { color: var(--accent); }
+.section-key.is-all { color: var(--accent); background: var(--accent-soft); }
+@media (pointer: coarse) { .section-key { width: 36px; height: 36px; } }
