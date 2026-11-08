@@ -15,6 +15,10 @@
 | mp4-muxer | 5.2 | MIT | Contêiner MP4 |
 | @fontsource-variable/inter | 5.3 | OFL-1.1 | Fonte da interface, empacotada localmente |
 
+## Leitura de .7z, .rar e .tar compactado
+
+libarchive.js 2.0.2 (MIT), com o WebAssembly da libarchive (BSD-2-Clause), copiado em `public/vendor/libarchive/` com a licença. Roda localmente em um worker; nada é enviado para a rede.
+
 ## Ferramentas de desenvolvimento
 
 vite (MIT), typescript (Apache-2.0), vitest (MIT), @playwright/test (Apache-2.0), eslint e typescript-eslint (MIT), jsdom (MIT), fake-indexeddb (Apache-2.0), @testing-library (MIT).

@@ -32,6 +32,23 @@ A 1.0 não lê o `localStorage` da 0.4 sozinha: a versão nova roda em outra ori
 | `cue angry` | Keys de expressão + clip de negar |
 | `duration`, `start`, `end` em s | Inteiros em ms |
 
+## Formato .jrec
+
+A partir da 1.1, projetos são salvos em `.jrec`. É um ZIP comum, que qualquer descompactador abre:
+
+```
+manifest.json   formato, versão do formato, versão do app, data, projeto (id, título),
+                lista de mídias (id, caminho, tipo, tamanho, sha256) e mídias ausentes
+project.json    o projeto completo (mesmo esquema validado do IndexedDB)
+assets/         uma entrada por mídia: assets/media_<sha256>.<ext>
+```
+
+- Ao importar, cada mídia é conferida pelo tamanho e pelo SHA-256 do manifest. Arquivo adulterado ou truncado é recusado com a mídia indicada.
+- `formatVersion` maior que o suportado é recusado com aviso para atualizar o app.
+- Um .jrec salvo com mídia ausente tem `-incompleto` no nome e a lista em `missing`. Ao importar, essas mídias aparecem em **Mídias** como ausentes, prontas para revincular.
+- Projetos .json e .zip da 1.0 continuam importando. Pacotes .zip, .7z, .rar e .tar com um projeto dentro (inclusive dentro de uma pasta) também.
+- A importação sempre cria um projeto novo; o arquivo original vai para `backups` no IndexedDB.
+
 ## Itens não compatíveis
 
 Vão para o relatório, nunca somem em silêncio: cabelos, roupas, expressões, cenários ou objetos desconhecidos (recebem substituto nomeado), ações de personagens inexistentes e tipos de ação desconhecidos (ignorados, mas preservados no JSON guardado).

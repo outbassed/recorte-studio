@@ -1,4 +1,4 @@
-# Recorte Studio 1.0
+# Recorte Studio 1.1
 
 Editor de animação narrativa 2D com personagens de recorte: cenas, camadas, timeline com keyframes, áudio, lip-sync básico e exportação de vídeo. Roda no navegador, funciona offline e guarda tudo localmente. É 100% 2D: não há WebGL nem malhas 3D.
 
@@ -6,7 +6,7 @@ Editor de animação narrativa 2D com personagens de recorte: cenas, camadas, ti
 
 ## Como abrir
 
-**Só usar:** abra `dist/index.html` com dois cliques no Chrome ou Edge. Não precisa instalar nada.
+**Só usar:** publique `dist/` em qualquer hospedagem estática (Vercel, por exemplo) ou rode `npm run preview`. Também abre com dois cliques em `dist/index.html`, com estas limitações: sem modo offline instalável (service worker) e sem importação de .7z/.rar/.tar.xz/.tar.bz2, que usam um worker WebAssembly.
 
 **Desenvolver** (requer Node 22.12 ou mais novo; testado no 24):
 
@@ -60,6 +60,15 @@ Os testes E2E usam o Chrome instalado no sistema (`channel: 'chrome'`) e `ffprob
 6. **Exportar:** quadro PNG, sequência de PNGs, vídeo WebM (e MP4, quando o navegador tem H.264) ou pacote do projeto com mídias.
 
 Atalhos: tecla `?` dentro do editor.
+
+## Projetos (.jrec)
+
+- **Salvar projeto** baixa um `.jrec` com tudo: cenas, personagens, timeline e as mídias em binário. É o único formato de projeto editável; serve de backup e para abrir em outro aparelho.
+- **Exportar vídeo/imagem** gera WebM/MP4, PNG ou sequência PNG (em ZIP). Não serve para reabrir o projeto.
+- **Importar** aceita .jrec, projetos .json e .zip de versões anteriores e pacotes .7z, .rar, .tar, .tar.gz, .tar.xz e .tar.bz2. O tipo é detectado pelo conteúdo.
+- Os links `?projeto=` identificam projetos guardados **neste navegador**. Não são links de compartilhamento.
+
+Detalhes do formato em [docs/MIGRACAO.md](docs/MIGRACAO.md#formato-jrec).
 
 ## Exportação de vídeo
 

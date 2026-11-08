@@ -1,5 +1,39 @@
 # Changelog
 
+## 1.1.0
+
+Correções de integridade, formato de projeto próprio (.jrec), biblioteca de áudio, cenários próprios por horário, movimento natural e modo simples. Sem backend, sem dependência online.
+
+### Projeto e arquivos
+
+- **.jrec é o único formato de projeto editável.** Contêiner ZIP com `manifest.json` versionado (formato, versão, app, lista de mídias com tamanho e SHA-256), `project.json` e as mídias em binário nativo em `assets/`. Antes de dar sucesso, o arquivo gerado é relido e conferido.
+- **"Salvar projeto" separado de "Exportar vídeo/imagem".** O diálogo de exportação ficou só com vídeo, PNG e sequência PNG (a sequência continua em ZIP).
+- **Sem sucesso falso com mídia ausente.** Se faltar arquivo, o salvamento para e oferece revincular em Mídias ou salvar um arquivo marcado `-incompleto`, com a lista no manifest.
+- **Importação por conteúdo, não por extensão:** .jrec, .json e .zip legados, .7z, .rar, .tar, .tar.gz, .tar.xz e .tar.bz2. Erros claros para arquivo corrompido, protegido por senha ou incompatível. Pacote só com mídias pode ir para a biblioteca do projeto aberto.
+- **Extração segura:** caminhos normalizados (sem `..`, absolutos ou unidades), limites de entradas, tamanho por entrada, total e taxa de compressão, leitura do diretório central antes de descompactar.
+- **IDs de mídia por conteúdo** (`media_<sha256>`): o mesmo arquivo nunca vira duas cópias e dois arquivos diferentes nunca colidem. IDs antigos são remapeados na importação.
+- **SVG** sanitizado também na importação de pacotes; tipo real conferido pelos bytes.
+
+### Correções
+
+- **Salvamento automático:** sem corridas entre salvamentos, sem laço de tentativas (espera crescente de 2 s a 60 s, um aviso por erro), troca de projeto só depois de gravar o anterior.
+- **Áudio:** play/pausa/busca não deixam som atrasado tocando; cache de áudio decodificado limitado (LRU 256 MB) e liberado ao trocar de projeto.
+- **Balões e legendas:** palavras longas quebram com hífen; o texto encolhe para caber no quadro.
+- **Cabelo nas 8 vistas:** mechas e volumes atrás ou na frente da cabeça conforme a vista, brilho recortado no contorno do cabelo, careca de coroa e moicano corretos de perfil e 3/4. Coberto por uma matriz de 30 estilos × 8 vistas.
+- **PWA:** o nome do cache muda a cada build e o app avisa quando há versão nova, com botão para recarregar.
+
+### Novidades
+
+- **Mídias e áudio:** aba própria com biblioteca de Voz, Música, Efeitos e Ambiente; ouvir, renomear, usar na cena, substituir arquivo, remover com aviso de uso (e desfazer), guardar na biblioteca do usuário para outros projetos sem copiar o arquivo. Botão **Áudio** visível na timeline.
+- **Meus cenários:** imagem própria (SVG, PNG, JPEG, WebP) com horários opcionais Manhã, Dia, Tarde, Entardecer e Noite, cada um com sua imagem. Só os horários existentes aparecem; horário ausente usa o mais próximo e avisa.
+- **Movimento natural:** respiração, piscadas (às vezes duplas), olhares rápidos, leve movimento de cabeça e troca de postura, determinísticos e ajustáveis por personagem; diminuem durante ações.
+- **Transições** de entrada e saída por clip de ação, **sequências** reutilizáveis (salvar e aplicar a outro personagem) e **enquadramentos rápidos** da câmera (geral, médio, close, dois personagens), com corte seco ou movimento suave.
+- **Modo simples:** lista de passos (quem, o quê, quando, duração) sobre os mesmos dados da timeline; alterna com o modo avançado sem perder nada.
+
+### Fora desta versão
+
+Boneco-base universal, recriação do motor de personagens, vistas de cima ou de baixo e editor 3D.
+
 ## 1.0.0
 
 Reescrita em TypeScript estrito, com migração da 0.4. O código antigo está intacto em `legado/0.4/`.

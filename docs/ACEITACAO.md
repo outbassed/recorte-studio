@@ -81,13 +81,34 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | 5. Descrição para ações | PARCIAL: comandos testados; IA real não conectada |
 | 6. Recuperação e backup | PASSOU |
 
+## Versão 1.1
+
+| Requisito | Estado | Evidência |
+| --- | --- | --- |
+| Salvamento automático sem corridas nem laço de tentativas | PASSOU | `v11-integrity` (concorrência, troca, espera crescente) |
+| IDs de mídia sem colisão, sem duplicar arquivo | PASSOU | `v11-integrity`; E2E Mídias (arquivo repetido reaproveitado) |
+| Sem sucesso falso com mídia ausente | PASSOU | `v11-integrity`; E2E mídia ausente |
+| Extração segura de pacotes | PASSOU | `v11-integrity` (caminhos, limites, senha) |
+| .jrec como único formato de projeto, reimportação completa | PASSOU | E2E .jrec em contexto limpo; E2E projeto 0.4 |
+| Importar .json/.zip legados, .7z, .rar, .tar.* | PARCIAL | .json, .zip, .tar, .tar.gz testados; .7z/.rar só com leitor simulado; não funcionam por `file://` |
+| Áudio: play/pausa/busca sincronizados, memória limitada | PASSOU | `v11-integrity` (LRU); E2E 12 e 14 |
+| Balões e legendas quebram e cabem | PASSOU | `v11-integrity` (quebra) |
+| Cabelo nas 8 vistas sem esconder | PASSOU | `hair-matrix` (30 × 8); `test-results/hair-matrix.svg` |
+| Movimento natural, transições, sequências, enquadramentos | PASSOU | `v11-features` |
+| Biblioteca de áudio (Voz, Música, Efeitos, Ambiente) | PASSOU | E2E Mídias |
+| Cenários próprios com horários opcionais | PASSOU | `v11-features`; E2E com 1, 3 e 5 horários |
+| Modo simples e avançado nos mesmos dados | PASSOU | E2E modo simples |
+| PWA atualiza e funciona offline no link do projeto | PASSOU | E2E PWA offline; cache com nome por build |
+| Telas pequenas | PASSOU* | E2E 390×844 e capturas. *Chrome desktop emulando o tamanho |
+
 ## Limitações importantes
 
 1. **Testado só no Chrome de desktop.** Firefox, Safari e celulares reais precisam de uma rodada própria antes de divulgar suporte.
-2. **Dados só no navegador.** Limpar os dados do site apaga os projetos. Faça backups em Exportar. Abrir por `file://` e por um servidor resulta em bibliotecas separadas.
+2. **Dados só no navegador.** Limpar os dados do site apaga os projetos. Faça backups com "Salvar projeto" (.jrec). Abrir por `file://` e por um servidor resulta em bibliotecas separadas.
 3. **Vistas são cortes.** Virar um personagem troca de desenho instantaneamente, por decisão de projeto.
 4. **Reprodução com muitos personagens** cai para cerca de 30 fps no ambiente de teste. A exportação não é afetada, porque renderiza quadro a quadro.
 5. **Texto nos balões** usa fontes do sistema. O visual pode mudar entre sistemas operacionais.
 6. **Arte procedural:** consistente e variada, mas é geométrica. Um ilustrador deixaria os personagens mais expressivos.
 7. **Sem GIF e sem colaboração.** Não foram pedidos.
 8. **Projetos da 0.4** precisam ser exportados em JSON antes de importar.
+9. **.7z, .rar, .tar.xz e .tar.bz2** dependem de um worker WebAssembly: funcionam por HTTP (Vercel, `npm run preview`), não por `file://`.
