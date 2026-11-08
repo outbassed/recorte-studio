@@ -25,6 +25,36 @@ import { ColorField, SearchBox, SelectField, TextField, ToggleField } from '../c
 import { SliderNumberField } from '../controls/SliderNumberField';
 import { Modal } from './Modal';
 import { drawSvgToCanvas } from '@/features/export/pipeline';
+import { applyWearable, newWearableInProject, openWearCreator, removeWearable } from '@/state/wearActions';
+
+/** Roupas ou cabelos criados no projeto (Fase 3b): vestir, tirar, editar e criar. */
+function CreatedWear({ project, def, kind }: { project: Project; def: CharacterDefinition; kind: 'clothing' | 'hair' }) {
+  const items = Object.values(project.wearables ?? {}).filter((w) => w.kind === kind);
+  const hair = kind === 'hair';
+  return (
+    <section className="created-wear" data-testid={`created-wear-${kind}`} aria-label={hair ? 'Cabelos criados' : 'Roupas criadas'}>
+      <h4>{hair ? 'Cabelos criados' : 'Roupas criadas'}</h4>
+      {items.length === 0 && <p className="hint">{hair ? 'Nenhum cabelo criado neste projeto ainda.' : 'Nenhuma roupa criada neste projeto ainda.'}</p>}
+      {items.map((w) => {
+        const on = def.wear.some((x) => x.id === w.id);
+        return (
+          <div key={w.id} className="acc-row" data-testid="created-wear-row" data-wear={w.id}>
+            <ToggleField label={w.name} testId="created-wear-toggle" checked={on} onChange={(v) => (v ? applyWearable(def.id, w.id) : removeWearable(def.id, w.id))} />
+            <button type="button" className="btn btn-sm" onClick={() => openWearCreator(w.id)}>Editar</button>
+          </div>
+        );
+      })}
+      {def.wear.filter((x) => x.kind === kind && !project.wearables?.[x.id]).map((x) => (
+        <div key={x.id} className="acc-row"><ToggleField label={`${x.name} (cópia no personagem)`} checked onChange={() => removeWearable(def.id, x.id)} /></div>
+      ))}
+      <button type="button" className="btn btn-sm" data-testid={`created-wear-new-${kind}`} onClick={async () => {
+        const id = await newWearableInProject(kind, hair ? 'hair-short' : 'tshirt');
+        if (id) applyWearable(def.id, id);
+      }}>{hair ? '+ Criar cabelo' : '+ Criar roupa'}</button>
+      <p className="hint">{hair ? 'O cabelo criado substitui o estilo acima enquanto estiver vestido.' : 'Peças criadas ficam por cima das roupas acima; quando cobrem tronco ou pernas, a roupa padrão vira base neutra.'}</p>
+    </section>
+  );
+}
 
 type Tab = 'corpo' | 'rosto' | 'cabelo' | 'roupas' | 'acessorios' | 'identidade';
 const TABS: Array<{ id: Tab; label: string }> = [
@@ -185,6 +215,7 @@ export function CreatorDialog() {
                   })}
                 </div>
                 <button type="button" className="btn btn-sm" onClick={() => void resetPart('hair')}><RotateCcw size={13} /> Restaurar cabelo</button>
+                <CreatedWear project={project} def={def} kind="hair" />
               </>
             )}
             {tab === 'roupas' && (
@@ -199,6 +230,7 @@ export function CreatorDialog() {
                 <ColorField label="Cor dos sapatos" value={def.outfit.shoeColor} palette={CLOTH_PALETTE} onChange={(v) => set('Sapatos', (c) => { c.outfit.shoeColor = v; }, 'sc')} />
                 {conflicts.length > 0 && <div className="warn-box" data-testid="conflicts" role="status"><strong>Atenção:</strong><ul>{conflicts.map((m) => <li key={m}>{m}</li>)}</ul></div>}
                 <button type="button" className="btn btn-sm" onClick={() => void resetPart('outfit')}><RotateCcw size={13} /> Restaurar roupas</button>
+                <CreatedWear project={project} def={def} kind="clothing" />
               </>
             )}
             {tab === 'acessorios' && (
