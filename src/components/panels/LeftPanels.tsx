@@ -1,39 +1,31 @@
 /** Painéis da esquerda (e dos popups no celular). */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ArrowDown, ArrowUp, ChevronsDown, ChevronsUp, Copy, Eye, EyeOff, FileUp, Group, ImagePlus, Lightbulb, Lock, LockOpen, Pencil, Plus, Shapes, Sparkles, Star, Trash2, Type, Ungroup, UserPlus,
+  ArrowDown, ArrowUp, ChevronsDown, ChevronsUp, Copy, Eye, EyeOff, FileUp, Group, Lock, LockOpen, Plus, Sparkles, Star, Trash2, Ungroup,
 } from 'lucide-react';
-import { createLightNode, createProject, createScene, createShapeNode, createTextNode, newCharacterDefinition } from '@/engine/model/factory';
+import { createProject, createScene } from '@/engine/model/factory';
 import { applySequence, type Sequence } from '@/engine/model/ops';
-import { addScene as addSceneOp, applyBackground, characterUsage, countSceneActions, deleteCharacter, deleteNode, duplicateNode, groupNodes, moveLayer, moveScene, pasteSceneContent, replaceSceneContent, sceneOf, ungroup } from '@/engine/model/ops';
+import { addScene as addSceneOp, countSceneActions, deleteNode, duplicateNode, groupNodes, moveLayer, moveScene, pasteSceneContent, replaceSceneContent, sceneOf, ungroup } from '@/engine/model/ops';
 import { uid, deepClone } from '@/engine/model/ids';
-import { CharacterDefinitionSchema, type CharacterDefinition, type Project, type Scene, type SceneNode } from '@/engine/model/schema';
-import { BACKGROUNDS } from '@/engine/world/backgrounds';
-import { PROPS, PROP_CATEGORY_LABELS, type PropDef } from '@/engine/world/props';
-import { BUILTIN_CHARACTERS } from '@/engine/character/presets';
+import { type CharacterDefinition, type Project, type Scene, type SceneNode } from '@/engine/model/schema';
 import { applyPlan, describePlan, type Plan } from '@/features/ai/plan';
 import { listOllamaModels, ollamaAdapter, proxyAdapter, quickAdapter, AIError, type AIAdapter } from '@/features/ai/adapters';
 import { matchesSearch } from '@/features/library/search';
-import { IMAGE_ACCEPT } from '@/features/library/assets';
 import { SCENE_TEMPLATES, buildTemplateScene } from '@/features/templates/scenes';
 import { PROJECT_TEMPLATES, createFromProjectTemplate } from '@/features/templates/projects';
 import { createAndOpen } from '@/features/projects/session';
-import { addNodeToScene, addScene, importImage, placeBuiltin, placeCharacter, placeProp, requestDeleteScene, switchScene } from '@/state/actions';
-import { commit, currentProject, useCurrentScene, useProject } from '@/state/projectStore';
+import { addScene, placeCharacter, requestDeleteScene, switchScene } from '@/state/actions';
+import { commit, useCurrentScene, useProject } from '@/state/projectStore';
 import { seek, transport } from '@/state/transport';
 import { confirmDialog, openContextMenu, promptDialog, selectNodes, toast, useUI } from '@/state/uiStore';
 import { repo, type LibraryRecord } from '@/storage/db';
 import { IconButton, MoreButton, SearchBox, SelectField, TextField, useLongPress, VirtualList } from '../controls/fields';
 import { usePrefs } from '@/state/prefs';
-import { backgroundThumbUrl, CharacterThumb, PropThumb, SceneThumb } from './thumbs';
+import { backgroundThumbUrl, SceneThumb } from './thumbs';
 import { formatTime } from '../timeline/Timeline';
 import { MediaPanel } from './MediaPanel';
-import { HelpLink } from '../manual/HelpLink';
-import { previewAssetUrl } from '@/features/library/assets';
-import { readObjectBundle } from '@/features/library/bundles';
-import { bringBackgroundFromLibrary, bringObjectFromLibrary, deleteCustomObject, insertCustomObject, newCustomObject, openObjectCreator } from '@/state/creatorActions';
-import { OBJECT_PREFIX, renderCustomObject } from '@/engine/world/pieces';
-import { CustomBackgroundsSection } from './CustomBackgrounds';
+import { bringBackgroundFromLibrary, bringObjectFromLibrary } from '@/state/creatorActions';
+import { CastPanel, ObjectsCatalogPanel, SceneryPanel } from './Catalog';
 
 /* ---------------------------------- CENAS ---------------------------------- */
 let sceneClipboard: Scene | null = null;
@@ -195,257 +187,10 @@ export function LayersPanel() {
   );
 }
 
-/* ---------------------------------- PERSONAGENS ---------------------------------- */
-export function CharactersPanel() {
-  const project = useProject();
-  const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState<'all' | 'favorites'>('all');
-  const [userLib, setUserLib] = useState<LibraryRecord[]>([]);
-  const charFile = useRef<HTMLInputElement>(null);
-  useEffect(() => { void repo.listLibrary('character').then(setUserLib); }, []);
-  if (!project) return null;
-  const projectChars = Object.values(project.characters).filter((c) => matchesSearch(query, c.name) && (filter === 'all' || c.favorite));
-  const builtins = BUILTIN_CHARACTERS.filter((b) => !Object.values(project.characters).some((c) => c.builtinId === b.builtinId)).filter((c) => matchesSearch(query, c.name, c.hair.style, c.outfit.top));
-  const create = () => {
-    const def = newCharacterDefinition(`Personagem ${Object.keys(project.characters).length + 1}`, {});
-    commit('Criar personagem', (d) => { d.characters[def.id] = def; });
-    useUI.setState({ dialog: 'creator', creatorCharacterId: def.id });
-  };
-  const menu = (c: CharacterDefinition) => [
-    { label: 'Colocar na cena', onSelect: () => placeCharacter(c.id) },
-    { label: 'Editar no criador', onSelect: () => useUI.setState({ dialog: 'creator', creatorCharacterId: c.id }) },
-    { label: 'Duplicar', onSelect: () => {
-      const copy: CharacterDefinition = { ...deepClone(c), id: uid('char'), name: `${c.name} (cópia)`, builtinId: undefined };
-      commit('Duplicar personagem', (d) => { d.characters[copy.id] = copy; });
-    } },
-    { label: c.favorite ? 'Tirar dos favoritos' : 'Favoritar', onSelect: () => commit('Favoritar', (d) => { d.characters[c.id]!.favorite = !c.favorite; }) },
-    { label: 'Salvar na minha biblioteca', onSelect: async () => {
-      await repo.putLibrary({ id: uid('lib'), kind: 'character', name: c.name, favorite: 0, createdAt: Date.now(), data: { ...deepClone(c), builtinId: undefined } });
-      setUserLib(await repo.listLibrary('character'));
-      toast('Salvo na sua biblioteca, disponível em todos os projetos.', 'success');
-    } },
-    { label: 'Remover do projeto', danger: true, onSelect: async () => {
-      const used = characterUsage(currentProject(), c.id);
-      if (used > 0) {
-        toast(`"${c.name}" está em uso em ${used} instância(s). Exclua as instâncias nas cenas antes de remover.`, 'error');
-        return;
-      }
-      const ok = await confirmDialog({ title: 'Remover personagem', message: `Remover "${c.name}" da biblioteca do projeto?`, confirmLabel: 'Remover', danger: true });
-      if (ok) commit('Remover personagem', (d) => void deleteCharacter(d as Project, c.id));
-    } },
-  ];
-  return (
-    <div className="panel-col" data-testid="characters-panel">
-      <header className="panel-header"><h2>PERSONAGENS</h2><span className="count">{Object.keys(project.characters).length + builtins.length}</span></header>
-      <div className="panel-sub">
-        <SearchBox value={query} onChange={setQuery} placeholder="Buscar personagem" testId="char-search" />
-        <div className="chip-row">
-          <button type="button" className={`chip${filter === 'all' ? ' is-active' : ''}`} onClick={() => setFilter('all')}>Todos</button>
-          <button type="button" className={`chip${filter === 'favorites' ? ' is-active' : ''}`} onClick={() => setFilter('favorites')}><Star size={12} /> Favoritos</button>
-        </div>
-      </div>
-      <div className="panel-scroll">
-        {projectChars.length > 0 && <h3 className="group-title">Neste projeto</h3>}
-        <div className="card-grid">
-          {projectChars.map((c) => (
-            <div key={c.id} className="card" data-testid="project-character" data-name={c.name}>
-              <button type="button" className="card-main" aria-label={`Colocar ${c.name} na cena`} onClick={() => placeCharacter(c.id)}>
-                <CharacterThumb def={c} size={72} />
-                <span>{c.favorite && <Star size={10} fill="currentColor" />} {c.name}</span>
-              </button>
-              <div className="card-actions">
-                <IconButton label={`Editar ${c.name}`} testId="edit-character" onClick={() => useUI.setState({ dialog: 'creator', creatorCharacterId: c.id })}><Pencil size={14} /></IconButton>
-                <MoreButton label={`Opções de ${c.name}`} items={() => menu(c)} />
-              </div>
-            </div>
-          ))}
-        </div>
-        {userLib.length > 0 && <h3 className="group-title">Minha biblioteca</h3>}
-        <div className="card-grid">
-          {userLib.filter((r) => matchesSearch(query, r.name)).map((r) => {
-            const def = r.data as CharacterDefinition;
-            return (
-              <div key={r.id} className="card">
-                <button type="button" className="card-main" aria-label={`Trazer ${r.name} para o projeto`} onClick={() => {
-                  const copy: CharacterDefinition = { ...deepClone(def), id: uid('char') };
-                  commit('Trazer da biblioteca', (d) => { d.characters[copy.id] = copy; });
-                  placeCharacter(copy.id);
-                }}><CharacterThumb def={def} size={72} /><span>{r.name}</span></button>
-                <div className="card-actions">
-                  <IconButton label={`Apagar ${r.name} da biblioteca`} danger onClick={async () => {
-                    const ok = await confirmDialog({ title: 'Apagar da biblioteca', message: `Apagar "${r.name}"? Os projetos que já o usam não mudam.`, confirmLabel: 'Apagar', danger: true });
-                    if (ok) {
-                      await repo.deleteLibrary(r.id);
-                      setUserLib(await repo.listLibrary('character'));
-                    }
-                  }}><Trash2 size={14} /></IconButton>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        {builtins.length > 0 && <h3 className="group-title">Elenco pronto</h3>}
-        <div className="card-grid">
-          {builtins.map((c) => (
-            <button key={c.builtinId} type="button" className="card card-main" data-testid="builtin-character" data-name={c.name} aria-label={`Colocar ${c.name} na cena`} onClick={() => placeBuiltin(c.builtinId!)}>
-              <CharacterThumb def={c} size={72} />
-              <span>{c.name}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-      <footer className="panel-footer">
-        <button type="button" className="btn btn-primary btn-block" data-testid="create-character" onClick={create}><UserPlus size={15} /> Criar personagem</button>
-        <button type="button" className="btn btn-sm btn-block" onClick={() => charFile.current?.click()}><FileUp size={14} /> Importar personagem (.json)</button>
-        <input ref={charFile} hidden type="file" accept=".json" data-testid="character-input" onChange={async (e) => {
-          const f = e.target.files?.[0];
-          e.target.value = '';
-          if (!f) return;
-          try {
-            const raw = JSON.parse(await f.text()) as { format?: string; character?: unknown };
-            if (raw.format !== 'recorte-studio-character') throw new Error('arquivo não é um personagem do Recorte Studio');
-            const parsed = CharacterDefinitionSchema.parse(raw.character);
-            const copy: CharacterDefinition = { ...parsed, id: uid('char'), builtinId: undefined, spriteAssetId: undefined };
-            commit('Importar personagem', (d) => { d.characters[copy.id] = copy; });
-            toast(`"${copy.name}" importado.`, 'success');
-          } catch (err) {
-            toast(`Não foi possível importar: ${err instanceof Error ? err.message : 'erro desconhecido'}`, 'error');
-          }
-        }} />
-      </footer>
-    </div>
-  );
-}
-
-/* ---------------------------------- CENÁRIOS ---------------------------------- */
-export function BackgroundsPanel() {
-  const scene = useCurrentScene();
-  const [query, setQuery] = useState('');
-  const [variant, setVariant] = useState<'day' | 'night'>('day');
-  if (!scene) return null;
-  const list = BACKGROUNDS.filter((b) => matchesSearch(query, b.label, b.keywords, b.group));
-  const groups = [...new Set(list.map((b) => b.group))];
-  return (
-    <div className="panel-col" data-testid="backgrounds-panel">
-      <header className="panel-header"><h2>CENÁRIOS</h2><span className="count">{BACKGROUNDS.length}</span></header>
-      <div className="panel-sub">
-        <SearchBox value={query} onChange={setQuery} placeholder="Buscar cenário" testId="bg-search" />
-        <div className="chip-row">
-          <button type="button" className={`chip${variant === 'day' ? ' is-active' : ''}`} onClick={() => setVariant('day')}>Dia</button>
-          <button type="button" className={`chip${variant === 'night' ? ' is-active' : ''}`} onClick={() => setVariant('night')}>Noite</button>
-        </div>
-      </div>
-      <div className="panel-scroll">
-        <CustomBackgroundsSection />
-        {groups.map((g) => (
-          <div key={g}>
-            <h3 className="group-title">{g}</h3>
-            <div className="card-grid is-wide">
-              {list.filter((b) => b.group === g).map((b) => (
-                <button key={b.id} type="button" className={`card card-main${scene.background.presetId === b.id ? ' is-active' : ''}`} data-testid="bg-card" data-bg={b.id} aria-pressed={scene.background.presetId === b.id} onClick={() => {
-                  commit('Trocar cenário', (d) => applyBackground(sceneOf(d as Project, scene.id), b.id, { variant }));
-                  toast(`Cenário: ${b.label}. Móveis viraram camadas editáveis.`);
-                }}>
-                  <img src={backgroundThumbUrl(b.id, variant)} alt="" loading="lazy" className="bg-thumb" />
-                  <span>{b.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-        {list.length === 0 && <p className="empty">Nenhum cenário com esse termo.</p>}
-      </div>
-    </div>
-  );
-}
-
-/* ---------------------------------- OBJETOS ---------------------------------- */
-function MyObjectsSection() {
-  const project = useProject();
-  const [lib, setLib] = useState<LibraryRecord[]>([]);
-  useEffect(() => { void repo.listLibrary('object').then(setLib); }, []);
-  if (!project) return null;
-  const list = Object.values(project.customObjects);
-  const entries = lib.map((r) => ({ r, read: readObjectBundle(r.data) }));
-  const fromLib = entries.filter((e) => !e.read.ok || !project.customObjects[e.read.bundle.object.id]);
-  return (
-    <div className="cbg-section" data-testid="my-objects">
-      <div className="cbg-title">
-        <h3 className="group-title">Meus objetos</h3>
-        <HelpLink chapter="criador-objetos" />
-        <button type="button" className="btn btn-sm" data-testid="object-new" onClick={() => void newCustomObject()}><Plus size={13} /> Criar objeto</button>
-      </div>
-      {list.length === 0 && <p className="hint">Monte objetos com formas, cores e imagens no Criador de Objetos e use-os nas cenas e nos cenários.</p>}
-      {list.map((o) => (
-        <div key={o.id} className="lib-row" data-testid="my-object" data-name={o.name}>
-          <svg className="obj-thumb" viewBox={`${-Math.max(o.width, o.height) * 0.6} ${-Math.max(o.width, o.height) * 1.1} ${Math.max(o.width, o.height) * 1.2} ${Math.max(o.width, o.height) * 1.2}`} aria-hidden="true" dangerouslySetInnerHTML={{ __html: renderCustomObject(project, OBJECT_PREFIX + o.id, previewAssetUrl) }} />
-          <span className="lib-main"><strong>{o.name}</strong><small>{o.pieces.length} peça(s)</small></span>
-          <IconButton label={`Inserir ${o.name} na cena`} testId="my-object-insert" onClick={() => insertCustomObject(o.id)}><Plus size={14} /></IconButton>
-          <IconButton label={`Editar ${o.name}`} testId="my-object-edit" onClick={() => openObjectCreator(o.id)}><Pencil size={14} /></IconButton>
-          <IconButton label={`Excluir ${o.name}`} danger onClick={() => void deleteCustomObject(o.id)}><Trash2 size={14} /></IconButton>
-        </div>
-      ))}
-      {fromLib.length > 0 && (
-        <>
-          <h3 className="group-title">Da minha biblioteca</h3>
-          {fromLib.map(({ r, read }) => (
-            <div key={r.id} className={`lib-row${read.ok ? '' : ' is-broken'}`} data-testid="obj-lib-row" data-name={r.name}>
-              <span className="lib-main"><strong>{r.name}</strong>{!read.ok && <small className="lib-error" role="alert">Formato incompatível: {read.reason}</small>}</span>
-              {read.ok && <button type="button" className="btn btn-sm" data-testid="obj-lib-bring" onClick={async () => { if (await bringObjectFromLibrary(r.data)) setLib(await repo.listLibrary('object')); }}>Trazer</button>}
-              <IconButton label={`Apagar ${r.name} da biblioteca`} danger onClick={async () => {
-                const ok = await confirmDialog({ title: 'Apagar da biblioteca', message: `Apagar "${r.name}" da biblioteca? Os projetos que já o usam não mudam.`, confirmLabel: 'Apagar', danger: true });
-                if (ok) { await repo.deleteLibrary(r.id); setLib(await repo.listLibrary('object')); }
-              }}><Trash2 size={14} /></IconButton>
-            </div>
-          ))}
-        </>
-      )}
-    </div>
-  );
-}
-
-export function ObjectsPanel() {
-  const [query, setQuery] = useState('');
-  const fileRef = useRef<HTMLInputElement>(null);
-  const list = PROPS.filter((p) => matchesSearch(query, p.label, p.keywords, PROP_CATEGORY_LABELS[p.category]));
-  const cats = [...new Set(list.map((p) => p.category))] as PropDef['category'][];
-  return (
-    <div className="panel-col" data-testid="objects-panel">
-      <header className="panel-header"><h2>OBJETOS</h2><span className="count">{PROPS.length}</span></header>
-      <div className="panel-sub">
-        <SearchBox value={query} onChange={setQuery} placeholder="Buscar objeto" testId="prop-search" />
-        <div className="btn-row">
-          <button type="button" className="btn btn-sm" data-testid="add-text" onClick={() => addNodeToScene(createTextNode('Seu texto'), 'Adicionar texto')}><Type size={14} /> Texto</button>
-          <button type="button" className="btn btn-sm" onClick={() => addNodeToScene(createShapeNode('rect'), 'Adicionar forma')}><Shapes size={14} /> Forma</button>
-          <button type="button" className="btn btn-sm" onClick={() => addNodeToScene(createLightNode(), 'Adicionar luz')}><Lightbulb size={14} /> Luz</button>
-          <button type="button" className="btn btn-sm" data-testid="import-image" onClick={() => fileRef.current?.click()}><ImagePlus size={14} /> Imagem</button>
-        </div>
-        <input ref={fileRef} hidden type="file" accept={IMAGE_ACCEPT} data-testid="image-input" onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) void importImage(f);
-          e.target.value = '';
-        }} />
-      </div>
-      <div className="panel-scroll">
-        <MyObjectsSection />
-        {cats.map((cat) => (
-          <div key={cat}>
-            <h3 className="group-title">{PROP_CATEGORY_LABELS[cat]}</h3>
-            <div className="card-grid">
-              {list.filter((p) => p.category === cat).map((p) => (
-                <button key={p.id} type="button" className="card card-main" data-testid="prop-card" data-prop={p.id} aria-label={`Adicionar ${p.label}`} onClick={() => placeProp(p.id)}>
-                  <PropThumb propId={p.id} size={58} />
-                  <span>{p.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-        {list.length === 0 && <p className="empty">Nenhum objeto com esse termo.</p>}
-      </div>
-    </div>
-  );
-}
+/* ------------------- ELENCO, CENÁRIOS E OBJETOS: visões do catálogo unificado ------------------- */
+export const CharactersPanel = CastPanel;
+export const BackgroundsPanel = SceneryPanel;
+export const ObjectsPanel = ObjectsCatalogPanel;
 
 /* ---------------------------------- TEMPLATES ---------------------------------- */
 export function TemplatesPanel() {

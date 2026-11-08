@@ -35,7 +35,7 @@ test.describe('biblioteca com formatos antigos e dependências', () => {
     await expect(bad).toContainText('Formato incompatível');
     await expect(bad.getByTestId('cbg-lib-bring')).toHaveCount(0);
     const old = page.locator('[data-testid="cbg-lib-row"][data-name="Antigo 1.1"]');
-    await old.getByTestId('cbg-lib-bring').click();
+    await old.locator('.card-main').click();
     await expect(page.getByTestId('toasts')).toContainText('não estão mais neste navegador');
     await expect(page.locator('[data-testid="custom-bg"][data-name="Antigo 1.1"]')).toHaveCount(1);
     await bad.getByRole('button', { name: /Apagar Quebrado/ }).click();
@@ -50,7 +50,7 @@ test.describe('biblioteca com formatos antigos e dependências', () => {
     await putLibrary(page, { id: 'lib_obj', kind: 'object', name: 'Fora', favorite: 0, createdAt: 1, data: { bundle: 2, object: outer, objects: [inner], assets: [] } });
     await tab(page, 'scenes');
     await tab(page, 'objects');
-    await page.locator('[data-testid="obj-lib-row"][data-name="Fora"]').getByTestId('obj-lib-bring').click();
+    await page.locator('[data-testid="obj-lib-row"][data-name="Fora"] .card-main').click();
     await expect(page.getByTestId('toasts')).toContainText('com 1 objeto');
     await expect(page.locator('[data-testid="my-object"]')).toHaveCount(2);
     // Criador de "Dentro": "Fora" (que contém "Dentro") não pode ser adicionado dentro dele.

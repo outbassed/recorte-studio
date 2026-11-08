@@ -23,7 +23,7 @@ export type ProjectRow = Omit<ProjectRecord, 'data'> & { width: number; height: 
 
 export interface BlobRecord { id: string; blob: Blob; name: string; mime: string; size: number; createdAt: number }
 export interface BackupRecord { id?: number; projectId: string; createdAt: number; label: string; raw: string }
-export interface LibraryRecord { id: string; kind: LibraryKind; name: string; favorite: number; createdAt: number; data: unknown }
+export interface LibraryRecord { id: string; kind: LibraryKind; name: string; favorite: number; createdAt: number; data: unknown; /** Catálogo: última edição (registros antigos não têm). */ updatedAt?: number }
 export type LibraryKind = 'character' | 'pose' | 'scene' | 'background' | 'animation' | 'prop' | 'audio' | 'object';
 export interface MetaRecord { key: string; value: unknown }
 
@@ -156,6 +156,7 @@ export const repo = {
   listLibrary: (kind?: LibraryKind) => (kind ? db.library.where('kind').equals(kind).toArray() : db.library.toArray()),
   putLibrary: (r: LibraryRecord) => db.library.put(r),
   deleteLibrary: (id: string) => db.library.delete(id),
+  getLibrary: (id: string) => db.library.get(id),
   async storageEstimate(): Promise<{ usage: number; quota: number } | null> {
     if (!navigator.storage?.estimate) return null;
     const e = await navigator.storage.estimate();

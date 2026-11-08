@@ -13,7 +13,7 @@ import { CUSTOM_RECT, TIME_LABELS, applyCustomBackground, createCustomBackground
 import { getBackground, renderBackground } from '@/engine/world/backgrounds';
 import { getProp } from '@/engine/world/props';
 import { importImageFile, registerAssetBlob } from '@/features/library/assets';
-import { repo } from '@/storage/db';
+import { repo, type LibraryKind } from '@/storage/db';
 import { commit, currentProject, currentScene } from './projectStore';
 import { confirmDialog, promptDialog, selectNodes, toast, useUI } from './uiStore';
 
@@ -80,52 +80,70 @@ async function registerBlobs(assets: Asset[]): Promise<number> {
 }
 const depsLabel = (r: { addedObjects: number }) => (r.addedObjects > 1 ? ` (com ${r.addedObjects - 1} objeto(s) usado(s) por ele)` : '');
 
-export async function saveObjectToLibrary(id: string): Promise<void> {
+/**
+ * Grava na biblioteca preservando a identidade: se já existe um registro com o mesmo ID de
+ * objeto/cenário/personagem, ele é ATUALIZADO (mesmo registro, favorito e data de criação mantidos).
+ */
+export async function upsertLibrary(kind: LibraryKind, identity: string, name: string, data: unknown, idOf: (data: unknown) => string | undefined): Promise<'created' | 'updated'> {
+  const existing = (await repo.listLibrary(kind)).find((r) => idOf(r.data) === identity);
+  const now = Date.now();
+  await repo.putLibrary({ id: existing?.id ?? uid('lib'), kind, name, favorite: existing?.favorite ?? 0, createdAt: existing?.createdAt ?? now, updatedAt: now, data });
+  return existing ? 'updated' : 'created';
+}
+const field = (k: string, sub?: string) => (d: unknown): string | undefined => {
+  const o = d as Record<string, Record<string, unknown> | undefined> | null;
+  const v = sub ? o?.[k]?.[sub] : (o as Record<string, unknown> | null)?.[k];
+  return typeof v === 'string' ? v : undefined;
+};
+export const libIdentity = { object: field('object', 'id'), background: field('background', 'id'), character: field('id') };
+
+export async function saveObjectToLibrary(id: string): Promise<boolean> {
   const bundle = buildObjectBundle(currentProject(), id);
-  if (!bundle) return;
-  await repo.putLibrary({ id: uid('lib'), kind: 'object', name: bundle.object.name, favorite: 0, createdAt: Date.now(), data: bundle });
+  if (!bundle) return false;
+  const how = await upsertLibrary('object', bundle.object.id, bundle.object.name, bundle, libIdentity.object);
   const n = bundle.objects.length;
-  toast(`"${bundle.object.name}" salvo na sua biblioteca${n ? ` com ${n} objeto(s) que ele usa` : ''}.`, 'success');
+  toast(`"${bundle.object.name}" ${how === 'updated' ? 'atualizado na' : 'salvo na'} sua biblioteca${n ? ` com ${n} objeto(s) que ele usa` : ''}.`, 'success');
+  return true;
 }
 
 export async function saveBackgroundToLibrary(id: string): Promise<boolean> {
   const bundle = buildBackgroundBundle(currentProject(), id);
   if (!bundle) return false;
-  await repo.putLibrary({ id: uid('lib'), kind: 'background', name: bundle.background.name, favorite: 0, createdAt: Date.now(), data: bundle });
+  const how = await upsertLibrary('background', bundle.background.id, bundle.background.name, bundle, libIdentity.background);
   const n = bundle.objects.length;
-  toast(`"${bundle.background.name}" salvo na sua biblioteca${n ? ` com ${n} objeto(s) usado(s)` : ''}.`, 'success');
+  toast(`"${bundle.background.name}" ${how === 'updated' ? 'atualizado na' : 'salvo na'} sua biblioteca${n ? ` com ${n} objeto(s) usado(s)` : ''}.`, 'success');
   return true;
 }
 
 /** Traz um objeto da biblioteca: imagens e objetos aninhados vêm junto. Devolve false se o registro for ilegível. */
-export async function bringObjectFromLibrary(data: unknown): Promise<boolean> {
+export async function bringObjectFromLibrary(data: unknown, quiet = false): Promise<string | null> {
   const read = readObjectBundle(data);
   if (!read.ok) {
     toast(`Não foi possível trazer este objeto: ${read.reason}`, 'error');
-    return false;
+    return null;
   }
   const b = read.bundle;
   const missing = await registerBlobs(b.assets);
   let res: ReturnType<typeof mergeObjectBundle> | null = null;
   commit('Trazer objeto da biblioteca', (d) => { res = mergeObjectBundle(d as Project, b); });
   const r = res as unknown as ReturnType<typeof mergeObjectBundle>;
-  toast(r.result.addedObjects === 0 ? `"${b.object.name}" já estava neste projeto.` : `"${b.object.name}" adicionado${depsLabel(r.result)}.${missing ? ` ${missing} imagem(ns) não estão mais neste navegador: reaparecem em Mídias como ausentes.` : ''}`, missing ? 'error' : 'success');
-  return true;
+  if (!quiet || missing) toast(r.result.addedObjects === 0 ? `"${b.object.name}" já estava neste projeto.` : `"${b.object.name}" adicionado${depsLabel(r.result)}.${missing ? ` ${missing} imagem(ns) não estão mais neste navegador: reaparecem em Mídias como ausentes.` : ''}`, missing ? 'error' : 'success');
+  return r.id;
 }
 
-export async function bringBackgroundFromLibrary(data: unknown): Promise<boolean> {
+export async function bringBackgroundFromLibrary(data: unknown, quiet = false): Promise<string | null> {
   const read = readBackgroundBundle(data);
   if (!read.ok) {
     toast(`Não foi possível trazer este cenário: ${read.reason}`, 'error');
-    return false;
+    return null;
   }
   const b = read.bundle;
   const missing = await registerBlobs(b.assets);
   let res: ReturnType<typeof mergeBackgroundBundle> | null = null;
   commit('Trazer cenário da biblioteca', (d) => { res = mergeBackgroundBundle(d as Project, b); });
   const r = res as unknown as ReturnType<typeof mergeBackgroundBundle>;
-  toast(`"${b.background.name}" adicionado${r.result.addedObjects ? ` com ${r.result.addedObjects} objeto(s)` : ''}.${missing ? ` ${missing} imagem(ns) não estão mais neste navegador: reaparecem em Mídias como ausentes.` : ''}`, missing ? 'error' : 'success');
-  return true;
+  if (!quiet || missing) toast(`"${b.background.name}" adicionado${r.result.addedObjects ? ` com ${r.result.addedObjects} objeto(s)` : ''}.${missing ? ` ${missing} imagem(ns) não estão mais neste navegador: reaparecem em Mídias como ausentes.` : ''}`, missing ? 'error' : 'success');
+  return r.id;
 }
 
 /* ------------------------------ cenários ------------------------------ */

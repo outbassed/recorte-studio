@@ -24,7 +24,7 @@ export default defineConfig({
     timeout: 60_000,
   },
   projects: [
-    { name: 'e2e', testMatch: /(flows|stories|library|previews|section-keys)\.spec\.ts/ },
+    { name: 'e2e', testMatch: /(flows|stories|library|previews|section-keys|catalog)\.spec\.ts/ },
     { name: 'shots', testMatch: /shots\.spec\.ts/ },
     { name: 'manual', testMatch: /manual\.spec\.ts/ },
   ],

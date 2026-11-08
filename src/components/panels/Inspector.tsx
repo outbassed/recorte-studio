@@ -3,7 +3,7 @@
  * de propriedades. Se a propriedade tem keyframes, a edição grava um key no tempo atual.
  */
 import { Diamond, Layers, Trash2, UserRound, Wand2 } from 'lucide-react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import { HelpLink } from '../manual/HelpLink';
 import { customObjectIdOf, isCustomObjectId } from '@/engine/world/pieces';
 import { openObjectCreator } from '@/state/creatorActions';
@@ -13,7 +13,7 @@ import {
 import { BACKGROUNDS, getBackground } from '@/engine/world/backgrounds';
 import { getProp } from '@/engine/world/props';
 import { getPropertyDef, formatKeyValue } from '@/engine/model/properties';
-import { addSectionKeys, animatablePaths, keyTime, sectionKeyState, type AddSectionKeysResult, type KeyOwner } from '@/engine/model/sectionKeys';
+import { addSectionKeys, animatablePaths, keyTime, previewRemoveSectionKeys, removeSectionKeys, sectionKeyState, type AddSectionKeysResult, type KeyOwner, type RemoveSectionKeysResult } from '@/engine/model/sectionKeys';
 import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type Transition } from '@/engine/model/schema';
 import { EXPRESSIONS, VISEMES } from '@/engine/character/expressions';
 import { POSES } from '@/engine/character/presets';
@@ -27,9 +27,9 @@ import { uid } from '@/engine/model/ids';
 import { repo } from '@/storage/db';
 import type { TimeOfDay } from '@/engine/model/schema';
 import { seek, transport, useTransport } from '@/state/transport';
-import { promptDialog, useUI, toast } from '@/state/uiStore';
+import { confirmDialog, openContextMenu, promptDialog, useUI, toast } from '@/state/uiStore';
 import { deleteSelection } from '@/state/actions';
-import { ColorField, IconButton, Section, SelectField, TextField, ToggleField } from '../controls/fields';
+import { ColorField, IconButton, Section, SelectField, TextField, ToggleField, useLongPress } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
 
 const useTimeMs = () => useTransport((s) => (s.playing ? -1 : s.timeMs));
@@ -98,34 +98,70 @@ function KeyButton({ scene, target, path, active, animated, label }: { scene: Sc
 function SectionKeys({ id, scene, target, kind, paths }: { id: string; scene: Scene; target: string; kind: KeyOwner; paths: readonly string[] }) {
   const t = useTimeMs();
   const list = animatablePaths(kind, paths);
+  // Toque longo abre o menu; o clique que vem ao soltar o dedo não pode criar keyframes.
+  const fired = useRef(false);
+  const longPress = useLongPress((x, y) => { fired.current = true; menu(x, y); });
   if (list.length < 2) return null;
   const time = t < 0 ? nowMs() : t;
   const st = sectionKeyState(scene, target, list, time);
   const hint = 'Criar keyframes de todas as propriedades desta seção';
+  const removeHint = 'Shift+clique (ou toque longo) remove só os keyframes desta seção neste instante';
   const summary = st.status === 'all' ? `as ${st.total} propriedades já têm keyframe neste instante` : st.status === 'partial' ? `${st.withKey} de ${st.total} já têm keyframe neste instante` : 'nenhuma tem keyframe neste instante';
   const secs = (ms: number) => (ms / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  const create = () => {
+    const at = keyTime(nowMs());
+    if (st.missing.length === 0 && keyTime(time) === at) {
+      toast(`Todas as propriedades desta seção já têm keyframe em ${secs(at)} s. Nada foi alterado.`);
+      return;
+    }
+    const out: { r: AddSectionKeysResult | null } = { r: null };
+    commit('Criar keyframes da seção', (d) => { out.r = addSectionKeys(sceneOf(d as Project, scene.id), target, kind, list, at); });
+    const r = out.r;
+    if (!r) return;
+    toast(`${r.created.length} keyframe(s) criado(s) em ${secs(at)} s${r.kept.length ? `; ${r.kept.length} já existia(m) e foi(ram) mantido(s)` : ''}.`, 'success');
+  };
+  const remove = async () => {
+    const at = keyTime(nowMs());
+    const plan = previewRemoveSectionKeys(currentProject().scenes[scene.id] ?? scene, target, kind, list, at);
+    if (!plan.removed.length) {
+      toast(plan.locked.length ? `Os keyframes desta seção em ${secs(at)} s estão em faixas trancadas. Nada foi alterado.` : `Nenhuma propriedade desta seção tem keyframe em ${secs(at)} s. Nada foi alterado.`);
+      return;
+    }
+    // Risco: propriedade que perde a animação inteira volta ao valor-base. Pergunta antes.
+    if (plan.emptied.length) {
+      const ok = await confirmDialog({
+        title: 'Remover keyframes da seção',
+        message: `${plan.removed.length} keyframe(s) em ${secs(at)} s serão removidos. Em ${plan.emptied.length} propriedade(s) ele é o único keyframe: a animação delas acaba e o valor volta ao valor-base. Ctrl+Z desfaz.`,
+        confirmLabel: 'Remover', danger: true,
+      });
+      if (!ok) return;
+    }
+    const out: { r: RemoveSectionKeysResult | null } = { r: null };
+    commit('Remover keyframes da seção', (d) => { out.r = removeSectionKeys(sceneOf(d as Project, scene.id), target, kind, list, at); });
+    const r = out.r;
+    if (r) toast(`${r.removed.length} keyframe(s) removido(s) em ${secs(at)} s. Os outros instantes não mudaram.${r.locked.length ? ` ${r.locked.length} em faixa trancada ficou(aram).` : ''}`, 'success');
+  };
+  const menu = (x: number, y: number) => openContextMenu({ x, y, title: 'Keyframes da seção', items: [
+    { label: 'Criar os que faltam neste instante', onSelect: create },
+    { label: 'Remover os deste instante', danger: true, disabled: st.withKey === 0, onSelect: () => void remove() },
+  ] });
   return (
     <button
       type="button"
       className={`key-btn section-key is-${st.status}${st.animated ? ' is-animated' : ''}`}
       aria-pressed={st.status === 'all' ? 'true' : st.status === 'partial' ? 'mixed' : 'false'}
-      aria-label={`${hint}. Neste instante: ${summary}`}
-      title={`${hint} (${summary})`}
+      aria-label={`${hint}. Neste instante: ${summary}. ${removeHint}.`}
+      title={`${hint} (${summary}). ${removeHint}.`}
       data-testid={`section-keys-${id}`}
       data-status={st.status}
       data-count={`${st.withKey}/${st.total}`}
+      {...longPress}
+      onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); menu(e.clientX, e.clientY); }}
       onClick={(e) => {
         e.stopPropagation();
-        const at = keyTime(nowMs());
-        if (st.missing.length === 0 && keyTime(time) === at) {
-          toast(`Todas as propriedades desta seção já têm keyframe em ${secs(at)} s. Nada foi alterado.`);
-          return;
-        }
-        const out: { r: AddSectionKeysResult | null } = { r: null };
-        commit('Criar keyframes da seção', (d) => { out.r = addSectionKeys(sceneOf(d as Project, scene.id), target, kind, list, at); });
-        const r = out.r;
-        if (!r) return;
-        toast(`${r.created.length} keyframe(s) criado(s) em ${secs(at)} s${r.kept.length ? `; ${r.kept.length} já existia(m) e foi(ram) mantido(s)` : ''}.`, 'success');
+        if (fired.current) { fired.current = false; return; }
+        if (e.shiftKey) void remove();
+        else create();
       }}
     >
       <Diamond size={13} fill={st.status === 'none' ? 'none' : 'currentColor'} fillOpacity={st.status === 'partial' ? 0.4 : 1} />

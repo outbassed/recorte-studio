@@ -241,7 +241,7 @@ export function PieceStudio(p: StudioProps) {
       )}
       {one.kind === 'prop' && (
         <>
-          <ColorField label="Cor principal" value={one.colorA || getProp(one.refId ?? '')?.a || '#888888'} onChange={(v) => editSel('Cor', (pc) => { pc.colorA = v; }, `pc-${one.id}-a`)} />
+          <ColorField label="Cor principal" testId="piece-color-a" value={one.colorA || getProp(one.refId ?? '')?.a || '#888888'} onChange={(v) => editSel('Cor', (pc) => { pc.colorA = v; }, `pc-${one.id}-a`)} />
           <ColorField label="Cor secundária" value={one.colorB || getProp(one.refId ?? '')?.b || '#888888'} onChange={(v) => editSel('Cor', (pc) => { pc.colorB = v; }, `pc-${one.id}-b`)} />
           {getProp(one.refId ?? '')?.states && <SelectField label="Estado" value={one.state} options={getProp(one.refId ?? '')!.states!} onChange={(v) => editSel('Estado', (pc) => { pc.state = v; })} />}
         </>
