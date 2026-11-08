@@ -257,6 +257,25 @@ async function svgAsset(svg: string, name: string): Promise<Asset> {
   return asset;
 }
 
+/**
+ * Composição editável a partir de um cenário pronto: o fundo vira uma imagem SVG e os móveis
+ * viram peças. Não grava nada: quem chama decide o commit (um passo só de histórico).
+ */
+export async function builtinComposition(p: Project, presetId: string, variant: 'day' | 'night', comp: Composition = { sky: variant === 'night' ? '#1d2747' : '#9fd3f0', pieces: [] }): Promise<{ comp: Composition; asset: Asset }> {
+  const def = getBackground(presetId);
+  const layers = renderBackground(BackgroundSchema.parse({ presetId, variant }), 'cb-');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W.w}" height="${W.h}" viewBox="${W.x} ${W.y} ${W.w} ${W.h}">${layers.sky}${layers.mid}${layers.ground}${layers.overlay}</svg>`;
+  const asset = await svgAsset(svg, `${def.label}${variant === 'night' ? ' (noite)' : ''}.svg`);
+  comp.pieces.push(createPiece('image', { name: `Fundo: ${def.label}`, assetId: asset.id, x: 0, y: 0, w: W.w, h: W.h }));
+  const { X, S, narrow } = fitToFrame(frameOf(p));
+  for (const f of def.furniture) {
+    const pd = getProp(f.propId);
+    // Quadro vertical ou estreito: os móveis do cenário pronto também se aproximam do centro.
+    if (pd) comp.pieces.push(createPiece('prop', { name: pd.label, refId: f.propId, x: narrow ? X(f.x) : f.x, y: f.y, scale: narrow ? S(f.scale ?? 1) : f.scale ?? 1, colorA: f.colorA ?? '', colorB: f.colorB ?? '', state: f.state ?? '' }));
+  }
+  return { comp, asset };
+}
+
 /** Cria a composição de um horário a partir da origem escolhida. */
 export async function startComposition(cbId: string, time: TimeOfDay, from: StartFrom): Promise<void> {
   const p = currentProject();
@@ -279,18 +298,8 @@ export async function startComposition(cbId: string, time: TimeOfDay, from: Star
     comp.pieces.push(createPiece('image', { name: 'Imagem do horário', assetId: v.assetId, x: 0, y: 0, w: W.w, h: W.h }));
   } else if (from.kind === 'builtin') {
     try {
-      const def = getBackground(from.presetId);
-      const layers = renderBackground(BackgroundSchema.parse({ presetId: from.presetId, variant: from.variant }), 'cb-');
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W.w}" height="${W.h}" viewBox="${W.x} ${W.y} ${W.w} ${W.h}">${layers.sky}${layers.mid}${layers.ground}${layers.overlay}</svg>`;
-      const asset = await svgAsset(svg, `${def.label}.svg`);
-      assets.push(asset);
-      comp.pieces.push(createPiece('image', { name: `Fundo: ${def.label}`, assetId: asset.id, x: 0, y: 0, w: W.w, h: W.h }));
-      const { X, S, narrow } = fitToFrame(frameOf(p));
-      for (const f of def.furniture) {
-        const pd = getProp(f.propId);
-        // Quadro vertical ou estreito: os móveis do cenário pronto também se aproximam do centro.
-        if (pd) comp.pieces.push(createPiece('prop', { name: pd.label, refId: f.propId, x: narrow ? X(f.x) : f.x, y: f.y, scale: narrow ? S(f.scale ?? 1) : f.scale ?? 1, colorA: f.colorA ?? '', colorB: f.colorB ?? '', state: f.state ?? '' }));
-      }
+      const r = await builtinComposition(p, from.presetId, from.variant, comp);
+      assets.push(r.asset);
     } catch (e) {
       toast(`Não foi possível copiar o cenário: ${e instanceof Error ? e.message : 'erro'}`, 'error');
       return;

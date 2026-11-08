@@ -127,6 +127,10 @@ test.describe('catálogo · computador', () => {
     await page.getByTestId('bg-search').fill('');
     await page.locator('[data-testid="backgrounds-panel"] [data-filter="mine"]').click();
     await expect(card(page, 'custom-bg', 'Praia (cópia)')).toHaveCount(1);
+    // Uma ação lógica: um único Ctrl+Z desfaz a cópia inteira (cenário, Dia e Noite).
+    await page.getByTestId('undo').click();
+    await expect(page.getByTestId('toasts')).toContainText('Desfeito: Criar cópia editável');
+    await expect(card(page, 'custom-bg', 'Praia (cópia)')).toHaveCount(0);
   });
 
   test('uso entre projetos: salvar objeto pessoal, abrir outro projeto, achar no catálogo e inserir', async ({ page }) => {

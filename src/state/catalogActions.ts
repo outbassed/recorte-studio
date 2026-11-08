@@ -23,7 +23,7 @@ import { repo, type LibraryRecord } from '@/storage/db';
 import { placeBuiltin, placeCharacter, placeProp } from './actions';
 import {
   bringBackgroundFromLibrary, bringObjectFromLibrary, deleteCustomObject, insertCustomObject, libIdentity, openObjectCreator, openSceneCreator,
-  saveBackgroundToLibrary, saveObjectToLibrary, startComposition, upsertLibrary,
+  builtinComposition, saveBackgroundToLibrary, saveObjectToLibrary, upsertLibrary,
 } from './creatorActions';
 import { commit, currentProject, currentScene } from './projectStore';
 import { setPref, usePrefs } from './prefs';
@@ -223,9 +223,24 @@ export async function copyBuiltin(e: CatalogEntry, open = true): Promise<string 
   if (ref.type === 'builtin-background') {
     const def = getBackground(ref.presetId);
     let id = '';
-    commit('Criar cópia editável', (d) => { id = createCustomBackground(d as Project, `${def.label} (cópia)`).id; });
-    await startComposition(id, 'day', { kind: 'builtin', presetId: ref.presetId, variant: 'day' });
-    await startComposition(id, 'night', { kind: 'builtin', presetId: ref.presetId, variant: 'night' });
+    // Prepara Dia e Noite antes e grava tudo de uma vez: um único Ctrl+Z desfaz a cópia inteira.
+    let day: Awaited<ReturnType<typeof builtinComposition>>;
+    let night: Awaited<ReturnType<typeof builtinComposition>>;
+    try {
+      day = await builtinComposition(currentProject(), ref.presetId, 'day');
+      night = await builtinComposition(currentProject(), ref.presetId, 'night');
+    } catch (err) {
+      toast(`Não foi possível copiar o cenário: ${err instanceof Error ? err.message : 'erro'}`, 'error');
+      return null;
+    }
+    commit('Criar cópia editável', (d) => {
+      const cb = createCustomBackground(d as Project, `${def.label} (cópia)`);
+      id = cb.id;
+      d.assets[day.asset.id] = day.asset;
+      d.assets[night.asset.id] = night.asset;
+      cb.compositions.day = day.comp;
+      cb.compositions.night = night.comp;
+    });
     if (open) openSceneCreator(id, 'day');
     toast(`Cópia "${def.label} (cópia)" criada com Dia e Noite. O cenário padrão continua igual.`, 'success');
     return id;
