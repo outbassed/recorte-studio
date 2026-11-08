@@ -1,5 +1,26 @@
 # Changelog
 
+## Em desenvolvimento: catálogo, biblioteca e animação de objetos
+
+Branch `feature/recorte-studio-catalogo-biblioteca`, sobre a 1.2. Sem lançamento. Detalhes, arquitetura e o que ainda não existe em `docs/CATALOGO.md`.
+
+### Novidades
+
+- **Catálogo unificado** nas abas Elenco, Cenários e Objetos: itens padrão, do projeto e da minha biblioteca numa lista só; busca sem acento; filtros Todos, Padrão, Meus, Favoritos, Recentes e No projeto; categorias; ordem; grade ou lista; miniaturas reais; selo de origem e de uso; carregamento progressivo; detalhes com 4 vistas (personagens), estados (objetos), horários (cenários) e animações tocando.
+- **Cópia ao editar:** editar um personagem, objeto ou cenário padrão cria uma cópia com identidade nova no projeto; o original nunca muda.
+- **Biblioteca com identidade:** salvar de novo atualiza o mesmo registro; trazer para o projeto mantém o ID; duplicar cria um item novo; exportar gera `.biblioteca.json`.
+- **Animação por quadros salva no objeto** (fogo, porta, ventilador…): várias animações por objeto, duração por quadro, repetir/uma vez/vai e volta, papel vegetal, copiar/colar e reordenar quadros. Cada cópia na cena escolhe animação, velocidade e defasagem; trocar por keyframe faz a animação começar ali. O quadro é função pura do tempo: prévia, PNG e vídeo iguais.
+- **Exemplos originais:** Fogueira (Aceso, Apagando), Ventilador (Girando, Devagar) e Barco.
+- **Vínculo pai/filho:** Propriedades → Camadas → Vinculado a. O elemento acompanha o grupo (posição, giro, escala, keyframes) e mantém as próprias falas, ações e piscadas. Vincular e soltar não mudam a posição na tela.
+- **Shift+clique no losango da seção** (ou toque longo) remove só os keyframes daquela seção no instante atual, com um único Ctrl+Z e confirmação quando acaba com a animação de uma propriedade.
+
+### Correções
+
+- Diálogos de nome e confirmação abertos dentro dos criadores apareciam por baixo do criador.
+- Desagrupar um grupo girado ou escalado fazia os elementos pularem; desagrupar um grupo dentro de outro removia a última camada da cena.
+- Elementos dentro de grupos sumiam da timeline (falas e ações deles não eram editáveis); agora aparecem como "Grupo › Nome".
+- Restaurar as configurações não apaga mais favoritos e recentes do catálogo.
+
 ## 1.2.0
 
 Tela inicial e Configurações novas, manual dentro do app, propriedades em abas, Criador de Objetos e de Cenários, profundidade de braços e mãos, cabelos longos corrigidos, interface própria para celular. Sem backend e sem dependência online; projetos 1.0 e 1.1 continuam abrindo.

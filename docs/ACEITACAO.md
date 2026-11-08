@@ -19,6 +19,27 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | 11 | Timeline real e vídeo real | PASSOU | E2E 14 com `ffprobe` |
 | 12 | Salvamento seguro, migração, regressão | PASSOU | E2E 1, 11; `migration.test.ts` |
 
+## Super Prompt: catálogo, biblioteca e expansão (branch do catálogo)
+
+| # | Caso | Estado | Evidência |
+| --- | --- | --- | --- |
+| 1 | Catálogo nas três abas | PASSOU | E2E `catalog.spec.ts` |
+| 2 | Cópia ao editar | PASSOU | E2E e unit |
+| 3 | Uso entre projetos | PASSOU | E2E e unit |
+| 4 | Migração e .jrec da 1.2 | PASSOU | Suíte de regressão; campos novos com padrão |
+| 5 | Pacotes opcionais | NÃO IMPLEMENTADO | |
+| 6 | Fogo animado em 3 cópias, 2 cenas, vídeo | PASSOU | E2E `object-anim.spec.ts` com pixels do vídeo |
+| 7 | Barco com passageiros | PARCIAL | Interface e renderizador testados; sem vídeo do barco conferido; sem pontos de encaixe nomeados |
+| 8 | Roupa com texto e manequim | NÃO IMPLEMENTADO | |
+| 9 | Cor por parte do corpo e esclera por olho | NÃO IMPLEMENTADO | |
+| 10 | Pose especial e compatibilidade por rig | NÃO IMPLEMENTADO | |
+| 11 | Mão de A na frente de B | NÃO IMPLEMENTADO | |
+| 12 | Celular nas três abas | PASSOU* | *Chrome emulando 390×844 com toque |
+| 13 | Undo/redo e Shift+clique da seção | PASSOU | unit e E2E |
+| 14 | Centenas de itens | PASSOU | E2E com 400 registros |
+
+Detalhes em [CATALOGO.md](CATALOGO.md).
+
 ## Por área do prompt
 
 | Seção | Item | Estado | Observação |

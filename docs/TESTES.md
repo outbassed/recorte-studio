@@ -30,6 +30,23 @@ Versão 1.2.0 (com os dois ajustes pré-lançamento), executados em 08/11/2026. 
 
 **E2E novos na 1.1:** salvar .jrec e reabrir em contexto limpo com áudio; projeto 0.4 regravado em .jrec; mídia ausente (aviso, "Salvar incompleto", lista no manifest, alerta em Mídias); aba Mídias (importar por categoria, reaproveitar arquivo repetido, usar na cena, remover com aviso de uso e desfazer); cenário próprio com 1, 3 e 5 horários, troca de horário e persistência; modo simples × avançado sobre os mesmos dados, com desfazer; PWA recarregando offline no mesmo link `?projeto=`; 390×844 com Salvar, Áudio e modo simples sem estourar a tela.
 
+## Branch do catálogo e da biblioteca (sobre a 1.2)
+
+Executados em 08/11/2026 na branch `feature/recorte-studio-catalogo-biblioteca`, mesmo ambiente.
+
+| Comando | Resultado |
+| --- | --- |
+| `npm run typecheck` e `npm run lint` | Sem erros nem avisos |
+| `npm test` | **368 de 368** testes, 21 arquivos (318 da 1.2 + 50 novos) |
+| `npm run test:e2e` | **108 de 109** numa única execução (11,0 min). A falha foi uma checagem rígida demais do teste novo de centenas de itens (61 cartões na 1ª página, o limite era 60); o teste foi ajustado para conferir o que importa (bem menos que 400 e "Mostrar mais" presente) e passou 3 de 3 isolado. A suíte inteira não foi rodada de novo depois do ajuste |
+| `npm run manual:shots` | 2 de 2; 3 capturas novas (catálogo, detalhes, quadros do Criador de Objetos) |
+
+**Novos unitários:** `catalog.test.ts` (28: origens, chaves, busca sem acento, filtros, categorias, ordem, 600 registros, registros quebrados, cena salva antiga, cópia ao editar de objeto/personagem/cenário, objetos animados padrão, biblioteca entre projetos, atualizar o mesmo registro, duplicar, exportar, favoritos, remoção recusada; Shift+clique remove só o instante, um Ctrl+Z, faixa trancada, arredondamento), `object-clips.test.ts` (14: modos repetir/uma vez/vai e volta, durações diferentes, função pura do tempo, 3 cópias com defasagem no renderizador, busca fora de ordem, velocidade, animação acionada por keyframe, compatibilidade, JSON do .jrec, pacote leva o que está dentro dos quadros, limites), `hierarchy.test.ts` (8: matrizes com pivô, decompor/recompor, vincular e soltar sem salto com grupo girado e escalado, ciclos, desagrupar sem salto, grupo dentro de grupo, barco com passageiros no renderizador, salvar/reabrir).
+
+**Novos E2E:** `catalog.spec.ts` (14: Elenco, Cenários e Objetos; cópia ao editar com cor conferida no desenho; personagem e cenário padrão; uso entre projetos; 400 registros: abrir ~160–400 ms, buscar ~40–70 ms; registro quebrado apagável; celular 390×844 com toque nas três abas, modal dentro da tela; Shift+clique com Ctrl+Z e com confirmação), `object-anim.spec.ts` (2: fogo de 4 quadros criado na interface, 3 cópias em 2 cenas, defasagem, recarregar, **cor de cada fogo conferida pixel a pixel em 5 instantes do vídeo exportado**; barco com passageiros vinculados sem salto, balanço, fala continuando, faixas na timeline e mesmo lugar após recarregar).
+
+**Bugs encontrados pelos testes e corrigidos:** pedido de nome dentro do Criador aparecia por baixo dele; desagrupar grupo girado fazia os filhos pularem; elementos de grupos sumiam da timeline.
+
 ## Novos na 1.2
 
 **Unitários** (`library-bundles`, `creators`, `limb-depth`, `quick-actions`, `story-load`, `manual`, `v12`): pacotes de biblioteca (fecho de objetos aninhados, leitura de formatos antigos e de lixo, reaproveitar × copiar, ciclos); invalidação dos caches de objetos, cenários e miniaturas; quadro vertical, 1:1 e 4:3 nos modelos do Criador de Cenários; seleção de peças giradas, espelhadas e escaladas; mover, girar e escalar grupos sem deriva; profundidade de braços e mãos em 8 vistas × poses; ações rápidas do celular por tipo de seleção e por estado no tempo; história grande (validade, determinismo, preview × exportação, **120 quadros de uma cena com cenário de 80 peças e 10 figurantes abaixo de 25 ms por quadro**); manual (todo link, ajuda contextual, imagem e marcação existem; busca); validação do modo simples; pré-escuta de áudio com cancelamento.

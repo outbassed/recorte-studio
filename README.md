@@ -123,6 +123,7 @@ Decisões que sustentam o resto:
 - **Manual:** dentro do app (Manual na tela inicial, F1 ou os ícones ? do editor); funciona offline
 - [docs/ACEITACAO.md](docs/ACEITACAO.md): checklist com PASSOU, PARCIAL ou NÃO IMPLEMENTADO
 - [docs/TESTES.md](docs/TESTES.md): comandos, números e ambiente
+- [docs/CATALOGO.md](docs/CATALOGO.md): catálogo unificado, biblioteca, animação por quadros e vínculo pai/filho (arquitetura, compatibilidade e estado de cada critério)
 - [docs/AUDITORIA-0.4.md](docs/AUDITORIA-0.4.md): inventário do legado
 - [docs/MIGRACAO.md](docs/MIGRACAO.md): como os dados antigos são convertidos
 - [docs/LICENCAS.md](docs/LICENCAS.md): dependências e autoria dos assets

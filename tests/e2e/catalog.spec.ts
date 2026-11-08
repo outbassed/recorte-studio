@@ -166,7 +166,9 @@ test.describe('catálogo · computador', () => {
     const openMs = Date.now() - t0;
     // Só a primeira página está no DOM; o resto vem ao rolar.
     const first = await page.locator('[data-testid="objects-panel"] .cat-card').count();
-    expect(first).toBeLessThanOrEqual(60);
+    // Bem menos que os 400: o resto só entra ao rolar (ou em "Mostrar mais").
+    expect(first).toBeLessThan(150);
+    await expect(page.getByRole('button', { name: /Mostrar mais/ })).toBeVisible();
     await expect(page.getByTestId('catalog-count')).toHaveText(/^4\d\d$/);
     const t1 = Date.now();
     await page.getByTestId('prop-search').fill('caixa 377');

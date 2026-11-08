@@ -72,6 +72,13 @@ test('capturas do manual (computador)', async ({ page }) => {
   await capture(page, 'criador-personagem', [t('creator-tab-cabelo'), t('creator-preview'), t('creator-done')]);
   await page.keyboard.press('Escape');
 
+  // Catálogo (Elenco)
+  await tab(page, 'characters');
+  await capture(page, 'catalogo', [t('char-search'), t('catalog-filters'), t('catalog-category'), '[data-testid="builtin-character"] [data-testid="catalog-details-open"]', t('create-character')]);
+  await page.locator('[data-testid="builtin-character"] [data-testid="catalog-details-open"]').first().click();
+  await capture(page, 'catalogo-detalhes', [t('catalog-views'), t('catalog-policy'), t('catalog-insert'), t('catalog-copy')]);
+  await page.keyboard.press('Escape');
+
   // Painéis
   await tab(page, 'scenes');
   await capture(page, 'cenas', ['[data-testid="scene-row"]']);
@@ -111,6 +118,13 @@ test('capturas do manual (computador)', async ({ page }) => {
   await page.getByTestId('add-star').click();
   await page.getByTestId('obj-studio-tab-add').click();
   await capture(page, 'criador-objetos', [t('object-width'), t('obj-studio-canvas'), t('obj-studio-tab-add'), t('obj-studio-tab-layers'), t('object-insert')]);
+  // Quadros: uma animação com 3 quadros.
+  await page.getByTestId('anim-new').click();
+  await page.getByTestId('prompt-input').fill('Piscando');
+  await page.getByTestId('prompt-ok').click();
+  await page.getByTestId('anim-frame-add').click();
+  await page.getByTestId('anim-frame-add').click();
+  await capture(page, 'criador-objetos-quadros', [t('anim-clip'), t('anim-frames'), t('anim-frame-add'), t('anim-frame-ms'), t('anim-play')]);
   await page.getByTestId('object-creator-close').click();
 
   await tab(page, 'backgrounds');
