@@ -230,11 +230,14 @@ function capPath(st: HairStyleDef, viewYaw: number, rx: number, ry: number): str
 function backShape(st: HairStyleDef, view: ViewInfo, rx: number, ry: number): string {
   const s = view.facing;
   const isBack = view.cls === 'back' || view.cls === 'backQuarter';
-  const shift = view.cls === 'profile' ? -s * rx * 0.42 : view.cls === 'quarter' ? -s * rx * 0.16 : view.cls === 'backQuarter' ? s * rx * 0.08 : 0;
-  const wMul = view.cls === 'profile' ? 0.72 : view.cls === 'quarter' || view.cls === 'backQuarter' ? 0.92 : 1;
-  const w = rx * st.backWidth * wMul;
+  // Perfil: a massa fica inteira atrás da linha da nuca (nunca passa para a frente do pescoço/peito).
+  // 3/4: deslocada para o lado da nuca. Frente e costas: centrada.
+  const profileHalf = rx * Math.min(0.56, 0.42 * st.backWidth);
+  const shift = view.cls === 'profile' ? -s * (rx * 0.12 + profileHalf) : view.cls === 'quarter' ? -s * rx * 0.2 : view.cls === 'backQuarter' ? s * rx * 0.08 : 0;
+  const wMul = view.cls === 'quarter' || view.cls === 'backQuarter' ? 0.9 : 1;
+  const w = view.cls === 'profile' ? profileHalf : rx * st.backWidth * wMul;
   const bottom = st.backLen * ry;
-  const top = -ry * 0.25;
+  const top = view.cls === 'profile' ? -ry * 0.35 : -ry * 0.25;
   const cols = st.backEdge === 'smooth' ? 5 : 9;
   const left: Pt[] = [];
   const right: Pt[] = [];
@@ -374,9 +377,24 @@ export function renderHair(opts: {
   const attrs = `fill="${color}" stroke="${ink}" stroke-width="${n(ow)}" stroke-linejoin="round"`;
 
   if (st.backLen > 0) {
-    const shape = path(backShape(st, view, rx, ry), `data-part="hair-back" ${attrs}`);
-    if (isBackView) res.backOverBody += shape;
+    // Camada por vista: costas e perfil = sobre as costas do tronco (abaixo do braço do lado de cá);
+    // frente e 3/4 de frente = atrás do tronco inteiro.
+    const over = isBackView || view.cls === 'profile';
+    const shape = path(backShape(st, view, rx, ry), `data-part="hair-back" data-layer="${over ? 'over-body' : 'behind-body'}" ${attrs}`);
+    if (over) res.backOverBody += shape;
     else res.backBehindBody += shape;
+    // De costas, cabelo que desce pela nuca cobre a parte de baixo da cabeça:
+    // sem isso a nuca (pele) aparece por cima da massa de cabelo.
+    if (isBackView) {
+      const pts: Pt[] = [];
+      const y0 = -ry * 0.62;
+      for (let a = 0; a <= 180; a += 10) {
+        const t = (a * Math.PI) / 180;
+        pts.push([Math.cos(t) * rx * 1.04, Math.max(y0, Math.sin(t) * ry * 1.04)]);
+      }
+      const d = pts.map((p, i) => `${i ? 'L' : 'M'}${n(p[0])} ${n(p[1])}`).join('') + 'Z';
+      res.front += path(d, `data-part="hair-nape" ${attrs}`);
+    }
   }
 
   // Profundidade real: o que está voltado para o observador (z > 0) é desenhado

@@ -108,8 +108,9 @@ describe('matriz cabelos × vistas', () => {
       const d = parse(renderCharacter(variant('long', 1), pose(v), 'x').svg);
       const torso = d.querySelector('[data-part="torso"]')!;
       const back = d.querySelector('[data-part="hair-back"]')!;
-      const isBack = !viewInfo(v).showsFace;
-      expect(isBefore(back, torso), `long/${v}`).toBe(!isBack);
+      // Frente e 3/4 de frente: atrás do tronco. Perfil e costas: sobre as costas.
+      const overBody = !viewInfo(v).showsFace || viewInfo(v).cls === 'profile';
+      expect(isBefore(back, torso), `long/${v}`).toBe(!overBody);
     }
   });
 
@@ -124,5 +125,50 @@ describe('matriz cabelos × vistas', () => {
         if (info.facing && nose) expect(Math.sign(Number(nose.getAttribute('data-tip-x')))).toBe(info.facing);
       }
     });
+  });
+});
+
+/* ---------------- 1.2: cabelos longos, oclusão por geometria ---------------- */
+import { renderHair } from '@/engine/character/hair';
+const LONG = HAIR_STYLES.filter((h) => h.backLen > 0).map((h) => h.id);
+/** Pares x,y de um path absoluto (M/L/C/Q/Z). */
+const xsOf = (d: string) => (d.match(/-?\d+(?:\.\d+)?/g) ?? []).map(Number).filter((_, i) => i % 2 === 0);
+const backD = (svg: string) => /data-part="hair-back"[^>]*\sd="([^"]+)"|\sd="([^"]+)"[^>]*data-part="hair-back"/.exec(svg);
+
+describe('cabelos longos nas 8 vistas', () => {
+  const rx = 100;
+  const ry = 112;
+  it('há estilos longos para verificar', () => expect(LONG.length).toBeGreaterThanOrEqual(6));
+  for (const id of LONG) {
+    it(`${id}: perfil nunca passa para a frente do pescoço; camada certa em cada vista`, () => {
+      for (const v of VIEW_ORDER) {
+        const view = viewInfo(v);
+        const r = renderHair({ styleId: id, color: '#7a4a2f', highlight: '#f2c95c', ink: '#222', ow: 4, rx, ry, view, idPrefix: 'x' });
+        const all = r.backBehindBody + r.backOverBody;
+        const m = backD(all);
+        expect(m, `${id} ${v} tem massa traseira`).toBeTruthy();
+        const xs = xsOf((m![1] ?? m![2])!);
+        if (view.cls === 'profile') {
+          // Frente do rosto = lado +facing. Nada da massa traseira à frente da nuca.
+          const forward = Math.max(...xs.map((x) => x * view.facing));
+          expect(forward, `${id} ${v}`).toBeLessThanOrEqual(rx * 0.05);
+          expect(r.backOverBody).toContain('hair-back');
+        } else if (view.cls === 'back' || view.cls === 'backQuarter') {
+          expect(r.backOverBody, `${id} ${v}`).toContain('hair-back');
+        } else {
+          expect(r.backBehindBody, `${id} ${v}`).toContain('hair-back');
+          expect(r.backOverBody, `${id} ${v}`).not.toContain('hair-back');
+        }
+      }
+    });
+  }
+  it('folha de inspeção dos longos em escala maior (test-results/hair-long.svg)', () => {
+    let body = '';
+    LONG.forEach((style, row) => VIEW_ORDER.forEach((v, col) => {
+      const r = renderCharacter(variant(style, 2), pose(v), `l${row}${col}`);
+      body += `<g transform="translate(${100 + col * 200} ${470 + row * 520}) scale(.8)">${r.svg}</g>`;
+    }));
+    mkdirSync('test-results', { recursive: true });
+    writeFileSync('test-results/hair-long.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 ${LONG.length * 520}" style="background:#8fa3b5">${body}</svg>`);
   });
 });

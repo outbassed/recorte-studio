@@ -18,6 +18,9 @@ export interface ProjectRecord {
   data: Project;
 }
 
+/** Linha da lista de projetos: sem o documento, com o formato do quadro. */
+export type ProjectRow = Omit<ProjectRecord, 'data'> & { width: number; height: number; mediaCount: number };
+
 export interface BlobRecord { id: string; blob: Blob; name: string; mime: string; size: number; createdAt: number }
 export interface BackupRecord { id?: number; projectId: string; createdAt: number; label: string; raw: string }
 export interface LibraryRecord { id: string; kind: LibraryKind; name: string; favorite: number; createdAt: number; data: unknown }
@@ -82,11 +85,14 @@ export const repo = {
     if (parsed.success) return parsed.data;
     return importProjectData(r.data).project;
   },
-  listProjects: async (): Promise<Array<Omit<ProjectRecord, 'data'>>> => {
-    const rows: Array<Omit<ProjectRecord, 'data'>> = [];
+  listProjects: async (): Promise<ProjectRow[]> => {
+    const rows: ProjectRow[] = [];
     await db.projects.each((r) => {
-      const { data: _data, ...rest } = r;
-      rows.push(rest);
+      const { data, ...rest } = r;
+      const st = (data as Partial<Project> | undefined)?.settings;
+      const w = st?.width ?? 1920;
+      const h = st?.height ?? 1080;
+      rows.push({ ...rest, width: w, height: h, mediaCount: Object.keys((data as Partial<Project> | undefined)?.assets ?? {}).length });
     });
     return rows.sort((a, b) => b.updatedAt - a.updatedAt);
   },
@@ -120,6 +126,24 @@ export const repo = {
       if (isQuota(e)) throw new StorageQuotaError('Sem espaço para guardar esta mídia no navegador.');
       throw e;
     }
+  },
+  /** Uso de armazenamento deste app: projetos, mídias e cópias de segurança. */
+  async storageStats(): Promise<{ projects: number; blobs: number; blobBytes: number; backups: number; backupBytes: number }> {
+    let blobBytes = 0;
+    await db.blobs.each((b) => { blobBytes += b.size || b.blob.size || 0; });
+    let backupBytes = 0;
+    await db.backups.each((b) => { backupBytes += b.raw.length; });
+    return { projects: await db.projects.count(), blobs: await db.blobs.count(), blobBytes, backups: await db.backups.count(), backupBytes };
+  },
+  /** Mantém só as N cópias de segurança mais recentes de cada projeto. */
+  async pruneBackups(keepPerProject = 3): Promise<number> {
+    const all = await db.backups.toArray();
+    const byProject = new Map<string, BackupRecord[]>();
+    for (const b of all) byProject.set(b.projectId, [...(byProject.get(b.projectId) ?? []), b]);
+    const drop: number[] = [];
+    for (const list of byProject.values()) list.sort((a, b) => b.createdAt - a.createdAt).slice(keepPerProject).forEach((b) => b.id !== undefined && drop.push(b.id));
+    await db.backups.bulkDelete(drop);
+    return drop.length;
   },
   getBlob: async (id: string): Promise<Blob | undefined> => (await db.blobs.get(id))?.blob,
   hasBlob: async (id: string): Promise<boolean> => (await db.blobs.where('id').equals(id).count()) > 0,

@@ -11,13 +11,25 @@ import { leaveEditor, openProjectById, restoreProjectFromUrl } from './features/
 import { getProjectIdFromUrl, updateProjectsUrl } from './features/projects/urls';
 import { useProjectStore } from './state/projectStore';
 import { toast } from './state/uiStore';
+import { applyPrefs, usePrefs } from './state/prefs';
+import { getProjectIdFromUrl as urlProject } from './features/projects/urls';
+
+applyPrefs();
 
 function App() {
   const screen = useUI((s) => s.screen);
   const [ready, setReady] = useState(false);
   useEffect(() => {
     // Recarregar mantém o projeto indicado no endereço; a raiz abre Meus projetos.
-    void restoreProjectFromUrl().finally(() => setReady(true));
+    void restoreProjectFromUrl()
+      .then(async () => {
+        // Configurações → Geral → Começar em: último projeto (só sem link de projeto no endereço).
+        const p = usePrefs.getState();
+        if (!urlProject() && p.startup === 'last' && p.lastProjectId && !useProjectStore.getState().project) {
+          await openProjectById(p.lastProjectId).catch(() => false);
+        }
+      })
+      .finally(() => setReady(true));
     const onHistoryChange = () => {
       const id = getProjectIdFromUrl();
       const openedId = useProjectStore.getState().project?.id;

@@ -223,6 +223,17 @@ export const SecondaryMotionSchema = z.object({
 });
 export type SecondaryMotion = z.infer<typeof SecondaryMotionSchema>;
 
+/** Profundidade dos membros em relação à cabeça. Esquerda/direita = lados do personagem. */
+export const LimbDepthModeSchema = z.enum(['auto', 'front', 'behind']);
+export type LimbDepthMode = z.infer<typeof LimbDepthModeSchema>;
+export const LimbDepthSchema = z.object({
+  armL: LimbDepthModeSchema.default('auto'),
+  handL: LimbDepthModeSchema.default('auto'),
+  armR: LimbDepthModeSchema.default('auto'),
+  handR: LimbDepthModeSchema.default('auto'),
+});
+export type LimbDepth = z.infer<typeof LimbDepthSchema>;
+
 export const CharacterNodeSchema = z.object({
   ...baseNode,
   kind: z.literal('character'),
@@ -238,6 +249,7 @@ export const CharacterNodeSchema = z.object({
   rig: RigSchema.prefault({}),
   handL: z.enum(['open', 'fist', 'point']).default('open'),
   handR: z.enum(['open', 'fist', 'point']).default('open'),
+  limbDepth: LimbDepthSchema.prefault({}),
   appearanceOverrides: AppearanceOverridesSchema,
   secondary: SecondaryMotionSchema.prefault({}),
 });

@@ -10,6 +10,9 @@ import { buildMontage, segmentAt } from '@/engine/render/montage';
 import { montageAudioEvents, sceneAudioEvents } from '@/features/audio/mix';
 import { audioContext, playAudio, stopAudio } from '@/features/audio/engine';
 import { currentProject, useProjectStore } from './projectStore';
+import { usePrefs } from './prefs';
+
+let lastEmit = 0;
 
 export interface TransportState {
   timeMs: number;
@@ -73,6 +76,14 @@ async function startClock(fromMs: number): Promise<void> {
 function tick(): void {
   const s = transport.getState();
   if (!s.playing) return;
+  // Limite de FPS da prévia (Configurações → Desempenho): pula atualizações intermediárias.
+  const cap = usePrefs.getState().previewFps;
+  const clock = now();
+  if (cap && clock - lastEmit < 1000 / cap - 2) {
+    raf = requestAnimationFrame(tick);
+    return;
+  }
+  lastEmit = clock;
   const elapsed = (now() - baseClock) * s.rate;
   let t = baseTime + Math.max(0, elapsed);
   const p = useProjectStore.getState().project;

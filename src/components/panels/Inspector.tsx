@@ -3,7 +3,8 @@
  * de propriedades. Se a propriedade tem keyframes, a edição grava um key no tempo atual.
  */
 import { Diamond, Layers, Trash2, UserRound, Wand2 } from 'lucide-react';
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
+import { HelpLink } from '../manual/HelpLink';
 import {
   ACTION_PRESETS, addDialogue, applyBackground, applyPose, bakeActionClip, deleteClip, deleteKeyframe, ensurePropertyTrack, extendToFit, findClip, findPropertyTrack, insertAction, moveLayer, readProperty, sceneOf, setKeyframe, writeProperty,
 } from '@/engine/model/ops';
@@ -139,6 +140,7 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
   const mv = (how: 'up' | 'down' | 'top' | 'bottom') => commit('Mover camada', (d) => void moveLayer(sceneOf(d as Project, scene.id), node.id, how));
   return (
     <>
+      <Pane tab="Transformar">
       <Section title="Posição e transformação" testId="sec-transform">
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.x" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.y" />
@@ -150,13 +152,15 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
           <button type="button" className="btn btn-sm" onClick={() => commit('Centralizar', (d) => writeProperty(sceneOf(d as Project, scene.id), node.id, 'transform.y', 0, nowMs()))}>Centro vertical</button>
         </div>
       </Section>
-      <Section title="Escala separada e pivô" defaultOpen={false}>
+      <Section title="Escala separada e pivô">
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.scaleX" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.scaleY" />
         <SliderNumberField label="Pivô X" unit="px" value={node.transform.pivotX} sliderMin={-300} sliderMax={300} onChange={(v) => set('Alterar pivô', (n) => { n.transform.pivotX = v; })} />
         <SliderNumberField label="Pivô Y" unit="px" value={node.transform.pivotY} sliderMin={-300} sliderMax={300} onChange={(v) => set('Alterar pivô', (n) => { n.transform.pivotY = v; })} />
       </Section>
-      <Section title="Profundidade, sombra e máscara" defaultOpen={false}>
+      </Pane>
+      <Pane tab="Camadas">
+      <Section title="Profundidade, sombra e máscara">
         <PropField scene={scene} target={node.id} kind={node.kind} path="parallax" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="blur" />
         <ToggleField label="Escala pela profundidade" hint="Quanto mais abaixo no palco, maior (ative na cena)." checked={node.useDepthScale} onChange={(v) => set('Profundidade', (n) => { n.useDepthScale = v; })} />
@@ -179,7 +183,7 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
           </>
         )}
       </Section>
-      <Section title="Camada" defaultOpen={false} testId="sec-layer">
+      <Section title="Camada" testId="sec-layer">
         <TextField label="Nome" value={node.name} testId="node-name" onChange={(v) => set('Renomear', (n) => { n.name = v; })} />
         <div className="btn-row">
           <button type="button" className="btn btn-sm" disabled={idx >= scene.layerOrder.length - 1} onClick={() => mv('up')}>Subir</button>
@@ -191,7 +195,22 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
         <ToggleField label="Bloqueada" hint="Não move no palco." checked={node.locked} onChange={(v) => set('Bloqueio', (n) => { n.locked = v; })} />
       </Section>
       <button type="button" className="btn btn-danger btn-block" data-testid="delete-node" onClick={() => void deleteSelection()}><Trash2 size={15} /> Excluir camada</button>
+      </Pane>
     </>
+  );
+}
+
+const DEPTH_OPTIONS = [{ id: 'auto', label: 'Automático' }, { id: 'front', label: 'Na frente da cabeça' }, { id: 'behind', label: 'Atrás da cabeça' }];
+/** Profundidade de braços e mãos: lados do personagem, não da tela. Animável por keyframes. */
+function ArmDepthSection({ scene, node }: { scene: Scene; node: CharacterNode }) {
+  return (
+    <Section title="Braços e mãos: frente ou atrás da cabeça" testId="sec-limb-depth" actions={<HelpLink chapter="poses" label="Ajuda sobre profundidade dos braços" />}>
+      <p className="hint">Esquerdo e direito são os lados do personagem. No automático, o braço que cruza a cabeça passa na frente dela.</p>
+      <DiscreteField scene={scene} target={node.id} path="limbDepth.armL" label="Braço esquerdo" testId="depth-armL" options={DEPTH_OPTIONS} />
+      <DiscreteField scene={scene} target={node.id} path="limbDepth.handL" label="Mão esquerda" testId="depth-handL" options={DEPTH_OPTIONS} />
+      <DiscreteField scene={scene} target={node.id} path="limbDepth.armR" label="Braço direito" testId="depth-armR" options={DEPTH_OPTIONS} />
+      <DiscreteField scene={scene} target={node.id} path="limbDepth.handR" label="Mão direita" testId="depth-handR" options={DEPTH_OPTIONS} />
+    </Section>
   );
 }
 
@@ -210,7 +229,8 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
   const topColor = node.appearanceOverrides.topColor ?? def?.outfit.topColor ?? '#5b8dbe';
   return (
     <>
-      <Section title="Identidade" testId="sec-identity">
+      <Pane tab="Rosto">
+      <Section title="Personagem" testId="sec-identity">
         <p className="hint">Biblioteca: <strong>{def?.name ?? 'Personagem removido'}</strong>. Editar a biblioteca muda todas as cenas; sobrescrever muda só esta instância.</p>
         <button type="button" className="btn btn-block" data-testid="edit-library" onClick={() => useUI.setState({ dialog: 'creator', creatorCharacterId: node.characterId })}><UserRound size={15} /> Editar personagem da biblioteca</button>
         <details className="details">
@@ -243,7 +263,9 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
         <PropField scene={scene} target={node.id} kind="character" path="expressionIntensity" />
         <DiscreteField scene={scene} target={node.id} path="mouthShape" label="Boca (visema manual)" options={[{ id: 'auto', label: 'Automática (fala ou expressão)' }, ...Object.entries(VISEMES).map(([id, v]) => ({ id, label: v.label }))]} />
       </Section>
-      <Section title="Movimento natural" defaultOpen={false} testId="sec-secondary">
+      </Pane>
+      <Pane tab="Pose">
+      <Section title="Movimento natural" testId="sec-secondary">
         <ToggleField label="Respiração, cabeça e olhar vivos" hint="Movimentos sutis e automáticos; diminuem durante ações." testId="secondary-toggle" checked={node.secondary.enabled} onChange={(v) => set('Movimento natural', (n) => { n.secondary.enabled = v; })} />
         {node.secondary.enabled && (
           <>
@@ -254,7 +276,8 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
           </>
         )}
       </Section>
-      <Section title="Pose e rig" defaultOpen={false} testId="sec-rig">
+      <ArmDepthSection scene={scene} node={node} />
+      <Section title="Pose e rig" testId="sec-rig">
         <SelectField label="Pose pronta" value={node.poseId} testId="pose" options={POSES.map((p) => ({ id: p.id, label: p.label }))} onChange={(v) => set('Aplicar pose', (n) => applyPose(n, v))} />
         {(['armLUpper', 'armLLower', 'armRUpper', 'armRLower', 'legLUpper', 'legLLower', 'legRUpper', 'legRLower', 'torsoLean', 'headTilt', 'headNod', 'bodyY', 'sit'] as const).map((k) => (
           <PropField key={k} scene={scene} target={node.id} kind="character" path={`rig.${k}`} />
@@ -262,6 +285,8 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
         <SelectField label="Mão esquerda" value={node.handL} options={[{ id: 'open', label: 'Aberta' }, { id: 'fist', label: 'Fechada' }, { id: 'point', label: 'Apontando' }]} onChange={(v) => set('Mão', (n) => { n.handL = v as CharacterNode['handL']; })} />
         <SelectField label="Mão direita" value={node.handR} options={[{ id: 'open', label: 'Aberta' }, { id: 'fist', label: 'Fechada' }, { id: 'point', label: 'Apontando' }]} onChange={(v) => set('Mão', (n) => { n.handR = v as CharacterNode['handR']; })} />
       </Section>
+      </Pane>
+      <Pane tab="Animar">
       <Section title="Animar" testId="sec-animate">
         <TextField label="Fala" value={speech} placeholder="Digite a fala…" testId="speech-text" onChange={setSpeech} />
         <button type="button" className="btn btn-block" data-testid="add-speech" disabled={!speech.trim()} onClick={() => {
@@ -288,6 +313,7 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
           }}>Salvar sequência</button>
         </div>
       </Section>
+      </Pane>
     </>
   );
 }
@@ -300,6 +326,7 @@ function PropSections({ scene, node }: { scene: Scene; node: Extract<SceneNode, 
   });
   const owners = Object.values(scene.nodes).filter((n) => n.kind === 'character');
   return (
+    <Pane tab="Aparência">
     <Section title="Aparência do objeto" testId="sec-prop">
       <ColorField label="Cor principal" value={node.colorA || def?.a || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorA = v; })} />
       <ColorField label="Cor secundária" value={node.colorB || def?.b || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorB = v; })} />
@@ -309,6 +336,7 @@ function PropSections({ scene, node }: { scene: Scene; node: Extract<SceneNode, 
       )}
       <button type="button" className="btn btn-sm" onClick={() => set('Espelhar', (n) => { n.transform.scaleX = -n.transform.scaleX; })}>Espelhar na horizontal</button>
     </Section>
+    </Pane>
   );
 }
 
@@ -319,6 +347,7 @@ function SimpleNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
   });
   if (node.kind === 'text') {
     return (
+      <Pane tab="Aparência">
       <Section title="Texto" testId="sec-text">
         <TextField label="Conteúdo" multiline value={node.text} onChange={(v) => set<typeof node>('Texto', (n) => { n.text = v; })} />
         <SliderNumberField label="Tamanho da fonte" unit="px" min={4} max={600} sliderMin={10} sliderMax={240} value={node.fontSize} onChange={(v) => set<typeof node>('Fonte', (n) => { n.fontSize = v; })} />
@@ -328,10 +357,12 @@ function SimpleNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
         <ColorField label="Contorno" value={node.strokeColor} onChange={(v) => set<typeof node>('Contorno', (n) => { n.strokeColor = v; })} />
         <SliderNumberField label="Espessura do contorno" unit="px" min={0} max={60} sliderMin={0} sliderMax={30} value={node.strokeWidth} onChange={(v) => set<typeof node>('Contorno', (n) => { n.strokeWidth = v; })} />
       </Section>
+      </Pane>
     );
   }
   if (node.kind === 'shape') {
     return (
+      <Pane tab="Aparência">
       <Section title="Forma" testId="sec-shape">
         <SelectField label="Tipo" value={node.shape} options={[{ id: 'rect', label: 'Retângulo' }, { id: 'ellipse', label: 'Elipse' }, { id: 'triangle', label: 'Triângulo' }, { id: 'star', label: 'Estrela' }, { id: 'burst', label: 'Explosão' }]} onChange={(v) => set<typeof node>('Forma', (n) => { n.shape = v as typeof n.shape; })} />
         <SliderNumberField label="Largura" unit="px" min={1} sliderMin={10} sliderMax={2400} value={node.width} onChange={(v) => set<typeof node>('Tamanho', (n) => { n.width = v; })} />
@@ -341,10 +372,12 @@ function SimpleNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
         <SliderNumberField label="Espessura do contorno" unit="px" min={0} sliderMin={0} sliderMax={40} value={node.strokeWidth} onChange={(v) => set<typeof node>('Contorno', (n) => { n.strokeWidth = v; })} />
         <SliderNumberField label="Cantos" unit="px" min={0} sliderMin={0} sliderMax={120} value={node.radius} onChange={(v) => set<typeof node>('Cantos', (n) => { n.radius = v; })} />
       </Section>
+      </Pane>
     );
   }
   if (node.kind === 'light') {
     return (
+      <Pane tab="Aparência">
       <Section title="Luz ou sombra 2D" testId="sec-light">
         <ColorField label="Cor" value={node.color} onChange={(v) => set<typeof node>('Cor', (n) => { n.color = v; })} />
         <SliderNumberField label="Intensidade" unit="%" display={100} min={0} max={1} sliderMin={0} sliderMax={100} value={node.intensity} onChange={(v) => set<typeof node>('Intensidade', (n) => { n.intensity = v; })} />
@@ -352,14 +385,17 @@ function SimpleNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
         <SliderNumberField label="Altura" unit="px" min={1} sliderMin={50} sliderMax={1600} value={node.height} onChange={(v) => set<typeof node>('Tamanho', (n) => { n.height = v; })} />
         <SelectField label="Mistura" value={node.blend} options={[{ id: 'screen', label: 'Luz (clarear)' }, { id: 'multiply', label: 'Sombra (escurecer)' }, { id: 'normal', label: 'Normal' }]} onChange={(v) => set<typeof node>('Mistura', (n) => { n.blend = v as typeof n.blend; })} />
       </Section>
+      </Pane>
     );
   }
   if (node.kind === 'image') {
     return (
+      <Pane tab="Imagem">
       <Section title="Imagem" testId="sec-image">
         <SliderNumberField label="Largura" unit="px" min={1} sliderMin={10} sliderMax={2400} value={node.width} onChange={(v) => set<typeof node>('Tamanho', (n) => { n.width = v; })} />
         <SliderNumberField label="Altura" unit="px" min={1} sliderMin={10} sliderMax={1600} value={node.height} onChange={(v) => set<typeof node>('Tamanho', (n) => { n.height = v; })} />
       </Section>
+      </Pane>
     );
   }
   return null;
@@ -370,20 +406,27 @@ function CameraSections({ scene }: { scene: Scene }) {
   return (
     <>
       <div className="insp-title"><strong>Câmera 2D</strong><small>Só muda o enquadramento exportado. O zoom do editor é outro.</small></div>
+      <Pane tab="Enquadramento">
       <Section title="Enquadramento" testId="sec-camera">
         <PropField scene={scene} target={CAMERA_TARGET} kind="camera" path="x" />
         <PropField scene={scene} target={CAMERA_TARGET} kind="camera" path="y" />
         <PropField scene={scene} target={CAMERA_TARGET} kind="camera" path="zoom" testId="camera-zoom" />
         <PropField scene={scene} target={CAMERA_TARGET} kind="camera" path="rotationDeg" />
       </Section>
+      </Pane>
+      <Pane tab="Movimento">
+      <p className="hint">Enquadramentos prontos criam keyframes da câmera no tempo atual: corte seco ou movimento suave. Para movimentos livres, anime X, Y e zoom com keyframes.</p>
       <Section title="Enquadramento rápido" testId="sec-framing">
         <FramingButtons scene={scene} />
       </Section>
+      </Pane>
+      <Pane tab="Seguir">
       <Section title="Seguir personagem">
         <SelectField label="Seguir" value={scene.camera.followNodeId ?? ''} options={[{ id: '', label: 'Ninguém' }, ...Object.values(scene.nodes).filter((n) => n.kind === 'character').map((n) => ({ id: n.id, label: n.name }))]} onChange={(v) => set('Seguir', (s) => { s.camera.followNodeId = v || null; if (v && !s.camera.followStrength) s.camera.followStrength = 1; })} />
         <SliderNumberField label="Força de seguir" unit="%" display={100} min={0} max={1} sliderMin={0} sliderMax={100} value={scene.camera.followStrength} onChange={(v) => set('Seguir', (s) => { s.camera.followStrength = v; })} />
         <SliderNumberField label="Suavização" unit="ms" min={0} max={5000} sliderMin={0} sliderMax={2000} step={10} decimals={0} value={scene.camera.followSmoothMs} onChange={(v) => set('Seguir', (s) => { s.camera.followSmoothMs = v; })} />
       </Section>
+      </Pane>
     </>
   );
 }
@@ -405,11 +448,14 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
   return (
     <>
       <div className="insp-title"><Layers size={16} /><strong>{f.track.name}</strong><small>Clip da timeline</small></div>
+      <Pane tab={c.kind === 'dialogue' ? 'Texto' : 'Tempo'}>
       <Section title="Tempo" testId="sec-clip">
         <SliderNumberField label="Início" unit="s" display={0.001} min={0} step={0.05} decimals={3} sliderMin={0} sliderMax={scene.durationMs / 1000} value={c.startMs} testId="clip-start" onChange={(v) => set((x) => { x.startMs = Math.max(0, Math.round(v)); })} />
         <SliderNumberField label="Duração" unit="s" display={0.001} min={1} step={0.05} decimals={3} sliderMin={0.05} sliderMax={Math.max(2, scene.durationMs / 1000)} value={c.durationMs} testId="clip-duration" onChange={(v) => set((x) => { x.durationMs = Math.max(1, Math.round(v)); })} />
       </Section>
+      </Pane>
       {c.kind === 'action' && (
+        <Pane tab="Ação">
         <Section title="Parâmetros da ação">
           <SliderNumberField label="Intensidade" unit="%" display={100} min={0} max={3} sliderMin={0} sliderMax={200} value={c.intensity} onChange={(v) => set<typeof c>((x) => { x.intensity = v; })} />
           <SliderNumberField label="Velocidade" unit="×" min={0.05} max={10} step={0.05} decimals={2} sliderMin={0.1} sliderMax={4} value={c.speed} onChange={(v) => set<typeof c>((x) => { x.speed = v; })} />
@@ -424,16 +470,27 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
             toast(`Clip convertido em ${count} keyframes editáveis.`);
           }}>Converter em keyframes</button>
         </Section>
+        </Pane>
       )}
       {c.kind === 'dialogue' && (
-        <Section title="Fala e balão">
+        <>
+        <Pane tab="Texto">
+        <Section title="Fala">
           <TextField label="Texto" multiline value={c.text} testId="dialogue-text" onChange={(v) => set<typeof c>((x) => { x.text = v; })} />
-          <ToggleField label="Mostrar balão" checked={c.showBubble} onChange={(v) => set<typeof c>((x) => { x.showBubble = v; })} />
           <ToggleField label="Mostrar como legenda" checked={c.showSubtitle} onChange={(v) => set<typeof c>((x) => { x.showSubtitle = v; })} />
+        </Section>
+        </Pane>
+        <Pane tab="Balão">
+        <Section title="Balão">
+          <ToggleField label="Mostrar balão" checked={c.showBubble} onChange={(v) => set<typeof c>((x) => { x.showBubble = v; })} />
           <SelectField label="Estilo do balão" value={c.bubbleStyle} options={BUBBLE_STYLES} onChange={(v) => set<typeof c>((x) => { x.bubbleStyle = v; })} />
           <SliderNumberField label="Tamanho do balão" unit="%" display={100} min={0.2} max={4} sliderMin={40} sliderMax={250} value={c.bubbleScale} onChange={(v) => set<typeof c>((x) => { x.bubbleScale = v; })} />
           <SliderNumberField label="Balão X" unit="px" sliderMin={-800} sliderMax={800} value={c.bubbleOffsetX} onChange={(v) => set<typeof c>((x) => { x.bubbleOffsetX = v; })} />
           <SliderNumberField label="Balão Y" unit="px" sliderMin={-500} sliderMax={500} value={c.bubbleOffsetY} onChange={(v) => set<typeof c>((x) => { x.bubbleOffsetY = v; })} />
+        </Section>
+        </Pane>
+        <Pane tab="Boca">
+        <Section title="Boca (lip-sync)">
           <SelectField label="Sincronia da boca" value={c.lipSync} testId="lipsync-mode" options={[{ id: 'text', label: 'Pelo texto (estimativa, sem áudio)' }, { id: 'amplitude', label: 'Pela intensidade do áudio' }, { id: 'manual', label: 'Manual (keyframes de visema)' }, { id: 'off', label: 'Desligada' }]} onChange={(v) => set<typeof c>((x) => { x.lipSync = v as typeof x.lipSync; })} />
           {c.lipSync === 'amplitude' && (
             <>
@@ -443,19 +500,31 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
             </>
           )}
         </Section>
+        </Pane>
+        </>
       )}
       {c.kind === 'audio' && (
+        <>
+        <Pane tab="Som">
         <Section title="Áudio" testId="sec-audio">
           <p className="hint">{project.assets[c.assetId]?.name}</p>
           <SliderNumberField label="Volume" unit="%" display={100} min={0} max={4} sliderMin={0} sliderMax={200} value={c.volume} testId="audio-volume" onChange={(v) => set<typeof c>((x) => { x.volume = v; })} />
           <SliderNumberField label="Fade in" unit="ms" min={0} sliderMin={0} sliderMax={5000} step={10} decimals={0} value={c.fadeInMs} onChange={(v) => set<typeof c>((x) => { x.fadeInMs = Math.round(v); })} />
           <SliderNumberField label="Fade out" unit="ms" min={0} sliderMin={0} sliderMax={5000} step={10} decimals={0} value={c.fadeOutMs} onChange={(v) => set<typeof c>((x) => { x.fadeOutMs = Math.round(v); })} />
           <SliderNumberField label="Corte no início" unit="ms" min={0} sliderMin={0} sliderMax={Math.max(1000, project.assets[c.assetId]?.durationMs ?? 1000)} step={10} decimals={0} value={c.offsetMs} onChange={(v) => set<typeof c>((x) => { x.offsetMs = Math.round(v); })} />
+        </Section>
+        </Pane>
+        <Pane tab="Sincronização">
+        <Section title="Boca pela intensidade do áudio">
+          <p className="hint">A boca do personagem escolhido abre conforme o volume deste áudio. Não reconhece fonemas.</p>
           <SelectField label="Boca de (lip-sync por intensidade)" value={c.lipSyncNodeId ?? ''} testId="audio-lipsync" options={[{ id: '', label: 'Ninguém' }, ...characters.map((n) => ({ id: n.id, label: n.name }))]} onChange={(v) => set<typeof c>((x) => { x.lipSyncNodeId = v || null; })} />
           <SliderNumberField label="Sensibilidade do lip-sync" unit="%" display={100} min={0} max={5} sliderMin={0} sliderMax={300} value={c.sensitivity} onChange={(v) => set<typeof c>((x) => { x.sensitivity = v; })} />
         </Section>
+        </Pane>
+        </>
       )}
       {c.kind === 'subtitle' && (
+        <Pane tab="Legenda">
         <Section title="Legenda">
           <TextField label="Texto" multiline value={c.text} onChange={(v) => set<typeof c>((x) => { x.text = v; })} />
           <SelectField label="Posição" value={c.position} options={[{ id: 'bottom', label: 'Embaixo' }, { id: 'center', label: 'Centro' }, { id: 'top', label: 'Em cima' }]} onChange={(v) => set<typeof c>((x) => { x.position = v as typeof x.position; })} />
@@ -463,13 +532,16 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
           <ColorField label="Cor" value={c.color} onChange={(v) => set<typeof c>((x) => { x.color = v; })} />
           <ToggleField label="Fundo escuro" checked={c.background} onChange={(v) => set<typeof c>((x) => { x.background = v; })} />
         </Section>
+        </Pane>
       )}
       {c.kind === 'effect' && (
+        <Pane tab="Efeito">
         <Section title="Efeito">
           <SelectField label="Tipo" value={c.effect} options={[{ id: 'shake', label: 'Tremor' }, { id: 'flash', label: 'Flash' }, { id: 'fadeBlack', label: 'Fade para preto' }, { id: 'fadeFromBlack', label: 'Fade do preto' }, { id: 'vignette', label: 'Vinheta' }, { id: 'tint', label: 'Tinta de cor' }]} onChange={(v) => set<typeof c>((x) => { x.effect = v as typeof x.effect; })} />
           <SliderNumberField label="Intensidade" unit="%" display={100} min={0} max={3} sliderMin={0} sliderMax={200} value={c.intensity} onChange={(v) => set<typeof c>((x) => { x.intensity = v; })} />
           <ColorField label="Cor" value={c.color} onChange={(v) => set<typeof c>((x) => { x.color = v; })} />
         </Section>
+        </Pane>
       )}
       <button type="button" className="btn btn-danger btn-block" data-testid="delete-clip" onClick={() => {
         commit('Excluir clip', (d) => deleteClip(sceneOf(d as Project, scene.id), clipId));
@@ -529,12 +601,15 @@ function SceneSections({ scene }: { scene: Scene }) {
   return (
     <>
       <div className="insp-title"><strong>{scene.name}</strong><small>Propriedades da cena</small></div>
+      <Pane tab="Cena">
       <Section title="Cena" testId="sec-scene">
         <TextField label="Nome da cena" value={scene.name} testId="scene-name" onChange={(v) => set('Renomear cena', (s) => { s.name = v; }, 'scene-name')} />
         <SliderNumberField label="Duração" unit="s" display={0.001} min={100} max={3_600_000} step={0.5} decimals={2} sliderMin={1} sliderMax={120} value={scene.durationMs} testId="scene-duration" onChange={(v) => set('Duração da cena', (s) => { s.durationMs = Math.max(100, Math.round(v)); }, 'scene-dur')} />
         <TextField label="Anotações" multiline value={scene.notes} onChange={(v) => set('Anotações', (s) => { s.notes = v; }, 'scene-notes')} />
       </Section>
-      <Section title="Cenário" testId="sec-bg">
+      </Pane>
+      <Pane tab="Cenário">
+      <Section title="Cenário" testId="sec-bg" actions={<HelpLink chapter="cenarios" />}>
         <SelectField label="Cenário" value={bg.presetId} testId="bg-select" options={[...customOptions, ...BACKGROUNDS.map((b) => ({ id: b.id, label: b.label }))]} onChange={(v) => set('Trocar cenário', (s) => {
           const cb = isCustomPreset(v) ? project.customBackgrounds[customIdOf(v)] : undefined;
           if (cb) applyCustomBackground(s, cb);
@@ -548,6 +623,10 @@ function SceneSections({ scene }: { scene: Scene }) {
         ) : (
           <SelectField label="Variante" value={bg.variant} testId="bg-variant" options={[{ id: 'day', label: 'Dia' }, { id: 'night', label: 'Noite' }]} onChange={(v) => set('Variante', (s) => { s.background.variant = v as 'day' | 'night'; })} />
         )}
+      </Section>
+      </Pane>
+      <Pane tab="Visual">
+      <Section title="Cores e efeitos do fundo">
         <SelectField label="Tom" value={bg.tone} options={[{ id: 'normal', label: 'Normal' }, { id: 'light', label: 'Claro' }, { id: 'dark', label: 'Escuro' }]} onChange={(v) => set('Tom', (s) => { s.background.tone = v as 'normal' | 'light' | 'dark'; })} />
         <ColorField label="Parede / céu" value={bg.primary || def.wall} onChange={(v) => set('Cor do cenário', (s) => { s.background.primary = v; })} />
         <ColorField label="Destaque" value={bg.secondary || def.accent} onChange={(v) => set('Cor do cenário', (s) => { s.background.secondary = v; })} />
@@ -556,18 +635,21 @@ function SceneSections({ scene }: { scene: Scene }) {
         <SliderNumberField label="Desfoque do fundo" unit="px" min={0} max={40} sliderMin={0} sliderMax={20} step={0.5} value={bg.blur} onChange={(v) => set('Desfoque', (s) => { s.background.blur = v; }, 'bg-blur')} />
         <ToggleField label="Sem fundo (transparente)" hint="Para exportar PNG com transparência." checked={bg.transparent} onChange={(v) => set('Transparência', (s) => { s.background.transparent = v; })} />
       </Section>
-      <Section title="Perspectiva falsa" defaultOpen={false}>
+      <Section title="Perspectiva falsa">
         <p className="hint">Elementos com "Escala pela profundidade" crescem conforme descem no palco. É só escala 2D.</p>
         <ToggleField label="Ativar" checked={scene.perspective.enabled} onChange={(v) => set('Perspectiva', (s) => { s.perspective.enabled = v; })} />
         <SliderNumberField label="Linha de referência" unit="px" sliderMin={-200} sliderMax={540} value={scene.perspective.refY} onChange={(v) => set('Perspectiva', (s) => { s.perspective.refY = v; }, 'pers')} />
         <SliderNumberField label="Força" display={1000} decimals={2} step={0.1} min={0} max={0.02} sliderMin={0} sliderMax={5} value={scene.perspective.strength} onChange={(v) => set('Perspectiva', (s) => { s.perspective.strength = v; }, 'pers')} />
       </Section>
+      </Pane>
+      <Pane tab="Transições">
       <Section title="Transição entre cenas" testId="sec-transition">
         <SelectField label="Entrada" value={scene.transitionIn.kind} testId="transition-in" options={TRANSITIONS} onChange={(v) => set('Transição', (s) => { s.transitionIn.kind = v as Transition['kind']; })} />
         <SliderNumberField label="Duração da entrada" unit="ms" min={0} max={10000} step={50} decimals={0} sliderMin={0} sliderMax={3000} value={scene.transitionIn.durationMs} onChange={(v) => set('Transição', (s) => { s.transitionIn.durationMs = Math.round(v); }, 'tr-in')} />
         <SelectField label="Saída" value={scene.transitionOut.kind === 'fade' ? 'fade' : 'cut'} options={[{ id: 'cut', label: 'Sem efeito' }, { id: 'fade', label: 'Fade para preto' }]} onChange={(v) => set('Transição', (s) => { s.transitionOut.kind = v as Transition['kind']; })} />
         <SliderNumberField label="Duração da saída" unit="ms" min={0} max={10000} step={50} decimals={0} sliderMin={0} sliderMax={3000} value={scene.transitionOut.durationMs} onChange={(v) => set('Transição', (s) => { s.transitionOut.durationMs = Math.round(v); }, 'tr-out')} />
       </Section>
+      </Pane>
     </>
   );
 }
@@ -594,6 +676,60 @@ function FramingButtons({ scene }: { scene: Scene }) {
   );
 }
 
+/* ---------- abas contextuais ---------- */
+const NODE_TABS: Record<SceneNode['kind'], string[]> = {
+  character: ['Transformar', 'Rosto', 'Pose', 'Animar', 'Camadas'],
+  prop: ['Transformar', 'Aparência', 'Camadas'],
+  text: ['Transformar', 'Aparência', 'Camadas'],
+  shape: ['Transformar', 'Aparência', 'Camadas'],
+  light: ['Transformar', 'Aparência', 'Camadas'],
+  image: ['Transformar', 'Imagem', 'Camadas'],
+  group: ['Transformar', 'Camadas'],
+};
+const CLIP_TABS: Record<AnyClip['kind'], string[]> = {
+  action: ['Tempo', 'Ação'],
+  dialogue: ['Texto', 'Balão', 'Boca'],
+  audio: ['Tempo', 'Som', 'Sincronização'],
+  subtitle: ['Tempo', 'Legenda'],
+  effect: ['Tempo', 'Efeito'],
+} as Record<AnyClip['kind'], string[]>;
+
+const PaneCtx = createContext<string | null>(null);
+/** Conteúdo de uma aba: aparece só quando a aba está ativa (fora de abas, sempre). */
+function Pane({ tab, children }: { tab: string; children: React.ReactNode }) {
+  const active = useContext(PaneCtx);
+  return active === null || active === tab ? <>{children}</> : null;
+}
+const slug = (t: string) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+/** Abas horizontais do inspector. A última aba de cada tipo de seleção é lembrada. */
+function Tabs({ ctx, tabs, children, help }: { ctx: string; tabs: string[]; children: React.ReactNode; help?: string }) {
+  const stored = useUI((s) => s.inspectorTabs[ctx]);
+  const active = stored && tabs.includes(stored) ? stored : tabs[0]!;
+  const set = (t: string) => useUI.setState((s) => ({ inspectorTabs: { ...s.inspectorTabs, [ctx]: t } }));
+  return (
+    <>
+      <div className="insp-tabs" role="tablist" aria-label="Grupos de propriedades">
+        {tabs.map((t, i) => (
+          <button key={t} type="button" role="tab" id={`itab-${slug(t)}`} aria-selected={t === active} aria-controls="insp-pane" tabIndex={t === active ? 0 : -1} className={t === active ? 'is-active' : ''} data-testid={`insp-tab-${slug(t)}`}
+            onClick={() => set(t)}
+            onKeyDown={(e) => {
+              if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+              e.preventDefault();
+              e.stopPropagation();
+              const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length]!;
+              set(next);
+              (e.currentTarget.parentElement?.querySelector(`#itab-${slug(next)}`) as HTMLElement | null)?.focus();
+            }}>{t}</button>
+        ))}
+        {help && <HelpLink chapter={help} label="Ajuda sobre estas propriedades" />}
+      </div>
+      <div className="insp-pane" role="tabpanel" id="insp-pane" aria-labelledby={`itab-${slug(active)}`} data-tab={active}>
+        <PaneCtx.Provider value={active}>{children}</PaneCtx.Provider>
+      </div>
+    </>
+  );
+}
+
 export function Inspector() {
   const project = useProject();
   const scene = useCurrentScene();
@@ -602,22 +738,26 @@ export function Inspector() {
   const sel = ui.timeline;
   let content: React.ReactNode;
   if (sel?.keyId) content = <KeySections key={sel.keyId} scene={scene} trackId={sel.trackId} keyId={sel.keyId} />;
-  else if (sel?.clipId) content = <ClipSections key={sel.clipId} scene={scene} clipId={sel.clipId} project={project} />;
-  else if (ui.camera) content = <CameraSections scene={scene} />;
+  else if (sel?.clipId) {
+    const kind = findClip(scene, sel.clipId)?.clip.kind ?? 'effect';
+    content = <Tabs ctx={`clip-${kind}`} tabs={CLIP_TABS[kind]}><ClipSections key={sel.clipId} scene={scene} clipId={sel.clipId} project={project} /></Tabs>;
+  } else if (ui.camera) content = <Tabs ctx="camera" tabs={['Enquadramento', 'Movimento', 'Seguir']} help="camera"><CameraSections scene={scene} /></Tabs>;
   else if (ui.nodeIds.length === 1 && scene.nodes[ui.nodeIds[0]!]) {
     const node = scene.nodes[ui.nodeIds[0]!]!;
     content = (
       <div key={node.id}>
         <div className="insp-title"><strong data-testid="selected-name">{node.name}</strong><small>{({ character: 'Personagem', prop: 'Objeto', image: 'Imagem', text: 'Texto', shape: 'Forma', light: 'Luz', group: 'Grupo' })[node.kind]}</small></div>
-        {node.kind === 'character' && <CharacterSections scene={scene} node={node} project={project} />}
-        {node.kind === 'prop' && <PropSections scene={scene} node={node} />}
-        <SimpleNodeSections scene={scene} node={node} />
-        <CommonNodeSections scene={scene} node={node} />
+        <Tabs ctx={node.kind} tabs={NODE_TABS[node.kind]} help={node.kind === 'character' ? 'propriedades' : 'objetos'}>
+          {node.kind === 'character' && <CharacterSections scene={scene} node={node} project={project} />}
+          {node.kind === 'prop' && <PropSections scene={scene} node={node} />}
+          <SimpleNodeSections scene={scene} node={node} />
+          <CommonNodeSections scene={scene} node={node} />
+        </Tabs>
       </div>
     );
   } else if (ui.nodeIds.length > 1) {
     content = <MultiSelection scene={scene} />;
-  } else content = <SceneSections scene={scene} />;
+  } else content = <Tabs ctx="scene" tabs={['Cena', 'Cenário', 'Visual', 'Transições']} help="cenas"><SceneSections scene={scene} /></Tabs>;
   return <div className="inspector" data-testid="inspector">{content}</div>;
 }
 

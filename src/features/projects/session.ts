@@ -2,6 +2,7 @@
  * Sessão do projeto aberto: autosave transacional com debounce, status honesto,
  * abertura, importação (com backup do original) e download de arquivos.
  */
+import { initialSimpleMode, setPref } from '@/state/prefs';
 import { create } from 'zustand';
 import { uid } from '@/engine/model/ids';
 import { characterUsage } from '@/engine/model/ops';
@@ -158,7 +159,9 @@ export async function openProjectObject(project: Project, routeMode: RouteMode =
   useSession.setState({ status: 'saved', error: '', lastSavedAt: project.updatedAt });
   await repo.setMeta('lastProjectId', project.id);
   updateProjectUrl(project, routeMode);
-  useUI.setState({ screen: 'editor', dialog: null, stageZoom: 'fit', stagePanX: 0, stagePanY: 0 });
+  setPref('lastProjectId', project.id);
+  const simple = initialSimpleMode();
+  useUI.setState({ screen: 'editor', dialog: null, overlay: null, stageZoom: 'fit', stagePanX: 0, stagePanY: 0, ...(simple === null ? {} : { simpleMode: simple }) });
 }
 
 export async function createAndOpen(project: Project): Promise<void> {

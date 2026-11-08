@@ -161,8 +161,8 @@ export async function bringAudioFromUserLibrary(asset: Asset): Promise<boolean> 
 }
 
 /** Salvar projeto (.jrec), com tratamento claro de mídia ausente. */
-export async function saveProjectWithChecks(): Promise<void> {
-  const p = currentProject();
+export async function saveProjectWithChecks(project?: Project): Promise<void> {
+  const p = project ?? currentProject();
   try {
     toast('Preparando o arquivo .jrec…');
     const r = await saveProjectFile(p);
@@ -178,7 +178,8 @@ export async function saveProjectWithChecks(): Promise<void> {
       confirmLabel: 'Abrir Mídias',
       alt: { label: 'Salvar incompleto', value: 'partial' },
     });
-    if (answer === true) useUI.setState({ leftTab: 'media', mobilePanel: 'media' });
+    if (answer === true && !project) useUI.setState({ leftTab: 'media', mobilePanel: 'media' });
+    if (answer === true && project) toast('Abra o projeto e use a aba Mídias para revincular os arquivos ausentes.', 'info');
     if (answer === 'partial') {
       const r = await saveProjectFile(p, { allowMissing: true });
       toast(`Salvo INCOMPLETO: faltam ${r.missing} mídia(s). O arquivo tem "-incompleto" no nome.`, 'error');
@@ -216,4 +217,14 @@ export async function importAnything(file: File, inEditor: boolean): Promise<voi
       }
     }
   }
+}
+
+/** Salvar .jrec de um projeto pela tela inicial, sem abri-lo. */
+export async function saveProjectByIdWithChecks(id: string): Promise<void> {
+  const p = await repo.loadProject(id);
+  if (!p) {
+    toast('Projeto não encontrado neste navegador.', 'error');
+    return;
+  }
+  await saveProjectWithChecks(p);
 }

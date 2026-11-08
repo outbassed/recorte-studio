@@ -715,6 +715,7 @@ export function applyPose(node: CharacterNode, poseId: string): void {
   node.rig = poseRig(poseId);
   node.handL = pose.handL ?? 'open';
   node.handR = pose.handR ?? 'open';
+  node.limbDepth = { armL: 'auto', handL: 'auto', armR: 'auto', handR: 'auto', ...(pose.limbDepth ?? {}) };
 }
 
 /* ------------------------------ Biblioteca do projeto ------------------------------ */

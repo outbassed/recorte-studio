@@ -5,12 +5,15 @@
  */
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
-  AlertTriangle, Check, Music, Save, ListChecks, Workflow, ChevronLeft, ChevronsUpDown, Clapperboard, Download, Expand, FileUp, Film, FolderOpen, HelpCircle, Layers, Link2, Loader2, Minimize, Package, Redo2, Settings, Shapes, SlidersHorizontal, Sparkles, Trees, Undo2, Users, X,
+  AlertTriangle, Check, Keyboard, Music, Save, ListChecks, Workflow, ChevronLeft, ChevronsUpDown, Clapperboard, Download, Expand, FileUp, Film, FolderOpen, HelpCircle, Layers, Link2, Loader2, Minimize, Package, Redo2, Settings, Shapes, SlidersHorizontal, Sparkles, Trees, Undo2, Users, X,
 } from 'lucide-react';
 import { useProjectStore, useCurrentScene, useProject, commit, currentScene } from '@/state/projectStore';
 import { useSession, leaveEditor, saveNow } from '@/features/projects/session';
 import { copyProjectLink } from '@/features/projects/urls';
-import { closeDialog, clearSelection, openDialog, selectNodes, useUI, useFeedback, toast, type LeftTab, type MobilePanel } from '@/state/uiStore';
+import { closeDialog, clearSelection, closeOverlay, openAppSettings, openDialog, openManual, selectNodes, useUI, useFeedback, toast, type LeftTab, type MobilePanel } from '@/state/uiStore';
+import { ManualView } from '../manual/ManualView';
+import { SettingsView } from '../settings/SettingsView';
+import { Logo } from './ProjectsScreen';
 import { pause, seek, togglePlay, transport } from '@/state/transport';
 import { copySelectedKey, deleteSelection, doRedo, doUndo, duplicateSelection, pasteKey } from '@/state/actions';
 import { addKeyAtTime, readProperty, sceneOf, writeProperty } from '@/engine/model/ops';
@@ -54,6 +57,16 @@ function useShortcuts() {
       const fb = useFeedback.getState();
       if (fb.confirm || fb.prompt || fb.context) return;
       const ui = useUI.getState();
+      if (e.key === 'F1') {
+        e.preventDefault();
+        openManual(ui.overlay?.kind === 'manual' ? 'inicio' : 'editor');
+        return;
+      }
+      // Manual ou Configurações por cima do editor: as teclas não mexem no projeto.
+      if (ui.overlay) {
+        if (e.key === 'Escape') closeOverlay();
+        return;
+      }
       if (ctrl && e.key.toLowerCase() === 'z' && !typing) {
         e.preventDefault();
         if (e.shiftKey) doRedo();
@@ -204,7 +217,7 @@ function TopBar({ compact }: { compact?: boolean }) {
   return (
     <header className={`topbar${compact ? ' is-compact' : ''}`}>
       <IconButton label="Voltar aos projetos" testId="back-projects" onClick={() => void leaveEditor()}><ChevronLeft size={18} /></IconButton>
-      {!compact && <div className="brand is-small"><span className="brand-mark" aria-hidden="true" /> Recorte <em>Studio</em></div>}
+      {!compact && <div className="brand is-small"><Logo size={20} /> Recorte <em>Studio</em></div>}
       <div className="top-title">
         <strong data-testid="project-name" title={project.title}>{project.title}</strong>
         {!compact && <small>{scene?.name}</small>}
@@ -226,7 +239,9 @@ function TopBar({ compact }: { compact?: boolean }) {
         e.target.value = '';
       }} />
       <IconButton label="Configurações do projeto" testId="open-settings" onClick={() => openDialog('settings')}><Settings size={17} /></IconButton>
-      {!compact && <IconButton label="Atalhos de teclado (?)" testId="open-shortcuts" onClick={() => openDialog('shortcuts')}><HelpCircle size={17} /></IconButton>}
+      {!compact && <IconButton label="Atalhos de teclado (?)" testId="open-shortcuts" onClick={() => openDialog('shortcuts')}><Keyboard size={17} /></IconButton>}
+      <IconButton label="Manual (F1)" testId="open-manual" onClick={() => openManual('editor')}><HelpCircle size={17} /></IconButton>
+      {!compact && <IconButton label="Configurações do aplicativo" testId="open-app-settings" onClick={() => openAppSettings()}><SlidersHorizontal size={17} /></IconButton>}
       <ModeToggle compact={compact} />
       <button type="button" className="btn btn-save" data-testid="save-project" title="Baixar o projeto editável com todas as mídias (.jrec)" onClick={() => void saveProjectWithChecks()}><Save size={15} />{compact ? '' : ' Salvar projeto'}</button>
       <button type="button" className="btn btn-primary btn-export" data-testid="open-export" title="Exportar vídeo ou imagens" onClick={() => openDialog('export')}><Download size={15} />{!compact && ' Exportar vídeo/imagem'}</button>
@@ -400,7 +415,19 @@ export function Editor() {
     <>
       {mode === 'desktop' ? <DesktopEditor /> : <MobileEditor landscape={mode === 'mobile-landscape'} />}
       <Dialogs />
+      <EditorOverlay />
     </>
+  );
+}
+
+/** Manual e Configurações abertos por cima do editor: o projeto continua aberto embaixo. */
+function EditorOverlay() {
+  const overlay = useUI((s) => s.overlay);
+  if (!overlay) return null;
+  return (
+    <div className="editor-overlay" role="dialog" aria-modal="true" aria-label={overlay.kind === 'manual' ? 'Manual' : 'Configurações'} data-testid="editor-overlay">
+      {overlay.kind === 'manual' ? <ManualView onClose={closeOverlay} /> : <SettingsView onClose={closeOverlay} />}
+    </div>
   );
 }
 

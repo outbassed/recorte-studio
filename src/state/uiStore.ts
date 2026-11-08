@@ -13,10 +13,19 @@ export interface Selection {
 }
 
 export type Screen = 'projects' | 'editor';
+export type HomeSection = 'home' | 'projects' | 'templates' | 'manual' | 'settings';
+/** Manual e Configurações abertos por cima do editor, sem sair do projeto. */
+export type Overlay = null | { kind: 'manual'; chapter?: string } | { kind: 'settings'; section?: string };
 export type DialogKind = null | 'export' | 'settings' | 'shortcuts' | 'creator' | 'import-report';
 
 interface UIState extends Selection {
   screen: Screen;
+  homeSection: HomeSection;
+  manualChapter: string;
+  settingsSection: string;
+  overlay: Overlay;
+  /** Última aba do inspector por tipo de seleção. */
+  inspectorTabs: Record<string, string>;
   dialog: DialogKind;
   creatorCharacterId: string | null;
   leftTab: LeftTab;
@@ -44,7 +53,7 @@ interface UIState extends Selection {
 }
 
 const PREF_KEY = 'recorte.ui.v1';
-const prefKeys = ['leftWidth', 'rightWidth', 'timelineHeight', 'timelineZoom', 'showGrid', 'showSafe', 'showRulers', 'snapStage', 'snapTimeline', 'checker', 'simpleMode'] as const;
+const prefKeys = ['leftWidth', 'rightWidth', 'timelineHeight', 'timelineZoom', 'showGrid', 'showSafe', 'showRulers', 'snapStage', 'snapTimeline', 'checker', 'simpleMode', 'inspectorTabs'] as const;
 
 function loadPrefs(): Partial<UIState> {
   try {
@@ -57,6 +66,11 @@ function loadPrefs(): Partial<UIState> {
 
 export const useUI = create<UIState>(() => ({
   screen: 'projects',
+  homeSection: 'home',
+  manualChapter: 'inicio',
+  settingsSection: 'geral',
+  overlay: null,
+  inspectorTabs: {},
   dialog: null,
   creatorCharacterId: null,
   nodeIds: [],
@@ -138,3 +152,16 @@ export function promptDialog(title: string, label: string, value: string): Promi
 }
 export const openContextMenu = (context: ContextMenuState) => useFeedback.setState({ context });
 export const closeContextMenu = () => useFeedback.setState({ context: null });
+
+/** Abre o manual num capítulo: por cima do editor, ou na seção Manual da tela inicial. */
+export function openManual(chapter = 'inicio'): void {
+  const s = useUI.getState();
+  if (s.screen === 'editor') useUI.setState({ overlay: { kind: 'manual', chapter }, manualChapter: chapter });
+  else useUI.setState({ homeSection: 'manual', manualChapter: chapter });
+}
+export function openAppSettings(section = 'geral'): void {
+  const s = useUI.getState();
+  if (s.screen === 'editor') useUI.setState({ overlay: { kind: 'settings', section }, settingsSection: section });
+  else useUI.setState({ homeSection: 'settings', settingsSection: section });
+}
+export const closeOverlay = () => useUI.setState({ overlay: null });

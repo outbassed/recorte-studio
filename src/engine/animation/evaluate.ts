@@ -270,6 +270,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
         rig,
         handL,
         handR,
+        limbDepth: n.limbDepth,
         face: {
           expression,
           intensity: exprWeight > 0 ? Math.max(n.expressionIntensity, 1) : n.expressionIntensity,

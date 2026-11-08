@@ -102,7 +102,7 @@ export const BUILTIN_CHARACTERS: CharacterDefinition[] = [
 export const getBuiltinCharacter = (id: string): CharacterDefinition | undefined =>
   BUILTIN_CHARACTERS.find((c) => c.builtinId === id);
 
-export interface PosePreset { id: string; label: string; rig: Partial<Rig>; handL?: 'open' | 'fist' | 'point'; handR?: 'open' | 'fist' | 'point'; keywords?: string[] }
+export interface PosePreset { id: string; label: string; rig: Partial<Rig>; handL?: 'open' | 'fist' | 'point'; handR?: 'open' | 'fist' | 'point'; keywords?: string[]; limbDepth?: Partial<Record<'armL' | 'handL' | 'armR' | 'handR', 'auto' | 'front' | 'behind'>> }
 
 export const POSES: PosePreset[] = [
   { id: 'idle', label: 'Em pé', rig: {} },
@@ -120,6 +120,8 @@ export const POSES: PosePreset[] = [
   { id: 'scared', label: 'Assustado', rig: { armLUpper: 60, armLLower: 105, armRUpper: 60, armRLower: 105, torsoLean: -4 } },
   { id: 'victory', label: 'Vitória', rig: { armLUpper: 165, armRUpper: 165 }, handL: 'fist', handR: 'fist' },
   { id: 'facepalm', label: 'Mão na testa', rig: { armLUpper: 42, armLLower: 142, headTilt: 10 } },
+  { id: 'hands-behind-head', label: 'Mãos atrás da cabeça', rig: { armLUpper: 150, armLLower: 120, armRUpper: 150, armRLower: 120 }, keywords: ['relaxar', 'nuca'], limbDepth: { armL: 'behind', handL: 'behind', armR: 'behind', handR: 'behind' } },
+  { id: 'hands-face', label: 'Mãos no rosto', rig: { armLUpper: 90, armLLower: 125, armRUpper: 90, armRLower: 125 }, keywords: ['surpresa', 'rosto'] },
   { id: 'step', label: 'Passo à frente', rig: { legLUpper: 18, legRUpper: -14, legRLower: 12, armLUpper: -14, armRUpper: 14 } },
 ];
 

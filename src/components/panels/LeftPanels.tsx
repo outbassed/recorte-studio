@@ -24,6 +24,7 @@ import { seek, transport } from '@/state/transport';
 import { confirmDialog, openContextMenu, promptDialog, selectNodes, toast, useUI } from '@/state/uiStore';
 import { repo, type LibraryRecord } from '@/storage/db';
 import { IconButton, MoreButton, SearchBox, SelectField, TextField, useLongPress, VirtualList } from '../controls/fields';
+import { usePrefs } from '@/state/prefs';
 import { backgroundThumbUrl, CharacterThumb, PropThumb, SceneThumb } from './thumbs';
 import { formatTime } from '../timeline/Timeline';
 import { MediaPanel } from './MediaPanel';
@@ -33,6 +34,7 @@ import { CustomBackgroundsSection } from './CustomBackgrounds';
 let sceneClipboard: Scene | null = null;
 
 function SceneRow({ id, index, project, current, order }: { id: string; index: number; project: Project; current: Scene; order: string[] }) {
+  const thumbsOn = usePrefs((p) => p.sceneThumbs);
     const scene = project.scenes[id];
     const lp = useLongPress((x, y) => openContextMenu({ x, y, title: scene?.name, items: menu() }));
     if (!scene) return null;
@@ -53,7 +55,7 @@ function SceneRow({ id, index, project, current, order }: { id: string; index: n
       <div className={`scene-row${active ? ' is-active' : ''}`} data-testid="scene-row" data-scene-id={id} aria-current={active ? 'true' : undefined} onContextMenu={(e) => { e.preventDefault(); openContextMenu({ x: e.clientX, y: e.clientY, title: scene.name, items: menu() }); }} {...lp}>
         <button type="button" className="scene-open" aria-label={`Abrir cena ${index + 1}: ${scene.name}`} onClick={() => switchScene(id)}>
           <span className="scene-index">{index + 1}</span>
-          <SceneThumb project={project} scene={scene} />
+          {thumbsOn ? <SceneThumb project={project} scene={scene} /> : <span className="scene-thumb is-off" aria-hidden="true" />}
           <span className="scene-info">
             <strong>{scene.name}</strong>
             <small>{formatTime(scene.durationMs).slice(0, 5)} · {countSceneActions(scene)} ações</small>
