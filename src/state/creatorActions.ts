@@ -1,6 +1,6 @@
 /** Ações dos Criadores de Objetos e de Cenários (1.2). Tudo via commit: Undo/Redo valem. */
 import type { Asset, Composition, CustomBackground, Project, Scene, TimeOfDay } from '@/engine/model/schema';
-import { BackgroundSchema, CustomObjectSchema } from '@/engine/model/schema';
+import { BackgroundSchema, CustomObjectSchema, frameSize } from '@/engine/model/schema';
 import { uid } from '@/engine/model/ids';
 import { createPropNode } from '@/engine/model/factory';
 import { deleteNode, sceneOf } from '@/engine/model/ops';
@@ -150,56 +150,86 @@ export type StartFrom =
 const W = CUSTOM_RECT;
 const floorY = 230;
 
-/** Modelos de composição: só formas e objetos prontos, tudo editável. */
-export const SCENERY_TEMPLATES: Array<{ id: string; label: string; make: (night: boolean) => Composition }> = [
+export interface Frame { w: number; h: number }
+/** Quadro do projeto em unidades do mundo (16:9 → 1920×1080; 9:16 → 608×1080). */
+export const frameOf = (p: Pick<Project, 'settings'>): Frame => frameSize(p.settings);
+
+/**
+ * Ajuste ao quadro: em quadros mais estreitos que 16:9 (vertical, 4:3, quadrado), objetos
+ * se aproximam do centro e diminuem para caber; em 16:9 ou mais largo nada muda.
+ */
+export function fitToFrame(f: Frame): { X: (x: number) => number; S: (scale?: number) => number; narrow: boolean } {
+  const k = Math.min(1, f.w / 1920);
+  const S = Math.min(1, Math.max(0.5, k * 1.8));
+  return { X: (x) => Math.round(x * k), S: (scale = 1) => +(scale * S).toFixed(3), narrow: k < 0.999 };
+}
+
+/** Rótulo do formato do quadro: 16:9, 9:16, 1:1, 4:3 ou largura×altura. */
+export function aspectLabel(settings: Pick<Project['settings'], 'width' | 'height'>): string {
+  const r = settings.width / settings.height;
+  for (const [w, h] of [[16, 9], [9, 16], [1, 1], [4, 3], [3, 4], [21, 9], [4, 5]] as const) if (Math.abs(r - w / h) < 0.02) return `${w}:${h}`;
+  return `${settings.width}×${settings.height}`;
+}
+
+/** Modelos de composição: só formas e objetos prontos, tudo editável. Posições se ajustam ao quadro do projeto. */
+export const SCENERY_TEMPLATES: Array<{ id: string; label: string; make: (night: boolean, frame: Frame) => Composition }> = [
   {
-    id: 'street', label: 'Rua', make: (night) => ({
-      sky: night ? '#1d2747' : '#9fd3f0',
-      pieces: [
-        createPiece('rect', { name: 'Prédios', x: 0, y: -40, w: W.w, h: 540, fill: night ? '#2c3350' : '#c9b8a6', strokeWidth: 0 }),
-        createPiece('rect', { name: 'Calçada', x: 0, y: floorY + 60, w: W.w, h: 120, fill: night ? '#3a3d48' : '#b7b2a8', strokeWidth: 0 }),
-        createPiece('rect', { name: 'Rua', x: 0, y: floorY + 260, w: W.w, h: 300, fill: night ? '#22242b' : '#4a4d55', strokeWidth: 0 }),
-        createPiece('prop', { name: 'Árvore', refId: 'tree', x: -650, y: floorY }),
-        createPiece('prop', { name: 'Poste', refId: 'streetlamp', x: 520, y: floorY, state: night ? 'on' : '' }),
-        createPiece('prop', { name: 'Banco', refId: 'bench', x: -180, y: floorY }),
-      ],
-    }),
+    id: 'street', label: 'Rua', make: (night, fr) => {
+      const { X, S } = fitToFrame(fr);
+      return {
+        sky: night ? '#1d2747' : '#9fd3f0',
+        pieces: [
+          createPiece('rect', { name: 'Prédios', x: 0, y: -40, w: W.w, h: 540, fill: night ? '#2c3350' : '#c9b8a6', strokeWidth: 0 }),
+          createPiece('rect', { name: 'Calçada', x: 0, y: floorY + 60, w: W.w, h: 120, fill: night ? '#3a3d48' : '#b7b2a8', strokeWidth: 0 }),
+          createPiece('rect', { name: 'Rua', x: 0, y: floorY + 260, w: W.w, h: 300, fill: night ? '#22242b' : '#4a4d55', strokeWidth: 0 }),
+          createPiece('prop', { name: 'Árvore', refId: 'tree', x: X(-650), y: floorY, scale: S() }),
+          createPiece('prop', { name: 'Poste', refId: 'streetlamp', x: X(520), y: floorY, scale: S(), state: night ? 'on' : '' }),
+          createPiece('prop', { name: 'Banco', refId: 'bench', x: X(-180), y: floorY, scale: S() }),
+        ],
+      };
+    },
   },
   {
-    id: 'room', label: 'Sala simples', make: (night) => ({
-      sky: night ? '#1d2236' : '#e9dcc7',
-      pieces: [
-        createPiece('rect', { name: 'Parede', x: 0, y: -110, w: W.w, h: 900, fill: night ? '#4b4766' : '#e9dcc7', strokeWidth: 0 }),
-        createPiece('rect', { name: 'Piso', x: 0, y: floorY + 200, w: W.w, h: 400, fill: night ? '#5a4635' : '#b07a4f', strokeWidth: 0 }),
-        createPiece('rect', { name: 'Rodapé', x: 0, y: floorY + 8, w: W.w, h: 16, fill: '#f6efe4', strokeWidth: 0 }),
-        createPiece('prop', { name: 'Janela', refId: 'window', x: -420, y: -120 }),
-        createPiece('prop', { name: 'Sofá', refId: 'sofa', x: 120, y: floorY }),
-        createPiece('prop', { name: 'Planta', refId: 'plant', x: 620, y: floorY }),
-      ],
-    }),
+    id: 'room', label: 'Sala simples', make: (night, fr) => {
+      const { X, S } = fitToFrame(fr);
+      return {
+        sky: night ? '#1d2236' : '#e9dcc7',
+        pieces: [
+          createPiece('rect', { name: 'Parede', x: 0, y: -110, w: W.w, h: 900, fill: night ? '#4b4766' : '#e9dcc7', strokeWidth: 0 }),
+          createPiece('rect', { name: 'Piso', x: 0, y: floorY + 200, w: W.w, h: 400, fill: night ? '#5a4635' : '#b07a4f', strokeWidth: 0 }),
+          createPiece('rect', { name: 'Rodapé', x: 0, y: floorY + 8, w: W.w, h: 16, fill: '#f6efe4', strokeWidth: 0 }),
+          createPiece('prop', { name: 'Janela', refId: 'window', x: X(-420), y: -120, scale: S() }),
+          createPiece('prop', { name: 'Sofá', refId: 'sofa', x: X(120), y: floorY, scale: S() }),
+          createPiece('prop', { name: 'Planta', refId: 'plant', x: X(620), y: floorY, scale: S() }),
+        ],
+      };
+    },
   },
   {
-    id: 'park', label: 'Parque', make: (night) => ({
-      sky: night ? '#17203a' : '#a9dcf5',
-      pieces: [
-        createPiece('ellipse', { name: 'Colina', x: -500, y: floorY + 60, w: 1800, h: 520, fill: night ? '#24402f' : '#7cc06e', strokeWidth: 0 }),
-        createPiece('rect', { name: 'Grama', x: 0, y: floorY + 220, w: W.w, h: 440, fill: night ? '#1f3828' : '#69b05c', strokeWidth: 0 }),
-        createPiece('prop', { name: 'Árvore', refId: 'tree', x: 560, y: floorY }),
-        createPiece('prop', { name: 'Árvore', refId: 'tree', x: -720, y: floorY - 20, scale: 0.85 }),
-        createPiece('prop', { name: 'Banco', refId: 'bench', x: 60, y: floorY }),
-        createPiece('prop', { name: 'Lixeira', refId: 'trash', x: 330, y: floorY }),
-      ],
-    }),
+    id: 'park', label: 'Parque', make: (night, fr) => {
+      const { X, S } = fitToFrame(fr);
+      return {
+        sky: night ? '#17203a' : '#a9dcf5',
+        pieces: [
+          createPiece('ellipse', { name: 'Colina', x: X(-500), y: floorY + 60, w: 1800, h: 520, fill: night ? '#24402f' : '#7cc06e', strokeWidth: 0 }),
+          createPiece('rect', { name: 'Grama', x: 0, y: floorY + 220, w: W.w, h: 440, fill: night ? '#1f3828' : '#69b05c', strokeWidth: 0 }),
+          createPiece('prop', { name: 'Árvore', refId: 'tree', x: X(560), y: floorY, scale: S() }),
+          createPiece('prop', { name: 'Árvore', refId: 'tree', x: X(-720), y: floorY - 20, scale: S(0.85) }),
+          createPiece('prop', { name: 'Banco', refId: 'bench', x: X(60), y: floorY, scale: S() }),
+          createPiece('prop', { name: 'Lixeira', refId: 'trash', x: X(330), y: floorY, scale: S() }),
+        ],
+      };
+    },
   },
 ];
 
-/** Peças de estrutura do Criador de Cenários. */
-export const SCENERY_PRESETS = [
+/** Peças de estrutura do Criador de Cenários (cobrem toda a área; o sol fica dentro do quadro). */
+export const SCENERY_PRESETS = (fr: Frame) => [
   { label: 'Parede', make: () => createPiece('rect', { name: 'Parede', x: 0, y: -110, w: W.w, h: 900, fill: '#e9dcc7', strokeWidth: 0 }) },
   { label: 'Piso', make: () => createPiece('rect', { name: 'Piso', x: 0, y: floorY + 200, w: W.w, h: 400, fill: '#b07a4f', strokeWidth: 0 }) },
   { label: 'Grama', make: () => createPiece('rect', { name: 'Grama', x: 0, y: floorY + 220, w: W.w, h: 440, fill: '#69b05c', strokeWidth: 0 }) },
   { label: 'Rodapé', make: () => createPiece('rect', { name: 'Rodapé', x: 0, y: floorY + 8, w: W.w, h: 16, fill: '#f6efe4', strokeWidth: 0 }) },
-  { label: 'Sol ou lua', make: () => createPiece('ellipse', { name: 'Sol', x: 640, y: -360, w: 160, h: 160, fill: '#ffe08a', strokeWidth: 0 }) },
+  { label: 'Sol ou lua', make: () => createPiece('ellipse', { name: 'Sol', x: Math.round(fr.w * 0.33), y: -360, w: 160, h: 160, fill: '#ffe08a', strokeWidth: 0 }) },
 ];
 
 async function svgAsset(svg: string, name: string): Promise<Asset> {
@@ -219,7 +249,7 @@ export async function startComposition(cbId: string, time: TimeOfDay, from: Star
   const assets: Asset[] = [];
   let libraryBundle: BackgroundBundle | null = null;
   if (from.kind === 'copy') comp = cloneComposition(cb.compositions[from.from]);
-  else if (from.kind === 'template') comp = SCENERY_TEMPLATES.find((t) => t.id === from.id)?.make(night) ?? comp;
+  else if (from.kind === 'template') comp = SCENERY_TEMPLATES.find((t) => t.id === from.id)?.make(night, frameOf(p)) ?? comp;
   else if (from.kind === 'library') {
     // Composição salva: objetos e imagens que ela usa vêm junto (dentro do commit abaixo).
     comp = cloneComposition(from.bundle.background.compositions[from.time]);
@@ -237,9 +267,11 @@ export async function startComposition(cbId: string, time: TimeOfDay, from: Star
       const asset = await svgAsset(svg, `${def.label}.svg`);
       assets.push(asset);
       comp.pieces.push(createPiece('image', { name: `Fundo: ${def.label}`, assetId: asset.id, x: 0, y: 0, w: W.w, h: W.h }));
+      const { X, S, narrow } = fitToFrame(frameOf(p));
       for (const f of def.furniture) {
         const pd = getProp(f.propId);
-        if (pd) comp.pieces.push(createPiece('prop', { name: pd.label, refId: f.propId, x: f.x, y: f.y, scale: f.scale ?? 1, colorA: f.colorA ?? '', colorB: f.colorB ?? '', state: f.state ?? '' }));
+        // Quadro vertical ou estreito: os móveis do cenário pronto também se aproximam do centro.
+        if (pd) comp.pieces.push(createPiece('prop', { name: pd.label, refId: f.propId, x: narrow ? X(f.x) : f.x, y: f.y, scale: narrow ? S(f.scale ?? 1) : f.scale ?? 1, colorA: f.colorA ?? '', colorB: f.colorB ?? '', state: f.state ?? '' }));
       }
     } catch (e) {
       toast(`Não foi possível copiar o cenário: ${e instanceof Error ? e.message : 'erro'}`, 'error');

@@ -35,6 +35,8 @@ export interface StudioProps {
   /** Peças extras no menu "Adicionar" (paredes, piso…). */
   presets?: Array<{ label: string; make: () => Piece }>;
   excludeObjectId?: string;
+  /** Área exportada: com "Prévia final" ligada, a prévia mostra exatamente este retângulo. */
+  finalBox?: { x: number; y: number; w: number; h: number };
   testId: string;
 }
 
@@ -274,7 +276,7 @@ export function PieceStudio(p: StudioProps) {
     </div>
   );
 
-  const vb = p.viewBox;
+  const vb = finalView && p.finalBox ? p.finalBox : p.viewBox;
   const handle = Math.max(vb.w, vb.h) / 160;
   return (
     <div className="studio" data-testid={p.testId}>
@@ -312,9 +314,12 @@ export function PieceStudio(p: StudioProps) {
           }}
           onPointerUp={() => { drag.current = null; }}
         >
-          <g dangerouslySetInnerHTML={{ __html: p.underlay ?? '' }} />
-          <g dangerouslySetInnerHTML={{ __html: body }} />
-          <g dangerouslySetInnerHTML={{ __html: p.overlay ?? '' }} />
+          {finalView && p.finalBox && <clipPath id={`${p.testId}-final-clip`}><rect x={p.finalBox.x} y={p.finalBox.y} width={p.finalBox.w} height={p.finalBox.h} /></clipPath>}
+          <g clipPath={finalView && p.finalBox ? `url(#${p.testId}-final-clip)` : undefined}>
+            <g dangerouslySetInnerHTML={{ __html: p.underlay ?? '' }} />
+            <g dangerouslySetInnerHTML={{ __html: body }} />
+          </g>
+          {!(finalView && p.finalBox) && <g dangerouslySetInnerHTML={{ __html: p.overlay ?? '' }} />}
           {!finalView && selected.map((pc) => {
             const b = pieceBox(pc, p.project);
             return <rect key={pc.id} x={b.x} y={b.y} width={b.w} height={b.h} fill="none" stroke="#7fc8ff" strokeWidth={handle * 0.6} strokeDasharray={`${handle * 2} ${handle}`} pointerEvents="none" />;

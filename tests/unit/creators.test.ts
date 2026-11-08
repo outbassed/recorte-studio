@@ -128,3 +128,29 @@ describe('.jrec leva objetos e cenários com mídia', () => {
     expect(cb.compositions.day!.pieces[2]!.character!.expression).toBe('happy');
   });
 });
+
+describe('Criador de Cenários em quadros não 16:9', () => {
+  const frames = { '16:9': { w: 1920, h: 1080 }, '9:16': { w: 607.5, h: 1080 }, '1:1': { w: 1080, h: 1080 }, '4:3': { w: 1440, h: 1080 } };
+  it('rótulo do formato do projeto', async () => {
+    const { aspectLabel } = await import('@/state/creatorActions');
+    expect(aspectLabel({ width: 1920, height: 1080 })).toBe('16:9');
+    expect(aspectLabel({ width: 1080, height: 1920 })).toBe('9:16');
+    expect(aspectLabel({ width: 1080, height: 1080 })).toBe('1:1');
+    expect(aspectLabel({ width: 1000, height: 777 })).toBe('1000×777');
+  });
+  it.each(Object.entries(frames))('modelos %s: todo objeto fica dentro do quadro', async (_name, fr) => {
+    const { SCENERY_TEMPLATES } = await import('@/state/creatorActions');
+    for (const t of SCENERY_TEMPLATES) for (const night of [false, true]) {
+      const comp = t.make(night, fr);
+      for (const p of comp.pieces.filter((x) => x.kind === 'prop')) {
+        expect(Math.abs(p.x), `${t.id} ${p.name}`).toBeLessThanOrEqual(fr.w / 2);
+        if (fr.w < 1920) expect(p.scale, `${t.id} ${p.name}`).toBeLessThan(1);
+      }
+    }
+  });
+  it('em 16:9 nada muda de posição nem de escala', async () => {
+    const { SCENERY_TEMPLATES } = await import('@/state/creatorActions');
+    const park = SCENERY_TEMPLATES.find((t) => t.id === 'park')!.make(false, frames['16:9']);
+    expect(park.pieces.find((p) => p.name === 'Banco')).toMatchObject({ x: 60, scale: 1 });
+  });
+});

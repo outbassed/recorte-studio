@@ -9,7 +9,7 @@ import { IMAGE_ACCEPT } from '@/features/library/assets';
 import { commit, useProject } from '@/state/projectStore';
 import { closeDialog, promptDialog, useUI } from '@/state/uiStore';
 import {
-  SCENERY_PRESETS, SCENERY_TEMPLATES, applySceneryToScene, insertCustomObject, removeTime, saveBackgroundToLibrary, saveObjectToLibrary, startComposition, startCompositionFromFile,
+  SCENERY_PRESETS, SCENERY_TEMPLATES, aspectLabel, applySceneryToScene, frameOf, insertCustomObject, removeTime, saveBackgroundToLibrary, saveObjectToLibrary, startComposition, startCompositionFromFile,
 } from '@/state/creatorActions';
 import { repo, type LibraryRecord } from '@/storage/db';
 import { readBackgroundBundle } from '@/features/library/bundles';
@@ -109,7 +109,13 @@ export function SceneCreator() {
     const c = (d as Project).customBackgrounds[cb.id]?.compositions[time];
     if (c) fn(c.pieces, c);
   }, coalesce ? { coalesce } : {});
-  const frame = `<rect x="-960" y="-540" width="1920" height="1080" fill="none" stroke="#ffffffcc" stroke-width="5" stroke-dasharray="26 16"/><text x="-948" y="-552" font-size="30" font-family="Arial,sans-serif" fill="#ffffffcc">Quadro 16:9</text>`;
+  // Quadro REAL do projeto (16:9, 9:16, 1:1…), centrado na origem: o que está fora dele não sai no vídeo.
+  const fr = frameOf(project);
+  const fx = -fr.w / 2;
+  const fy = -fr.h / 2;
+  const frame = `<path fill="#000" fill-opacity=".35" fill-rule="evenodd" d="M${R.x} ${R.y}h${R.w}v${R.h}h${-R.w}ZM${n(fx)} ${n(fy)}h${n(fr.w)}v${n(fr.h)}h${n(-fr.w)}Z" pointer-events="none"/>` +
+    `<rect x="${n(fx)}" y="${n(fy)}" width="${n(fr.w)}" height="${n(fr.h)}" fill="none" stroke="#ffffffee" stroke-width="5" stroke-dasharray="26 16" pointer-events="none"/>` +
+    `<text x="${n(fx + 12)}" y="${n(fy - 14)}" font-size="30" font-family="Arial,sans-serif" fill="#ffffffee" pointer-events="none">Quadro ${aspectLabel(project.settings)}</text>`;
   return (
     <StudioShell testId="scene-creator" onClose={closeDialog}
       title={<><strong>Criador de Cenários</strong><TextField label="Nome" value={cb.name} testId="scenery-name" onChange={(v) => commit('Renomear cenário', (d) => { const c = d.customBackgrounds[cb.id]; if (c) c.name = v || 'Cenário'; }, { coalesce: 'cb-name' })} /><HelpLink chapter="criador-cenarios" /></>}
@@ -136,7 +142,8 @@ export function SceneCreator() {
           pieces={comp.pieces}
           testId="scene-studio"
           allowCharacters
-          presets={SCENERY_PRESETS}
+          presets={SCENERY_PRESETS(fr)}
+          finalBox={{ x: fx, y: fy, w: fr.w, h: fr.h }}
           viewBox={R}
           underlay={`<rect x="${R.x}" y="${R.y}" width="${R.w}" height="${R.h}" fill="${/^#[0-9a-fA-F]{3,8}$/.test(comp.sky) ? comp.sky : '#9fd3f0'}"/>`}
           overlay={frame}
