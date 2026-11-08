@@ -9,6 +9,7 @@
  * tamanhos, hashes, tipos reais e troca os IDs das mídias por IDs de conteúdo,
  * então dois projetos nunca disputam o mesmo blob.
  */
+import { pieceAssetIds, remapPieceAssets } from '@/engine/world/pieces';
 import { strFromU8, strToU8, unzipSync, zipSync, type Zippable } from 'fflate';
 import { z } from 'zod';
 import type { Asset, Project } from '@/engine/model/schema';
@@ -20,7 +21,7 @@ import type { Entry } from './archive';
 
 export const JREC_FORMAT = 'recorte-studio-project';
 export const JREC_VERSION = 1;
-export const APP_VERSION = '1.1.0';
+export const APP_VERSION = '1.2.0';
 
 const ManifestSchema = z.object({
   format: z.literal(JREC_FORMAT),
@@ -48,6 +49,7 @@ export function referencedAssetIds(p: Project): Set<string> {
   }
   for (const c of Object.values(p.characters)) if (c.spriteAssetId) ids.add(c.spriteAssetId);
   for (const b of Object.values(p.customBackgrounds)) for (const v of Object.values(b.variants)) if (v) ids.add(v.assetId);
+  for (const id of pieceAssetIds(p)) ids.add(id);
   return ids;
 }
 
@@ -60,6 +62,7 @@ export function remapAssetRefs(p: Project, map: Map<string, string>): void {
   }
   for (const c of Object.values(p.characters)) if (c.spriteAssetId) c.spriteAssetId = m(c.spriteAssetId);
   for (const b of Object.values(p.customBackgrounds)) for (const v of Object.values(b.variants)) if (v) v.assetId = m(v.assetId);
+  remapPieceAssets(p, m);
   const assets: Record<string, Asset> = {};
   for (const [id, a] of Object.entries(p.assets)) {
     const nid = m(id);

@@ -1,38 +1,34 @@
 /** Painéis da esquerda (e dos popups no celular). */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ArrowDown, ArrowUp, ChevronsDown, ChevronsUp, Copy, Eye, EyeOff, FileUp, Group, ImagePlus, Lightbulb, Lock, LockOpen, Pencil, Plus, Shapes, Sparkles, Star, Trash2, Type, Ungroup, UserPlus,
+  ArrowDown, ArrowUp, ChevronsDown, ChevronsUp, Copy, Eye, EyeOff, Group, Lock, LockOpen, Plus, Sparkles, Trash2, Ungroup,
 } from 'lucide-react';
-import { createLightNode, createProject, createScene, createShapeNode, createTextNode, newCharacterDefinition } from '@/engine/model/factory';
-import { applySequence, type Sequence } from '@/engine/model/ops';
-import { addScene as addSceneOp, applyBackground, characterUsage, countSceneActions, deleteCharacter, deleteNode, duplicateNode, groupNodes, moveLayer, moveScene, pasteSceneContent, replaceSceneContent, sceneOf, ungroup } from '@/engine/model/ops';
-import { uid, deepClone } from '@/engine/model/ids';
-import { CharacterDefinitionSchema, type CharacterDefinition, type Project, type Scene, type SceneNode } from '@/engine/model/schema';
-import { BACKGROUNDS } from '@/engine/world/backgrounds';
-import { PROPS, PROP_CATEGORY_LABELS, type PropDef } from '@/engine/world/props';
-import { BUILTIN_CHARACTERS } from '@/engine/character/presets';
+import { createProject } from '@/engine/model/factory';
+import { addScene as addSceneOp, countSceneActions, deleteNode, duplicateNode, groupNodes, moveLayer, moveScene, pasteSceneContent, replaceSceneContent, sceneOf, ungroup } from '@/engine/model/ops';
+import { deepClone } from '@/engine/model/ids';
+import { type Project, type Scene, type SceneNode } from '@/engine/model/schema';
 import { applyPlan, describePlan, type Plan } from '@/features/ai/plan';
 import { listOllamaModels, ollamaAdapter, proxyAdapter, quickAdapter, AIError, type AIAdapter } from '@/features/ai/adapters';
 import { matchesSearch } from '@/features/library/search';
-import { IMAGE_ACCEPT } from '@/features/library/assets';
 import { SCENE_TEMPLATES, buildTemplateScene } from '@/features/templates/scenes';
 import { PROJECT_TEMPLATES, createFromProjectTemplate } from '@/features/templates/projects';
 import { createAndOpen } from '@/features/projects/session';
-import { addNodeToScene, addScene, importImage, placeBuiltin, placeCharacter, placeProp, requestDeleteScene, switchScene } from '@/state/actions';
-import { commit, currentProject, useCurrentScene, useProject } from '@/state/projectStore';
+import { addScene, requestDeleteScene, switchScene } from '@/state/actions';
+import { commit, useCurrentScene, useProject } from '@/state/projectStore';
 import { seek, transport } from '@/state/transport';
 import { confirmDialog, openContextMenu, promptDialog, selectNodes, toast, useUI } from '@/state/uiStore';
-import { repo, type LibraryRecord } from '@/storage/db';
 import { IconButton, MoreButton, SearchBox, SelectField, TextField, useLongPress, VirtualList } from '../controls/fields';
-import { backgroundThumbUrl, CharacterThumb, PropThumb, SceneThumb } from './thumbs';
+import { usePrefs } from '@/state/prefs';
+import { backgroundThumbUrl, SceneThumb } from './thumbs';
 import { formatTime } from '../timeline/Timeline';
 import { MediaPanel } from './MediaPanel';
-import { CustomBackgroundsSection } from './CustomBackgrounds';
+import { CastPanel, ObjectsCatalogPanel, SceneryPanel, ToolboxPanel } from './Catalog';
 
 /* ---------------------------------- CENAS ---------------------------------- */
 let sceneClipboard: Scene | null = null;
 
 function SceneRow({ id, index, project, current, order }: { id: string; index: number; project: Project; current: Scene; order: string[] }) {
+  const thumbsOn = usePrefs((p) => p.sceneThumbs);
     const scene = project.scenes[id];
     const lp = useLongPress((x, y) => openContextMenu({ x, y, title: scene?.name, items: menu() }));
     if (!scene) return null;
@@ -53,7 +49,7 @@ function SceneRow({ id, index, project, current, order }: { id: string; index: n
       <div className={`scene-row${active ? ' is-active' : ''}`} data-testid="scene-row" data-scene-id={id} aria-current={active ? 'true' : undefined} onContextMenu={(e) => { e.preventDefault(); openContextMenu({ x: e.clientX, y: e.clientY, title: scene.name, items: menu() }); }} {...lp}>
         <button type="button" className="scene-open" aria-label={`Abrir cena ${index + 1}: ${scene.name}`} onClick={() => switchScene(id)}>
           <span className="scene-index">{index + 1}</span>
-          <SceneThumb project={project} scene={scene} />
+          {thumbsOn ? <SceneThumb project={project} scene={scene} /> : <span className="scene-thumb is-off" aria-hidden="true" />}
           <span className="scene-info">
             <strong>{scene.name}</strong>
             <small>{formatTime(scene.durationMs).slice(0, 5)} · {countSceneActions(scene)} ações</small>
@@ -121,7 +117,7 @@ function LayerRow({ id, scene, selection, mv, setNode, del }: { id: string; scen
     const lp = useLongPress((x, y) => openContextMenu({ x, y, title: node.name, items: menu() }));
     const selected = selection.includes(id);
     return (
-      <div className={`layer-row${selected ? ' is-selected' : ''}${node.visible ? '' : ' is-hidden'}`} data-testid="layer-row" data-node-name={node.name} aria-selected={selected} onContextMenu={(e) => { e.preventDefault(); openContextMenu({ x: e.clientX, y: e.clientY, title: node.name, items: menu() }); }} {...lp}>
+      <div className={`layer-row${selected ? ' is-selected' : ''}${node.visible ? '' : ' is-hidden'}`} data-testid="layer-row" data-node-id={id} data-node-name={node.name} aria-selected={selected} onContextMenu={(e) => { e.preventDefault(); openContextMenu({ x: e.clientX, y: e.clientY, title: node.name, items: menu() }); }} {...lp}>
         <button type="button" className="layer-name" title={node.name} onClick={(e) => selectNodes(e.shiftKey ? (selected ? selection.filter((x) => x !== id) : [...selection, id]) : [id])}>
           {selected && <span className="sel-mark" aria-hidden="true">●</span>}
           <span>{node.name}</span>
@@ -188,212 +184,10 @@ export function LayersPanel() {
   );
 }
 
-/* ---------------------------------- PERSONAGENS ---------------------------------- */
-export function CharactersPanel() {
-  const project = useProject();
-  const [query, setQuery] = useState('');
-  const [filter, setFilter] = useState<'all' | 'favorites'>('all');
-  const [userLib, setUserLib] = useState<LibraryRecord[]>([]);
-  const charFile = useRef<HTMLInputElement>(null);
-  useEffect(() => { void repo.listLibrary('character').then(setUserLib); }, []);
-  if (!project) return null;
-  const projectChars = Object.values(project.characters).filter((c) => matchesSearch(query, c.name) && (filter === 'all' || c.favorite));
-  const builtins = BUILTIN_CHARACTERS.filter((b) => !Object.values(project.characters).some((c) => c.builtinId === b.builtinId)).filter((c) => matchesSearch(query, c.name, c.hair.style, c.outfit.top));
-  const create = () => {
-    const def = newCharacterDefinition(`Personagem ${Object.keys(project.characters).length + 1}`, {});
-    commit('Criar personagem', (d) => { d.characters[def.id] = def; });
-    useUI.setState({ dialog: 'creator', creatorCharacterId: def.id });
-  };
-  const menu = (c: CharacterDefinition) => [
-    { label: 'Colocar na cena', onSelect: () => placeCharacter(c.id) },
-    { label: 'Editar no criador', onSelect: () => useUI.setState({ dialog: 'creator', creatorCharacterId: c.id }) },
-    { label: 'Duplicar', onSelect: () => {
-      const copy: CharacterDefinition = { ...deepClone(c), id: uid('char'), name: `${c.name} (cópia)`, builtinId: undefined };
-      commit('Duplicar personagem', (d) => { d.characters[copy.id] = copy; });
-    } },
-    { label: c.favorite ? 'Tirar dos favoritos' : 'Favoritar', onSelect: () => commit('Favoritar', (d) => { d.characters[c.id]!.favorite = !c.favorite; }) },
-    { label: 'Salvar na minha biblioteca', onSelect: async () => {
-      await repo.putLibrary({ id: uid('lib'), kind: 'character', name: c.name, favorite: 0, createdAt: Date.now(), data: { ...deepClone(c), builtinId: undefined } });
-      setUserLib(await repo.listLibrary('character'));
-      toast('Salvo na sua biblioteca, disponível em todos os projetos.', 'success');
-    } },
-    { label: 'Remover do projeto', danger: true, onSelect: async () => {
-      const used = characterUsage(currentProject(), c.id);
-      if (used > 0) {
-        toast(`"${c.name}" está em uso em ${used} instância(s). Exclua as instâncias nas cenas antes de remover.`, 'error');
-        return;
-      }
-      const ok = await confirmDialog({ title: 'Remover personagem', message: `Remover "${c.name}" da biblioteca do projeto?`, confirmLabel: 'Remover', danger: true });
-      if (ok) commit('Remover personagem', (d) => void deleteCharacter(d as Project, c.id));
-    } },
-  ];
-  return (
-    <div className="panel-col" data-testid="characters-panel">
-      <header className="panel-header"><h2>PERSONAGENS</h2><span className="count">{Object.keys(project.characters).length + builtins.length}</span></header>
-      <div className="panel-sub">
-        <SearchBox value={query} onChange={setQuery} placeholder="Buscar personagem" testId="char-search" />
-        <div className="chip-row">
-          <button type="button" className={`chip${filter === 'all' ? ' is-active' : ''}`} onClick={() => setFilter('all')}>Todos</button>
-          <button type="button" className={`chip${filter === 'favorites' ? ' is-active' : ''}`} onClick={() => setFilter('favorites')}><Star size={12} /> Favoritos</button>
-        </div>
-      </div>
-      <div className="panel-scroll">
-        {projectChars.length > 0 && <h3 className="group-title">Neste projeto</h3>}
-        <div className="card-grid">
-          {projectChars.map((c) => (
-            <div key={c.id} className="card" data-testid="project-character" data-name={c.name}>
-              <button type="button" className="card-main" aria-label={`Colocar ${c.name} na cena`} onClick={() => placeCharacter(c.id)}>
-                <CharacterThumb def={c} size={72} />
-                <span>{c.favorite && <Star size={10} fill="currentColor" />} {c.name}</span>
-              </button>
-              <div className="card-actions">
-                <IconButton label={`Editar ${c.name}`} testId="edit-character" onClick={() => useUI.setState({ dialog: 'creator', creatorCharacterId: c.id })}><Pencil size={14} /></IconButton>
-                <MoreButton label={`Opções de ${c.name}`} items={() => menu(c)} />
-              </div>
-            </div>
-          ))}
-        </div>
-        {userLib.length > 0 && <h3 className="group-title">Minha biblioteca</h3>}
-        <div className="card-grid">
-          {userLib.filter((r) => matchesSearch(query, r.name)).map((r) => {
-            const def = r.data as CharacterDefinition;
-            return (
-              <div key={r.id} className="card">
-                <button type="button" className="card-main" aria-label={`Trazer ${r.name} para o projeto`} onClick={() => {
-                  const copy: CharacterDefinition = { ...deepClone(def), id: uid('char') };
-                  commit('Trazer da biblioteca', (d) => { d.characters[copy.id] = copy; });
-                  placeCharacter(copy.id);
-                }}><CharacterThumb def={def} size={72} /><span>{r.name}</span></button>
-                <div className="card-actions">
-                  <IconButton label={`Apagar ${r.name} da biblioteca`} danger onClick={async () => {
-                    const ok = await confirmDialog({ title: 'Apagar da biblioteca', message: `Apagar "${r.name}"? Os projetos que já o usam não mudam.`, confirmLabel: 'Apagar', danger: true });
-                    if (ok) {
-                      await repo.deleteLibrary(r.id);
-                      setUserLib(await repo.listLibrary('character'));
-                    }
-                  }}><Trash2 size={14} /></IconButton>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        {builtins.length > 0 && <h3 className="group-title">Elenco pronto</h3>}
-        <div className="card-grid">
-          {builtins.map((c) => (
-            <button key={c.builtinId} type="button" className="card card-main" data-testid="builtin-character" data-name={c.name} aria-label={`Colocar ${c.name} na cena`} onClick={() => placeBuiltin(c.builtinId!)}>
-              <CharacterThumb def={c} size={72} />
-              <span>{c.name}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-      <footer className="panel-footer">
-        <button type="button" className="btn btn-primary btn-block" data-testid="create-character" onClick={create}><UserPlus size={15} /> Criar personagem</button>
-        <button type="button" className="btn btn-sm btn-block" onClick={() => charFile.current?.click()}><FileUp size={14} /> Importar personagem (.json)</button>
-        <input ref={charFile} hidden type="file" accept=".json" data-testid="character-input" onChange={async (e) => {
-          const f = e.target.files?.[0];
-          e.target.value = '';
-          if (!f) return;
-          try {
-            const raw = JSON.parse(await f.text()) as { format?: string; character?: unknown };
-            if (raw.format !== 'recorte-studio-character') throw new Error('arquivo não é um personagem do Recorte Studio');
-            const parsed = CharacterDefinitionSchema.parse(raw.character);
-            const copy: CharacterDefinition = { ...parsed, id: uid('char'), builtinId: undefined, spriteAssetId: undefined };
-            commit('Importar personagem', (d) => { d.characters[copy.id] = copy; });
-            toast(`"${copy.name}" importado.`, 'success');
-          } catch (err) {
-            toast(`Não foi possível importar: ${err instanceof Error ? err.message : 'erro desconhecido'}`, 'error');
-          }
-        }} />
-      </footer>
-    </div>
-  );
-}
-
-/* ---------------------------------- CENÁRIOS ---------------------------------- */
-export function BackgroundsPanel() {
-  const scene = useCurrentScene();
-  const [query, setQuery] = useState('');
-  const [variant, setVariant] = useState<'day' | 'night'>('day');
-  if (!scene) return null;
-  const list = BACKGROUNDS.filter((b) => matchesSearch(query, b.label, b.keywords, b.group));
-  const groups = [...new Set(list.map((b) => b.group))];
-  return (
-    <div className="panel-col" data-testid="backgrounds-panel">
-      <header className="panel-header"><h2>CENÁRIOS</h2><span className="count">{BACKGROUNDS.length}</span></header>
-      <div className="panel-sub">
-        <SearchBox value={query} onChange={setQuery} placeholder="Buscar cenário" testId="bg-search" />
-        <div className="chip-row">
-          <button type="button" className={`chip${variant === 'day' ? ' is-active' : ''}`} onClick={() => setVariant('day')}>Dia</button>
-          <button type="button" className={`chip${variant === 'night' ? ' is-active' : ''}`} onClick={() => setVariant('night')}>Noite</button>
-        </div>
-      </div>
-      <div className="panel-scroll">
-        <CustomBackgroundsSection />
-        {groups.map((g) => (
-          <div key={g}>
-            <h3 className="group-title">{g}</h3>
-            <div className="card-grid is-wide">
-              {list.filter((b) => b.group === g).map((b) => (
-                <button key={b.id} type="button" className={`card card-main${scene.background.presetId === b.id ? ' is-active' : ''}`} data-testid="bg-card" data-bg={b.id} aria-pressed={scene.background.presetId === b.id} onClick={() => {
-                  commit('Trocar cenário', (d) => applyBackground(sceneOf(d as Project, scene.id), b.id, { variant }));
-                  toast(`Cenário: ${b.label}. Móveis viraram camadas editáveis.`);
-                }}>
-                  <img src={backgroundThumbUrl(b.id, variant)} alt="" loading="lazy" className="bg-thumb" />
-                  <span>{b.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-        {list.length === 0 && <p className="empty">Nenhum cenário com esse termo.</p>}
-      </div>
-    </div>
-  );
-}
-
-/* ---------------------------------- OBJETOS ---------------------------------- */
-export function ObjectsPanel() {
-  const [query, setQuery] = useState('');
-  const fileRef = useRef<HTMLInputElement>(null);
-  const list = PROPS.filter((p) => matchesSearch(query, p.label, p.keywords, PROP_CATEGORY_LABELS[p.category]));
-  const cats = [...new Set(list.map((p) => p.category))] as PropDef['category'][];
-  return (
-    <div className="panel-col" data-testid="objects-panel">
-      <header className="panel-header"><h2>OBJETOS</h2><span className="count">{PROPS.length}</span></header>
-      <div className="panel-sub">
-        <SearchBox value={query} onChange={setQuery} placeholder="Buscar objeto" testId="prop-search" />
-        <div className="btn-row">
-          <button type="button" className="btn btn-sm" data-testid="add-text" onClick={() => addNodeToScene(createTextNode('Seu texto'), 'Adicionar texto')}><Type size={14} /> Texto</button>
-          <button type="button" className="btn btn-sm" onClick={() => addNodeToScene(createShapeNode('rect'), 'Adicionar forma')}><Shapes size={14} /> Forma</button>
-          <button type="button" className="btn btn-sm" onClick={() => addNodeToScene(createLightNode(), 'Adicionar luz')}><Lightbulb size={14} /> Luz</button>
-          <button type="button" className="btn btn-sm" data-testid="import-image" onClick={() => fileRef.current?.click()}><ImagePlus size={14} /> Imagem</button>
-        </div>
-        <input ref={fileRef} hidden type="file" accept={IMAGE_ACCEPT} data-testid="image-input" onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) void importImage(f);
-          e.target.value = '';
-        }} />
-      </div>
-      <div className="panel-scroll">
-        {cats.map((cat) => (
-          <div key={cat}>
-            <h3 className="group-title">{PROP_CATEGORY_LABELS[cat]}</h3>
-            <div className="card-grid">
-              {list.filter((p) => p.category === cat).map((p) => (
-                <button key={p.id} type="button" className="card card-main" data-testid="prop-card" data-prop={p.id} aria-label={`Adicionar ${p.label}`} onClick={() => placeProp(p.id)}>
-                  <PropThumb propId={p.id} size={58} />
-                  <span>{p.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        ))}
-        {list.length === 0 && <p className="empty">Nenhum objeto com esse termo.</p>}
-      </div>
-    </div>
-  );
-}
+/* ------------------- ELENCO, CENÁRIOS E OBJETOS: visões do catálogo unificado ------------------- */
+export const CharactersPanel = CastPanel;
+export const BackgroundsPanel = SceneryPanel;
+export const ObjectsPanel = ObjectsCatalogPanel;
 
 /* ---------------------------------- TEMPLATES ---------------------------------- */
 export function TemplatesPanel() {
@@ -475,127 +269,9 @@ export function TemplatesPanel() {
   );
 }
 
-/* ---------------------------------- BIBLIOTECA ---------------------------------- */
-export function LibraryPanel() {
-  const project = useProject();
-  const scene = useCurrentScene();
-  const [items, setItems] = useState<LibraryRecord[]>([]);
-  const [query, setQuery] = useState('');
-  const reload = () => void repo.listLibrary().then(setItems);
-  useEffect(reload, []);
-  const fileRef = useRef<HTMLInputElement>(null);
-  if (!project || !scene) return null;
-  const filtered = items.filter((i) => matchesSearch(query, i.name, i.kind)).sort((a, b) => b.favorite - a.favorite || b.createdAt - a.createdAt);
-  const label = { character: 'Personagem', scene: 'Cena', pose: 'Pose', background: 'Cenário', animation: 'Sequência', prop: 'Objeto', audio: 'Áudio' } as const;
-  const saveScene = async () => {
-    await repo.putLibrary({ id: uid('lib'), kind: 'scene', name: scene.name, favorite: 0, createdAt: Date.now(), data: { scene: deepClone(scene), characters: deepClone(project.characters) } });
-    reload();
-    toast('Cena salva na sua biblioteca.', 'success');
-  };
-  const savePose = async () => {
-    const id = useUI.getState().nodeIds[0];
-    const n = id ? scene.nodes[id] : undefined;
-    if (n?.kind !== 'character') {
-      toast('Selecione um personagem para salvar a pose dele.', 'error');
-      return;
-    }
-    const name = await promptDialog('Salvar pose', 'Nome da pose', 'Minha pose');
-    if (!name) return;
-    await repo.putLibrary({ id: uid('lib'), kind: 'pose', name, favorite: 0, createdAt: Date.now(), data: { rig: deepClone(n.rig), handL: n.handL, handR: n.handR } });
-    reload();
-  };
-  const use = (r: LibraryRecord) => {
-    if (r.kind === 'character') {
-      const copy = { ...deepClone(r.data as CharacterDefinition), id: uid('char') };
-      commit('Trazer da biblioteca', (d) => { d.characters[copy.id] = copy; });
-      placeCharacter(copy.id);
-    } else if (r.kind === 'scene') {
-      const data = r.data as { scene: Scene; characters: Project['characters'] };
-      commit('Inserir cena da biblioteca', (d) => {
-        for (const [id, c] of Object.entries(data.characters)) if (!d.characters[id]) d.characters[id] = deepClone(c);
-        const s = createScene(data.scene.name);
-        addSceneOp(d as Project, s, (d as Project).currentSceneId);
-        replaceSceneContent(d as Project, s.id, data.scene);
-      });
-      seek(0);
-    } else if (r.kind === 'animation') {
-      const id = useUI.getState().nodeIds[0];
-      const n = id ? scene.nodes[id] : undefined;
-      if (n?.kind !== 'character') {
-        toast('Selecione um personagem para aplicar a sequência.', 'error');
-        return;
-      }
-      let count = 0;
-      commit('Aplicar sequência', (d) => { count = applySequence(sceneOf(d as Project, scene.id), n.id, r.data as Sequence, transport.getState().timeMs); });
-      toast(`${count} passo(s) aplicados a ${n.name} a partir do tempo atual. Todos editáveis na timeline.`, 'success');
-    } else if (r.kind === 'pose') {
-      const id = useUI.getState().nodeIds[0];
-      const n = id ? scene.nodes[id] : undefined;
-      if (n?.kind !== 'character') {
-        toast('Selecione um personagem para aplicar a pose.', 'error');
-        return;
-      }
-      const data = r.data as { rig: Extract<SceneNode, { kind: 'character' }>['rig']; handL: 'open'; handR: 'open' };
-      commit('Aplicar pose', (d) => {
-        const m = sceneOf(d as Project, scene.id).nodes[n.id];
-        if (m?.kind === 'character') {
-          m.rig = deepClone(data.rig);
-          m.handL = data.handL;
-          m.handR = data.handR;
-        }
-      });
-    }
-  };
-  const exportLib = () => {
-    const blob = new Blob([JSON.stringify({ format: 'recorte-studio-library', version: 1, items }, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'biblioteca-recorte-studio.json';
-    a.click();
-  };
-  const importLib = async (f: File) => {
-    try {
-      const parsed = JSON.parse(await f.text()) as { format?: string; items?: LibraryRecord[] };
-      if (parsed.format !== 'recorte-studio-library' || !Array.isArray(parsed.items)) throw new Error('Formato inválido');
-      for (const it of parsed.items) await repo.putLibrary({ ...it, id: uid('lib') });
-      reload();
-      toast(`${parsed.items.length} item(ns) importado(s).`, 'success');
-    } catch (e) {
-      toast(`Não foi possível importar: ${e instanceof Error ? e.message : ''}`, 'error');
-    }
-  };
-  return (
-    <div className="panel-col" data-testid="library-panel">
-      <header className="panel-header"><h2>MINHA BIBLIOTECA</h2><span className="count">{items.length}</span></header>
-      <div className="panel-sub">
-        <p className="hint">Recursos próprios, disponíveis em todos os projetos deste navegador.</p>
-        <SearchBox value={query} onChange={setQuery} placeholder="Buscar na biblioteca" />
-        <div className="btn-row">
-          <button type="button" className="btn btn-sm" data-testid="lib-save-scene" onClick={() => void saveScene()}>Salvar cena</button>
-          <button type="button" className="btn btn-sm" onClick={() => void savePose()}>Salvar pose</button>
-          <button type="button" className="btn btn-sm" onClick={exportLib}>Exportar</button>
-          <button type="button" className="btn btn-sm" onClick={() => fileRef.current?.click()}><FileUp size={14} /> Importar</button>
-        </div>
-        <input ref={fileRef} hidden type="file" accept=".json" onChange={(e) => { const f = e.target.files?.[0]; if (f) void importLib(f); e.target.value = ''; }} />
-      </div>
-      <div className="panel-scroll">
-        {filtered.length === 0 && <p className="empty">Nada salvo ainda. Salve cenas, poses e personagens para reutilizar em outros projetos.</p>}
-        {filtered.map((r) => (
-          <div key={r.id} className="lib-row">
-            <button type="button" className="lib-main" onClick={() => use(r)}><strong>{r.favorite ? '★ ' : ''}{r.name}</strong><small>{label[r.kind]}</small></button>
-            <IconButton label={r.favorite ? 'Tirar dos favoritos' : 'Favoritar'} active={!!r.favorite} onClick={async () => { await repo.putLibrary({ ...r, favorite: r.favorite ? 0 : 1 }); reload(); }}><Star size={14} /></IconButton>
-            <IconButton label={`Apagar ${r.name}`} danger onClick={async () => {
-              const ok = await confirmDialog({ title: 'Apagar da biblioteca', message: `Apagar "${r.name}"?`, confirmLabel: 'Apagar', danger: true });
-              if (ok) { await repo.deleteLibrary(r.id); reload(); }
-            }}><Trash2 size={14} /></IconButton>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+/* ------------------------- BIBLIOTECA: Toolbox compacta do Studio ------------------------- */
+export const LibraryPanel = ToolboxPanel;
 
-/* ---------------------------------- DIREÇÃO (comandos e IA) ---------------------------------- */
 const AI_PREFS = 'recorte.ai.v1';
 interface AIPrefs { mode: 'quick' | 'ollama' | 'proxy'; ollamaUrl: string; ollamaModel: string; proxyUrl: string; proxyModel: string }
 const defaultAI: AIPrefs = { mode: 'quick', ollamaUrl: 'http://localhost:11434', ollamaModel: '', proxyUrl: '', proxyModel: '' };

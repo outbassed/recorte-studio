@@ -6,6 +6,28 @@ import { TIMES_OF_DAY, type Background, type CustomBackground, type Project, typ
 import { uid } from '../model/ids';
 import { deleteNode } from '../model/ops';
 import { esc, n } from '../render/svg';
+import { availabilityKey, nestedFrameKey, renderPieces } from './pieces';
+import type { Composition } from '../model/schema';
+
+const compCache = new WeakMap<Composition, Map<string, { objects: object; svg: string }>>();
+/**
+ * Composição do Criador de Cenários: desenhada uma vez e reaproveitada até mudar
+ * (o Immer troca a referência ao editar). Personagens estáticos entram aqui, não na timeline.
+ */
+export function renderComposition(project: Project, id: string, time: TimeOfDay, comp: Composition, url: (assetId: string) => string | undefined, timeMs = 0): string {
+  // Chave: referência dos objetos (qualquer edição de objeto invalida) + imagens + quadro de cada objeto animado.
+  const key = `${availabilityKey(project, comp.pieces, url)}|${nestedFrameKey(project, comp.pieces, timeMs)}`;
+  let byKey = compCache.get(comp);
+  if (!byKey) compCache.set(comp, (byKey = new Map()));
+  const hit = byKey.get(key);
+  if (hit && hit.objects === project.customObjects) return hit.svg;
+  const r = CUSTOM_RECT;
+  const sky = /^#[0-9a-fA-F]{3,8}$/.test(comp.sky) ? comp.sky : '#9fd3f0';
+  const svg = `<g data-custom-bg="${esc(id)}" data-time="${time}" data-composition="1"><rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" fill="${sky}"/>${renderPieces(comp.pieces, { project, url, idPrefix: `bg${id}${time}`, timeMs })}</g>`;
+  if (byKey.size > 64) byKey.clear();
+  byKey.set(key, { objects: project.customObjects, svg });
+  return svg;
+}
 
 export const CUSTOM_PREFIX = 'custom:';
 export const TIME_LABELS: Record<TimeOfDay, string> = { morning: 'Manhã', day: 'Dia', afternoon: 'Tarde', sunset: 'Entardecer', night: 'Noite' };
@@ -17,7 +39,7 @@ export const isCustomPreset = (presetId: string): boolean => presetId.startsWith
 export const customIdOf = (presetId: string): string => presetId.slice(CUSTOM_PREFIX.length);
 
 export function availableTimes(cb: CustomBackground): TimeOfDay[] {
-  return TIMES_OF_DAY.filter((t) => !!cb.variants[t]);
+  return TIMES_OF_DAY.filter((t) => !!cb.variants[t] || !!cb.compositions?.[t]);
 }
 
 /**
@@ -27,7 +49,7 @@ export function availableTimes(cb: CustomBackground): TimeOfDay[] {
 export function resolveCustomVariant(cb: CustomBackground, wanted: TimeOfDay | undefined): { time: TimeOfDay; fallback: boolean } | null {
   const avail = availableTimes(cb);
   if (avail.length === 0) return null;
-  if (wanted && cb.variants[wanted]) return { time: wanted, fallback: false };
+  if (wanted && avail.includes(wanted)) return { time: wanted, fallback: false };
   if (!wanted) return { time: avail.includes('day') ? 'day' : avail[0]!, fallback: false };
   const wi = TIMES_OF_DAY.indexOf(wanted);
   // Empate: prefere o horário mais tarde (entardecer fica mais perto da noite que da tarde).
@@ -35,7 +57,7 @@ export function resolveCustomVariant(cb: CustomBackground, wanted: TimeOfDay | u
   return { time: best, fallback: true };
 }
 
-export function renderCustomBackground(project: Project, bg: Background, url: (assetId: string) => string | undefined): string {
+export function renderCustomBackground(project: Project, bg: Background, url: (assetId: string) => string | undefined, timeMs = 0): string {
   const cb = project.customBackgrounds[customIdOf(bg.presetId)];
   const r = CUSTOM_RECT;
   const placeholder = (msg: string) =>
@@ -43,6 +65,8 @@ export function renderCustomBackground(project: Project, bg: Background, url: (a
   if (!cb) return placeholder('Cenário personalizado removido');
   const pick = resolveCustomVariant(cb, bg.timeOfDay);
   if (!pick) return placeholder(`${cb.name}: nenhuma imagem cadastrada`);
+  const comp = cb.compositions?.[pick.time];
+  if (comp) return renderComposition(project, cb.id, pick.time, comp, url, timeMs);
   const variant = cb.variants[pick.time]!;
   const href = url(variant.assetId);
   if (!href) return placeholder(`${cb.name}: imagem ausente`);
@@ -51,7 +75,7 @@ export function renderCustomBackground(project: Project, bg: Background, url: (a
 }
 
 export function createCustomBackground(project: Project, name: string): CustomBackground {
-  const cb: CustomBackground = { id: uid('cbg'), name: name.trim() || 'Meu cenário', variants: {}, createdAt: Date.now() };
+  const cb: CustomBackground = { id: uid('cbg'), name: name.trim() || 'Meu cenário', variants: {}, compositions: {}, createdAt: Date.now() };
   project.customBackgrounds[cb.id] = cb;
   return cb;
 }

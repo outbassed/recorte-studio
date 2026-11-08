@@ -1,5 +1,84 @@
 # Changelog
 
+## Em desenvolvimento: catálogo, biblioteca e animação de objetos
+
+Branch `feature/recorte-studio-catalogo-biblioteca`, sobre a 1.2. Sem lançamento. Detalhes, arquitetura e o que ainda não existe em `docs/CATALOGO.md`.
+
+### Novidades
+
+- **Catálogo unificado** nas abas Elenco, Cenários e Objetos: itens padrão, do projeto e da minha biblioteca numa lista só; busca sem acento; filtros Todos, Padrão, Meus, Favoritos, Recentes e No projeto; categorias; ordem; grade ou lista; miniaturas reais; selo de origem e de uso; carregamento progressivo; detalhes com 4 vistas (personagens), estados (objetos), horários (cenários) e animações tocando.
+- **Cópia ao editar:** editar um personagem, objeto ou cenário padrão cria uma cópia com identidade nova no projeto; o original nunca muda.
+- **Biblioteca com identidade:** salvar de novo atualiza o mesmo registro; trazer para o projeto mantém o ID; duplicar cria um item novo; exportar gera `.biblioteca.json`.
+- **Animação por quadros salva no objeto** (fogo, porta, ventilador…): várias animações por objeto, duração por quadro, repetir/uma vez/vai e volta, papel vegetal, copiar/colar e reordenar quadros. Cada cópia na cena escolhe animação, velocidade e defasagem; trocar por keyframe faz a animação começar ali. O quadro é função pura do tempo: prévia, PNG e vídeo iguais.
+- **Exemplos originais:** Fogueira (Aceso, Apagando), Ventilador (Girando, Devagar) e Barco.
+- **Vínculo pai/filho:** Propriedades → Camadas → Vinculado a. O elemento acompanha o grupo (posição, giro, escala, keyframes) e mantém as próprias falas, ações e piscadas. Vincular e soltar não mudam a posição na tela.
+- **Shift+clique no losango da seção** (ou toque longo) remove só os keyframes daquela seção no instante atual, com um único Ctrl+Z e confirmação quando acaba com a animação de uma propriedade.
+
+### Fase 3a: texto nos criadores
+
+- **Texto editável** como peça nos Criadores de Objetos e de Cenários: conteúdo com várias linhas, fonte, tamanho, peso, itálico, alinhamento, espaçamento, cor e contorno; continua texto na biblioteca, em pacotes e no .jrec, e entra na busca da Biblioteca.
+
+### Fase 2.5: Biblioteca principal
+
+- **Biblioteca na tela inicial**, sem abrir projeto (e por cima do editor): explorar itens padrão, meus e de pacotes, buscar por nome, categoria, tipo e palavra-chave, filtrar por tipo e origem, grade ou lista, detalhes completos (origem, criador, licença, versão, compatibilidade, tamanho, animações, vistas) e ações conforme a permissão.
+- **Itens individuais:** salvar, copiar, duplicar, renomear, favoritar, exportar, importar e apagar um item sozinho, sem pacote; importar de novo atualiza em vez de duplicar.
+- **Pacotes exploráveis:** página de cada pacote com capa, metadados, todos os itens, busca, contagens e dependências; abrir um .rspack mostra o conteúdo antes de instalar.
+- **Studio mais leve:** a aba Biblioteca virou uma Toolbox compacta; a gestão completa abre na Biblioteca principal.
+- **Segurança e robustez:** pacotes com referências internas incompletas são recusados; importação de pacote grande não trava a tela e mostra progresso; falhas de armazenamento aparecem como mensagens claras.
+
+### Continuação (correções do preview e expansão)
+
+- **Faixas horizontais com rolagem visível:** abas das Propriedades, filtros do catálogo e categorias dos Modelos ganham barra fina visível, setas nas pontas (desabilitadas no fim), roda do mouse na horizontal e aba/filtro ativo sempre à vista. As barras escondidas da barra rápida do celular, das configurações, da timeline e do palco voltaram a aparecer.
+- **Bolinha do grupo:** com um grupo selecionado, uma bolinha laranja no pivô move o conjunto inteiro; cada arraste é um passo de desfazer e Esc cancela. Ela é só do editor (não sai no PNG nem no vídeo). Botão direito num elemento → Selecionar o grupo.
+- **Modelos prontos:** Mar e Barco (barco com passageiros vinculados, balanço, ondas animadas), Acampamento (fogueira animada, luz tremulando), Praia, Cidade e rua, Quarto, Floresta, Sala de aula e Laboratório de animação; categorias e "O que testar neste modelo" na tela Modelos. Objetos novos: Ondas, Barraca, Guarda-sol, Palmeira e Pedras.
+- **Pacotes opcionais (.rspack):** instalar, atualizar, ativar/desativar, exportar e remover, com validação completa (manifesto, licença, sha256, caminhos, SVG, tamanhos, dependências) e o pacote de demonstração Kit Cozinha Retrô.
+- **Correções:** arrastar um elemento dentro de um grupo girado agora segue o cursor; caixas de seleção certas para filhos de grupos; mudar o pivô não faz o desenho pular; objeto animado dentro de outro objeto ou de um cenário anima no tempo certo; olhar e "segurado por" usam a posição real quando há grupos; copiar um cenário padrão é um único passo de desfazer; a caixa "Ativo" dos pacotes responde na hora.
+
+### Correções
+
+- Diálogos de nome e confirmação abertos dentro dos criadores apareciam por baixo do criador.
+- Desagrupar um grupo girado ou escalado fazia os elementos pularem; desagrupar um grupo dentro de outro removia a última camada da cena.
+- Elementos dentro de grupos sumiam da timeline (falas e ações deles não eram editáveis); agora aparecem como "Grupo › Nome".
+- Restaurar as configurações não apaga mais favoritos e recentes do catálogo.
+
+## 1.2.0
+
+Tela inicial e Configurações novas, manual dentro do app, propriedades em abas, Criador de Objetos e de Cenários, profundidade de braços e mãos, cabelos longos corrigidos, interface própria para celular. Sem backend e sem dependência online; projetos 1.0 e 1.1 continuam abrindo.
+
+### Novidades
+
+- **Tela inicial** com Início, Meus projetos (miniaturas reais, busca, ordenação, filtros, arquivar, salvar .jrec, link local), Modelos (miniaturas reais e prévia) e atalhos para o manual.
+- **Configurações do aplicativo**, todas com efeito real: tema escuro, claro ou do sistema; tamanho do texto; reduzir animações; começar no último projeto; modo inicial da timeline; volume do editor; limite de FPS da prévia; miniaturas das cenas; espaço usado e limpeza segura; atalhos com busca; sobre e changelog.
+- **Manual** com 35 capítulos, busca sem acento, links entre páginas, capturas reais com marcações numeradas medidas nos elementos e ajuda contextual (F1 e ícones ?). Funciona offline.
+- **Propriedades em abas** por tipo de seleção (personagem, objeto, imagem, câmera, cena, fala, áudio, legenda, efeito); a última aba usada é lembrada.
+- **Criador de Objetos:** formas, linhas, imagens SVG/PNG/JPEG/WebP, objetos prontos e outros objetos seus; pivô, camadas, agrupar, duplicar, espelhar. Entra na cena como objeto animável, em cenários e na biblioteca.
+- **Criador de Cenários:** um horário (Manhã, Dia, Tarde, Entardecer, Noite) por composição, cada um opcional; começar de tela vazia, imagem, modelo, cenário pronto, outro horário ou composição salva. **Personagens estáticos** com cópia congelada de aparência e pose, fora da timeline.
+- **Braços e mãos** na frente ou atrás da cabeça: automático (vitória, mãos no rosto, aceno) e manual por braço e por mão, animável. Poses novas: Mãos no rosto e Mãos atrás da cabeça.
+- **Celular:** dock por etapas da história, barra rápida contextual do elemento selecionado, barra superior que cabe em 320 px, painéis sem estouro horizontal.
+- **Câmera** selecionável no dock do celular; botão de ajuda em várias áreas.
+- **Keyframe universal por seção:** um losango ao lado do título das seções com várias propriedades animáveis (Posição e transformação, Escala separada, Profundidade, Olhar, Rosto, Pose e rig, Profundidade dos braços, Câmera) cria, no tempo atual, os keyframes que faltam em todas as propriedades da seção, com os valores de agora. Não duplica, não sobrescreve e não remove; é uma única ação de histórico (um Ctrl+Z); mostra o estado no instante (vazio, parcial ou cheio); funciona nos modos simples e avançado e no celular (36 px). Mecanismo reutilizável em `engine/model/sectionKeys.ts`.
+
+### Correções
+
+- **Cabelos longos:** massa traseira por vista (perfil atrás da nuca e sobre as costas; costas com a nuca coberta), com testes geométricos de oclusão e folhas de inspeção.
+- **Pré-escuta de áudio** não começa depois de você mandar parar ou trocar de arquivo.
+- **Modo simples** recusa início negativo, duração zero e valores inválidos, com mensagem clara.
+- **Mídias:** depois de revincular, a disponibilidade atualiza na hora.
+- **.7z e .rar:** testados com arquivos reais (7-Zip e WinRAR); RAR com senha e 7z truncado agora dão erro claro; o leitor funciona offline sem uso prévio.
+- **Biblioteca de cenários e objetos:** pacote versionado com imagens, objetos aninhados e personagens estáticos; lê os formatos antigos (1.1 e 1.2 inicial); registro ilegível mostra o motivo e pode ser apagado; "Trazer" reaproveita o que já existe e copia quando o conteúdo difere. Cenários da biblioteca também aplicam pela aba Biblioteca.
+- **Caches de objetos:** editar um objeto refaz os objetos que o contêm, as composições de cenário e as miniaturas das cenas; carregar ou relinkar uma imagem refaz o desenho; personagem estático usa prefixo de ids por uso.
+- **Dependências:** um objeto não pode conter a si mesmo, direta ou indiretamente.
+- **Criador de Cenários em quadros não 16:9:** o guia mostra o quadro real (9:16, 1:1, 4:3…), a área fora dele fica escurecida, "Prévia final" recorta no quadro e os modelos se ajustam à largura.
+- **Ações rápidas do celular** de verdade contextuais: mudam com o tipo de seleção e com o estado no tempo atual ("Falar" vira "Editar fala"), e levam à aba, seção e campo certos.
+- **Seleção de peças giradas:** o clique e o contorno seguem rotação, espelho e escala; grupos têm caixa própria, pivô estável e controles para mover, girar e escalar em bloco; Shift alterna; setas, Ctrl+A, Ctrl+D e Delete no estúdio.
+- **Prévia dos modelos piscava** (tela inicial → Modelos → Prévia): o modal era desenhado dentro do cartão, que sobe 2 px no `:hover`; num ancestral com `transform`, `position: fixed` passa a ser relativo ao ancestral, então o fundo ficava preso ao cartão (303×176, recortado) e se deslocava com o mouse, o que alternava o `:hover` de novo, sem parar. Todos os modais agora são desenhados no `<body>` por portal. Também: as miniaturas dos cartões herdavam 72×42 do painel Modelos do editor, e a prévia mostrava no máximo 6 cenas; agora mostra todas, na ordem e com o nome (imagens estáticas, sem simular reprodução).
+
+### Melhorias por iniciativa própria
+
+- Service worker pré-armazena o leitor de arquivos compactados e as imagens do manual.
+- Limite de FPS da prévia, miniaturas de cena opcionais e volume do editor para máquinas mais simples.
+- Teste de estresse: história de 5 cenas com cenário de 60+ peças e multidão estática exportada em 1080p.
+
 ## 1.1.0
 
 Correções de integridade, formato de projeto próprio (.jrec), biblioteca de áudio, cenários próprios por horário, movimento natural e modo simples. Sem backend, sem dependência online.

@@ -29,6 +29,7 @@ export function MediaPanel() {
   const relinkTarget = useRef<string | null>(null);
   const assets = project ? Object.values(project.assets) : [];
   const ids = assets.map((a) => a.id).join('|');
+  const [stamp, setStamp] = useState(0);
 
   useEffect(() => {
     let alive = true;
@@ -42,7 +43,7 @@ export function MediaPanel() {
       alive = false;
       void previewAudio(null);
     };
-  }, [ids]);
+  }, [ids, stamp]);
 
   if (!project) return null;
   const audios = assets.filter((a) => a.kind === 'audio');
@@ -112,7 +113,7 @@ export function MediaPanel() {
         <input ref={audioRef} hidden type="file" multiple accept={AUDIO_ACCEPT} data-testid="media-audio-input" onChange={(e) => {
           const files = [...(e.target.files ?? [])];
           e.target.value = '';
-          if (files.length) void importAudioToLibrary(files, importCat);
+          if (files.length) void importAudioToLibrary(files, importCat).then(() => setStamp((n) => n + 1));
         }} />
         <input ref={imageRef} hidden type="file" accept={IMAGE_ACCEPT} onChange={(e) => {
           const f = e.target.files?.[0];
@@ -122,7 +123,7 @@ export function MediaPanel() {
         <input ref={relinkRef} hidden type="file" data-testid="media-relink-input" onChange={(e) => {
           const f = e.target.files?.[0];
           e.target.value = '';
-          if (f && relinkTarget.current) void relinkMedia(relinkTarget.current, f);
+          if (f && relinkTarget.current) void relinkMedia(relinkTarget.current, f).then(() => setStamp((n) => n + 1));
         }} />
         <SearchBox value={query} onChange={setQuery} placeholder="Buscar mídia" />
         <div className="chip-row is-wrap" role="group" aria-label="Filtrar mídias">

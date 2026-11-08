@@ -35,21 +35,25 @@ test.describe('fluxos principais', () => {
   test('2. cabelo branco vale em nova cena; posições são próprias de cada cena', async ({ page }) => {
     await openDemo(page);
     await selectLayer(page, 'Nina');
+    await page.getByTestId('insp-tab-rosto').click();
     await page.getByTestId('edit-library').click();
     await page.getByTestId('creator-tab-cabelo').click();
     await page.getByRole('button', { name: 'Cor #f4f1ea' }).click();
     await page.getByTestId('creator-done').click();
+    await page.getByTestId('insp-tab-transformar').click();
     await setField(page, 'prop-transform.x', '-500');
     await tab(page, 'scenes');
     await page.getByTestId('duplicate-scene').click();
     await expect(page.getByTestId('scene-count')).toHaveText('2');
     await selectLayer(page, 'Nina');
+    await page.getByTestId('insp-tab-transformar').click();
     await setField(page, 'prop-transform.x', '200');
     expect(await page.getByTestId('stage-svg').innerHTML()).toContain('#f4f1ea');
     await tab(page, 'scenes');
     await page.getByTestId('scene-row').first().locator('.scene-open').click();
     expect(await page.getByTestId('stage-svg').innerHTML()).toContain('#f4f1ea');
     await selectLayer(page, 'Nina');
+    await page.getByTestId('insp-tab-transformar').click();
     await expect(page.getByTestId('prop-transform.x').locator('input[type="text"]')).toHaveValue('-500');
   });
 
@@ -84,6 +88,7 @@ test.describe('fluxos principais', () => {
   test('4. trocar expressões e falar nunca gera segunda boca', async ({ page }) => {
     await openDemo(page);
     await selectLayer(page, 'Nina');
+    await page.getByTestId('insp-tab-rosto').click();
     const check = async () => {
       const counts = await page.evaluate(() => [...document.querySelectorAll('[data-testid="stage-svg"] [data-part="face"]')].map((f) => f.querySelectorAll('[data-part="mouth"]').length));
       expect(counts.length).toBeGreaterThan(0);
@@ -127,7 +132,7 @@ test.describe('fluxos principais', () => {
     await page.locator('[data-testid="prop-card"][data-prop="table"]').click();
     await setField(page, 'prop-transform.x', '0');
     await setField(page, 'prop-transform.y', '420');
-    await page.getByTestId('sec-layer').getByRole('button', { name: 'Camada' }).click();
+    await page.getByTestId('insp-tab-camadas').click();
     await page.getByTestId('node-name').fill('Mesa');
     const pixelAt = async (name: string) => {
       await page.getByTestId('open-export').click();
@@ -207,7 +212,8 @@ test.describe('mobile', () => {
     expect(inViewport(dockBefore, vp)).toBe(true);
     expect(dockBefore.y + dockBefore.height).toBeCloseTo(844, 0);
     await expect(page.getByTestId('stage')).toBeVisible();
-    await expect(page.getByTestId('timeline')).toBeVisible();
+    // No celular o modo simples é o padrão: a região de baixo é a lista de passos.
+    await expect(page.getByTestId('simple-timeline')).toBeVisible();
     await page.getByTestId('dock-characters').click();
     const popup = await boxOf(page, 'mobile-popup');
     const dock = await boxOf(page, 'mobile-dock');
@@ -224,7 +230,8 @@ test.describe('mobile', () => {
   test('10. 375×667: popup rolável, ações fixas, campos numéricos e sem overflow', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await openDemo(page);
-    await page.getByTestId('dock-layers').click();
+    await page.getByTestId('dock-more').click();
+    await page.getByTestId('more-layers').click();
     await page.locator('[data-testid="layer-row"][data-node-name="Zeca"] .layer-name').click();
     await page.getByTestId('dock-properties').click();
     const popup = await boxOf(page, 'mobile-popup');
@@ -295,7 +302,7 @@ test.describe('dados e mídia', () => {
     expect(d.suggestedFilename()).toMatch(/\.jrec$/);
     const { manifest, project } = readJrec(await saveDownload(d, 'reexport.jrec'));
     expect(manifest.format).toBe('recorte-studio-project');
-    expect(manifest.appVersion).toBe('1.1.0');
+    expect(manifest.appVersion).toBe('1.2.0');
     expect(project.schemaVersion).toBe(1);
     expect(project.sceneOrder).toHaveLength(2);
   });
@@ -309,8 +316,10 @@ test.describe('dados e mídia', () => {
     await expect(clip).toBeVisible({ timeout: 15000 });
     await expect(clip.locator('.waveform path')).toHaveAttribute('d', /M/);
     await clip.click();
-    await page.getByTestId('audio-lipsync').selectOption({ label: 'Nina' });
+    await page.getByTestId('insp-tab-tempo').click();
     await setField(page, 'clip-start', '0');
+    await page.getByTestId('insp-tab-sincronizacao').click();
+    await page.getByTestId('audio-lipsync').selectOption({ label: 'Nina' });
     // Tom ligado de 0 a 0,25 s e desligado de 0,25 a 0,5 s: a boca precisa acompanhar.
     const mouth = async () => page.evaluate(() => {
       const m = [...document.querySelectorAll('[data-testid="stage-svg"] [data-part="mouth"]')].map((x) => Number(x.getAttribute('data-open')));
@@ -419,6 +428,7 @@ test.describe('dados e mídia', () => {
     await openDemo(page);
     await tab(page, 'scenes');
     await page.getByTestId('duplicate-scene').click();
+    await page.getByTestId('insp-tab-transicoes').click();
     await page.getByTestId('transition-in').selectOption('crossfade');
     await page.getByTestId('open-export').click();
     await page.getByTestId('export-res').selectOption('480');
@@ -511,6 +521,7 @@ test.describe('dados e mídia', () => {
   test('16. desfazer/refazer exclusão de personagem, camada e cena', async ({ page }) => {
     await openDemo(page);
     await selectLayer(page, 'Zeca');
+    await page.getByTestId('insp-tab-camadas').click();
     await page.getByTestId('delete-node').click();
     await page.getByTestId('confirm-ok').click();
     await expect(page.locator('[data-testid="layer-row"][data-node-name="Zeca"]')).toHaveCount(0);
@@ -671,11 +682,13 @@ test.describe('timeline e criador', () => {
   test('ação inserida vira clip e pode ser convertida em keyframes', async ({ page }) => {
     await openDemo(page);
     await selectLayer(page, 'Nina');
+    await page.getByTestId('insp-tab-animar').click();
     await page.getByTestId('action-select').selectOption('wave');
     await page.getByTestId('add-action').click();
     const clip = page.locator('[data-testid="tl-clip-action"]').filter({ hasText: 'Acenar' });
     await expect(clip).toBeVisible();
     await clip.click();
+    await page.getByTestId('insp-tab-acao').click();
     await page.getByTestId('bake-clip').click();
     await expect(clip).toHaveCount(0);
     await expect(page.getByTestId('toasts')).toContainText('keyframes');
@@ -822,7 +835,8 @@ test.describe('layouts em várias telas', () => {
       await assertNoBodyOverflow(page);
       const vp = { width: w, height: h };
       expect(inViewport(await boxOf(page, 'stage'), vp)).toBe(true);
-      expect(inViewport(await boxOf(page, 'timeline'), vp)).toBe(true);
+      const tl = (await page.locator('[data-testid="timeline"],[data-testid="simple-timeline"]').first().boundingBox())!;
+      expect(inViewport(tl, vp)).toBe(true);
       const st = await boxOf(page, 'stage');
       expect(st.height).toBeGreaterThan(90);
       expect(st.width).toBeGreaterThan(200);
@@ -889,6 +903,7 @@ test.describe('1.1', () => {
       await page.getByTestId('custom-bg-apply').click();
       await expect(page.locator('[data-testid="stage-svg"] [data-custom-bg]')).toHaveCount(1);
       await page.keyboard.press('Escape');
+      await page.getByTestId('insp-tab-cenario').click();
       const timeSel = page.getByTestId('bg-time');
       await expect(timeSel.locator('option')).toHaveCount(times.length);
       if (times.length > 1) await timeSel.selectOption(times[times.length - 1]);
@@ -896,6 +911,7 @@ test.describe('1.1', () => {
       await waitSaved(page);
       await page.reload();
       await page.keyboard.press('Escape');
+      await page.getByTestId('insp-tab-cenario').click();
       await expect(page.getByTestId('bg-time')).toHaveValue(times[times.length - 1]);
     });
   }
@@ -940,10 +956,43 @@ test.describe('1.1', () => {
     await page.setViewportSize({ width: 390, height: 844 });
     await openDemo(page);
     await expect(page.getByTestId('save-project')).toBeVisible();
+    // Padrão no celular: modo simples, com o áudio no dock; o botão Áudio da timeline fica no avançado.
+    await expect(page.getByTestId('simple-timeline')).toBeVisible();
+    await expect(page.getByTestId('dock-media')).toBeVisible();
+    await assertNoBodyOverflow(page);
+    await page.getByTestId('mode-advanced').click();
     await expect(page.getByTestId('tl-import-audio')).toBeVisible();
     await page.getByTestId('mode-simple').click();
     await expect(page.getByTestId('simple-timeline')).toBeVisible();
-    await assertNoBodyOverflow(page);
-    await page.getByTestId('mode-advanced').click();
+  });
+});
+
+test.describe('1.2: pacotes reais (7-Zip e WinRAR)', () => {
+  const arc = (n: string) => resolve(`tests/fixtures/archives/${n}`);
+  for (const n of ['projeto.7z', 'projeto.rar', 'projeto.tar.xz', 'projeto.tar.bz2']) {
+    test(`importa ${n} com o leitor real`, async ({ page }) => {
+      await page.goto('/');
+      await page.getByTestId('project-input').setInputFiles(arc(n));
+      await expect(page.getByTestId('import-report')).toBeVisible({ timeout: 20000 });
+      await expect(page.getByTestId('report-counts')).toContainText('2 cena(s)');
+    });
+  }
+  for (const [n, msg] of [['projeto-senha.rar', /senha/], ['projeto-senha.7z', /senha|corrompido/], ['projeto-corrompido.7z', /corrompido|não suportada/]] as const) {
+    test(`recusa ${n} com mensagem clara`, async ({ page }) => {
+      await page.goto('/');
+      await page.getByTestId('project-input').setInputFiles(arc(n));
+      await expect(page.getByTestId('toasts')).toContainText(msg, { timeout: 20000 });
+      await expect(page.getByTestId('import-report')).toHaveCount(0);
+    });
+  }
+  test('importa .7z offline sem nunca ter usado o leitor online', async ({ page, context }) => {
+    await page.goto('/');
+    await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
+    await page.reload();
+    await page.waitForFunction(() => !!navigator.serviceWorker.controller);
+    await context.setOffline(true);
+    await page.getByTestId('project-input').setInputFiles(arc('projeto.7z'));
+    await expect(page.getByTestId('import-report')).toBeVisible({ timeout: 20000 });
+    await context.setOffline(false);
   });
 });

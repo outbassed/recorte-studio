@@ -78,7 +78,8 @@ describe('movimento secundário', () => {
       if (peaks >= 3) doubles++;
     }
     expect(doubles).toBeGreaterThan(0);
-  });
+    // 120 mil amostras com asserções: com a máquina ocupada passa de 5 s (limite padrão do Vitest).
+  }, 30_000);
 });
 
 describe('transições e sequências', () => {

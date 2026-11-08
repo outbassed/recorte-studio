@@ -13,12 +13,24 @@ export interface Selection {
 }
 
 export type Screen = 'projects' | 'editor';
-export type DialogKind = null | 'export' | 'settings' | 'shortcuts' | 'creator' | 'import-report';
+export type HomeSection = 'home' | 'projects' | 'library' | 'templates' | 'manual' | 'settings';
+/** Manual e Configurações abertos por cima do editor, sem sair do projeto. */
+export type Overlay = null | { kind: 'manual'; chapter?: string } | { kind: 'settings'; section?: string } | { kind: 'library' };
+export type DialogKind = null | 'export' | 'settings' | 'shortcuts' | 'creator' | 'import-report' | 'object-creator' | 'scene-creator';
 
 interface UIState extends Selection {
   screen: Screen;
+  homeSection: HomeSection;
+  manualChapter: string;
+  settingsSection: string;
+  overlay: Overlay;
+  /** Última aba do inspector por tipo de seleção. */
+  inspectorTabs: Record<string, string>;
   dialog: DialogKind;
   creatorCharacterId: string | null;
+  objectCreatorId: string | null;
+  sceneCreatorId: string | null;
+  sceneCreatorTime: 'morning' | 'day' | 'afternoon' | 'sunset' | 'night';
   leftTab: LeftTab;
   mobilePanel: MobilePanel;
   mobilePanelExpanded: boolean;
@@ -44,7 +56,7 @@ interface UIState extends Selection {
 }
 
 const PREF_KEY = 'recorte.ui.v1';
-const prefKeys = ['leftWidth', 'rightWidth', 'timelineHeight', 'timelineZoom', 'showGrid', 'showSafe', 'showRulers', 'snapStage', 'snapTimeline', 'checker', 'simpleMode'] as const;
+const prefKeys = ['leftWidth', 'rightWidth', 'timelineHeight', 'timelineZoom', 'showGrid', 'showSafe', 'showRulers', 'snapStage', 'snapTimeline', 'checker', 'simpleMode', 'inspectorTabs'] as const;
 
 function loadPrefs(): Partial<UIState> {
   try {
@@ -57,8 +69,16 @@ function loadPrefs(): Partial<UIState> {
 
 export const useUI = create<UIState>(() => ({
   screen: 'projects',
+  homeSection: 'home',
+  manualChapter: 'inicio',
+  settingsSection: 'geral',
+  overlay: null,
+  inspectorTabs: {},
   dialog: null,
   creatorCharacterId: null,
+  objectCreatorId: null,
+  sceneCreatorId: null,
+  sceneCreatorTime: 'day',
   nodeIds: [],
   timeline: null,
   camera: false,
@@ -138,3 +158,21 @@ export function promptDialog(title: string, label: string, value: string): Promi
 }
 export const openContextMenu = (context: ContextMenuState) => useFeedback.setState({ context });
 export const closeContextMenu = () => useFeedback.setState({ context: null });
+
+/** Abre o manual num capítulo: por cima do editor, ou na seção Manual da tela inicial. */
+export function openManual(chapter = 'inicio'): void {
+  const s = useUI.getState();
+  if (s.screen === 'editor') useUI.setState({ overlay: { kind: 'manual', chapter }, manualChapter: chapter });
+  else useUI.setState({ homeSection: 'manual', manualChapter: chapter });
+}
+export function openAppSettings(section = 'geral'): void {
+  const s = useUI.getState();
+  if (s.screen === 'editor') useUI.setState({ overlay: { kind: 'settings', section }, settingsSection: section });
+  else useUI.setState({ homeSection: 'settings', settingsSection: section });
+}
+export const closeOverlay = () => useUI.setState({ overlay: null });
+/** Biblioteca principal: sobre o editor (projeto continua aberto) ou na tela inicial. */
+export function openLibrary(): void {
+  if (useUI.getState().screen === 'editor') useUI.setState({ overlay: { kind: 'library' } });
+  else useUI.setState({ homeSection: 'library' });
+}

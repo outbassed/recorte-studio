@@ -13,7 +13,8 @@ import { getPath } from '@/engine/model/properties';
 import { readProperty, sceneOf, writeProperty } from '@/engine/model/ops';
 import { n } from '@/engine/render/svg';
 import { previewAssetUrl } from '@/features/library/assets';
-import { beginGroup, commit, endGroup, useCurrentScene, useProject, useProjectStore } from '@/state/projectStore';
+import { beginGroup, commit, endGroup, undo, useCurrentScene, useProject, useProjectStore } from '@/state/projectStore';
+import { ancestors, worldMatrix } from '@/engine/model/hierarchy';
 import { transport, useTransport } from '@/state/transport';
 import { clearSelection, openContextMenu, selectCamera, selectNodes, useUI } from '@/state/uiStore';
 import { deleteSelection, duplicateSelection } from '@/state/actions';
@@ -23,12 +24,10 @@ import { StageRenderer } from './StageRenderer';
 
 const ZOOMS = [0.25, 0.5, 0.75, 1, 1.5, 2, 3];
 
-/** Transforma um ponto local do nó em coordenadas do palco, igual ao renderizador. */
-export function nodeMatrix(node: SceneNode, cam: Parameters<typeof cameraTransform>[0]): DOMMatrix {
+/** Matriz de uma string de transform SVG simples (translate/rotate/scale). */
+function parseTransform(str: string): DOMMatrix {
   const m = new DOMMatrix();
-  const camT = cameraTransform(cam, node.parallax);
-  const t = node.transform;
-  const parts = camT.match(/(rotate|scale|translate)\(([^)]+)\)/g) ?? [];
+  const parts = str.match(/(rotate|scale|translate)\(([^)]+)\)/g) ?? [];
   for (const p of parts) {
     const [, fn, args] = p.match(/(rotate|scale|translate)\(([^)]+)\)/)!;
     const v = args!.trim().split(/[\s,]+/).map(Number);
@@ -36,6 +35,13 @@ export function nodeMatrix(node: SceneNode, cam: Parameters<typeof cameraTransfo
     if (fn === 'scale') m.scaleSelf(v[0]!, v[1] ?? v[0]!);
     if (fn === 'translate') m.translateSelf(v[0]!, v[1] ?? 0);
   }
+  return m;
+}
+
+/** Transforma um ponto local do nó em coordenadas do palco (nó solto, sem pais). */
+export function nodeMatrix(node: SceneNode, cam: Parameters<typeof cameraTransform>[0]): DOMMatrix {
+  const m = parseTransform(cameraTransform(cam, node.parallax));
+  const t = node.transform;
   m.translateSelf(t.x, t.y);
   if (t.rotationDeg) m.rotateSelf(t.rotationDeg);
   m.scaleSelf(t.scaleX, t.scaleY);
@@ -43,7 +49,7 @@ export function nodeMatrix(node: SceneNode, cam: Parameters<typeof cameraTransfo
 }
 
 type Drag =
-  | { kind: 'move'; start: { x: number; y: number }; origin: Array<{ id: string; x: number; y: number }>; k: number }
+  | { kind: 'move'; start: { x: number; y: number }; origin: Array<{ id: string; x: number; y: number; inv: [number, number, number, number] }>; group?: boolean }
   | { kind: 'scale'; id: string; centerX: number; centerY: number; startDist: number; sx: number; sy: number }
   | { kind: 'rotate'; id: string; centerX: number; centerY: number; startAngle: number; rot: number }
   | { kind: 'pan'; startX: number; startY: number; px: number; py: number };
@@ -63,6 +69,8 @@ export function Stage() {
   const overlayDirty = useRef<(() => void) | null>(null);
   const lastPlaying = useRef(false);
   const movedRef = useRef(false);
+  /** O gesto atual já gravou algo (para Esc desfazer exatamente o gesto). */
+  const gestureChanged = useRef(false);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const pinch = useRef<{ dist: number; zoom: number } | null>(null);
   const [snapLines, setSnapLines] = useState<{ x?: number; y?: number }>({});
@@ -137,6 +145,22 @@ export function Stage() {
     return () => cancelAnimationFrame(raf);
   }, []);
 
+  // Esc durante um arraste: desfaz o gesto inteiro (um só passo) e solta.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape' || !drag.current || drag.current.kind === 'pan') return;
+      e.stopPropagation();
+      endGroup();
+      if (gestureChanged.current) undo();
+      gestureChanged.current = false;
+      drag.current = null;
+      movedRef.current = false;
+      setSnapLines({});
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, []);
+
   if (!project || !scene) return null;
 
   const timeMs = transport.getState().timeMs;
@@ -145,8 +169,42 @@ export function Stage() {
   const one = selected.length === 1 ? selected[0]! : null;
 
   const px = 1 / scale;
+  const cam = resolved.camera;
+  /** O desenho aplica a câmera (com o parallax do elemento de topo) e depois cada pai. */
+  const rootOf = (id: string) => { const a = ancestors(scene, id); return resolved.nodes[a[a.length - 1] ?? id] ?? resolved.nodes[id]; };
+  const camMatrix = (id: string) => parseTransform(cameraTransform(cam, rootOf(id)?.parallax ?? 1));
+  /** Espaço local do nó → palco: câmera × pais × nó (mesma composição do renderizador). */
+  const stageMatrix = (id: string): DOMMatrix => camMatrix(id).multiply(new DOMMatrix(worldMatrix(scene, id, resolved.nodes)));
+  /** Espaço onde ficam x/y do nó (o do pai, ou o mundo) → palco. */
+  const parentStageMatrix = (id: string): DOMMatrix => {
+    const p = scene.nodes[id]?.parentId;
+    return p && scene.nodes[p] ? stageMatrix(p) : camMatrix(id);
+  };
+  /** Inversa da parte linear: converte um deslocamento no palco em deslocamento local (zoom, giro e escala dos pais). */
+  const invLinear = (m: DOMMatrix): [number, number, number, number] => {
+    const det = m.a * m.d - m.b * m.c || 1;
+    return [m.d / det, -m.b / det, -m.c / det, m.a / det];
+  };
+  const cornersOf = (node: SceneNode, depth = 0): DOMPoint[] => {
+    if (node.kind === 'group' && depth < 16) {
+      const pts = node.children.flatMap((c) => (resolved.nodes[c] ? cornersOf(resolved.nodes[c]!, depth + 1) : []));
+      if (pts.length) return pts;
+    }
+    const m = stageMatrix(node.id);
+    const b = nodeLocalBounds(node, project);
+    return [[b.x, b.y], [b.x + b.w, b.y], [b.x + b.w, b.y + b.h], [b.x, b.y + b.h]].map(([x, y]) => m.transformPoint(new DOMPoint(x, y)));
+  };
+  /** Pivô do nó no palco: é onde fica a bolinha do grupo e o centro de giro/escala. */
+  const pivotOnStage = (node: SceneNode) => stageMatrix(node.id).transformPoint(new DOMPoint(node.transform.pivotX, node.transform.pivotY));
+  const originOf = (id: string) => ({
+    id,
+    x: readProperty(scene, id, 'transform.x', timeMs) as number,
+    y: readProperty(scene, id, 'transform.y', timeMs) as number,
+    inv: invLinear(parentStageMatrix(id)),
+  });
 
   const commitTransform = (id: string, path: string, value: number) => {
+    gestureChanged.current = true;
     const t = transport.getState().timeMs;
     commit('Mover no palco', (d) => {
       writeProperty(sceneOf(d as never, scene.id), id, path, value, t);
@@ -172,11 +230,19 @@ export function Stage() {
     const target = e.target as Element;
     const handle = target.closest('[data-handle]');
     const w = toWorld(e.clientX, e.clientY);
+    if (handle && one && handle.getAttribute('data-handle') === 'group-move') {
+      // Bolinha do grupo: move o CONJUNTO (a transformação do grupo), filhos mantêm o que é deles.
+      gestureChanged.current = false;
+      beginGroup(`group-move-${one.id}`);
+      drag.current = { kind: 'move', start: w, origin: [originOf(one.id)], group: true };
+      return;
+    }
     if (handle && one) {
-      const box = nodeMatrix(one, resolved.camera);
-      const cx = box.e;
-      const cy = box.f;
+      const pv = pivotOnStage(one);
+      const cx = pv.x;
+      const cy = pv.y;
       const kind = handle.getAttribute('data-handle');
+      gestureChanged.current = false;
       beginGroup(`gizmo-${one.id}`);
       if (kind === 'rotate') {
         drag.current = { kind: 'rotate', id: one.id, centerX: cx, centerY: cy, startAngle: Math.atan2(w.y - cy, w.x - cx), rot: one.transform.rotationDeg };
@@ -201,13 +267,10 @@ export function Stage() {
     else if (!ui.nodeIds.includes(hit)) nextSel = [hit];
     selectNodes(nextSel);
     if (node.locked) return;
-    const origin = nextSel.filter((id) => !scene.nodes[id]?.locked).map((id) => ({
-      id,
-      x: readProperty(scene, id, 'transform.x', timeMs) as number,
-      y: readProperty(scene, id, 'transform.y', timeMs) as number,
-    }));
+    const origin = nextSel.filter((id) => !scene.nodes[id]?.locked).map(originOf);
+    gestureChanged.current = false;
     beginGroup(`move-${hit}`);
-    drag.current = { kind: 'move', start: w, origin, k: Math.max(0.05, resolved.camera.zoom) };
+    drag.current = { kind: 'move', start: w, origin };
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -226,27 +289,28 @@ export function Stage() {
       return;
     }
     if (dr.kind === 'move') {
-      let dx = (w.x - dr.start.x) / dr.k;
-      const dy = (w.y - dr.start.y) / dr.k;
+      const wx = w.x - dr.start.x;
+      const wy = w.y - dr.start.y;
       // Tremor de dedo não é arraste.
-      if (!movedRef.current && Math.hypot(dx, dy) * scale < 4) return;
+      if (!movedRef.current && Math.hypot(wx, wy) * scale < 4) return;
       movedRef.current = true;
       const lines: { x?: number } = {};
-      if (ui.snapStage && dr.origin.length === 1) {
-        const o = dr.origin[0]!;
-        const candidates = [0, -frame.w / 6, frame.w / 6];
-        for (const c of candidates) {
-          if (Math.abs(o.x + dx - c) < 8 / scale) {
-            dx = c - o.x;
-            lines.x = c;
+      for (const o of dr.origin) {
+        // Deslocamento do palco → espaço do pai (zoom, câmera, giro e escala de grupos pais).
+        let dx = o.inv[0] * wx + o.inv[2] * wy;
+        const dy = o.inv[1] * wx + o.inv[3] * wy;
+        if (ui.snapStage && dr.origin.length === 1 && !scene.nodes[o.id]?.parentId) {
+          for (const c of [0, -frame.w / 6, frame.w / 6]) {
+            if (Math.abs(o.x + dx - c) < 8 / scale) {
+              dx = c - o.x;
+              lines.x = c;
+            }
           }
         }
-      }
-      setSnapLines(lines);
-      for (const o of dr.origin) {
         commitTransform(o.id, 'transform.x', o.x + dx);
         commitTransform(o.id, 'transform.y', o.y + dy);
       }
+      setSnapLines(lines);
       return;
     }
     if (dr.kind === 'scale') {
@@ -285,8 +349,10 @@ export function Stage() {
     const hit = (document.elementsFromPoint(e.clientX, e.clientY).find((el) => el.closest?.('[data-node-id]'))?.closest('[data-node-id]'))?.getAttribute('data-node-id');
     if (!hit) return;
     selectNodes([hit]);
+    const parent = scene.nodes[hit]?.parentId;
     const mv = (how: 'up' | 'down' | 'top' | 'bottom', label: string) => ({ label, onSelect: () => commit('Mover camada', (d) => void moveLayer(sceneOf(d as never, scene.id), hit, how)) });
     openContextMenu({ x: e.clientX, y: e.clientY, title: scene.nodes[hit]?.name, items: [
+      ...(parent && scene.nodes[parent] ? [{ label: `Selecionar o grupo "${scene.nodes[parent]!.name}"`, onSelect: () => selectNodes([parent]) }] : []),
       { label: 'Duplicar', onSelect: duplicateSelection },
       mv('up', 'Subir uma camada'), mv('down', 'Descer uma camada'), mv('top', 'Trazer para a frente'), mv('bottom', 'Enviar para o fundo'),
       { label: 'Excluir', danger: true, onSelect: () => void deleteSelection() },
@@ -302,10 +368,13 @@ export function Stage() {
   const gizmo = (() => {
     if (!showOverlay || projectMode || selected.length === 0) return null;
     return selected.map((node) => {
-      const m = nodeMatrix(node, resolved.camera);
-      const b = nodeLocalBounds(node, project);
-      const corners = [[b.x, b.y], [b.x + b.w, b.y], [b.x + b.w, b.y + b.h], [b.x, b.y + b.h]].map(([x, y]) => m.transformPoint(new DOMPoint(x, y)));
+      const pts = cornersOf(node);
+      // Grupo: caixa que envolve todos os filhos (no palco). Outros: a caixa girada do próprio nó.
+      const corners = node.kind === 'group' && pts.length > 4
+        ? (() => { const xs = pts.map((p) => p.x); const ys = pts.map((p) => p.y); const x0 = Math.min(...xs); const x1 = Math.max(...xs); const y0 = Math.min(...ys); const y1 = Math.max(...ys); return [new DOMPoint(x0, y0), new DOMPoint(x1, y0), new DOMPoint(x1, y1), new DOMPoint(x0, y1)]; })()
+        : pts.slice(0, 4);
       const d = corners.map((c, i) => `${i ? 'L' : 'M'}${n(c.x)} ${n(c.y)}`).join('') + 'Z';
+      const pv = pivotOnStage(node);
       const topMid = { x: (corners[0]!.x + corners[1]!.x) / 2, y: (corners[0]!.y + corners[1]!.y) / 2 };
       const cx = (corners[0]!.x + corners[2]!.x) / 2;
       const cy = (corners[0]!.y + corners[2]!.y) / 2;
@@ -325,6 +394,14 @@ export function Stage() {
               <line x1={topMid.x} y1={topMid.y} x2={rotH.x} y2={rotH.y} stroke="#7fc8ff" strokeWidth={1.4 * px} />
               <circle data-handle="rotate" cx={rotH.x} cy={rotH.y} r={7 * px} fill="#fff" stroke="#1d7fd1" strokeWidth={1.5 * px} style={{ cursor: 'grab', pointerEvents: 'all' }} />
             </>
+          )}
+          {canEdit && node.kind === 'group' && (
+            <g data-handle="group-move" data-testid="group-handle" data-x={n(pv.x)} data-y={n(pv.y)} style={{ cursor: 'move', pointerEvents: 'all' }}>
+              <title>Mover o grupo inteiro (arraste). Os elementos dentro dele vão juntos.</title>
+              <circle cx={pv.x} cy={pv.y} r={22 * px} fill="transparent" />
+              <circle cx={pv.x} cy={pv.y} r={13 * px} fill="#f2a65a" stroke="#fff" strokeWidth={2.5 * px} />
+              <path d={`M${n(pv.x - 7 * px)} ${n(pv.y)}H${n(pv.x + 7 * px)}M${n(pv.x)} ${n(pv.y - 7 * px)}V${n(pv.y + 7 * px)}`} stroke="#23202b" strokeWidth={2 * px} strokeLinecap="round" />
+            </g>
           )}
         </g>
       );

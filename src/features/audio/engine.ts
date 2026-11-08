@@ -6,11 +6,27 @@
  * Os buffers decodificados ficam num cache LRU limitado por memória.
  */
 import { repo } from '@/storage/db';
+import { editorVolume, usePrefs } from '@/state/prefs';
 import { eventsFrom, scheduleGain, type AudioEvent } from './mix';
 
 let ctx: AudioContext | null = null;
 let active: AudioBufferSourceNode[] = [];
 let playToken = 0;
+
+let master: GainNode | null = null;
+/** Volume do editor (Configurações → Áudio). A exportação mixa offline e não passa por aqui. */
+function masterOut(c: AudioContext): AudioNode {
+  if (!master || master.context !== c) {
+    master = c.createGain();
+    master.connect(c.destination);
+  }
+  master.gain.value = editorVolume();
+  return master;
+}
+usePrefs.subscribe(() => {
+  if (master) master.gain.value = editorVolume();
+  if (previewEl) previewEl.volume = editorVolume();
+});
 
 export function audioContext(): AudioContext {
   if (!ctx) ctx = new AudioContext();
@@ -126,7 +142,7 @@ export async function playAudio(events: AudioEvent[], fromMs: number, rate: numb
     const gain = c.createGain();
     const when = zero + (e.whenMs - fromMs) / 1000 / rate;
     scheduleGain(gain.gain, when, rate === 1 ? e : { ...e, durationMs: e.durationMs / rate, fadeInMs: e.fadeInMs / rate, fadeOutMs: e.fadeOutMs / rate });
-    source.connect(gain).connect(c.destination);
+    source.connect(gain).connect(masterOut(c));
     source.start(when, e.offsetMs / 1000, e.durationMs / 1000);
     active.push(source);
   });
@@ -136,17 +152,39 @@ export async function playAudio(events: AudioEvent[], fromMs: number, rate: numb
 /** Pré-escuta da biblioteca, independente da timeline. */
 let previewEl: HTMLAudioElement | null = null;
 let previewUrl: string | null = null;
+let previewToken = 0;
 export async function previewAudio(assetId: string | null, onEnd?: () => void): Promise<boolean> {
-  previewEl?.pause();
+  const token = ++previewToken;
+  if (previewEl) {
+    previewEl.onended = null;
+    previewEl.pause();
+  }
   if (previewUrl) URL.revokeObjectURL(previewUrl);
   previewEl = null;
   previewUrl = null;
   if (!assetId) return false;
   const blob = await repo.getBlob(assetId);
-  if (!blob) return false;
-  previewUrl = URL.createObjectURL(blob);
-  previewEl = new Audio(previewUrl);
-  previewEl.onended = () => onEnd?.();
-  await previewEl.play();
+  // Pediram para parar ou trocaram de arquivo enquanto o blob carregava: descarta.
+  if (!blob || token !== previewToken) return false;
+  const url = URL.createObjectURL(blob);
+  const el = new Audio(url);
+  el.volume = editorVolume();
+  previewUrl = url;
+  previewEl = el;
+  el.onended = () => {
+    if (token === previewToken) onEnd?.();
+  };
+  try {
+    await el.play();
+  } catch (e) {
+    if (token !== previewToken) return false;
+    throw e;
+  }
+  if (token !== previewToken) {
+    el.pause();
+    return false;
+  }
   return true;
 }
+/** Para testes: estado atual da pré-escuta. */
+export const previewState = () => ({ token: previewToken, playing: !!previewEl && !previewEl.paused });

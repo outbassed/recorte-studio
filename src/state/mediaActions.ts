@@ -1,4 +1,5 @@
 /** Ações de mídia da 1.1: biblioteca de áudio, revincular, remover com aviso, salvar .jrec. */
+import { pieceAssetIds } from '@/engine/world/pieces';
 import { addAudioClip, addAudioTrack, assetUsage, deleteNode, sceneOf } from '@/engine/model/ops';
 import { createImageNode } from '@/engine/model/factory';
 import { frameSize, WORLD_HEIGHT, type Asset, type AudioTrack, type Project } from '@/engine/model/schema';
@@ -79,7 +80,9 @@ export function placeImageInScene(assetId: string): void {
 }
 
 export const mediaUsage = (p: Project, id: string): number =>
-  assetUsage(p, id) + Object.values(p.customBackgrounds).reduce((n, b) => n + Object.values(b.variants).filter((v) => v?.assetId === id).length, 0);
+  assetUsage(p, id)
+  + Object.values(p.customBackgrounds).reduce((n, b) => n + Object.values(b.variants).filter((v) => v?.assetId === id).length, 0)
+  + pieceAssetIds(p).filter((x) => x === id).length;
 
 /** Remove a mídia do projeto. Se estiver em uso, pede confirmação e remove os usos (com Undo). */
 export async function removeMedia(assetId: string): Promise<void> {
@@ -104,6 +107,8 @@ export async function removeMedia(assetId: string): Promise<void> {
     }
     for (const c of Object.values(proj.characters)) if (c.spriteAssetId === assetId) c.spriteAssetId = undefined;
     for (const b of Object.values(proj.customBackgrounds)) for (const key of Object.keys(b.variants) as Array<keyof typeof b.variants>) if (b.variants[key]?.assetId === assetId) delete b.variants[key];
+    for (const o of Object.values(proj.customObjects)) o.pieces = o.pieces.filter((pc) => pc.assetId !== assetId);
+    for (const b of Object.values(proj.customBackgrounds)) for (const c of Object.values(b.compositions ?? {})) if (c) c.pieces = c.pieces.filter((pc) => pc.assetId !== assetId);
     delete proj.assets[assetId];
   });
   forgetBuffer(assetId);
@@ -161,8 +166,8 @@ export async function bringAudioFromUserLibrary(asset: Asset): Promise<boolean> 
 }
 
 /** Salvar projeto (.jrec), com tratamento claro de mídia ausente. */
-export async function saveProjectWithChecks(): Promise<void> {
-  const p = currentProject();
+export async function saveProjectWithChecks(project?: Project): Promise<void> {
+  const p = project ?? currentProject();
   try {
     toast('Preparando o arquivo .jrec…');
     const r = await saveProjectFile(p);
@@ -178,7 +183,8 @@ export async function saveProjectWithChecks(): Promise<void> {
       confirmLabel: 'Abrir Mídias',
       alt: { label: 'Salvar incompleto', value: 'partial' },
     });
-    if (answer === true) useUI.setState({ leftTab: 'media', mobilePanel: 'media' });
+    if (answer === true && !project) useUI.setState({ leftTab: 'media', mobilePanel: 'media' });
+    if (answer === true && project) toast('Abra o projeto e use a aba Mídias para revincular os arquivos ausentes.', 'info');
     if (answer === 'partial') {
       const r = await saveProjectFile(p, { allowMissing: true });
       toast(`Salvo INCOMPLETO: faltam ${r.missing} mídia(s). O arquivo tem "-incompleto" no nome.`, 'error');
@@ -216,4 +222,14 @@ export async function importAnything(file: File, inEditor: boolean): Promise<voi
       }
     }
   }
+}
+
+/** Salvar .jrec de um projeto pela tela inicial, sem abri-lo. */
+export async function saveProjectByIdWithChecks(id: string): Promise<void> {
+  const p = await repo.loadProject(id);
+  if (!p) {
+    toast('Projeto não encontrado neste navegador.', 'error');
+    return;
+  }
+  await saveProjectWithChecks(p);
 }

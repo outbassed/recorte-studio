@@ -10,6 +10,7 @@ import { poseRig, getPose } from '../character/presets';
 import { FLOOR_Y, getBackground } from '../world/backgrounds';
 import { createCharacterNode, createGroupNode, createKeyframe, createPropNode, createScene, ensureBuiltinCharacter } from './factory';
 import { deepClone, uid } from './ids';
+import { decompose, IDENTITY, invert, mul, worldMatrix } from './hierarchy';
 import { getPath, setPath, type PropertyDef, clampToDef, getPropertyDef } from './properties';
 import {
   ActionClipSchema, AudioClipSchema, CAMERA_TARGET, DialogueClipSchema, EffectClipSchema, SubtitleClipSchema, frameSize, type ActionClip, type AnyClip, type AudioTrack,
@@ -272,18 +273,24 @@ export function groupNodes(scene: Scene, ids: string[], name = 'Grupo'): string 
 export function ungroup(scene: Scene, groupId: string): string[] {
   const group = scene.nodes[groupId];
   if (!group || group.kind !== 'group') return [];
-  const idx = scene.layerOrder.indexOf(groupId);
-  const kids = [...group.children];
-  scene.layerOrder.splice(idx, 1, ...kids);
+  const kids = group.children.filter((k) => scene.nodes[k]);
+  // Mantém cada filho EXATAMENTE onde estava no mundo (matrizes 2D com pivô), mesmo com o grupo girado ou escalado.
+  const worlds = new Map(kids.map((k) => [k, worldMatrix(scene, k)]));
+  const outer = group.parentId ? scene.nodes[group.parentId] : undefined;
+  const outerW = outer ? worldMatrix(scene, outer.id) : IDENTITY;
+  if (outer?.kind === 'group') {
+    // Grupo dentro de grupo: os filhos sobem um nível, no lugar do grupo desfeito.
+    const i = outer.children.indexOf(groupId);
+    outer.children.splice(i < 0 ? outer.children.length : i, i < 0 ? 0 : 1, ...kids);
+  } else {
+    const idx = scene.layerOrder.indexOf(groupId);
+    if (idx >= 0) scene.layerOrder.splice(idx, 1, ...kids);
+    else scene.layerOrder.push(...kids);
+  }
   for (const k of kids) {
-    const child = scene.nodes[k];
-    if (!child) continue;
-    child.parentId = null;
-    child.transform.x += group.transform.x;
-    child.transform.y += group.transform.y;
-    child.transform.scaleX *= group.transform.scaleX;
-    child.transform.scaleY *= group.transform.scaleY;
-    child.transform.rotationDeg += group.transform.rotationDeg;
+    const child = scene.nodes[k]!;
+    child.parentId = outer?.kind === 'group' ? outer.id : null;
+    Object.assign(child.transform, decompose(mul(invert(outerW), worlds.get(k)!), child.transform.pivotX, child.transform.pivotY));
   }
   delete scene.nodes[groupId];
   scene.tracks = scene.tracks.filter((t) => !((t.type === 'property' || t.type === 'action') && t.targetNodeId === groupId));
@@ -715,6 +722,7 @@ export function applyPose(node: CharacterNode, poseId: string): void {
   node.rig = poseRig(poseId);
   node.handL = pose.handL ?? 'open';
   node.handR = pose.handR ?? 'open';
+  node.limbDepth = { armL: 'auto', handL: 'auto', armR: 'auto', handR: 'auto', ...(pose.limbDepth ?? {}) };
 }
 
 /* ------------------------------ Biblioteca do projeto ------------------------------ */

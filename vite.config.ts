@@ -2,7 +2,7 @@ import { defineConfig, type Plugin } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 /**
@@ -41,8 +41,12 @@ function pwaCacheVersion(): Plugin {
     closeBundle() {
       const sw = join(outDir, 'sw.js');
       if (!existsSync(sw)) return;
-      const id = createHash('sha256').update(names.join('|')).digest('hex').slice(0, 12);
-      const src = readFileSync(sw, 'utf8');
+      // Imagens do manual entram no pré-cache: o manual funciona offline desde a instalação.
+      const manualDir = join(outDir, 'manual');
+      const manual = existsSync(manualDir) ? readdirSync(manualDir).filter((f) => /\.(jpe?g|png|webp|svg)$/i.test(f)).sort() : [];
+      const id = createHash('sha256').update([...names, ...manual].join('|')).digest('hex').slice(0, 12);
+      let src = readFileSync(sw, 'utf8');
+      src = src.replace('const OPTIONAL = [', `const OPTIONAL = [\n${manual.map((m) => `  './manual/${m}',`).join('\n')}`);
       writeFileSync(sw, src.replace(/const CACHE_NAME = CACHE_PREFIX \+ '[^']*';/, `const CACHE_NAME = CACHE_PREFIX + '${id}';`));
     },
   };
