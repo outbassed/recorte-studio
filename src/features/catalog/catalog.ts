@@ -287,15 +287,19 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
   return out;
 }
 
-export interface CatalogQuery { text: string; filter: CatalogFilter; category: string | null; sort: CatalogSort }
-export const DEFAULT_QUERY: CatalogQuery = { text: '', filter: 'all', category: null, sort: 'default' };
+export interface CatalogQuery { text: string; filter: CatalogFilter; category: string | null; sort: CatalogSort; kind?: CatalogKind | null }
+export const DEFAULT_QUERY: CatalogQuery = { text: '', filter: 'all', category: null, sort: 'default', kind: null };
+/** Nomes dos tipos de item (Biblioteca principal e Toolbox). */
+export const KIND_LABELS: Record<CatalogKind, string> = { character: 'Personagens', pose: 'Poses', sequence: 'Sequências', prop: 'Objetos prontos', object: 'Objetos montados', background: 'Cenários', scene: 'Cenas-molde' };
+export type CatalogScope = CatalogView | 'all';
 
 const ORIGIN_RANK: Record<CatalogOrigin, number> = { project: 0, mine: 1, pack: 2, builtin: 3 };
 
 /** Filtra e ordena uma visão. Busca sem diferenciar maiúsculas nem acentos. */
-export function queryCatalog(entries: CatalogEntry[], view: CatalogView, q: CatalogQuery, recents: readonly string[] = []): CatalogEntry[] {
+export function queryCatalog(entries: CatalogEntry[], view: CatalogScope, q: CatalogQuery, recents: readonly string[] = []): CatalogEntry[] {
   const recentIdx = new Map(recents.map((k, i) => [k, i]));
-  let list = entries.filter((e) => e.view === view);
+  let list = view === 'all' ? [...entries] : entries.filter((e) => e.view === view);
+  if (q.kind) list = list.filter((e) => e.kind === q.kind);
   if (q.category) list = list.filter((e) => e.category === q.category);
   list = list.filter((e) => matchesSearch(q.text, e.name, e.keywords, e.category));
   switch (q.filter) {
@@ -316,9 +320,9 @@ export function queryCatalog(entries: CatalogEntry[], view: CatalogView, q: Cata
 }
 
 /** Categorias de uma visão, na ordem em que aparecem, com contagem. */
-export function categoriesOf(entries: CatalogEntry[], view: CatalogView): Array<{ id: string; count: number }> {
+export function categoriesOf(entries: CatalogEntry[], view: CatalogScope): Array<{ id: string; count: number }> {
   const m = new Map<string, number>();
-  for (const e of entries) if (e.view === view && !e.shadowed) m.set(e.category, (m.get(e.category) ?? 0) + 1);
+  for (const e of entries) if ((view === 'all' || e.view === view) && !e.shadowed) m.set(e.category, (m.get(e.category) ?? 0) + 1);
   const pinned: string[] = view === 'cast' ? [CAT.characters, CAT.poses, CAT.sequences] : view === 'scenery' ? [CAT.custom, CAT.scenes] : [CAT.objects, CAT.animated];
   const keys = [...m.keys()].sort((a, b) => {
     const ia = pinned.indexOf(a);

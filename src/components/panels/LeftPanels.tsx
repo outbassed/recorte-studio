@@ -1,32 +1,28 @@
 /** Painéis da esquerda (e dos popups no celular). */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ArrowDown, ArrowUp, ChevronsDown, ChevronsUp, Copy, Eye, EyeOff, FileUp, Group, Lock, LockOpen, Plus, Sparkles, Star, Trash2, Ungroup,
+  ArrowDown, ArrowUp, ChevronsDown, ChevronsUp, Copy, Eye, EyeOff, Group, Lock, LockOpen, Plus, Sparkles, Trash2, Ungroup,
 } from 'lucide-react';
-import { createProject, createScene } from '@/engine/model/factory';
-import { applySequence, type Sequence } from '@/engine/model/ops';
+import { createProject } from '@/engine/model/factory';
 import { addScene as addSceneOp, countSceneActions, deleteNode, duplicateNode, groupNodes, moveLayer, moveScene, pasteSceneContent, replaceSceneContent, sceneOf, ungroup } from '@/engine/model/ops';
-import { uid, deepClone } from '@/engine/model/ids';
-import { type CharacterDefinition, type Project, type Scene, type SceneNode } from '@/engine/model/schema';
+import { deepClone } from '@/engine/model/ids';
+import { type Project, type Scene, type SceneNode } from '@/engine/model/schema';
 import { applyPlan, describePlan, type Plan } from '@/features/ai/plan';
 import { listOllamaModels, ollamaAdapter, proxyAdapter, quickAdapter, AIError, type AIAdapter } from '@/features/ai/adapters';
 import { matchesSearch } from '@/features/library/search';
 import { SCENE_TEMPLATES, buildTemplateScene } from '@/features/templates/scenes';
 import { PROJECT_TEMPLATES, createFromProjectTemplate } from '@/features/templates/projects';
 import { createAndOpen } from '@/features/projects/session';
-import { addScene, placeCharacter, requestDeleteScene, switchScene } from '@/state/actions';
+import { addScene, requestDeleteScene, switchScene } from '@/state/actions';
 import { commit, useCurrentScene, useProject } from '@/state/projectStore';
 import { seek, transport } from '@/state/transport';
 import { confirmDialog, openContextMenu, promptDialog, selectNodes, toast, useUI } from '@/state/uiStore';
-import { repo, type LibraryRecord } from '@/storage/db';
 import { IconButton, MoreButton, SearchBox, SelectField, TextField, useLongPress, VirtualList } from '../controls/fields';
 import { usePrefs } from '@/state/prefs';
 import { backgroundThumbUrl, SceneThumb } from './thumbs';
 import { formatTime } from '../timeline/Timeline';
 import { MediaPanel } from './MediaPanel';
-import { bringBackgroundFromLibrary, bringObjectFromLibrary } from '@/state/creatorActions';
-import { CastPanel, ObjectsCatalogPanel, SceneryPanel } from './Catalog';
-import { PacksSection } from './PacksSection';
+import { CastPanel, ObjectsCatalogPanel, SceneryPanel, ToolboxPanel } from './Catalog';
 
 /* ---------------------------------- CENAS ---------------------------------- */
 let sceneClipboard: Scene | null = null;
@@ -273,133 +269,9 @@ export function TemplatesPanel() {
   );
 }
 
-/* ---------------------------------- BIBLIOTECA ---------------------------------- */
-export function LibraryPanel() {
-  const project = useProject();
-  const scene = useCurrentScene();
-  const [items, setItems] = useState<LibraryRecord[]>([]);
-  const [query, setQuery] = useState('');
-  const reload = () => void repo.listLibrary().then(setItems);
-  useEffect(reload, []);
-  const fileRef = useRef<HTMLInputElement>(null);
-  if (!project || !scene) return null;
-  const filtered = items.filter((i) => matchesSearch(query, i.name, i.kind)).sort((a, b) => b.favorite - a.favorite || b.createdAt - a.createdAt);
-  const label = { character: 'Personagem', scene: 'Cena', pose: 'Pose', background: 'Cenário', animation: 'Sequência', prop: 'Objeto', audio: 'Áudio', object: 'Meu objeto' } as const;
-  const saveScene = async () => {
-    await repo.putLibrary({ id: uid('lib'), kind: 'scene', name: scene.name, favorite: 0, createdAt: Date.now(), data: { scene: deepClone(scene), characters: deepClone(project.characters) } });
-    reload();
-    toast('Cena salva na sua biblioteca.', 'success');
-  };
-  const savePose = async () => {
-    const id = useUI.getState().nodeIds[0];
-    const n = id ? scene.nodes[id] : undefined;
-    if (n?.kind !== 'character') {
-      toast('Selecione um personagem para salvar a pose dele.', 'error');
-      return;
-    }
-    const name = await promptDialog('Salvar pose', 'Nome da pose', 'Minha pose');
-    if (!name) return;
-    await repo.putLibrary({ id: uid('lib'), kind: 'pose', name, favorite: 0, createdAt: Date.now(), data: { rig: deepClone(n.rig), handL: n.handL, handR: n.handR } });
-    reload();
-  };
-  const use = (r: LibraryRecord) => {
-    if (r.kind === 'character') {
-      const copy = { ...deepClone(r.data as CharacterDefinition), id: uid('char') };
-      commit('Trazer da biblioteca', (d) => { d.characters[copy.id] = copy; });
-      placeCharacter(copy.id);
-    } else if (r.kind === 'scene') {
-      const data = r.data as { scene: Scene; characters: Project['characters'] };
-      commit('Inserir cena da biblioteca', (d) => {
-        for (const [id, c] of Object.entries(data.characters)) if (!d.characters[id]) d.characters[id] = deepClone(c);
-        const s = createScene(data.scene.name);
-        addSceneOp(d as Project, s, (d as Project).currentSceneId);
-        replaceSceneContent(d as Project, s.id, data.scene);
-      });
-      seek(0);
-    } else if (r.kind === 'object') {
-      void bringObjectFromLibrary(r.data);
-    } else if (r.kind === 'background') {
-      void bringBackgroundFromLibrary(r.data);
-    } else if (r.kind === 'animation') {
-      const id = useUI.getState().nodeIds[0];
-      const n = id ? scene.nodes[id] : undefined;
-      if (n?.kind !== 'character') {
-        toast('Selecione um personagem para aplicar a sequência.', 'error');
-        return;
-      }
-      let count = 0;
-      commit('Aplicar sequência', (d) => { count = applySequence(sceneOf(d as Project, scene.id), n.id, r.data as Sequence, transport.getState().timeMs); });
-      toast(`${count} passo(s) aplicados a ${n.name} a partir do tempo atual. Todos editáveis na timeline.`, 'success');
-    } else if (r.kind === 'pose') {
-      const id = useUI.getState().nodeIds[0];
-      const n = id ? scene.nodes[id] : undefined;
-      if (n?.kind !== 'character') {
-        toast('Selecione um personagem para aplicar a pose.', 'error');
-        return;
-      }
-      const data = r.data as { rig: Extract<SceneNode, { kind: 'character' }>['rig']; handL: 'open'; handR: 'open' };
-      commit('Aplicar pose', (d) => {
-        const m = sceneOf(d as Project, scene.id).nodes[n.id];
-        if (m?.kind === 'character') {
-          m.rig = deepClone(data.rig);
-          m.handL = data.handL;
-          m.handR = data.handR;
-        }
-      });
-    }
-  };
-  const exportLib = () => {
-    const blob = new Blob([JSON.stringify({ format: 'recorte-studio-library', version: 1, items }, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'biblioteca-recorte-studio.json';
-    a.click();
-  };
-  const importLib = async (f: File) => {
-    try {
-      const parsed = JSON.parse(await f.text()) as { format?: string; items?: LibraryRecord[] };
-      if (parsed.format !== 'recorte-studio-library' || !Array.isArray(parsed.items)) throw new Error('Formato inválido');
-      for (const it of parsed.items) await repo.putLibrary({ ...it, id: uid('lib') });
-      reload();
-      toast(`${parsed.items.length} item(ns) importado(s).`, 'success');
-    } catch (e) {
-      toast(`Não foi possível importar: ${e instanceof Error ? e.message : ''}`, 'error');
-    }
-  };
-  return (
-    <div className="panel-col" data-testid="library-panel">
-      <header className="panel-header"><h2>MINHA BIBLIOTECA</h2><span className="count">{items.length}</span></header>
-      <div className="panel-sub">
-        <p className="hint">Recursos próprios, disponíveis em todos os projetos deste navegador.</p>
-        <SearchBox value={query} onChange={setQuery} placeholder="Buscar na biblioteca" />
-        <div className="btn-row">
-          <button type="button" className="btn btn-sm" data-testid="lib-save-scene" onClick={() => void saveScene()}>Salvar cena</button>
-          <button type="button" className="btn btn-sm" onClick={() => void savePose()}>Salvar pose</button>
-          <button type="button" className="btn btn-sm" onClick={exportLib}>Exportar</button>
-          <button type="button" className="btn btn-sm" onClick={() => fileRef.current?.click()}><FileUp size={14} /> Importar</button>
-        </div>
-        <input ref={fileRef} hidden type="file" accept=".json" onChange={(e) => { const f = e.target.files?.[0]; if (f) void importLib(f); e.target.value = ''; }} />
-      </div>
-      <div className="panel-scroll">
-        <PacksSection />
-        <h3 className="group-title">Minha biblioteca</h3>
-        {filtered.length === 0 && <p className="empty">Nada salvo ainda. Salve cenas, poses e personagens para reutilizar em outros projetos.</p>}
-        {filtered.map((r) => (
-          <div key={r.id} className="lib-row">
-            <button type="button" className="lib-main" onClick={() => use(r)}><strong>{r.favorite ? '★ ' : ''}{r.name}</strong><small>{label[r.kind]}</small></button>
-            <IconButton label={r.favorite ? 'Tirar dos favoritos' : 'Favoritar'} active={!!r.favorite} onClick={async () => { await repo.putLibrary({ ...r, favorite: r.favorite ? 0 : 1 }); reload(); }}><Star size={14} /></IconButton>
-            <IconButton label={`Apagar ${r.name}`} danger onClick={async () => {
-              const ok = await confirmDialog({ title: 'Apagar da biblioteca', message: `Apagar "${r.name}"?`, confirmLabel: 'Apagar', danger: true });
-              if (ok) { await repo.deleteLibrary(r.id); reload(); }
-            }}><Trash2 size={14} /></IconButton>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+/* ------------------------- BIBLIOTECA: Toolbox compacta do Studio ------------------------- */
+export const LibraryPanel = ToolboxPanel;
 
-/* ---------------------------------- DIREÇÃO (comandos e IA) ---------------------------------- */
 const AI_PREFS = 'recorte.ai.v1';
 interface AIPrefs { mode: 'quick' | 'ollama' | 'proxy'; ollamaUrl: string; ollamaModel: string; proxyUrl: string; proxyModel: string }
 const defaultAI: AIPrefs = { mode: 'quick', ollamaUrl: 'http://localhost:11434', ollamaModel: '', proxyUrl: '', proxyModel: '' };

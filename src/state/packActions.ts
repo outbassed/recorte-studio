@@ -18,9 +18,9 @@ export async function reloadPacks(): Promise<void> {
     const packs = await repo.listPacks();
     usePacks.setState({ packs: packs.sort((a, b) => a.name.localeCompare(b.name, 'pt-BR')), loaded: true });
     // Miniaturas e inserção usam as imagens já guardadas.
-    for (const p of packs) if (p.enabled) for (const a of p.assets) {
-      const blob = await repo.getBlob(a.id);
-      if (blob) registerAssetBlob(a.id, blob);
+    for (const p of packs) for (const a of p.assets) {
+      const blob = await repo.getBlob(a.id).catch(() => undefined);
+      if (blob) try { registerAssetBlob(a.id, blob); } catch { /* imagem ilegível: a miniatura mostra o aviso de imagem ausente */ }
     }
   } catch {
     usePacks.setState({ loaded: true });

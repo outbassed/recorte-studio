@@ -4,6 +4,7 @@
  *  Mobile: palco e timeline priorizados, dock fixo no rodapé e popup ACIMA dele.
  */
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { LibraryHome } from '../library/LibraryHome';
 import {
   AlertTriangle, Check, Keyboard, Music, Save, ListChecks, Workflow, ChevronLeft, ChevronsUpDown, Clapperboard, Download, Expand, FileUp, Film, FolderOpen, HelpCircle, Layers, Link2, Loader2, Minimize, Package, Redo2, Settings, Shapes, SlidersHorizontal, Sparkles, Trees, Undo2, Users, X, Video,
 } from 'lucide-react';
@@ -499,8 +500,8 @@ function EditorOverlay() {
   const overlay = useUI((s) => s.overlay);
   if (!overlay) return null;
   return (
-    <div className="editor-overlay" role="dialog" aria-modal="true" aria-label={overlay.kind === 'manual' ? 'Manual' : 'Configurações'} data-testid="editor-overlay">
-      {overlay.kind === 'manual' ? <ManualView onClose={closeOverlay} /> : <SettingsView onClose={closeOverlay} />}
+    <div className="editor-overlay" role="dialog" aria-modal="true" aria-label={overlay.kind === 'manual' ? 'Manual' : overlay.kind === 'library' ? 'Biblioteca' : 'Configurações'} data-testid="editor-overlay">
+      {overlay.kind === 'manual' ? <ManualView onClose={closeOverlay} /> : overlay.kind === 'library' ? <LibraryHome inEditor /> : <SettingsView onClose={closeOverlay} />}
     </div>
   );
 }

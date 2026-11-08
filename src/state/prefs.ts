@@ -28,6 +28,8 @@ export interface AppPrefs {
   catalogFavorites: string[];
   catalogRecents: string[];
   catalogLayout: 'grid' | 'list';
+  /** Projeto usado pela Biblioteca principal para criar/editar itens sem projeto aberto. */
+  workshopProjectId: string | null;
 }
 
 export const DEFAULT_PREFS: AppPrefs = {
@@ -44,6 +46,7 @@ export const DEFAULT_PREFS: AppPrefs = {
   catalogFavorites: [],
   catalogRecents: [],
   catalogLayout: 'grid',
+  workshopProjectId: null,
 };
 
 const KEY = 'recorte.prefs.v1';
@@ -80,8 +83,8 @@ usePrefs.subscribe((s) => {
 export const setPref = <K extends keyof AppPrefs>(key: K, value: AppPrefs[K]) => usePrefs.setState({ [key]: value } as Pick<AppPrefs, K>);
 /** Restaura as opções; favoritos e recentes do catálogo são dados do usuário e ficam. */
 export const resetPrefs = () => {
-  const { lastProjectId, catalogFavorites, catalogRecents } = usePrefs.getState();
-  usePrefs.setState({ ...DEFAULT_PREFS, lastProjectId, catalogFavorites, catalogRecents });
+  const { lastProjectId, catalogFavorites, catalogRecents, workshopProjectId } = usePrefs.getState();
+  usePrefs.setState({ ...DEFAULT_PREFS, lastProjectId, catalogFavorites, catalogRecents, workshopProjectId });
 };
 
 /** Tema efetivo (resolve "sistema"). */

@@ -9,9 +9,10 @@
  *  - itens são lidos pelos mesmos leitores tolerantes da biblioteca e só podem usar mídias do próprio pacote.
  * Nenhum pacote executa código: são só dados.
  */
-import { strFromU8, strToU8, unzipSync, zipSync, type Zippable } from 'fflate';
+import { strFromU8, strToU8, unzip, unzipSync, zipSync, type UnzipOptions, type Zippable } from 'fflate';
 import { z } from 'zod';
-import type { Asset } from '@/engine/model/schema';
+import type { Asset, Piece } from '@/engine/model/schema';
+import { objectPieceLists } from '@/engine/world/pieces';
 import { readBackgroundBundle, readObjectBundle, type BackgroundBundle, type ObjectBundle } from '@/features/library/bundles';
 import { mediaIdFor, sha256Hex, sniffMedia } from '@/features/library/media';
 import { sanitizeSvg } from '@/features/library/sanitizeSvg';
@@ -66,14 +67,33 @@ export function compareVersions(a: string, b: string): number {
 }
 
 const fail = (reason: string): PackRead => ({ ok: false, reason });
+/** Devolve o controle ao navegador (pacotes grandes não travam a interface). */
+const tick = () => new Promise<void>((ok) => setTimeout(ok, 0));
 
-export async function readPack(bytes: Uint8Array): Promise<PackRead> {
+/** Descompacta fora da thread principal quando o navegador permite; senão, no modo síncrono. */
+async function unzipFiles(bytes: Uint8Array, opts: UnzipOptions): Promise<Record<string, Uint8Array>> {
+  if (typeof Worker !== 'undefined') {
+    try {
+      return await new Promise((ok, err) => { unzip(bytes, opts, (e, d) => (e ? err(e) : ok(d))); });
+    } catch { /* cai para o modo síncrono abaixo */ }
+  }
+  return unzipSync(bytes, opts);
+}
+
+/** Peças de um item: objeto (com quadros) + objetos aninhados, ou composições do cenário. */
+function itemPieces(it: { kind: 'object'; data: ObjectBundle } | { kind: 'background'; data: BackgroundBundle }): Piece[] {
+  const objs = it.kind === 'object' ? [it.data.object, ...it.data.objects] : it.data.objects;
+  const own = it.kind === 'background' ? Object.values(it.data.background.compositions).flatMap((c) => c?.pieces ?? []) : [];
+  return [...own, ...objs.flatMap((o) => objectPieceLists(o).flat())];
+}
+
+export async function readPack(bytes: Uint8Array, onProgress?: (done: number, total: number) => void): Promise<PackRead> {
   if (bytes.length > LIMITS.zip) return fail('Pacote maior que 60 MB.');
   let files: Record<string, Uint8Array>;
   let total = 0;
   let bad = '';
   try {
-    files = unzipSync(bytes, {
+    files = await unzipFiles(bytes, {
       filter: (f) => {
         if (f.name.endsWith('/')) return false; // pastas
         if (f.name !== 'manifest.json' && !SAFE_PATH.test(f.name)) { bad ||= f.name; return false; }
@@ -106,7 +126,11 @@ export async function readPack(bytes: Uint8Array): Promise<PackRead> {
   // Mídias: hash, ID pelo conteúdo, tipo real e SVG limpo.
   const media: ParsedPack['media'] = [];
   const mediaIds = new Set<string>();
+  const steps = manifest.media.length + manifest.items.length;
+  let done = 0;
   for (const md of manifest.media) {
+    onProgress?.(++done, steps);
+    if (done % 4 === 0) await tick();
     const b = files[md.file];
     if (!b) return fail(`Mídia ausente no pacote: ${md.file}.`);
     if (b.length > LIMITS.media || b.length !== md.size) return fail(`Tamanho da mídia não confere: ${md.file}.`);
@@ -133,6 +157,8 @@ export async function readPack(bytes: Uint8Array): Promise<PackRead> {
   // Itens: hash, leitura tolerante e mídias só do próprio pacote.
   const items: PackItemData[] = [];
   for (const it of manifest.items) {
+    onProgress?.(++done, steps);
+    if (done % 8 === 0) await tick();
     const b = files[it.file];
     if (!b) return fail(`Item ausente no pacote: ${it.file}.`);
     if (b.length > LIMITS.item) return fail(`Item grande demais: ${it.file}.`);
@@ -143,7 +169,18 @@ export async function readPack(bytes: Uint8Array): Promise<PackRead> {
     if (!read.ok) return fail(`"${it.name}": ${read.reason}`);
     const missing = read.bundle.assets.find((a) => !mediaIds.has(a.id));
     if (missing) return fail(`"${it.name}" usa uma imagem que não está no pacote (${missing.id}).`);
-    items.push(it.kind === 'object' ? { id: it.id, kind: 'object', name: it.name, data: read.bundle as ObjectBundle } : { id: it.id, kind: 'background', name: it.name, data: read.bundle as BackgroundBundle });
+    const item: PackItemData = it.kind === 'object' ? { id: it.id, kind: 'object', name: it.name, data: read.bundle as ObjectBundle } : { id: it.id, kind: 'background', name: it.name, data: read.bundle as BackgroundBundle };
+    // Referências internas: todo objeto aninhado e toda imagem usada pelas peças vêm junto no item.
+    const objIds = new Set(item.kind === 'object' ? [item.data.object.id, ...item.data.objects.map((o) => o.id)] : item.data.objects.map((o) => o.id));
+    const assetIds = new Set(read.bundle.assets.map((a) => a.id));
+    if (item.kind === 'background') for (const v of Object.values(item.data.background.variants)) if (v && !assetIds.has(v.assetId)) return fail(`"${it.name}": imagem de horário fora do item (${v.assetId}).`);
+    for (const pc of itemPieces(item)) {
+      if (pc.kind === 'object' && pc.refId && !objIds.has(pc.refId)) return fail(`"${it.name}" usa um objeto que não veio junto (${pc.refId}).`);
+      if (pc.assetId && !assetIds.has(pc.assetId)) return fail(`"${it.name}" usa uma imagem que não veio junto (${pc.assetId}).`);
+      const sprite = pc.character?.def.spriteAssetId;
+      if (sprite && !assetIds.has(sprite)) return fail(`"${it.name}" usa uma imagem de personagem que não veio junto (${sprite}).`);
+    }
+    items.push(item);
   }
   return { ok: true, pack: { manifest, items, media, size: bytes.length } };
 }

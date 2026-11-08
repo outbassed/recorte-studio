@@ -3,10 +3,10 @@
  * Navegação lateral no computador e barra inferior no celular.
  */
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { LibraryHome } from '../library/LibraryHome';
 import { ScrollStrip } from '../controls/ScrollStrip';
 import {
-  Archive, ArchiveRestore, BookOpen, Clapperboard, Copy, Download, Eye, FilePlus2, FileUp, FolderOpen, Home, LayoutTemplate, Link2, Pencil, Settings, Sparkles, Trash2,
-} from 'lucide-react';
+  Archive, ArchiveRestore, BookOpen, Clapperboard, Copy, Download, Eye, FilePlus2, FileUp, FolderOpen, Home, LayoutTemplate, Link2, Pencil, Settings, Sparkles, Trash2, Library } from 'lucide-react';
 import { createProject } from '@/engine/model/factory';
 import type { Project } from '@/engine/model/schema';
 import { PROJECT_TEMPLATES, createDemoProject, createFromProjectTemplate } from '@/features/templates/projects';
@@ -294,6 +294,7 @@ function TemplatesPage() {
 const NAV: Array<{ id: HomeSection; label: string; icon: ReactNode }> = [
   { id: 'home', label: 'Início', icon: <Home size={18} /> },
   { id: 'projects', label: 'Meus projetos', icon: <FolderOpen size={18} /> },
+  { id: 'library', label: 'Biblioteca', icon: <Library size={18} /> },
   { id: 'templates', label: 'Modelos', icon: <LayoutTemplate size={18} /> },
   { id: 'manual', label: 'Manual', icon: <BookOpen size={18} /> },
   { id: 'settings', label: 'Configurações', icon: <Settings size={18} /> },
@@ -324,6 +325,7 @@ export function ProjectsScreen() {
         {section === 'home' && <HomePage rows={rows} reload={reload} onNew={onNew} onImport={onImport} />}
         {section === 'projects' && <ProjectsPage rows={rows} reload={reload} onNew={onNew} onImport={onImport} />}
         {section === 'templates' && <TemplatesPage />}
+        {section === 'library' && <LibraryHome />}
         {section === 'manual' && <ManualView />}
         {section === 'settings' && <SettingsView />}
       </main>

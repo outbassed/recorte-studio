@@ -5,7 +5,7 @@
  */
 import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  BookmarkPlus, Clapperboard, Copy, Download, FileUp, ImagePlus, Info, LayoutGrid, Lightbulb, List, Pencil, Plus, Shapes, Star, Trash2, Type, UserPlus, Wand2,
+  BookmarkPlus, Clapperboard, Copy, Download, FileUp, ImagePlus, Info, LayoutGrid, Library, Lightbulb, List, Pencil, Plus, Shapes, Star, Trash2, Type, UserPlus, Wand2,
 } from 'lucide-react';
 import { BackgroundSchema, CharacterDefinitionSchema, type CharacterDefinition, type CustomBackground, type Project, type ViewId } from '@/engine/model/schema';
 import { createLightNode, createShapeNode, createTextNode, newCharacterDefinition } from '@/engine/model/factory';
@@ -17,8 +17,8 @@ import { availableTimes, createCustomBackground, renderCustomBackground, TIME_LA
 import { IMAGE_ACCEPT, previewAssetUrl } from '@/features/library/assets';
 import type { ObjectBundle } from '@/features/library/bundles';
 import {
-  buildCatalog, categoriesOf, DEFAULT_QUERY, FILTER_LABELS, ORIGIN_LABELS, queryCatalog, sectionOf, SORT_LABELS, VIEW_LABELS,
-  type CatalogEntry, type CatalogFilter, type CatalogQuery, type CatalogSort, type CatalogView,
+  buildCatalog, categoriesOf, DEFAULT_QUERY, FILTER_LABELS, KIND_LABELS, ORIGIN_LABELS, queryCatalog, sectionOf, SORT_LABELS, VIEW_LABELS,
+  type CatalogEntry, type CatalogFilter, type CatalogKind, type CatalogQuery, type CatalogSort, type CatalogView,
 } from '@/features/catalog/catalog';
 import {
   canEdit, deleteEntry, duplicateEntry, editEntry, exportEntry, insertEntry, reloadLibrary, renameEntry, saveEntryToLibrary, toggleFavorite, useLibrary,
@@ -27,11 +27,12 @@ import { addNodeToScene, importImage } from '@/state/actions';
 import { newCustomObject, newScenery } from '@/state/creatorActions';
 import { commit, useCurrentScene, useProject } from '@/state/projectStore';
 import { setPref, usePrefs } from '@/state/prefs';
-import { promptDialog, toast, useUI } from '@/state/uiStore';
+import { openLibrary, promptDialog, toast, useUI } from '@/state/uiStore';
 import { repo } from '@/storage/db';
 import { IconButton, MoreButton, SearchBox } from '../controls/fields';
 import { ScrollStrip } from '../controls/ScrollStrip';
 import { reloadPacks, usePacks } from '@/state/packActions';
+import { storageError } from '@/state/libraryHomeActions';
 import { Modal } from '../dialogs/Modal';
 import { HelpLink } from '../manual/HelpLink';
 import { backgroundThumbUrl, CharacterThumb, PropThumb, sceneThumbUrl } from './thumbs';
@@ -191,7 +192,7 @@ function CatalogCard({ e, project, list, variant, active, onDetails }: { e: Cata
 /* ------------------------------ detalhes ------------------------------ */
 const VIEWS: Array<{ id: ViewId; label: string }> = [{ id: 'front', label: 'Frente' }, { id: 'left', label: 'Esquerda' }, { id: 'right', label: 'Direita' }, { id: 'back', label: 'Costas' }];
 
-function DetailPreview({ e, project }: { e: CatalogEntry; project: Project }) {
+export function DetailPreview({ e, project }: { e: CatalogEntry; project: Project }) {
   if (e.broken) return <p className="lib-error" role="alert">Indisponível: {e.broken} Você pode apagar este registro.</p>;
   if (e.kind === 'character') {
     return <div className="cat-views" data-testid="catalog-views">{VIEWS.map((v) => <figure key={v.id}><EntryThumb e={e} project={project} size={84} view={v.id} full /><figcaption>{v.label}</figcaption></figure>)}</div>;
@@ -226,7 +227,7 @@ function AnimatedStates({ e, project }: { e: CatalogEntry; project: Project }) {
   );
 }
 
-function policyText(e: CatalogEntry): string {
+export function policyText(e: CatalogEntry): string {
   if (e.origin === 'builtin') return 'Item padrão do app: não muda nem some. Editar cria uma cópia sua, com identidade nova, guardada neste projeto.';
   if (e.origin === 'pack') return `Item do pacote "${e.packName}": protegido. Usar copia o item (com imagens) para o projeto, então desativar ou remover o pacote não muda o projeto. Editar cria uma cópia sua.`;
   if (e.origin === 'project') return `Guardado neste projeto. Editar muda este item em todas as cenas do projeto.${e.libId ? ' Também está na sua biblioteca: "Atualizar na minha biblioteca" grava a versão atual no mesmo registro.' : ' "Salvar na minha biblioteca" deixa o item disponível em todos os projetos deste navegador.'}`;
@@ -389,6 +390,7 @@ export function CatalogPanel({ view }: { view: CatalogView }) {
         <span className="count" data-testid="catalog-count" aria-label={`${list.length} itens`}>{list.length}</span>
         <span className="spacer" />
         <HelpLink chapter="catalogo" />
+        <IconButton label="Abrir a Biblioteca completa" testId="open-library" onClick={openLibrary}><Library size={14} /></IconButton>
         <IconButton label={isList ? 'Ver em grade' : 'Ver em lista'} testId="catalog-layout" onClick={() => setPref('catalogLayout', isList ? 'grid' : 'list')}>{isList ? <LayoutGrid size={14} /> : <List size={14} />}</IconButton>
       </header>
       <div className="panel-sub cat-sub-head">
@@ -439,6 +441,75 @@ export function CatalogPanel({ view }: { view: CatalogView }) {
       </div>
       <FooterFor view={view} onCreatedBackground={(id) => setDetailKey(`project:background:${id}`)} />
       {detail && <CatalogDetails e={detail} project={project} variant={variant} onClose={() => setDetailKey(null)} />}
+    </div>
+  );
+}
+
+/* ------------------------------ Toolbox (aba Biblioteca do Studio) ------------------------------ */
+/**
+ * Versão compacta da Biblioteca dentro do editor: buscar, ver e inserir, sem a gestão completa
+ * (que fica na Biblioteca principal, aberta pelo botão do topo ou do rodapé).
+ */
+let toolboxMemory: CatalogQuery = DEFAULT_QUERY;
+export function ToolboxPanel() {
+  const project = useProject();
+  const scene = useCurrentScene();
+  const records = useLibrary((s) => s.records);
+  const packs = usePacks((s) => s.packs);
+  const favorites = usePrefs((s) => s.catalogFavorites);
+  const recents = usePrefs((s) => s.catalogRecents);
+  const [q, setQ] = useState<CatalogQuery>(toolboxMemory);
+  const [detailKey, setDetailKey] = useState<string | null>(null);
+  const [limit, setLimit] = useState(PAGE);
+  useEffect(() => { void reloadLibrary(); void reloadPacks(); }, []);
+  useEffect(() => { toolboxMemory = q; setLimit(PAGE); }, [q]);
+  const favSet = useMemo(() => new Set(favorites), [favorites]);
+  const entries = useMemo(() => (project ? buildCatalog({ project, library: records, favorites: favSet, packs }) : []), [project, records, favSet, packs]);
+  const list = useMemo(() => queryCatalog(entries, 'all', q, recents), [entries, q, recents]);
+  const kinds = useMemo(() => [...new Set(entries.map((e) => e.kind))] as CatalogKind[], [entries]);
+  if (!project || !scene) return null;
+  const set = (p: Partial<CatalogQuery>) => setQ((o) => ({ ...o, ...p }));
+  const detail = detailKey ? entries.find((x) => x.key === detailKey) : undefined;
+  const hasPacks = entries.some((x) => x.origin === 'pack');
+  return (
+    <div className="panel-col catalog is-toolbox" data-testid="toolbox-panel">
+      <header className="panel-header">
+        <h2>BIBLIOTECA</h2>
+        <span className="count" data-testid="toolbox-count">{list.length}</span>
+        <span className="spacer" />
+        <HelpLink chapter="bibliotecas" />
+        <IconButton label="Abrir a Biblioteca completa" testId="open-library" onClick={openLibrary}><Library size={14} /></IconButton>
+      </header>
+      <div className="panel-sub cat-sub-head">
+        <SearchBox value={q.text} onChange={(text) => set({ text })} placeholder="Buscar na biblioteca" testId="toolbox-search" />
+        <div className="cat-row2">
+          <select className="cat-select" aria-label="Tipo" data-testid="toolbox-kind" value={q.kind ?? ''} onChange={(ev) => set({ kind: (ev.target.value || null) as CatalogKind | null })}>
+            <option value="">Todos os tipos</option>
+            {kinds.map((k) => <option key={k} value={k}>{KIND_LABELS[k]}</option>)}
+          </select>
+          <select className="cat-select" aria-label="Origem" data-testid="toolbox-origin" value={q.filter} onChange={(ev) => set({ filter: ev.target.value as CatalogFilter })}>
+            {FILTERS.filter((f) => f !== 'packs' || hasPacks).map((f) => <option key={f} value={f}>{FILTER_LABELS[f]}</option>)}
+          </select>
+        </div>
+      </div>
+      <div className="panel-scroll">
+        <div className="card-grid">
+          {list.slice(0, limit).map((e) => <CatalogCard key={e.key} e={e} project={project} list={false} variant="day" active={false} onDetails={() => setDetailKey(e.key)} />)}
+        </div>
+        {list.length === 0 && <p className="empty" data-testid="toolbox-empty">{q.text ? 'Nada encontrado com esse termo.' : 'Nada aqui.'}</p>}
+        {limit < list.length && <div className="cat-more"><button type="button" className="btn btn-sm" onClick={() => setLimit((l) => l + PAGE)}>Mostrar mais ({list.length - limit})</button></div>}
+      </div>
+      <footer className="panel-footer cat-footer">
+        <button type="button" className="btn btn-primary" data-testid="toolbox-open-library" onClick={openLibrary}><Library size={15} /> Abrir Biblioteca completa</button>
+        <button type="button" className="btn btn-sm" data-testid="lib-save-scene" onClick={async () => {
+          try {
+            await repo.putLibrary({ id: uid('lib'), kind: 'scene', name: scene.name, favorite: 0, createdAt: Date.now(), updatedAt: Date.now(), data: { scene: deepClone(scene), characters: deepClone(project.characters) } });
+            await reloadLibrary();
+            toast(`Cena "${scene.name}" salva na biblioteca (Cenários → Cenas-molde).`, 'success');
+          } catch (err) { toast(storageError(err, 'Não foi possível salvar a cena'), 'error'); }
+        }}>Salvar cena atual</button>
+      </footer>
+      {detail && <CatalogDetails e={detail} project={project} variant="day" onClose={() => setDetailKey(null)} />}
     </div>
   );
 }
