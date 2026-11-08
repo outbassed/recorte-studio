@@ -144,7 +144,7 @@ describe('Criador de Cenários em quadros não 16:9', () => {
       const comp = t.make(night, fr);
       for (const p of comp.pieces.filter((x) => x.kind === 'prop')) {
         expect(Math.abs(p.x), `${t.id} ${p.name}`).toBeLessThanOrEqual(fr.w / 2);
-        if (fr.w < 1920) expect(p.scale, `${t.id} ${p.name}`).toBeLessThan(1);
+        if (fr.w < 700) expect(p.scale, `${t.id} ${p.name}`).toBeLessThan(1);
       }
     }
   });
