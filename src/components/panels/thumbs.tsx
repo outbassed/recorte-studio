@@ -24,17 +24,20 @@ export const CharacterThumb = memo(function CharacterThumb({ def, view = 'front'
   return <svg className="char-thumb" width={size} height={portrait ? size : size * 1.5} viewBox={vb} aria-hidden="true" dangerouslySetInnerHTML={{ __html: html }} />;
 });
 
-const sceneThumbCache = new WeakMap<Scene, { characters: unknown; aspect: string; url: string }>();
+const sceneThumbCache = new WeakMap<Scene, { deps: unknown[]; aspect: string; url: string }>();
+/** Tudo que, fora da cena, muda o desenho dela: elenco, objetos, cenários e mídias. */
+const depsOf = (p: Project): unknown[] => [p.characters, p.customObjects, p.customBackgrounds, p.assets];
 
 export function sceneThumbUrl(project: Project, scene: Scene): string {
   const cached = sceneThumbCache.get(scene);
   const aspect = `${project.settings.width}x${project.settings.height}`;
-  if (cached && cached.characters === project.characters && cached.aspect === aspect) return cached.url;
+  const deps = depsOf(project);
+  if (cached && cached.aspect === aspect && cached.deps.every((d, i) => d === deps[i])) return cached.url;
   const w = 192;
   const h = Math.round((w * project.settings.height) / project.settings.width);
   const svg = planToSvgString(planFrame(project, scene, Math.min(scene.durationMs - 1, 1200), previewAssetUrl), w, h);
   const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
-  sceneThumbCache.set(scene, { characters: project.characters, aspect, url });
+  sceneThumbCache.set(scene, { deps, aspect, url });
   return url;
 }
 

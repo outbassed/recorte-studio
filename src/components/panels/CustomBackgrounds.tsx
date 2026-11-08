@@ -1,12 +1,12 @@
 /** Seção "Meus cenários": cada cenário tem só os horários que o usuário cadastrar. */
 import { useEffect, useRef, useState } from 'react';
-import { newScenery, openSceneCreator } from '@/state/creatorActions';
+import { bringBackgroundFromLibrary, newScenery, openSceneCreator, saveBackgroundToLibrary } from '@/state/creatorActions';
+import { readBackgroundBundle } from '@/features/library/bundles';
 import { Wand2 } from 'lucide-react';
 import { BookmarkPlus, Pencil, Plus, Trash2, X } from 'lucide-react';
 import { TIMES_OF_DAY, type CustomBackground, type Project, type TimeOfDay } from '@/engine/model/schema';
 import { applyCustomBackground, availableTimes, createCustomBackground, customBackgroundUsage, deleteCustomBackground, TIME_LABELS } from '@/engine/world/customBackgrounds';
 import { sceneOf } from '@/engine/model/ops';
-import { deepClone, uid } from '@/engine/model/ids';
 import { IMAGE_ACCEPT, importImageFile, previewAssetUrl, registerAssetBlob } from '@/features/library/assets';
 import { commit, currentProject, useCurrentScene, useProject } from '@/state/projectStore';
 import { confirmDialog, promptDialog, toast } from '@/state/uiStore';
@@ -57,11 +57,8 @@ export function CustomBackgroundsSection() {
             const v = await promptDialog('Renomear cenário', 'Nome', cb.name);
             if (v) commit('Renomear cenário', (d) => { const c = (d as Project).customBackgrounds[cb.id]; if (c) c.name = v; });
           }}><Pencil size={13} /></IconButton>
-          <IconButton label={`Salvar ${cb.name} na minha biblioteca`} disabled={!times.length} onClick={async () => {
-            const assets = Object.fromEntries(times.map((t) => [cb.variants[t]!.assetId, deepClone(currentProject().assets[cb.variants[t]!.assetId])]));
-            await repo.putLibrary({ id: uid('lib'), kind: 'background', name: cb.name, favorite: 0, createdAt: Date.now(), data: { background: deepClone(cb), assets } });
-            setLib(await repo.listLibrary('background'));
-            toast('Cenário salvo na sua biblioteca, para outros projetos.', 'success');
+          <IconButton label={`Salvar ${cb.name} na minha biblioteca`} disabled={!times.length} testId="cbg-save-lib" onClick={async () => {
+            if (await saveBackgroundToLibrary(cb.id)) setLib(await repo.listLibrary('background'));
           }}><BookmarkPlus size={13} /></IconButton>
           <IconButton label={`Excluir ${cb.name}`} danger onClick={async () => {
             const used = customBackgroundUsage(currentProject(), cb.id);
@@ -98,7 +95,9 @@ export function CustomBackgroundsSection() {
     );
   };
 
-  const fromLib = lib.filter((r) => !project.customBackgrounds[(r.data as { background: CustomBackground }).background?.id]);
+  const entries = lib.map((r) => ({ r, read: readBackgroundBundle(r.data) }));
+  // Já presente (mesmo ID) não aparece de novo; ilegível aparece com aviso para o usuário poder apagar.
+  const fromLib = entries.filter((e) => !e.read.ok || !project.customBackgrounds[e.read.bundle.background.id]);
   return (
     <div className="cbg-section" data-testid="custom-bgs">
       <div className="cbg-title">
@@ -111,24 +110,14 @@ export function CustomBackgroundsSection() {
       {fromLib.length > 0 && (
         <>
           <h3 className="group-title">Da minha biblioteca</h3>
-          {fromLib.map((r) => (
-            <div key={r.id} className="lib-row">
-              <span className="lib-main"><strong>{r.name}</strong></span>
-              <button type="button" className="btn btn-sm" onClick={async () => {
-                const data = r.data as { background: CustomBackground; assets: Record<string, Project['assets'][string]> };
-                for (const id of Object.keys(data.assets)) {
-                  if (!(await repo.hasBlob(id))) {
-                    toast('Algumas imagens desse cenário não estão mais neste navegador.', 'error');
-                    return;
-                  }
-                  const blob = await repo.getBlob(id);
-                  if (blob) registerAssetBlob(id, blob);
-                }
-                commit('Trazer cenário', (d) => {
-                  Object.assign(d.assets, deepClone(data.assets));
-                  (d as Project).customBackgrounds[data.background.id] = deepClone(data.background);
-                });
-              }}>Trazer</button>
+          {fromLib.map(({ r, read }) => (
+            <div key={r.id} className={`lib-row${read.ok ? '' : ' is-broken'}`} data-testid="cbg-lib-row" data-name={r.name}>
+              <span className="lib-main"><strong>{r.name}</strong>{!read.ok && <small className="lib-error" role="alert">Formato incompatível: {read.reason}</small>}</span>
+              {read.ok && <button type="button" className="btn btn-sm" data-testid="cbg-lib-bring" onClick={async () => { if (await bringBackgroundFromLibrary(r.data)) setLib(await repo.listLibrary('background')); }}>Trazer</button>}
+              <IconButton label={`Apagar ${r.name} da biblioteca`} danger onClick={async () => {
+                const ok = await confirmDialog({ title: 'Apagar da biblioteca', message: `Apagar "${r.name}" da biblioteca? Os projetos que já o usam não mudam.`, confirmLabel: 'Apagar', danger: true });
+                if (ok) { await repo.deleteLibrary(r.id); setLib(await repo.listLibrary('background')); }
+              }}><Trash2 size={13} /></IconButton>
             </div>
           ))}
         </>

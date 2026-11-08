@@ -30,7 +30,8 @@ import { formatTime } from '../timeline/Timeline';
 import { MediaPanel } from './MediaPanel';
 import { HelpLink } from '../manual/HelpLink';
 import { previewAssetUrl } from '@/features/library/assets';
-import { bringObjectFromLibrary, deleteCustomObject, insertCustomObject, newCustomObject, openObjectCreator } from '@/state/creatorActions';
+import { readObjectBundle } from '@/features/library/bundles';
+import { bringBackgroundFromLibrary, bringObjectFromLibrary, deleteCustomObject, insertCustomObject, newCustomObject, openObjectCreator } from '@/state/creatorActions';
 import { OBJECT_PREFIX, renderCustomObject } from '@/engine/world/pieces';
 import { CustomBackgroundsSection } from './CustomBackgrounds';
 
@@ -365,7 +366,8 @@ function MyObjectsSection() {
   useEffect(() => { void repo.listLibrary('object').then(setLib); }, []);
   if (!project) return null;
   const list = Object.values(project.customObjects);
-  const fromLib = lib.filter((r) => !list.some((o) => o.name === r.name));
+  const entries = lib.map((r) => ({ r, read: readObjectBundle(r.data) }));
+  const fromLib = entries.filter((e) => !e.read.ok || !project.customObjects[e.read.bundle.object.id]);
   return (
     <div className="cbg-section" data-testid="my-objects">
       <div className="cbg-title">
@@ -386,10 +388,14 @@ function MyObjectsSection() {
       {fromLib.length > 0 && (
         <>
           <h3 className="group-title">Da minha biblioteca</h3>
-          {fromLib.map((r) => (
-            <div key={r.id} className="lib-row">
-              <span className="lib-main"><strong>{r.name}</strong></span>
-              <button type="button" className="btn btn-sm" onClick={() => void bringObjectFromLibrary(r.data as Parameters<typeof bringObjectFromLibrary>[0])}>Trazer</button>
+          {fromLib.map(({ r, read }) => (
+            <div key={r.id} className={`lib-row${read.ok ? '' : ' is-broken'}`} data-testid="obj-lib-row" data-name={r.name}>
+              <span className="lib-main"><strong>{r.name}</strong>{!read.ok && <small className="lib-error" role="alert">Formato incompatível: {read.reason}</small>}</span>
+              {read.ok && <button type="button" className="btn btn-sm" data-testid="obj-lib-bring" onClick={async () => { if (await bringObjectFromLibrary(r.data)) setLib(await repo.listLibrary('object')); }}>Trazer</button>}
+              <IconButton label={`Apagar ${r.name} da biblioteca`} danger onClick={async () => {
+                const ok = await confirmDialog({ title: 'Apagar da biblioteca', message: `Apagar "${r.name}" da biblioteca? Os projetos que já o usam não mudam.`, confirmLabel: 'Apagar', danger: true });
+                if (ok) { await repo.deleteLibrary(r.id); setLib(await repo.listLibrary('object')); }
+              }}><Trash2 size={14} /></IconButton>
             </div>
           ))}
         </>
@@ -565,7 +571,9 @@ export function LibraryPanel() {
       });
       seek(0);
     } else if (r.kind === 'object') {
-      void bringObjectFromLibrary(r.data as Parameters<typeof bringObjectFromLibrary>[0]);
+      void bringObjectFromLibrary(r.data);
+    } else if (r.kind === 'background') {
+      void bringBackgroundFromLibrary(r.data);
     } else if (r.kind === 'animation') {
       const id = useUI.getState().nodeIds[0];
       const n = id ? scene.nodes[id] : undefined;

@@ -7,12 +7,12 @@ import { BACKGROUNDS } from '@/engine/world/backgrounds';
 import { n } from '@/engine/render/svg';
 import { IMAGE_ACCEPT } from '@/features/library/assets';
 import { commit, useProject } from '@/state/projectStore';
-import { closeDialog, promptDialog, toast, useUI } from '@/state/uiStore';
+import { closeDialog, promptDialog, useUI } from '@/state/uiStore';
 import {
-  SCENERY_PRESETS, SCENERY_TEMPLATES, applySceneryToScene, insertCustomObject, removeTime, saveObjectToLibrary, startComposition, startCompositionFromFile,
+  SCENERY_PRESETS, SCENERY_TEMPLATES, applySceneryToScene, insertCustomObject, removeTime, saveBackgroundToLibrary, saveObjectToLibrary, startComposition, startCompositionFromFile,
 } from '@/state/creatorActions';
 import { repo, type LibraryRecord } from '@/storage/db';
-import { uid, deepClone } from '@/engine/model/ids';
+import { readBackgroundBundle } from '@/features/library/bundles';
 import { SelectField, TextField } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
 import { HelpLink } from '../manual/HelpLink';
@@ -67,10 +67,9 @@ function StartPanel({ cb, time }: { cb: CustomBackground; time: TimeOfDay }) {
   const [lib, setLib] = useState<LibraryRecord[]>([]);
   useEffect(() => { void repo.listLibrary('background').then(setLib); }, []);
   const others = TIMES_OF_DAY.filter((t) => t !== time && cb.compositions[t]);
-  const libComps = lib.flatMap((r) => {
-    const bg = (r.data as { background?: CustomBackground; assets?: Project['assets'][string][] }).background;
-    return bg ? TIMES_OF_DAY.filter((t) => bg.compositions?.[t]).map((t) => ({ id: `${r.id}:${t}`, label: `${r.name} · ${TIME_LABELS[t]}`, comp: bg.compositions[t] as Composition, assets: (r.data as { assets?: Project['assets'][string][] }).assets })) : [];
-  });
+  const parsed = lib.map((r) => ({ r, read: readBackgroundBundle(r.data) }));
+  const libComps = parsed.flatMap(({ r, read }) => (read.ok ? TIMES_OF_DAY.filter((t) => read.bundle.background.compositions[t]).map((t) => ({ id: `${r.id}:${t}`, label: `${r.name} · ${TIME_LABELS[t]}`, bundle: read.bundle, time: t })) : []));
+  const unreadable = parsed.filter((x) => !x.read.ok).length;
   const [file, setFile] = useState<HTMLInputElement | null>(null);
   return (
     <div className="creator-start" data-testid="scene-start">
@@ -90,7 +89,8 @@ function StartPanel({ cb, time }: { cb: CustomBackground; time: TimeOfDay }) {
       <div className="creator-start-row">
         <SelectField label="A partir de um modelo" value="" testId="start-template" options={[{ id: '', label: 'Escolha…' }, ...SCENERY_TEMPLATES.map((t) => ({ id: t.id, label: t.label }))]} onChange={(v) => v && void startComposition(cb.id, time, { kind: 'template', id: v })} />
         <SelectField label="A partir de um cenário pronto" value="" testId="start-builtin" options={[{ id: '', label: 'Escolha…' }, ...BACKGROUNDS.filter((b) => b.id !== 'none').map((b) => ({ id: b.id, label: b.label }))]} onChange={(v) => v && void startComposition(cb.id, time, { kind: 'builtin', presetId: v, variant: time === 'night' ? 'night' : 'day' })} />
-        {libComps.length > 0 && <SelectField label="Composição salva" value="" options={[{ id: '', label: 'Escolha…' }, ...libComps.map((c) => ({ id: c.id, label: c.label }))]} onChange={(v) => { const c = libComps.find((x) => x.id === v); if (c) void startComposition(cb.id, time, { kind: 'library', composition: c.comp, assets: c.assets }); }} />}
+        {libComps.length > 0 && <SelectField label="Composição salva" value="" testId="start-library" options={[{ id: '', label: 'Escolha…' }, ...libComps.map((c) => ({ id: c.id, label: c.label }))]} onChange={(v) => { const c = libComps.find((x) => x.id === v); if (c) void startComposition(cb.id, time, { kind: 'library', bundle: c.bundle, time: c.time }); }} />}
+        {unreadable > 0 && <p className="hint">{unreadable} item(ns) da biblioteca estão em formato incompatível e foram ignorados.</p>}
       </div>
     </div>
   );
@@ -114,12 +114,7 @@ export function SceneCreator() {
     <StudioShell testId="scene-creator" onClose={closeDialog}
       title={<><strong>Criador de Cenários</strong><TextField label="Nome" value={cb.name} testId="scenery-name" onChange={(v) => commit('Renomear cenário', (d) => { const c = d.customBackgrounds[cb.id]; if (c) c.name = v || 'Cenário'; }, { coalesce: 'cb-name' })} /><HelpLink chapter="criador-cenarios" /></>}
       actions={<>
-        <button type="button" className="btn btn-sm" data-testid="scenery-save-lib" onClick={async () => {
-          const assets = Object.values(cb.compositions).flatMap((c) => c?.pieces ?? []).flatMap((pc) => (pc.assetId && project.assets[pc.assetId] ? [project.assets[pc.assetId]!] : []));
-          const variantAssets = Object.values(cb.variants).flatMap((v) => (v && project.assets[v.assetId] ? [project.assets[v.assetId]!] : []));
-          await repo.putLibrary({ id: uid('lib'), kind: 'background', name: cb.name, favorite: 0, createdAt: Date.now(), data: { background: deepClone(cb), assets: deepClone([...assets, ...variantAssets]) } });
-          toast(`"${cb.name}" salvo na sua biblioteca.`, 'success');
-        }}><BookmarkPlus size={14} /> Biblioteca</button>
+        <button type="button" className="btn btn-sm" data-testid="scenery-save-lib" onClick={() => void saveBackgroundToLibrary(cb.id)}><BookmarkPlus size={14} /> Biblioteca</button>
         <button type="button" className="btn btn-sm" data-testid="scenery-apply" disabled={!comp && !cb.variants[time]} onClick={() => { applySceneryToScene(cb, time); closeDialog(); }}><Wand2 size={14} /> Usar nesta cena</button>
       </>}
     >

@@ -11,6 +11,7 @@ import type { Piece, PieceKind, Project } from '@/engine/model/schema';
 import { uid, deepClone } from '@/engine/model/ids';
 import { createPiece, freezeCharacter, pieceBox, PIECE_LABELS, renderPieces } from '@/engine/world/pieces';
 import { PROPS, getProp } from '@/engine/world/props';
+import { objectContains } from '@/features/library/bundles';
 import { EXPRESSIONS } from '@/engine/character/expressions';
 import { POSES, getPose, poseRig } from '@/engine/character/presets';
 import { VIEW_LABELS, VIEW_ORDER } from '@/engine/character/views';
@@ -132,6 +133,8 @@ export function PieceStudio(p: StudioProps) {
     ['polygon', { w: 200, h: 200, sides: 6, fill: '#c9a0e8' }], ['star', { w: 200, h: 200, sides: 5, fill: '#f2c95c' }], ['line', { w: 300, h: 10, strokeWidth: 10 }],
   ];
 
+  // Um objeto não pode conter a si mesmo, direta ou indiretamente (A → B → A).
+  const allowedObjects = Object.values(p.project.customObjects).filter((o) => !p.excludeObjectId || !objectContains(p.project, o.id, p.excludeObjectId));
   const addPanel = (
     <div className="studio-add" data-testid={`${p.testId}-add`}>
       <h4>Formas</h4>
@@ -157,8 +160,8 @@ export function PieceStudio(p: StudioProps) {
         const d = getProp(id);
         add(createPiece('prop', { name: d?.label ?? id, refId: id, x: center.x, y: center.y + (d?.h ?? 100) / 2, state: d?.defaultState ?? '' }));
       }} />
-      {Object.values(p.project.customObjects).filter((o) => o.id !== p.excludeObjectId).length > 0 && (
-        <SelectField label="Meus objetos" value="" testId="add-object" options={[{ id: '', label: 'Escolha…' }, ...Object.values(p.project.customObjects).filter((o) => o.id !== p.excludeObjectId).map((o) => ({ id: o.id, label: o.name }))]} onChange={(id) => {
+      {allowedObjects.length > 0 && (
+        <SelectField label="Meus objetos" value="" testId="add-object" options={[{ id: '', label: 'Escolha…' }, ...allowedObjects.map((o) => ({ id: o.id, label: o.name }))]} onChange={(id) => {
           const o = p.project.customObjects[id];
           if (o) add(createPiece('object', { name: o.name, refId: o.id, x: center.x, y: center.y + o.height / 2 }));
         }} />

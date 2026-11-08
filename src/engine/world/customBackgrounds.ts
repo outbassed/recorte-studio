@@ -6,22 +6,23 @@ import { TIMES_OF_DAY, type Background, type CustomBackground, type Project, typ
 import { uid } from '../model/ids';
 import { deleteNode } from '../model/ops';
 import { esc, n } from '../render/svg';
-import { renderPieces } from './pieces';
+import { availabilityKey, renderPieces } from './pieces';
 import type { Composition } from '../model/schema';
 
-const compCache = new WeakMap<Composition, { key: string; svg: string }>();
+const compCache = new WeakMap<Composition, { objects: object; key: string; svg: string }>();
 /**
  * Composição do Criador de Cenários: desenhada uma vez e reaproveitada até mudar
  * (o Immer troca a referência ao editar). Personagens estáticos entram aqui, não na timeline.
  */
 export function renderComposition(project: Project, id: string, time: TimeOfDay, comp: Composition, url: (assetId: string) => string | undefined): string {
-  const key = comp.pieces.map((p) => (p.assetId ? (url(p.assetId) ? 1 : 0) : '')).join('') + Object.keys(project.customObjects).length;
+  // Chave: referência dos objetos (qualquer edição de objeto invalida) + disponibilidade das imagens.
+  const key = availabilityKey(project, comp.pieces, url);
   const hit = compCache.get(comp);
-  if (hit && hit.key === key) return hit.svg;
+  if (hit && hit.objects === project.customObjects && hit.key === key) return hit.svg;
   const r = CUSTOM_RECT;
   const sky = /^#[0-9a-fA-F]{3,8}$/.test(comp.sky) ? comp.sky : '#9fd3f0';
   const svg = `<g data-custom-bg="${esc(id)}" data-time="${time}" data-composition="1"><rect x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" fill="${sky}"/>${renderPieces(comp.pieces, { project, url, idPrefix: `bg${id}${time}` })}</g>`;
-  compCache.set(comp, { key, svg });
+  compCache.set(comp, { objects: project.customObjects, key, svg });
   return svg;
 }
 

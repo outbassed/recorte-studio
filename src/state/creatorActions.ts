@@ -1,10 +1,14 @@
 /** Ações dos Criadores de Objetos e de Cenários (1.2). Tudo via commit: Undo/Redo valem. */
-import type { Asset, Composition, CustomBackground, CustomObject, Piece, Project, Scene, TimeOfDay } from '@/engine/model/schema';
+import type { Asset, Composition, CustomBackground, Project, Scene, TimeOfDay } from '@/engine/model/schema';
 import { BackgroundSchema, CustomObjectSchema } from '@/engine/model/schema';
-import { uid, deepClone } from '@/engine/model/ids';
+import { uid } from '@/engine/model/ids';
 import { createPropNode } from '@/engine/model/factory';
 import { deleteNode, sceneOf } from '@/engine/model/ops';
 import { cloneComposition, createPiece, customObjectUsage, OBJECT_PREFIX, allPieceLists } from '@/engine/world/pieces';
+import {
+  buildBackgroundBundle, buildObjectBundle, mergeBackgroundBundle, mergeBundleObjects, mergeObjectBundle, readBackgroundBundle, readObjectBundle, remapObjectRefs,
+  type BackgroundBundle,
+} from '@/features/library/bundles';
 import { CUSTOM_RECT, TIME_LABELS, applyCustomBackground, createCustomBackground } from '@/engine/world/customBackgrounds';
 import { getBackground, renderBackground } from '@/engine/world/backgrounds';
 import { getProp } from '@/engine/world/props';
@@ -63,32 +67,65 @@ export async function deleteCustomObject(id: string): Promise<void> {
   });
 }
 
-/** Assets usados pelas peças (para levar junto à biblioteca entre projetos). */
-function assetsOf(p: Project, pieces: Piece[]): Asset[] {
-  return pieces.flatMap((pc) => (pc.assetId && p.assets[pc.assetId] ? [deepClone(p.assets[pc.assetId]!)] : []));
+/* ------------------------------ biblioteca (pacotes com dependências) ------------------------------ */
+async function registerBlobs(assets: Asset[]): Promise<number> {
+  let missing = 0;
+  for (const a of assets) {
+    if (a.kind === 'audio') continue;
+    const blob = await repo.getBlob(a.id);
+    if (blob) registerAssetBlob(a.id, blob);
+    else missing++;
+  }
+  return missing;
 }
+const depsLabel = (r: { addedObjects: number }) => (r.addedObjects > 1 ? ` (com ${r.addedObjects - 1} objeto(s) usado(s) por ele)` : '');
 
 export async function saveObjectToLibrary(id: string): Promise<void> {
-  const p = currentProject();
-  const obj = p.customObjects[id];
-  if (!obj) return;
-  await repo.putLibrary({ id: uid('lib'), kind: 'object', name: obj.name, favorite: 0, createdAt: Date.now(), data: { object: deepClone(obj), assets: assetsOf(p, obj.pieces) } });
-  toast(`"${obj.name}" salvo na sua biblioteca, para usar em outros projetos.`, 'success');
+  const bundle = buildObjectBundle(currentProject(), id);
+  if (!bundle) return;
+  await repo.putLibrary({ id: uid('lib'), kind: 'object', name: bundle.object.name, favorite: 0, createdAt: Date.now(), data: bundle });
+  const n = bundle.objects.length;
+  toast(`"${bundle.object.name}" salvo na sua biblioteca${n ? ` com ${n} objeto(s) que ele usa` : ''}.`, 'success');
 }
 
-export async function bringObjectFromLibrary(data: { object: CustomObject; assets?: Asset[] }): Promise<void> {
-  for (const a of data.assets ?? []) {
-    if (!(await repo.hasBlob(a.id))) {
-      toast(`Uma imagem de "${data.object.name}" não está mais neste navegador; ela aparecerá como ausente.`, 'error');
-      break;
-    }
+export async function saveBackgroundToLibrary(id: string): Promise<boolean> {
+  const bundle = buildBackgroundBundle(currentProject(), id);
+  if (!bundle) return false;
+  await repo.putLibrary({ id: uid('lib'), kind: 'background', name: bundle.background.name, favorite: 0, createdAt: Date.now(), data: bundle });
+  const n = bundle.objects.length;
+  toast(`"${bundle.background.name}" salvo na sua biblioteca${n ? ` com ${n} objeto(s) usado(s)` : ''}.`, 'success');
+  return true;
+}
+
+/** Traz um objeto da biblioteca: imagens e objetos aninhados vêm junto. Devolve false se o registro for ilegível. */
+export async function bringObjectFromLibrary(data: unknown): Promise<boolean> {
+  const read = readObjectBundle(data);
+  if (!read.ok) {
+    toast(`Não foi possível trazer este objeto: ${read.reason}`, 'error');
+    return false;
   }
-  const copy = { ...deepClone(data.object), id: uid('obj'), updatedAt: Date.now() };
-  commit('Trazer objeto da biblioteca', (d) => {
-    for (const a of data.assets ?? []) if (!d.assets[a.id]) d.assets[a.id] = a;
-    d.customObjects[copy.id] = copy;
-  });
-  toast(`"${copy.name}" adicionado aos objetos deste projeto.`, 'success');
+  const b = read.bundle;
+  const missing = await registerBlobs(b.assets);
+  let res: ReturnType<typeof mergeObjectBundle> | null = null;
+  commit('Trazer objeto da biblioteca', (d) => { res = mergeObjectBundle(d as Project, b); });
+  const r = res as unknown as ReturnType<typeof mergeObjectBundle>;
+  toast(r.result.addedObjects === 0 ? `"${b.object.name}" já estava neste projeto.` : `"${b.object.name}" adicionado${depsLabel(r.result)}.${missing ? ` ${missing} imagem(ns) não estão mais neste navegador: reaparecem em Mídias como ausentes.` : ''}`, missing ? 'error' : 'success');
+  return true;
+}
+
+export async function bringBackgroundFromLibrary(data: unknown): Promise<boolean> {
+  const read = readBackgroundBundle(data);
+  if (!read.ok) {
+    toast(`Não foi possível trazer este cenário: ${read.reason}`, 'error');
+    return false;
+  }
+  const b = read.bundle;
+  const missing = await registerBlobs(b.assets);
+  let res: ReturnType<typeof mergeBackgroundBundle> | null = null;
+  commit('Trazer cenário da biblioteca', (d) => { res = mergeBackgroundBundle(d as Project, b); });
+  const r = res as unknown as ReturnType<typeof mergeBackgroundBundle>;
+  toast(`"${b.background.name}" adicionado${r.result.addedObjects ? ` com ${r.result.addedObjects} objeto(s)` : ''}.${missing ? ` ${missing} imagem(ns) não estão mais neste navegador: reaparecem em Mídias como ausentes.` : ''}`, missing ? 'error' : 'success');
+  return true;
 }
 
 /* ------------------------------ cenários ------------------------------ */
@@ -108,7 +145,7 @@ export type StartFrom =
   | { kind: 'image-variant' }
   | { kind: 'builtin'; presetId: string; variant: 'day' | 'night' }
   | { kind: 'template'; id: string }
-  | { kind: 'library'; composition: Composition; assets?: Asset[] };
+  | { kind: 'library'; bundle: BackgroundBundle; time: TimeOfDay };
 
 const W = CUSTOM_RECT;
 const floorY = 230;
@@ -180,11 +217,14 @@ export async function startComposition(cbId: string, time: TimeOfDay, from: Star
   const night = time === 'night';
   let comp: Composition = { sky: night ? '#1d2747' : '#9fd3f0', pieces: [] };
   const assets: Asset[] = [];
+  let libraryBundle: BackgroundBundle | null = null;
   if (from.kind === 'copy') comp = cloneComposition(cb.compositions[from.from]);
   else if (from.kind === 'template') comp = SCENERY_TEMPLATES.find((t) => t.id === from.id)?.make(night) ?? comp;
   else if (from.kind === 'library') {
-    comp = cloneComposition(from.composition);
-    assets.push(...(from.assets ?? []));
+    // Composição salva: objetos e imagens que ela usa vêm junto (dentro do commit abaixo).
+    comp = cloneComposition(from.bundle.background.compositions[from.time]);
+    libraryBundle = from.bundle;
+    await registerBlobs(from.bundle.assets);
   } else if (from.kind === 'image-variant') {
     const v = cb.variants[time];
     if (!v) return;
@@ -208,6 +248,10 @@ export async function startComposition(cbId: string, time: TimeOfDay, from: Star
   }
   commit(`Criar ${TIME_LABELS[time]}`, (d) => {
     for (const a of assets) d.assets[a.id] = a;
+    if (libraryBundle) {
+      const merged = mergeBundleObjects(d as Project, libraryBundle.objects, libraryBundle.assets);
+      remapObjectRefs(comp.pieces, merged.ids);
+    }
     const c = d.customBackgrounds[cbId];
     if (c) c.compositions[time] = comp;
   });

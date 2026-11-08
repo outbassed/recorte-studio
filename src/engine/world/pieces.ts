@@ -44,15 +44,18 @@ export interface PieceEnv {
   depth?: number;
 }
 
-const charCache = new WeakMap<StaticCharacter, string>();
+const charCache = new WeakMap<StaticCharacter, Map<string, string>>();
 function renderStaticCharacter(c: StaticCharacter, id: string): string {
-  let v = charCache.get(c);
+  let m = charCache.get(c);
+  if (!m) charCache.set(c, (m = new Map()));
+  let v = m.get(id);
   if (v === undefined) {
     v = renderCharacter(c.def, {
       bodyView: c.view, headView: c.view, rig: c.rig, handL: c.handL, handR: c.handR, limbDepth: c.limbDepth,
       face: { expression: c.expression, intensity: 1, viseme: null, visemeAmount: 0, blink: 0, gazeX: 0, gazeY: 0 },
     }, id).svg;
-    charCache.set(c, v);
+    if (m.size > 30) m.clear();
+    m.set(id, v);
   }
   return v;
 }
@@ -119,19 +122,38 @@ export function renderObjectBody(obj: CustomObject, env: PieceEnv): string {
   return obj.pivotX || obj.pivotY ? `<g transform="translate(${n(-obj.pivotX)} ${n(-obj.pivotY)})">${body}</g>` : body;
 }
 
-const objCache = new WeakMap<CustomObject, Map<string, string>>();
-/** Cache por versão do objeto (o Immer troca a referência quando ele muda). */
+/**
+ * Disponibilidade das imagens usadas por uma lista de peças, inclusive dentro de objetos aninhados.
+ * Entra na chave dos caches: relinkar ou carregar uma mídia refaz o desenho.
+ */
+export function availabilityKey(project: Project, pieces: Piece[], url: PieceEnv['url'], depth = 0): string {
+  let k = '';
+  for (const p of pieces) {
+    if (p.assetId) k += url(p.assetId) ? '1' : '0';
+    if (p.character?.def.spriteAssetId) k += url(p.character.def.spriteAssetId) ? '1' : '0';
+    if (p.kind === 'object' && p.refId && depth < 4) {
+      const o = project.customObjects[p.refId];
+      k += o ? `(${availabilityKey(project, o.pieces, url, depth + 1)})` : '?';
+    }
+  }
+  return k;
+}
+
+/**
+ * Cache dos objetos: preso à REFERÊNCIA de `project.customObjects` (o Immer troca essa referência
+ * quando QUALQUER objeto muda). Assim, editar um objeto também refaz os que o contêm e os cenários que o usam.
+ */
+const objCache = new WeakMap<object, Map<string, string>>();
 export function renderCustomObject(project: Project, propId: string, url: PieceEnv['url'], nodeId = ''): string {
   const obj = project.customObjects[customObjectIdOf(propId)];
   if (!obj) return `<rect x="-50" y="-100" width="100" height="100" fill="#3a3f4b" stroke="#d65f5f" stroke-width="4" stroke-dasharray="10 8"/>`;
-  const hasImages = obj.pieces.some((p) => p.kind === 'image' || p.kind === 'object');
-  let m = objCache.get(obj);
-  if (!m) objCache.set(obj, (m = new Map()));
-  const key = `${nodeId}|${hasImages ? obj.pieces.map((p) => (p.assetId ? (url(p.assetId) ? 1 : 0) : '')).join('') : ''}`;
+  let m = objCache.get(project.customObjects);
+  if (!m) objCache.set(project.customObjects, (m = new Map()));
+  const key = `${propId}|${nodeId}|${availabilityKey(project, obj.pieces, url)}`;
   let v = m.get(key);
   if (v === undefined) {
     v = renderObjectBody(obj, { project, url, idPrefix: `o${nodeId}` });
-    if (m.size > 20) m.clear();
+    if (m.size > 200) m.clear();
     m.set(key, v);
   }
   return v;
