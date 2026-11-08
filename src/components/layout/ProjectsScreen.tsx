@@ -29,21 +29,26 @@ export function Logo({ size = 32 }: { size?: number }) {
 }
 
 /* ----------------------------- modelos ----------------------------- */
-interface TemplateInfo { id: string; name: string; description: string; make: () => Project; demo?: boolean }
-const TEMPLATES: TemplateInfo[] = [
+export interface TemplateInfo { id: string; name: string; description: string; make: () => Project; demo?: boolean }
+export const TEMPLATES: TemplateInfo[] = [
   { id: 'demo', name: 'Exemplo: Você sabe dançar?', description: 'Nina e Zeca conversando, com fala, olhar e dança. Bom para conhecer o editor.', make: createDemoProject, demo: true },
   ...PROJECT_TEMPLATES.map((t) => ({ id: t.id, name: t.name, description: t.description, make: () => createFromProjectTemplate(t.id) })),
 ];
-const previewCache = new Map<string, { thumbs: string[]; format: string; scenes: number; durationMs: number }>();
-/** Miniaturas reais: o primeiro segundo de cada cena, desenhado pelo mesmo renderizador da exportação. */
-function templatePreview(t: TemplateInfo) {
+interface TemplateInfoCache { thumbs: string[]; names: string[]; format: string; scenes: number; durationMs: number }
+const previewCache = new Map<string, TemplateInfoCache>();
+/**
+ * Miniaturas reais: um quadro de CADA cena do modelo (na ordem), desenhado pelo mesmo renderizador
+ * da exportação. São imagens estáticas, não uma reprodução. Calculado uma vez por modelo.
+ */
+export function templatePreview(t: TemplateInfo): TemplateInfoCache {
   let v = previewCache.get(t.id);
   if (!v) {
     const p = t.make();
     const scenes = p.sceneOrder.map((id) => p.scenes[id]!).filter(Boolean);
     const { width: w, height: h } = p.settings;
     v = {
-      thumbs: scenes.slice(0, 6).map((s) => sceneThumbUrl(p, s)),
+      thumbs: scenes.map((s) => sceneThumbUrl(p, s)),
+      names: scenes.map((s) => s.name),
       format: w > h ? `${ratio(w, h)} horizontal` : w < h ? `${ratio(w, h)} vertical` : '1:1 quadrado',
       scenes: scenes.length,
       durationMs: scenes.reduce((n, s) => n + s.durationMs, 0),
@@ -67,7 +72,7 @@ function TemplateCard({ t, compact }: { t: TemplateInfo; compact?: boolean }) {
   return (
     <article className={`tpl-card${t.demo ? ' is-demo' : ''}${compact ? ' is-compact' : ''}`}>
       <button type="button" className="tpl-open" data-testid={t.demo ? 'demo-project' : 'project-template-card'} data-template={t.demo ? undefined : t.id} onClick={() => void createAndOpen(t.make())}>
-        <span className="tpl-thumb"><img src={info.thumbs[0]} alt="" loading="lazy" /></span>
+        <span className="tpl-thumb"><img src={info.thumbs[0]} alt="" /></span>
         <span className="tpl-text">
           <strong>{t.name}</strong>
           <small>{t.description}</small>
@@ -76,14 +81,21 @@ function TemplateCard({ t, compact }: { t: TemplateInfo; compact?: boolean }) {
       </button>
       {!compact && (
         <div className="tpl-actions">
-          <button type="button" className="btn btn-sm" onClick={() => setPreview(true)}><Eye size={14} /> Prévia</button>
+          <button type="button" className="btn btn-sm" data-testid="template-preview-open" aria-haspopup="dialog" onClick={() => setPreview(true)}><Eye size={14} /> Prévia</button>
           <button type="button" className="btn btn-sm btn-primary" onClick={() => void createAndOpen(t.make())}><FilePlus2 size={14} /> Criar projeto</button>
         </div>
       )}
       {preview && (
-        <Modal title={t.name} onClose={() => setPreview(false)} footer={<button type="button" className="btn btn-primary" onClick={() => { setPreview(false); void createAndOpen(t.make()); }}>Criar projeto com este modelo</button>}>
-          <p className="hint">{t.description} {info.format}, {info.scenes} cena(s).</p>
-          <div className="tpl-preview-grid">{info.thumbs.map((u, i) => <figure key={i}><img src={u} alt={`Cena ${i + 1}`} /><figcaption>Cena {i + 1}</figcaption></figure>)}</div>
+        <Modal title={t.name} testId="template-preview" onClose={() => setPreview(false)} footer={<button type="button" className="btn btn-primary" data-testid="template-preview-create" onClick={() => { setPreview(false); void createAndOpen(t.make()); }}>Criar projeto com este modelo</button>}>
+          <p className="hint">{t.description} {info.format}, {info.scenes} cena(s), {formatTime(info.durationMs).slice(0, 5)}. As imagens são um quadro de cada cena, não uma reprodução.</p>
+          <ol className="tpl-preview-grid" data-testid="template-preview-scenes">
+            {info.thumbs.map((u, i) => (
+              <li key={i} data-testid="template-preview-scene">
+                <img src={u} alt={`Cena ${i + 1}: ${info.names[i]}`} decoding="sync" />
+                <span>{i + 1}. {info.names[i]}</span>
+              </li>
+            ))}
+          </ol>
         </Modal>
       )}
     </article>
