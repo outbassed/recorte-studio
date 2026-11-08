@@ -93,3 +93,43 @@ export function addSectionKeys(scene: Scene, target: string, kind: KeyOwner, pat
   }
   return res;
 }
+
+export interface RemoveSectionKeysResult {
+  /** Propriedades que perderam o keyframe deste instante. */
+  removed: string[];
+  /** Propriedades cuja animação inteira acabou (era o único keyframe): voltam ao valor-base. */
+  emptied: string[];
+  /** Faixas trancadas: nada foi mexido nelas. */
+  locked: string[];
+}
+
+/** O que `removeSectionKeys` faria, sem alterar nada (para avisar antes). */
+export function previewRemoveSectionKeys(scene: Scene, target: string, kind: KeyOwner, paths: readonly string[], timeMs: number): RemoveSectionKeysResult {
+  const t = keyTime(timeMs);
+  const res: RemoveSectionKeysResult = { removed: [], emptied: [], locked: [] };
+  for (const path of animatablePaths(kind, paths)) {
+    const track = findPropertyTrack(scene, target, path);
+    if (!track?.keyframes.some((k) => k.timeMs === t)) continue;
+    if (track.locked) { res.locked.push(path); continue; }
+    res.removed.push(path);
+    if (track.keyframes.every((k) => k.timeMs === t)) res.emptied.push(path);
+  }
+  return res;
+}
+
+/**
+ * Remove SOMENTE os keyframes das propriedades da seção que estão exatamente no instante.
+ * Keyframes de outros instantes, de outras seções e de outras seleções ficam intactos; faixas
+ * trancadas são respeitadas. Uma faixa que fica sem nenhum keyframe é descartada (mesma regra do
+ * botão individual). Chamar DENTRO de um `commit` (um só Ctrl+Z).
+ */
+export function removeSectionKeys(scene: Scene, target: string, kind: KeyOwner, paths: readonly string[], timeMs: number): RemoveSectionKeysResult {
+  const t = keyTime(timeMs);
+  const res = previewRemoveSectionKeys(scene, target, kind, paths, timeMs);
+  for (const path of res.removed) {
+    const track = findPropertyTrack(scene, target, path)!;
+    track.keyframes = track.keyframes.filter((k) => k.timeMs !== t);
+    if (track.keyframes.length === 0) scene.tracks = scene.tracks.filter((x) => x.id !== track.id);
+  }
+  return res;
+}

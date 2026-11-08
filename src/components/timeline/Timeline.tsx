@@ -59,11 +59,16 @@ function buildRows(scene: Scene, expanded: Record<string, boolean>): Row[] {
     if (isOpen) for (const t of propTracks) rows.push({ kind: 'track', id: t.id, track: t, indent: true });
   };
   pushGroup(CAMERA_TARGET, 'Câmera');
-  for (const id of [...scene.layerOrder].reverse()) {
+  // Elementos dentro de grupos também têm faixas (falas, ações, keyframes): listados logo abaixo do grupo.
+  const seen = new Set<string>();
+  const visit = (id: string, prefix: string, depth: number) => {
     const node = scene.nodes[id];
-    if (node && !node.backgroundOwned) pushGroup(id, node.name);
-    else if (node && byTarget.has(id)) pushGroup(id, node.name);
-  }
+    if (!node || seen.has(id) || depth > 16) return;
+    seen.add(id);
+    if (!node.backgroundOwned || byTarget.has(id)) pushGroup(id, prefix + node.name);
+    if (node.kind === 'group') for (const c of [...node.children].reverse()) visit(c, `${prefix}${node.name} › `, depth + 1);
+  };
+  for (const id of [...scene.layerOrder].reverse()) visit(id, '', 0);
   for (const t of globals) rows.push({ kind: 'track', id: t.id, track: t, indent: false });
   return rows;
 }

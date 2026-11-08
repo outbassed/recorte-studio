@@ -72,6 +72,13 @@ test('capturas do manual (computador)', async ({ page }) => {
   await capture(page, 'criador-personagem', [t('creator-tab-cabelo'), t('creator-preview'), t('creator-done')]);
   await page.keyboard.press('Escape');
 
+  // Catálogo (Elenco)
+  await tab(page, 'characters');
+  await capture(page, 'catalogo', [t('char-search'), t('catalog-filters'), t('catalog-category'), '[data-testid="builtin-character"] [data-testid="catalog-details-open"]', t('create-character')]);
+  await page.locator('[data-testid="builtin-character"] [data-testid="catalog-details-open"]').first().click();
+  await capture(page, 'catalogo-detalhes', [t('catalog-views'), t('catalog-policy'), t('catalog-insert'), t('catalog-copy')]);
+  await page.keyboard.press('Escape');
+
   // Painéis
   await tab(page, 'scenes');
   await capture(page, 'cenas', ['[data-testid="scene-row"]']);
@@ -111,6 +118,13 @@ test('capturas do manual (computador)', async ({ page }) => {
   await page.getByTestId('add-star').click();
   await page.getByTestId('obj-studio-tab-add').click();
   await capture(page, 'criador-objetos', [t('object-width'), t('obj-studio-canvas'), t('obj-studio-tab-add'), t('obj-studio-tab-layers'), t('object-insert')]);
+  // Quadros: uma animação com 3 quadros.
+  await page.getByTestId('anim-new').click();
+  await page.getByTestId('prompt-input').fill('Piscando');
+  await page.getByTestId('prompt-ok').click();
+  await page.getByTestId('anim-frame-add').click();
+  await page.getByTestId('anim-frame-add').click();
+  await capture(page, 'criador-objetos-quadros', [t('anim-clip'), t('anim-frames'), t('anim-frame-add'), t('anim-frame-ms'), t('anim-play')]);
   await page.getByTestId('object-creator-close').click();
 
   await tab(page, 'backgrounds');
@@ -133,6 +147,28 @@ test('capturas do manual (computador)', async ({ page }) => {
   await page.getByTestId('open-app-settings').click();
   await capture(page, 'configuracoes', [t('settings-geral'), t('settings-aparencia'), t('settings-armazenamento'), t('overlay-close')]);
   await page.getByTestId('overlay-close').click();
+});
+
+test('capturas do manual: Biblioteca principal e pacote', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('home-nav-library').click();
+  await page.getByTestId('library-search').fill('fog');
+  await page.locator('[data-testid="library-item"][data-name="Fogueira"]').click();
+  await capture(page, 'biblioteca', [t('library-search'), t('library-kinds'), t('library-origins'), '[data-testid="library-item"][data-name="Fogueira"]', t('library-detail'), t('library-import')]);
+  await page.getByTestId('library-tab-packs').click();
+  await page.getByTestId('pack-demo').click();
+  await expect(page.getByTestId('pack-page')).toBeVisible();
+  await capture(page, 'pacotes', [t('pack-inspect-note'), t('pack-counts'), t('pack-install'), t('pack-items')]);
+});
+
+test('captura do manual: bolinha do grupo', async ({ page }) => {
+  await page.goto('/');
+  await page.getByTestId('home-nav-templates').click();
+  await page.locator('[data-template="mar-barco"]').click();
+  await expect(page.getByTestId('stage')).toBeVisible();
+  await tab(page, 'layers');
+  await page.locator('[data-testid="layer-row"][data-node-name="Barco com passageiros"] .layer-name').click();
+  await capture(page, 'grupo-bolinha', [t('group-handle'), '[data-testid="layer-row"][data-node-name="Barco com passageiros"]']);
 });
 
 test('capturas do manual (celular)', async ({ page }) => {

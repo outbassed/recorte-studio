@@ -24,6 +24,12 @@ export interface AppPrefs {
   /** Miniaturas das cenas no painel Cenas (desligar alivia projetos grandes). */
   sceneThumbs: boolean;
   lastProjectId: string | null;
+  /** Catálogo: favoritos de itens sem campo próprio (padrão, objetos e cenários) e recentes. */
+  catalogFavorites: string[];
+  catalogRecents: string[];
+  catalogLayout: 'grid' | 'list';
+  /** Projeto usado pela Biblioteca principal para criar/editar itens sem projeto aberto. */
+  workshopProjectId: string | null;
 }
 
 export const DEFAULT_PREFS: AppPrefs = {
@@ -37,6 +43,10 @@ export const DEFAULT_PREFS: AppPrefs = {
   previewFps: 0,
   sceneThumbs: true,
   lastProjectId: null,
+  catalogFavorites: [],
+  catalogRecents: [],
+  catalogLayout: 'grid',
+  workshopProjectId: null,
 };
 
 const KEY = 'recorte.prefs.v1';
@@ -49,6 +59,10 @@ function load(): AppPrefs {
     if (![90, 100, 110, 125].includes(out.uiScale)) out.uiScale = 100;
     if (![0, 30, 24].includes(out.previewFps)) out.previewFps = 0;
     out.volume = Math.min(1, Math.max(0, Number(out.volume) || 0));
+    const strs = (v: unknown) => (Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string').slice(0, 500) : []);
+    out.catalogFavorites = strs(out.catalogFavorites);
+    out.catalogRecents = strs(out.catalogRecents).slice(0, 24);
+    if (out.catalogLayout !== 'list') out.catalogLayout = 'grid';
     return out;
   } catch {
     return { ...DEFAULT_PREFS };
@@ -67,7 +81,11 @@ usePrefs.subscribe((s) => {
 });
 
 export const setPref = <K extends keyof AppPrefs>(key: K, value: AppPrefs[K]) => usePrefs.setState({ [key]: value } as Pick<AppPrefs, K>);
-export const resetPrefs = () => usePrefs.setState({ ...DEFAULT_PREFS, lastProjectId: usePrefs.getState().lastProjectId });
+/** Restaura as opções; favoritos e recentes do catálogo são dados do usuário e ficam. */
+export const resetPrefs = () => {
+  const { lastProjectId, catalogFavorites, catalogRecents, workshopProjectId } = usePrefs.getState();
+  usePrefs.setState({ ...DEFAULT_PREFS, lastProjectId, catalogFavorites, catalogRecents, workshopProjectId });
+};
 
 /** Tema efetivo (resolve "sistema"). */
 export function effectiveTheme(p: AppPrefs = usePrefs.getState()): 'dark' | 'light' {

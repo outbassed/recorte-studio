@@ -2,6 +2,7 @@
  * Avaliador de cena: estado imutável = f(projeto, cena, tempo). Não guarda nada entre
  * chamadas, então seek, reprodução e exportação sempre obtêm o mesmo resultado.
  */
+import { apply, parentWorldMatrix } from '../model/hierarchy';
 import {
   CAMERA_TARGET,
   type ActionClip, type Camera, type CharacterDefinition, type CharacterNode, type DialogueClip, type EffectClip, type Project,
@@ -172,7 +173,9 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
     const def = applyOverrides(base, n);
     const m = bodyMetrics(def);
     const scaleY = n.transform.scaleY;
-    headPos.set(id, { x: n.transform.x, y: n.transform.y + (m.headCenterY - n.rig.bodyY) * scaleY, def });
+    // Posição no MUNDO: dentro de um grupo, a matriz dos pais leva a cabeça para onde ela é desenhada.
+    const [wx, wy] = apply(parentWorldMatrix(scene, id, nodes), n.transform.x, n.transform.y + (m.headCenterY - n.rig.bodyY) * scaleY);
+    headPos.set(id, { x: wx, y: wy, def });
   }
 
   const targetOf = (n: CharacterNode): { x: number; y: number } | null => {
@@ -181,7 +184,9 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
     const tgt = nodes[n.gaze.targetId];
     if (!tgt || tgt.id === n.id) return null;
     const hp = headPos.get(tgt.id);
-    return hp ? { x: hp.x, y: hp.y } : { x: tgt.transform.x, y: tgt.transform.y - 100 * tgt.transform.scaleY };
+    if (hp) return { x: hp.x, y: hp.y };
+    const [tx, ty] = apply(parentWorldMatrix(scene, tgt.id, nodes), tgt.transform.x, tgt.transform.y - 100 * tgt.transform.scaleY);
+    return { x: tx, y: ty };
   };
 
   const characters: Record<string, ResolvedCharacter> = {};

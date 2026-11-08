@@ -1,5 +1,46 @@
 # Changelog
 
+## Em desenvolvimento: catálogo, biblioteca e animação de objetos
+
+Branch `feature/recorte-studio-catalogo-biblioteca`, sobre a 1.2. Sem lançamento. Detalhes, arquitetura e o que ainda não existe em `docs/CATALOGO.md`.
+
+### Novidades
+
+- **Catálogo unificado** nas abas Elenco, Cenários e Objetos: itens padrão, do projeto e da minha biblioteca numa lista só; busca sem acento; filtros Todos, Padrão, Meus, Favoritos, Recentes e No projeto; categorias; ordem; grade ou lista; miniaturas reais; selo de origem e de uso; carregamento progressivo; detalhes com 4 vistas (personagens), estados (objetos), horários (cenários) e animações tocando.
+- **Cópia ao editar:** editar um personagem, objeto ou cenário padrão cria uma cópia com identidade nova no projeto; o original nunca muda.
+- **Biblioteca com identidade:** salvar de novo atualiza o mesmo registro; trazer para o projeto mantém o ID; duplicar cria um item novo; exportar gera `.biblioteca.json`.
+- **Animação por quadros salva no objeto** (fogo, porta, ventilador…): várias animações por objeto, duração por quadro, repetir/uma vez/vai e volta, papel vegetal, copiar/colar e reordenar quadros. Cada cópia na cena escolhe animação, velocidade e defasagem; trocar por keyframe faz a animação começar ali. O quadro é função pura do tempo: prévia, PNG e vídeo iguais.
+- **Exemplos originais:** Fogueira (Aceso, Apagando), Ventilador (Girando, Devagar) e Barco.
+- **Vínculo pai/filho:** Propriedades → Camadas → Vinculado a. O elemento acompanha o grupo (posição, giro, escala, keyframes) e mantém as próprias falas, ações e piscadas. Vincular e soltar não mudam a posição na tela.
+- **Shift+clique no losango da seção** (ou toque longo) remove só os keyframes daquela seção no instante atual, com um único Ctrl+Z e confirmação quando acaba com a animação de uma propriedade.
+
+### Fase 3a: texto nos criadores
+
+- **Texto editável** como peça nos Criadores de Objetos e de Cenários: conteúdo com várias linhas, fonte, tamanho, peso, itálico, alinhamento, espaçamento, cor e contorno; continua texto na biblioteca, em pacotes e no .jrec, e entra na busca da Biblioteca.
+
+### Fase 2.5: Biblioteca principal
+
+- **Biblioteca na tela inicial**, sem abrir projeto (e por cima do editor): explorar itens padrão, meus e de pacotes, buscar por nome, categoria, tipo e palavra-chave, filtrar por tipo e origem, grade ou lista, detalhes completos (origem, criador, licença, versão, compatibilidade, tamanho, animações, vistas) e ações conforme a permissão.
+- **Itens individuais:** salvar, copiar, duplicar, renomear, favoritar, exportar, importar e apagar um item sozinho, sem pacote; importar de novo atualiza em vez de duplicar.
+- **Pacotes exploráveis:** página de cada pacote com capa, metadados, todos os itens, busca, contagens e dependências; abrir um .rspack mostra o conteúdo antes de instalar.
+- **Studio mais leve:** a aba Biblioteca virou uma Toolbox compacta; a gestão completa abre na Biblioteca principal.
+- **Segurança e robustez:** pacotes com referências internas incompletas são recusados; importação de pacote grande não trava a tela e mostra progresso; falhas de armazenamento aparecem como mensagens claras.
+
+### Continuação (correções do preview e expansão)
+
+- **Faixas horizontais com rolagem visível:** abas das Propriedades, filtros do catálogo e categorias dos Modelos ganham barra fina visível, setas nas pontas (desabilitadas no fim), roda do mouse na horizontal e aba/filtro ativo sempre à vista. As barras escondidas da barra rápida do celular, das configurações, da timeline e do palco voltaram a aparecer.
+- **Bolinha do grupo:** com um grupo selecionado, uma bolinha laranja no pivô move o conjunto inteiro; cada arraste é um passo de desfazer e Esc cancela. Ela é só do editor (não sai no PNG nem no vídeo). Botão direito num elemento → Selecionar o grupo.
+- **Modelos prontos:** Mar e Barco (barco com passageiros vinculados, balanço, ondas animadas), Acampamento (fogueira animada, luz tremulando), Praia, Cidade e rua, Quarto, Floresta, Sala de aula e Laboratório de animação; categorias e "O que testar neste modelo" na tela Modelos. Objetos novos: Ondas, Barraca, Guarda-sol, Palmeira e Pedras.
+- **Pacotes opcionais (.rspack):** instalar, atualizar, ativar/desativar, exportar e remover, com validação completa (manifesto, licença, sha256, caminhos, SVG, tamanhos, dependências) e o pacote de demonstração Kit Cozinha Retrô.
+- **Correções:** arrastar um elemento dentro de um grupo girado agora segue o cursor; caixas de seleção certas para filhos de grupos; mudar o pivô não faz o desenho pular; objeto animado dentro de outro objeto ou de um cenário anima no tempo certo; olhar e "segurado por" usam a posição real quando há grupos; copiar um cenário padrão é um único passo de desfazer; a caixa "Ativo" dos pacotes responde na hora.
+
+### Correções
+
+- Diálogos de nome e confirmação abertos dentro dos criadores apareciam por baixo do criador.
+- Desagrupar um grupo girado ou escalado fazia os elementos pularem; desagrupar um grupo dentro de outro removia a última camada da cena.
+- Elementos dentro de grupos sumiam da timeline (falas e ações deles não eram editáveis); agora aparecem como "Grupo › Nome".
+- Restaurar as configurações não apaga mais favoritos e recentes do catálogo.
+
 ## 1.2.0
 
 Tela inicial e Configurações novas, manual dentro do app, propriedades em abas, Criador de Objetos e de Cenários, profundidade de braços e mãos, cabelos longos corrigidos, interface própria para celular. Sem backend e sem dependência online; projetos 1.0 e 1.1 continuam abrindo.

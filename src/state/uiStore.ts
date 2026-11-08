@@ -13,9 +13,9 @@ export interface Selection {
 }
 
 export type Screen = 'projects' | 'editor';
-export type HomeSection = 'home' | 'projects' | 'templates' | 'manual' | 'settings';
+export type HomeSection = 'home' | 'projects' | 'library' | 'templates' | 'manual' | 'settings';
 /** Manual e Configurações abertos por cima do editor, sem sair do projeto. */
-export type Overlay = null | { kind: 'manual'; chapter?: string } | { kind: 'settings'; section?: string };
+export type Overlay = null | { kind: 'manual'; chapter?: string } | { kind: 'settings'; section?: string } | { kind: 'library' };
 export type DialogKind = null | 'export' | 'settings' | 'shortcuts' | 'creator' | 'import-report' | 'object-creator' | 'scene-creator';
 
 interface UIState extends Selection {
@@ -171,3 +171,8 @@ export function openAppSettings(section = 'geral'): void {
   else useUI.setState({ homeSection: 'settings', settingsSection: section });
 }
 export const closeOverlay = () => useUI.setState({ overlay: null });
+/** Biblioteca principal: sobre o editor (projeto continua aberto) ou na tela inicial. */
+export function openLibrary(): void {
+  if (useUI.getState().screen === 'editor') useUI.setState({ overlay: { kind: 'library' } });
+  else useUI.setState({ homeSection: 'library' });
+}

@@ -1,6 +1,6 @@
 /** Miniaturas reais: SVG gerado pelo mesmo renderizador, com cache por identidade. */
 import { memo, useId, useMemo } from 'react';
-import type { CharacterDefinition, Project, Scene, ViewId } from '@/engine/model/schema';
+import type { CharacterDefinition, Project, Rig, Scene, ViewId } from '@/engine/model/schema';
 import { renderCharacter, bodyMetrics } from '@/engine/character/render';
 import { RigSchema } from '@/engine/model/schema';
 import { planFrame, planToSvgString } from '@/engine/render/plan';
@@ -15,9 +15,9 @@ export function characterSvg(def: CharacterDefinition, view: ViewId, id: string,
   return renderCharacter(def, { bodyView: view, headView: view, rig, handL: 'open', handR: 'open', face: { expression, intensity: 1, viseme: null, visemeAmount: 0, blink: 0, gazeX: 0, gazeY: 0 } }, id).svg;
 }
 
-export const CharacterThumb = memo(function CharacterThumb({ def, view = 'front', size = 56, portrait = true }: { def: CharacterDefinition; view?: ViewId; size?: number; portrait?: boolean }) {
+export const CharacterThumb = memo(function CharacterThumb({ def, view = 'front', size = 56, portrait = true, rig }: { def: CharacterDefinition; view?: ViewId; size?: number; portrait?: boolean; rig?: Rig }) {
   const uid = useId().replace(/[^a-z0-9]/gi, '');
-  const html = useMemo(() => characterSvg(def, view, `th${uid}`), [def, view, uid]);
+  const html = useMemo(() => characterSvg(def, view, `th${uid}`, 'neutral', rig ?? neutralRig), [def, view, uid, rig]);
   const m = bodyMetrics(def);
   const top = -m.totalHeight - 30;
   const vb = portrait ? `${-m.rx * 1.45} ${top - 20} ${m.rx * 2.9} ${m.rx * 2.9}` : `-220 ${top - 20} 440 ${m.totalHeight + 80}`;
@@ -65,9 +65,9 @@ export function backgroundThumbUrl(presetId: string, variant: 'day' | 'night' = 
   return url;
 }
 
-export const PropThumb = memo(function PropThumb({ propId, size = 56 }: { propId: string; size?: number }) {
+export const PropThumb = memo(function PropThumb({ propId, size = 56, state = '' }: { propId: string; size?: number; state?: string }) {
   const def = getProp(propId);
-  const html = useMemo(() => renderProp(propId, '', '', ''), [propId]);
+  const html = useMemo(() => renderProp(propId, '', '', state), [propId, state]);
   if (!def) return null;
   const b = propBounds(def);
   const pad = Math.max(b.w, b.h) * 0.08;

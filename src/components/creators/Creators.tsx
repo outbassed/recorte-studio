@@ -17,13 +17,20 @@ import { SelectField, TextField } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
 import { HelpLink } from '../manual/HelpLink';
 import { PieceStudio, StudioShell } from './PieceStudio';
+import { AnimationBar, piecesOf, type Editing } from './ObjectAnimation';
+import { renderPieces } from '@/engine/world/pieces';
+import { previewAssetUrl } from '@/features/library/assets';
 
 /* ------------------------------ objetos ------------------------------ */
 export function ObjectCreator() {
   const project = useProject();
   const id = useUI((s) => s.objectCreatorId);
   const obj = project && id ? project.customObjects[id] : undefined;
+  const [editing, setEditing] = useState<Editing | null>(null);
+  const [onion, setOnion] = useState(true);
   if (!project || !obj) return null;
+  const target = piecesOf(obj, editing) ?? obj.pieces;
+  const prev = editing && editing.frame > 0 ? piecesOf(obj, { clip: editing.clip, frame: editing.frame - 1 }) : null;
   type Obj = NonNullable<typeof obj>;
   const set = (label: string, fn: (o: Obj) => void, coalesce?: string) => commit(label, (d) => {
     const o = (d as Project).customObjects[obj.id];
@@ -48,15 +55,16 @@ export function ObjectCreator() {
         <SliderNumberField label="Pivô Y" unit="px" sliderMin={-1200} sliderMax={200} decimals={0} value={obj.pivotY} onChange={(v) => set('Pivô', (o) => { o.pivotY = Math.round(v); }, 'obj-py')} />
         <p className="hint">A caixa tracejada é o tamanho do objeto; a base fica na linha do chão. O pivô (vermelho) é o ponto de giro e escala na cena.</p>
       </div>
+      <AnimationBar obj={obj} project={project} editing={editing} setEditing={setEditing} set={set} onion={onion} setOnion={setOnion} />
       <PieceStudio
         project={project}
-        pieces={obj.pieces}
+        pieces={target}
         testId="obj-studio"
         excludeObjectId={obj.id}
         viewBox={{ x: -size / 2, y: -size * 0.8, w: size, h: size }}
-        underlay={box}
+        underlay={box + (onion && prev ? `<g opacity="0.28" data-testid="onion-skin">${renderPieces(prev, { project, url: previewAssetUrl, idPrefix: 'onion' })}</g>` : '')}
         overlay={pivot}
-        edit={(label, fn, coalesce) => set(label, (o) => fn(o.pieces, project), coalesce)}
+        edit={(label, fn, coalesce) => set(label, (o) => { const list = piecesOf(o, editing); if (list) fn(list, project); }, coalesce)}
       />
     </StudioShell>
   );

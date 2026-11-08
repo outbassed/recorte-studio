@@ -4,6 +4,7 @@
  *  - a exportação serializa o plano para SVG e rasteriza em canvas (toSvgString).
  * Guias, seleção, gizmos e máscara fora do quadro NUNCA fazem parte do plano.
  */
+import { apply, IDENTITY, invert, parentWorldMatrix } from '../model/hierarchy';
 import { customObjectBounds, isCustomObjectId, renderCustomObject } from '../world/pieces';
 import { frameSize, type Project, type Scene, type SceneNode, WORLD_HEIGHT } from '../model/schema';
 import { evaluateScene, type ResolvedScene } from '../animation/evaluate';
@@ -121,6 +122,7 @@ export function cameraTransform(cam: ResolvedScene['camera'], parallax: number):
 }
 
 interface NodeRenderCtx {
+  timeMs: number;
   project: Project;
   scene: Scene;
   resolved: ResolvedScene;
@@ -196,12 +198,7 @@ function renderShape(node: Extract<SceneNode, { kind: 'shape' }>): string {
   }
 }
 
-const FONT_STACKS: Record<string, string> = {
-  sans: "'Trebuchet MS','Segoe UI',Arial,sans-serif",
-  serif: "Georgia,'Times New Roman',serif",
-  hand: "'Comic Sans MS','Segoe Print','Trebuchet MS',cursive",
-  mono: "Consolas,'Courier New',monospace",
-};
+import { FONT_STACKS } from './fonts';
 
 const propCache = new Map<string, string>();
 function cachedProp(id: string, a: string, b: string, state: string): string {
@@ -213,6 +210,18 @@ function cachedProp(id: string, a: string, b: string, state: string): string {
     propCache.set(key, v);
   }
   return v;
+}
+
+/**
+ * Tempo local da animação própria de um objeto montado. Se a animação é trocada por keyframe na
+ * timeline ("acionada"), ela começa no instante desse keyframe; senão, no início da cena.
+ */
+export function objectAnimAt(scene: Scene, node: Extract<SceneNode, { kind: 'prop' }>, timeMs: number): { clip: string; localMs: number } {
+  let start = 0;
+  const track = scene.tracks.find((t) => t.type === 'property' && t.targetNodeId === node.id && t.propertyPath === 'clip');
+  if (track && track.type === 'property' && track.enabled) for (const k of track.keyframes) if (k.timeMs <= timeMs) start = k.timeMs;
+  const speed = Number.isFinite(node.clipSpeed) ? Math.min(20, Math.max(0, node.clipSpeed)) : 1;
+  return { clip: node.clip, localMs: (timeMs - start) * speed + (Number.isFinite(node.clipOffsetMs) ? node.clipOffsetMs : 0) };
 }
 
 function renderNodeInner(node: SceneNode, ctx: NodeRenderCtx): string {
@@ -227,7 +236,7 @@ function renderNodeInner(node: SceneNode, ctx: NodeRenderCtx): string {
       return ctx.charCache.get(node.id)?.svg ?? '';
     }
     case 'prop':
-      if (isCustomObjectId(node.propId)) return renderCustomObject(ctx.project, node.propId, ctx.assets, node.id);
+      if (isCustomObjectId(node.propId)) return renderCustomObject(ctx.project, node.propId, ctx.assets, node.id, objectAnimAt(ctx.scene, node, ctx.timeMs));
       return cachedProp(node.propId, safeColor(node.colorA, ''), safeColor(node.colorB, ''), node.state);
     case 'image': {
       const url = ctx.assets(node.assetId);
@@ -294,7 +303,14 @@ function heldPosition(node: Extract<SceneNode, { kind: 'prop' }>, ctx: NodeRende
   const s = Math.sin(rad(ot.rotationDeg));
   const sx = hx * ot.scaleX;
   const sy = hy * ot.scaleY;
-  return { x: ot.x + sx * c - sy * s, y: ot.y + sx * s + sy * c };
+  const local = { x: ot.x + sx * c - sy * s, y: ot.y + sx * s + sy * c };
+  // Dono ou objeto dentro de grupos: mão no mundo → espaço do pai do objeto.
+  const ownerParent = parentWorldMatrix(ctx.scene, owner.id, ctx.resolved.nodes);
+  const propParent = parentWorldMatrix(ctx.scene, node.id, ctx.resolved.nodes);
+  if (ownerParent === IDENTITY && propParent === IDENTITY) return local;
+  const [wx, wy] = apply(ownerParent, local.x, local.y);
+  const [lx, ly] = apply(invert(propParent), wx, wy);
+  return { x: lx, y: ly };
 }
 
 function planEntry(node: SceneNode, ctx: NodeRenderCtx, filters: Set<number>): PlanEntry | null {
@@ -341,7 +357,7 @@ function cachedBackground(bg: Scene['background'], sceneId: string) {
 /** Monta os grupos de uma cena em um instante. */
 export function planScene(project: Project, scene: Scene, timeMs: number, assets: AssetResolver, opts: { transparentBg?: boolean } = {}): { group: PlanGroup; defs: string; screen: string; resolved: ResolvedScene } {
   const resolved = evaluateScene(project, scene, timeMs);
-  const ctx: NodeRenderCtx = { project, scene, resolved, assets, charCache: new Map() };
+  const ctx: NodeRenderCtx = { timeMs, project, scene, resolved, assets, charCache: new Map() };
   collectCharacters(ctx);
   const entries: PlanEntry[] = [];
   const filters = new Set<number>();
@@ -352,7 +368,7 @@ export function planScene(project: Project, scene: Scene, timeMs: number, assets
     // Cenário do usuário: uma imagem por horário, no mesmo retângulo do mundo.
     const blur = bg.blur > 0.01 ? bg.blur : 0;
     if (blur) filters.add(Math.round(blur * 2) / 2);
-    entries.push({ key: 'bg-custom', transform: cameraTransform(cam, bg.parallax), opacity: 1, filter: blur ? blurFilter(blur) : '', clip: '', blend: '', inner: renderCustomBackground(project, bg, assets) });
+    entries.push({ key: 'bg-custom', transform: cameraTransform(cam, bg.parallax), opacity: 1, filter: blur ? blurFilter(blur) : '', clip: '', blend: '', inner: renderCustomBackground(project, bg, assets, timeMs) });
   } else if (!transparent) {
     const layers = cachedBackground(bg, scene.id);
     const def = getBackground(bg.presetId);

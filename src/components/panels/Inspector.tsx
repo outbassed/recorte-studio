@@ -3,7 +3,7 @@
  * de propriedades. Se a propriedade tem keyframes, a edição grava um key no tempo atual.
  */
 import { Diamond, Layers, Trash2, UserRound, Wand2 } from 'lucide-react';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useRef, useState } from 'react';
 import { HelpLink } from '../manual/HelpLink';
 import { customObjectIdOf, isCustomObjectId } from '@/engine/world/pieces';
 import { openObjectCreator } from '@/state/creatorActions';
@@ -13,7 +13,18 @@ import {
 import { BACKGROUNDS, getBackground } from '@/engine/world/backgrounds';
 import { getProp } from '@/engine/world/props';
 import { getPropertyDef, formatKeyValue } from '@/engine/model/properties';
-import { addSectionKeys, animatablePaths, keyTime, sectionKeyState, type AddSectionKeysResult, type KeyOwner } from '@/engine/model/sectionKeys';
+import { decompose, localMatrix, parentOptions, setParent } from '@/engine/model/hierarchy';
+
+/** Muda o pivô sem o desenho pular: recalcula x/y para a mesma matriz (giro e escala mantidos). */
+function movePivot(n: SceneNode, px: number, py: number): void {
+  const m = localMatrix(n.transform);
+  n.transform.pivotX = px;
+  n.transform.pivotY = py;
+  const d = decompose(m, px, py);
+  n.transform.x = d.x;
+  n.transform.y = d.y;
+}
+import { addSectionKeys, animatablePaths, keyTime, previewRemoveSectionKeys, removeSectionKeys, sectionKeyState, type AddSectionKeysResult, type KeyOwner, type RemoveSectionKeysResult } from '@/engine/model/sectionKeys';
 import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type Transition } from '@/engine/model/schema';
 import { EXPRESSIONS, VISEMES } from '@/engine/character/expressions';
 import { POSES } from '@/engine/character/presets';
@@ -27,10 +38,11 @@ import { uid } from '@/engine/model/ids';
 import { repo } from '@/storage/db';
 import type { TimeOfDay } from '@/engine/model/schema';
 import { seek, transport, useTransport } from '@/state/transport';
-import { promptDialog, useUI, toast } from '@/state/uiStore';
+import { confirmDialog, openContextMenu, promptDialog, useUI, toast } from '@/state/uiStore';
 import { deleteSelection } from '@/state/actions';
-import { ColorField, IconButton, Section, SelectField, TextField, ToggleField } from '../controls/fields';
+import { ColorField, IconButton, Section, SelectField, TextField, ToggleField, useLongPress } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
+import { ScrollStrip } from '../controls/ScrollStrip';
 
 const useTimeMs = () => useTransport((s) => (s.playing ? -1 : s.timeMs));
 const nowMs = () => transport.getState().timeMs;
@@ -98,34 +110,70 @@ function KeyButton({ scene, target, path, active, animated, label }: { scene: Sc
 function SectionKeys({ id, scene, target, kind, paths }: { id: string; scene: Scene; target: string; kind: KeyOwner; paths: readonly string[] }) {
   const t = useTimeMs();
   const list = animatablePaths(kind, paths);
+  // Toque longo abre o menu; o clique que vem ao soltar o dedo não pode criar keyframes.
+  const fired = useRef(false);
+  const longPress = useLongPress((x, y) => { fired.current = true; menu(x, y); });
   if (list.length < 2) return null;
   const time = t < 0 ? nowMs() : t;
   const st = sectionKeyState(scene, target, list, time);
   const hint = 'Criar keyframes de todas as propriedades desta seção';
+  const removeHint = 'Shift+clique (ou toque longo) remove só os keyframes desta seção neste instante';
   const summary = st.status === 'all' ? `as ${st.total} propriedades já têm keyframe neste instante` : st.status === 'partial' ? `${st.withKey} de ${st.total} já têm keyframe neste instante` : 'nenhuma tem keyframe neste instante';
   const secs = (ms: number) => (ms / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  const create = () => {
+    const at = keyTime(nowMs());
+    if (st.missing.length === 0 && keyTime(time) === at) {
+      toast(`Todas as propriedades desta seção já têm keyframe em ${secs(at)} s. Nada foi alterado.`);
+      return;
+    }
+    const out: { r: AddSectionKeysResult | null } = { r: null };
+    commit('Criar keyframes da seção', (d) => { out.r = addSectionKeys(sceneOf(d as Project, scene.id), target, kind, list, at); });
+    const r = out.r;
+    if (!r) return;
+    toast(`${r.created.length} keyframe(s) criado(s) em ${secs(at)} s${r.kept.length ? `; ${r.kept.length} já existia(m) e foi(ram) mantido(s)` : ''}.`, 'success');
+  };
+  const remove = async () => {
+    const at = keyTime(nowMs());
+    const plan = previewRemoveSectionKeys(currentProject().scenes[scene.id] ?? scene, target, kind, list, at);
+    if (!plan.removed.length) {
+      toast(plan.locked.length ? `Os keyframes desta seção em ${secs(at)} s estão em faixas trancadas. Nada foi alterado.` : `Nenhuma propriedade desta seção tem keyframe em ${secs(at)} s. Nada foi alterado.`);
+      return;
+    }
+    // Risco: propriedade que perde a animação inteira volta ao valor-base. Pergunta antes.
+    if (plan.emptied.length) {
+      const ok = await confirmDialog({
+        title: 'Remover keyframes da seção',
+        message: `${plan.removed.length} keyframe(s) em ${secs(at)} s serão removidos. Em ${plan.emptied.length} propriedade(s) ele é o único keyframe: a animação delas acaba e o valor volta ao valor-base. Ctrl+Z desfaz.`,
+        confirmLabel: 'Remover', danger: true,
+      });
+      if (!ok) return;
+    }
+    const out: { r: RemoveSectionKeysResult | null } = { r: null };
+    commit('Remover keyframes da seção', (d) => { out.r = removeSectionKeys(sceneOf(d as Project, scene.id), target, kind, list, at); });
+    const r = out.r;
+    if (r) toast(`${r.removed.length} keyframe(s) removido(s) em ${secs(at)} s. Os outros instantes não mudaram.${r.locked.length ? ` ${r.locked.length} em faixa trancada ficou(aram).` : ''}`, 'success');
+  };
+  const menu = (x: number, y: number) => openContextMenu({ x, y, title: 'Keyframes da seção', items: [
+    { label: 'Criar os que faltam neste instante', onSelect: create },
+    { label: 'Remover os deste instante', danger: true, disabled: st.withKey === 0, onSelect: () => void remove() },
+  ] });
   return (
     <button
       type="button"
       className={`key-btn section-key is-${st.status}${st.animated ? ' is-animated' : ''}`}
       aria-pressed={st.status === 'all' ? 'true' : st.status === 'partial' ? 'mixed' : 'false'}
-      aria-label={`${hint}. Neste instante: ${summary}`}
-      title={`${hint} (${summary})`}
+      aria-label={`${hint}. Neste instante: ${summary}. ${removeHint}.`}
+      title={`${hint} (${summary}). ${removeHint}.`}
       data-testid={`section-keys-${id}`}
       data-status={st.status}
       data-count={`${st.withKey}/${st.total}`}
+      {...longPress}
+      onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); menu(e.clientX, e.clientY); }}
       onClick={(e) => {
         e.stopPropagation();
-        const at = keyTime(nowMs());
-        if (st.missing.length === 0 && keyTime(time) === at) {
-          toast(`Todas as propriedades desta seção já têm keyframe em ${secs(at)} s. Nada foi alterado.`);
-          return;
-        }
-        const out: { r: AddSectionKeysResult | null } = { r: null };
-        commit('Criar keyframes da seção', (d) => { out.r = addSectionKeys(sceneOf(d as Project, scene.id), target, kind, list, at); });
-        const r = out.r;
-        if (!r) return;
-        toast(`${r.created.length} keyframe(s) criado(s) em ${secs(at)} s${r.kept.length ? `; ${r.kept.length} já existia(m) e foi(ram) mantido(s)` : ''}.`, 'success');
+        if (fired.current) { fired.current = false; return; }
+        if (e.shiftKey) void remove();
+        else create();
       }}
     >
       <Diamond size={13} fill={st.status === 'none' ? 'none' : 'currentColor'} fillOpacity={st.status === 'partial' ? 0.4 : 1} />
@@ -205,11 +253,27 @@ function CommonNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
       <Section title="Escala separada e pivô" actions={<SectionKeys id="scale" scene={scene} target={node.id} kind={node.kind} paths={['transform.scaleX', 'transform.scaleY']} />}>
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.scaleX" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="transform.scaleY" />
-        <SliderNumberField label="Pivô X" unit="px" value={node.transform.pivotX} sliderMin={-300} sliderMax={300} onChange={(v) => set('Alterar pivô', (n) => { n.transform.pivotX = v; })} />
-        <SliderNumberField label="Pivô Y" unit="px" value={node.transform.pivotY} sliderMin={-300} sliderMax={300} onChange={(v) => set('Alterar pivô', (n) => { n.transform.pivotY = v; })} />
+        <SliderNumberField label="Pivô X" unit="px" testId="pivot-x" value={node.transform.pivotX} sliderMin={-600} sliderMax={600} onChange={(v) => set('Alterar pivô', (n) => movePivot(n, v, n.transform.pivotY))} />
+        <SliderNumberField label="Pivô Y" unit="px" testId="pivot-y" value={node.transform.pivotY} sliderMin={-600} sliderMax={600} onChange={(v) => set('Alterar pivô', (n) => movePivot(n, n.transform.pivotX, v))} />
+        <p className="hint">O pivô é o centro de giro e escala{node.kind === 'group' ? ' e o lugar da bolinha laranja que move o grupo no palco' : ''}. Mudar o pivô não mexe no desenho.</p>
       </Section>
       </Pane>
       <Pane tab="Camadas">
+      <Section title="Vínculo (grupo pai)" testId="sec-parent">
+        <SelectField
+          label="Vinculado a"
+          testId="node-parent"
+          value={node.parentId ?? ''}
+          options={[{ id: '', label: 'Nada (solto na cena)' }, ...parentOptions(scene, node.id).map((g) => ({ id: g.id, label: g.name }))]}
+          onChange={(v) => {
+            let err: string | null = null;
+            commit(v ? 'Vincular ao grupo' : 'Desvincular', (d) => { err = setParent(sceneOf(d as Project, scene.id), node.id, v || null); });
+            if (err) toast(err, 'error');
+            else toast(v ? 'Vinculado: acompanha o grupo (posição, giro, escala e keyframes) e mantém as próprias animações.' : 'Solto na cena, no mesmo lugar.');
+          }}
+        />
+        <p className="hint">Para um barco com passageiros: agrupe o barco (ou anime o grupo) e vincule os personagens a ele. Eles acompanham o balanço e continuam acenando, falando e piscando. Vincular e soltar não muda a posição na tela.</p>
+      </Section>
       <Section title="Profundidade, sombra e máscara" actions={<SectionKeys id="depth" scene={scene} target={node.id} kind={node.kind} paths={['parallax', 'blur']} />}>
         <PropField scene={scene} target={node.id} kind={node.kind} path="parallax" />
         <PropField scene={scene} target={node.id} kind={node.kind} path="blur" />
@@ -385,6 +449,19 @@ function PropSections({ scene, node }: { scene: Scene; node: Extract<SceneNode, 
         <button type="button" className="btn btn-block" data-testid="edit-custom-object" onClick={() => openObjectCreator(customObjectIdOf(node.propId))}>Editar no Criador de Objetos</button>
       </Section>
     )}
+    {(() => {
+      const obj = isCustomObjectId(node.propId) ? currentProject().customObjects[customObjectIdOf(node.propId)] : undefined;
+      if (!obj?.clips.length) return null;
+      const def0 = obj.clips.find((c) => c.id === obj.defaultClip);
+      return (
+        <Section title="Animação do objeto" testId="sec-object-anim">
+          <p className="hint">Os quadros ficam salvos no objeto. Aqui você escolhe só como ESTA cópia toca: animação, velocidade e defasagem. Trocar a animação com keyframe faz ela começar naquele instante.</p>
+          <DiscreteField scene={scene} target={node.id} path="clip" label="Animação" testId="prop-clip" options={[{ id: '', label: def0 ? `Padrão do objeto (${def0.name})` : 'Padrão do objeto (estático)' }, { id: 'static', label: 'Desenho estático' }, ...obj.clips.map((c) => ({ id: c.id, label: `${c.name} · ${c.frames.length} quadro(s)` }))]} />
+          <SliderNumberField label="Velocidade" unit="%" display={100} min={0} max={20} sliderMin={0} sliderMax={300} decimals={0} value={node.clipSpeed} testId="prop-clip-speed" onChange={(v) => set('Velocidade da animação', (n) => { n.clipSpeed = Math.max(0, v); })} />
+          <SliderNumberField label="Defasagem" unit="ms" min={-600000} max={600000} sliderMin={-2000} sliderMax={2000} decimals={0} value={node.clipOffsetMs} testId="prop-clip-offset" onChange={(v) => set('Defasagem da animação', (n) => { n.clipOffsetMs = Math.round(v); })} />
+        </Section>
+      );
+    })()}
     <Section title="Aparência do objeto" testId="sec-prop" actions={<SectionKeys id="prop" scene={scene} target={node.id} kind="prop" paths={[...(def?.states ? ['state'] : []), ...(def?.handheld ? ['heldBy'] : [])]} />}>
       <ColorField label="Cor principal" value={node.colorA || def?.a || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorA = v; })} />
       <ColorField label="Cor secundária" value={node.colorB || def?.b || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorB = v; })} />
@@ -766,7 +843,8 @@ function Tabs({ ctx, tabs, children, help }: { ctx: string; tabs: string[]; chil
   const set = (t: string) => useUI.setState((s) => ({ inspectorTabs: { ...s.inspectorTabs, [ctx]: t } }));
   return (
     <>
-      <div className="insp-tabs" role="tablist" aria-label="Grupos de propriedades">
+      <div className="insp-tabs">
+        <ScrollStrip className="insp-tabs-row" role="tablist" ariaLabel="Grupos de propriedades" testId="insp-tabs" watch={active}>
         {tabs.map((t, i) => (
           <button key={t} type="button" role="tab" id={`itab-${slug(t)}`} aria-selected={t === active} aria-controls="insp-pane" tabIndex={t === active ? 0 : -1} className={t === active ? 'is-active' : ''} data-testid={`insp-tab-${slug(t)}`}
             onClick={() => set(t)}
@@ -779,6 +857,7 @@ function Tabs({ ctx, tabs, children, help }: { ctx: string; tabs: string[]; chil
               (e.currentTarget.parentElement?.querySelector(`#itab-${slug(next)}`) as HTMLElement | null)?.focus();
             }}>{t}</button>
         ))}
+        </ScrollStrip>
         {help && <HelpLink chapter={help} label="Ajuda sobre estas propriedades" />}
       </div>
       <div className="insp-pane" role="tabpanel" id="insp-pane" aria-labelledby={`itab-${slug(active)}`} data-tab={active}>
