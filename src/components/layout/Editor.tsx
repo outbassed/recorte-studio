@@ -13,9 +13,11 @@ import { copyProjectLink } from '@/features/projects/urls';
 import { closeDialog, clearSelection, closeOverlay, openAppSettings, openDialog, openManual, selectNodes, useUI, useFeedback, toast, type LeftTab, type MobilePanel } from '@/state/uiStore';
 import { ManualView } from '../manual/ManualView';
 import { ObjectCreator, SceneCreator } from '../creators/Creators';
+import { quickActions, runQuick, type QuickAction } from './quickActions';
+import { findClip } from '@/engine/model/ops';
 import { SettingsView } from '../settings/SettingsView';
 import { Logo } from './ProjectsScreen';
-import { pause, seek, togglePlay, transport } from '@/state/transport';
+import { pause, seek, togglePlay, transport, useTransport } from '@/state/transport';
 import { copySelectedKey, deleteSelection, doRedo, doUndo, duplicateSelection, pasteKey } from '@/state/actions';
 import { addKeyAtTime, readProperty, sceneOf, writeProperty } from '@/engine/model/ops';
 import { IconButton, MoreButton } from '../controls/fields';
@@ -388,39 +390,41 @@ const EXTRA: Array<{ id: LeftTab; label: string }> = [
 ];
 
 /**
- * Barra rápida do celular para o elemento selecionado: cada botão abre a aba certa
- * das propriedades (sem mostrar tudo de uma vez).
+ * Barra rápida do celular. As ações mudam com o que está selecionado (personagem, objeto, texto,
+ * câmera, clip) e com o estado dele no tempo atual (ex.: "Editar fala" se já está falando).
  */
 function QuickBar() {
   const ui = useUI();
   const scene = useCurrentScene();
-  const id = ui.nodeIds.length === 1 ? ui.nodeIds[0]! : null;
-  const node = id && scene ? scene.nodes[id] : undefined;
-  if (!node) return null;
-  const go = (ctx: string, tab: string) => useUI.setState((s) => ({ inspectorTabs: { ...s.inspectorTabs, [ctx]: tab }, mobilePanel: 'properties', mobilePanelExpanded: false }));
-  const items: Array<[string, string, () => void]> = node.kind === 'character'
-    ? [
-      ['Mover', 'move', () => go('character', 'Transformar')],
-      ['Expressão', 'face', () => go('character', 'Rosto')],
-      ['Olhar', 'gaze', () => go('character', 'Rosto')],
-      ['Pose', 'pose', () => go('character', 'Pose')],
-      ['Falar', 'talk', () => go('character', 'Animar')],
-      ['Ações', 'actions', () => go('character', 'Animar')],
-      ['Aparência', 'look', () => useUI.setState({ dialog: 'creator', creatorCharacterId: node.characterId })],
-    ]
-    : [
-      ['Mover', 'move', () => go(node.kind, 'Transformar')],
-      ['Aparência', 'look', () => go(node.kind, (NODE_TAB_SECOND as Record<string, string>)[node.kind] ?? 'Transformar')],
-      ['Camadas', 'layers', () => go(node.kind, 'Camadas')],
-    ];
+  const time = useTransport((t) => (t.playing ? -1 : t.timeMs));
+  if (!scene) return null;
+  const nodeId = ui.nodeIds.length === 1 ? ui.nodeIds[0]! : null;
+  const node = nodeId ? scene.nodes[nodeId] : undefined;
+  let title = '';
+  let actions: QuickAction[] = [];
+  if (ui.timeline?.clipId) {
+    const f = findClip(scene, ui.timeline.clipId);
+    if (f) {
+      title = f.track.name;
+      actions = quickActions(scene, { kind: 'clip', clipId: f.clip.id }, time < 0 ? 0 : time);
+    }
+  } else if (ui.camera) {
+    title = 'Câmera';
+    actions = quickActions(scene, { kind: 'camera' }, time < 0 ? 0 : time);
+  } else if (node) {
+    title = node.name;
+    actions = quickActions(scene, { kind: 'node', node }, time < 0 ? transport.getState().timeMs : time);
+  }
+  if (!actions.length) return null;
   return (
-    <nav className="m-quick" aria-label={`Ações rápidas: ${node.name}`} data-testid="mobile-quick">
-      <strong>{node.name}</strong>
-      {items.map(([label, key, run]) => <button key={key} type="button" className="chip" data-testid={`quick-${key}`} onClick={run}>{label}</button>)}
+    <nav className="m-quick" aria-label={`Ações rápidas: ${title}`} data-testid="mobile-quick">
+      <strong>{title}</strong>
+      {actions.map((a) => (
+        <button key={a.key} type="button" className={`chip${a.key === 'delete' ? ' is-danger' : ''}`} data-testid={`quick-${a.key}`} onClick={() => runQuick(a, node?.kind === 'character' ? node.characterId : undefined)}>{a.label}</button>
+      ))}
     </nav>
   );
 }
-const NODE_TAB_SECOND = { prop: 'Aparência', text: 'Aparência', shape: 'Aparência', light: 'Aparência', image: 'Imagem' };
 
 function MobileEditor({ landscape }: { landscape: boolean }) {
   const ui = useUI();

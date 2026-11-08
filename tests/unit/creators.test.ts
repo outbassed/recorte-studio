@@ -154,3 +154,51 @@ describe('Criador de Cenários em quadros não 16:9', () => {
     expect(park.pieces.find((p) => p.name === 'Banco')).toMatchObject({ x: 60, scale: 1 });
   });
 });
+
+describe('seleção e grupos de peças girados', () => {
+  it('seleção acompanha a rotação: retângulo comprido girado 90° é acertado na vertical, não na horizontal', async () => {
+    const { pieceHit, pieceCorners } = await import('@/engine/world/pieces');
+    const p = createDemoProject();
+    const bar = createPiece('rect', { x: 100, y: 100, w: 300, h: 40, rotation: 90 });
+    expect(pieceHit(bar, p, 100, 230)).toBe(true);
+    expect(pieceHit(bar, p, 230, 100)).toBe(false);
+    const c = pieceCorners(bar, p);
+    expect(Math.min(...c.map((q) => q[0]))).toBeCloseTo(80, 5);
+    expect(Math.max(...c.map((q) => q[1]))).toBeCloseTo(250, 5);
+  });
+  it('espelho e escala entram no desenho e na seleção do mesmo jeito', async () => {
+    const { pieceHit } = await import('@/engine/world/pieces');
+    const p = createDemoProject();
+    const tree = createPiece('prop', { refId: 'tree', x: 0, y: 0, scale: 2, flipY: true });
+    // Árvore cresce para cima (y negativo) e o espelho vertical inverte: a área passa a ficar abaixo da base.
+    expect(pieceHit(tree, p, 0, 200)).toBe(true);
+    expect(pieceHit(tree, p, 0, -200)).toBe(false);
+  });
+  it('girar o grupo move as peças em torno do centro e soma o ângulo em cada uma', async () => {
+    const { transformPieces, selectionBox } = await import('@/engine/world/pieces');
+    const p = createDemoProject();
+    const a = createPiece('rect', { x: -100, y: 0, w: 40, h: 40 });
+    const b = createPiece('rect', { x: 100, y: 0, w: 40, h: 40 });
+    transformPieces([a, b], p, { rotate: 90 });
+    expect(a.x).toBeCloseTo(0, 1);
+    expect(a.y).toBeCloseTo(-100, 1);
+    expect(b.y).toBeCloseTo(100, 1);
+    expect(a.rotation).toBe(90);
+    // A caixa do grupo continua com o mesmo centro.
+    const box = selectionBox([a, b], p)!;
+    expect(box.x + box.w / 2).toBeCloseTo(0, 1);
+  });
+  it('escalar o grupo multiplica posições e tamanhos; girar 4× 90° volta ao início', async () => {
+    const { transformPieces } = await import('@/engine/world/pieces');
+    const p = createDemoProject();
+    const a = createPiece('rect', { x: -100, y: 0, w: 40, h: 40 });
+    const b = createPiece('prop', { refId: 'tree', x: 100, y: 0, scale: 1 });
+    transformPieces([a, b], p, { scale: 2 });
+    expect(a.x).toBeCloseTo(-200, 1);
+    expect(a.w).toBe(80);
+    expect(b.scale).toBe(2);
+    for (let i = 0; i < 4; i++) transformPieces([a, b], p, { rotate: 90 });
+    expect(a.rotation).toBe(0);
+    expect(a.x).toBeCloseTo(-200, 0);
+  });
+});

@@ -245,7 +245,7 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
       <Section title="Orientação e olhar" testId="sec-gaze">
         <DiscreteField scene={scene} target={node.id} path="bodyView" label="Vista do corpo" options={VIEW_OPTIONS} />
         <DiscreteField scene={scene} target={node.id} path="headView" label="Vista da cabeça" options={VIEW_OPTIONS} />
-        <DiscreteField scene={scene} target={node.id} path="gaze.mode" label="Olhar" options={[{ id: 'camera', label: 'Para a câmera' }, { id: 'node', label: 'Para um elemento' }, { id: 'point', label: 'Para um ponto X/Y' }, { id: 'manual', label: 'Manual' }, { id: 'none', label: 'Sem alvo' }]} />
+        <DiscreteField scene={scene} target={node.id} path="gaze.mode" label="Olhar" testId="gaze-mode" options={[{ id: 'camera', label: 'Para a câmera' }, { id: 'node', label: 'Para um elemento' }, { id: 'point', label: 'Para um ponto X/Y' }, { id: 'manual', label: 'Manual' }, { id: 'none', label: 'Sem alvo' }]} />
         {node.gaze.mode === 'node' && (
           <DiscreteField scene={scene} target={node.id} path="gaze.targetId" label="Alvo do olhar" options={[{ id: '', label: 'Nenhum' }, ...others.map((o) => ({ id: o.id, label: o.name }))]} />
         )}
@@ -340,7 +340,7 @@ function PropSections({ scene, node }: { scene: Scene; node: Extract<SceneNode, 
       <ColorField label="Cor secundária" value={node.colorB || def?.b || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorB = v; })} />
       {def?.states && <DiscreteField scene={scene} target={node.id} path="state" label="Estado" options={def.states} testId="prop-state" />}
       {def?.handheld && (
-        <DiscreteField scene={scene} target={node.id} path="heldBy" label="Segurado por" options={[{ id: '', label: 'Ninguém' }, ...owners.flatMap((o) => [{ id: `${o.id}:L`, label: `${o.name} (mão esq.)` }, { id: `${o.id}:R`, label: `${o.name} (mão dir.)` }])]} />
+        <DiscreteField scene={scene} target={node.id} path="heldBy" label="Segurado por" testId="prop-held" options={[{ id: '', label: 'Ninguém' }, ...owners.flatMap((o) => [{ id: `${o.id}:L`, label: `${o.name} (mão esq.)` }, { id: `${o.id}:R`, label: `${o.name} (mão dir.)` }])]} />
       )}
       <button type="button" className="btn btn-sm" onClick={() => set('Espelhar', (n) => { n.transform.scaleX = -n.transform.scaleX; })}>Espelhar na horizontal</button>
     </Section>
@@ -357,7 +357,7 @@ function SimpleNodeSections({ scene, node }: { scene: Scene; node: SceneNode }) 
     return (
       <Pane tab="Aparência">
       <Section title="Texto" testId="sec-text">
-        <TextField label="Conteúdo" multiline value={node.text} onChange={(v) => set<typeof node>('Texto', (n) => { n.text = v; })} />
+        <TextField label="Conteúdo" testId="text-content" multiline value={node.text} onChange={(v) => set<typeof node>('Texto', (n) => { n.text = v; })} />
         <SliderNumberField label="Tamanho da fonte" unit="px" min={4} max={600} sliderMin={10} sliderMax={240} value={node.fontSize} onChange={(v) => set<typeof node>('Fonte', (n) => { n.fontSize = v; })} />
         <SelectField label="Fonte" value={node.fontFamily} options={[{ id: 'sans', label: 'Sem serifa' }, { id: 'serif', label: 'Serifada' }, { id: 'hand', label: 'Manuscrita' }, { id: 'mono', label: 'Monoespaçada' }]} onChange={(v) => set<typeof node>('Fonte', (n) => { n.fontFamily = v as typeof n.fontFamily; })} />
         <SelectField label="Peso" value={node.fontWeight} options={[{ id: '400', label: 'Normal' }, { id: '700', label: 'Negrito' }, { id: '900', label: 'Extra' }]} onChange={(v) => set<typeof node>('Peso', (n) => { n.fontWeight = v as typeof n.fontWeight; })} />

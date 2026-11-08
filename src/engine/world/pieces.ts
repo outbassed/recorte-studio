@@ -165,19 +165,132 @@ export function customObjectBounds(project: Project, propId: string): { x: numbe
   return { x: -obj.width / 2 - obj.pivotX, y: -obj.height - obj.pivotY, w: obj.width, h: obj.height };
 }
 
-/** Caixa aproximada de uma peça (para seleção no editor). */
-export function pieceBox(p: Piece, project: Project): { x: number; y: number; w: number; h: number } {
+/* ------------------------------ geometria (seleção e grupos) ------------------------------ */
+export type Box = { x: number; y: number; w: number; h: number };
+export type Pt2 = [number, number];
+const rad = (d: number) => (d * Math.PI) / 180;
+const usesScale = (p: Piece) => p.kind === 'prop' || p.kind === 'object' || p.kind === 'character';
+
+/** Caixa da peça no espaço dela (antes de girar, espelhar e escalar). */
+export function pieceLocalBox(p: Piece, project: Project): Box {
   if (p.kind === 'prop' && p.refId) {
     const d = getProp(p.refId);
-    const b = d ? propBounds(d) : { x: -50, y: -100, w: 100, h: 100 };
-    return { x: p.x + b.x * p.scale, y: p.y + b.y * p.scale, w: b.w * p.scale, h: b.h * p.scale };
+    return d ? propBounds(d) : { x: -50, y: -100, w: 100, h: 100 };
   }
-  if (p.kind === 'object' && p.refId) {
-    const b = customObjectBounds(project, OBJECT_PREFIX + p.refId);
-    return { x: p.x + b.x * p.scale, y: p.y + b.y * p.scale, w: b.w * p.scale, h: b.h * p.scale };
+  if (p.kind === 'object' && p.refId) return customObjectBounds(project, OBJECT_PREFIX + p.refId);
+  if (p.kind === 'character') return { x: -110, y: -560, w: 220, h: 560 };
+  // Linha fina: área de toque mínima para dar para selecionar.
+  if (p.kind === 'line') return { x: -p.w / 2, y: -Math.max(16, p.strokeWidth) / 2, w: p.w, h: Math.max(16, p.strokeWidth) };
+  return { x: -p.w / 2, y: -p.h / 2, w: p.w, h: p.h };
+}
+
+const factors = (p: Piece): [number, number] => {
+  const k = usesScale(p) ? Math.max(1e-6, p.scale) : 1;
+  return [(p.flipX ? -1 : 1) * k, (p.flipY ? -1 : 1) * k];
+};
+
+/** Do espaço da peça para o mundo (mesma ordem do SVG: translate, rotate, scale). */
+export function pieceToWorld(p: Piece, lx: number, ly: number): Pt2 {
+  const [sx, sy] = factors(p);
+  const x = lx * sx;
+  const y = ly * sy;
+  const c = Math.cos(rad(p.rotation));
+  const s = Math.sin(rad(p.rotation));
+  return [p.x + x * c - y * s, p.y + x * s + y * c];
+}
+
+/** Do mundo para o espaço da peça (inverso de pieceToWorld). */
+export function pieceFromWorld(p: Piece, wx: number, wy: number): Pt2 {
+  const [sx, sy] = factors(p);
+  const dx = wx - p.x;
+  const dy = wy - p.y;
+  const c = Math.cos(rad(-p.rotation));
+  const s = Math.sin(rad(-p.rotation));
+  return [(dx * c - dy * s) / sx, (dx * s + dy * c) / sy];
+}
+
+/** Os 4 cantos da peça no mundo (acompanham rotação, espelho e escala). */
+export function pieceCorners(p: Piece, project: Project): Pt2[] {
+  const b = pieceLocalBox(p, project);
+  return ([[b.x, b.y], [b.x + b.w, b.y], [b.x + b.w, b.y + b.h], [b.x, b.y + b.h]] as Pt2[]).map(([x, y]) => pieceToWorld(p, x, y));
+}
+
+/** O ponto do mundo está dentro da peça (considerando a rotação)? */
+export function pieceHit(p: Piece, project: Project, wx: number, wy: number): boolean {
+  const b = pieceLocalBox(p, project);
+  const [lx, ly] = pieceFromWorld(p, wx, wy);
+  return lx >= b.x && lx <= b.x + b.w && ly >= b.y && ly <= b.y + b.h;
+}
+
+export const boundsOfPoints = (pts: Pt2[]): Box => {
+  const xs = pts.map((q) => q[0]);
+  const ys = pts.map((q) => q[1]);
+  const x = Math.min(...xs);
+  const y = Math.min(...ys);
+  return { x, y, w: Math.max(...xs) - x, h: Math.max(...ys) - y };
+};
+
+/** Caixa alinhada aos eixos que contém a peça girada. */
+export function pieceBox(p: Piece, project: Project): Box {
+  return boundsOfPoints(pieceCorners(p, project));
+}
+
+/** Caixa que contém todas as peças (a "caixa do grupo"). */
+export function selectionBox(pieces: Piece[], project: Project): Box | null {
+  if (!pieces.length) return null;
+  return boundsOfPoints(pieces.flatMap((p) => pieceCorners(p, project)));
+}
+
+/**
+ * Pivô do grupo: média dos centros visuais das peças. Ao girar ou escalar, esse ponto não se move,
+ * então repetir a operação não faz o grupo "andar" (o centro da caixa, sim, mudaria a cada giro).
+ */
+export function groupPivot(pieces: Piece[], project: Project): Pt2 {
+  let sx = 0;
+  let sy = 0;
+  for (const p of pieces) {
+    const b = pieceLocalBox(p, project);
+    const [x, y] = pieceToWorld(p, b.x + b.w / 2, b.y + b.h / 2);
+    sx += x;
+    sy += y;
   }
-  if (p.kind === 'character') return { x: p.x - 110 * p.scale, y: p.y - 560 * p.scale, w: 220 * p.scale, h: 560 * p.scale };
-  return { x: p.x - p.w / 2, y: p.y - p.h / 2, w: p.w, h: p.h };
+  return [sx / pieces.length, sy / pieces.length];
+}
+
+export interface GroupOp { rotate?: number; scale?: number; dx?: number; dy?: number }
+/**
+ * Move, gira e escala as peças como UM bloco, em torno do pivô do grupo.
+ * Girar soma o ângulo a cada peça e gira a posição dela em torno do centro; escalar multiplica
+ * posição e tamanho. Funciona também para peças já giradas ou espelhadas.
+ */
+export function transformPieces(pieces: Piece[], project: Project, op: GroupOp): void {
+  if (!pieces.length) return;
+  const [cx, cy] = groupPivot(pieces, project);
+  const a = rad(op.rotate ?? 0);
+  const c = Math.cos(a);
+  const s = Math.sin(a);
+  const k = op.scale ?? 1;
+  for (const p of pieces) {
+    const rx = (p.x - cx) * k;
+    const ry = (p.y - cy) * k;
+    p.x = Math.round((cx + rx * c - ry * s + (op.dx ?? 0)) * 100) / 100;
+    p.y = Math.round((cy + rx * s + ry * c + (op.dy ?? 0)) * 100) / 100;
+    if (op.rotate) p.rotation = normalizeAngle(p.rotation + op.rotate);
+    if (k !== 1) {
+      if (usesScale(p)) p.scale = Math.min(20, Math.max(0.02, p.scale * k));
+      else {
+        p.w = Math.max(1, p.w * k);
+        p.h = Math.max(1, p.h * k);
+      }
+    }
+  }
+}
+
+/** Ângulo no intervalo (−180, 180], com 2 casas. */
+export function normalizeAngle(d: number): number {
+  let v = ((d + 180) % 360 + 360) % 360 - 180;
+  if (v === -180) v = 180;
+  return Math.round(v * 100) / 100;
 }
 
 /** Todas as listas de peças do projeto (objetos e composições de cenário). */

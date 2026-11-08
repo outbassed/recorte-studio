@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import type { Piece, PieceKind, Project } from '@/engine/model/schema';
 import { uid, deepClone } from '@/engine/model/ids';
-import { createPiece, freezeCharacter, pieceBox, PIECE_LABELS, renderPieces } from '@/engine/world/pieces';
+import { createPiece, freezeCharacter, pieceCorners, pieceHit, PIECE_LABELS, renderPieces, selectionBox, transformPieces } from '@/engine/world/pieces';
 import { PROPS, getProp } from '@/engine/world/props';
 import { objectContains } from '@/features/library/bundles';
 import { EXPRESSIONS } from '@/engine/character/expressions';
@@ -52,6 +52,7 @@ export function PieceStudio(p: StudioProps) {
   const url = (id: string) => previewAssetUrl(id);
   const body = useMemo(() => renderPieces(p.pieces, { project: p.project, url, idPrefix: p.testId }), [p.pieces, p.project]); // eslint-disable-line react-hooks/exhaustive-deps
   const selected = p.pieces.filter((x) => sel.includes(x.id));
+  const groupBox = selectionBox(selected, p.project);
   const one = selected.length === 1 ? selected[0]! : null;
 
   /** Selecionar uma peça agrupada seleciona o grupo inteiro. */
@@ -59,7 +60,9 @@ export function PieceStudio(p: StudioProps) {
     if (!id) return setSel([]);
     const piece = p.pieces.find((x) => x.id === id);
     const ids = piece?.group ? p.pieces.filter((x) => x.group === piece.group).map((x) => x.id) : [id];
-    setSel(add ? [...new Set([...sel, ...ids])] : ids);
+    // Shift/Ctrl: alterna (tira do grupo de seleção se já estava nela).
+    if (add && ids.every((x) => sel.includes(x))) setSel(sel.filter((x) => !ids.includes(x)));
+    else setSel(add ? [...new Set([...sel, ...ids])] : ids);
   };
   const editSel = (label: string, fn: (pc: Piece) => void, coalesce?: string) =>
     p.edit(label, (list) => { for (const pc of list) if (sel.includes(pc.id)) fn(pc); }, coalesce);
@@ -79,9 +82,7 @@ export function PieceStudio(p: StudioProps) {
   const hit = (x: number, y: number) => {
     for (let i = p.pieces.length - 1; i >= 0; i--) {
       const pc = p.pieces[i]!;
-      if (!pc.visible) continue;
-      const b = pieceBox(pc, p.project);
-      if (x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) return pc.id;
+      if (pc.visible && pieceHit(pc, p.project, x, y)) return pc.id;
     }
     return null;
   };
@@ -271,15 +272,28 @@ export function PieceStudio(p: StudioProps) {
     </div>
   ) : (
     <div className="studio-props">
-      {selected.length > 1 ? <p className="hint">{selected.length} peças selecionadas. Use Camadas para agrupar, duplicar, ordenar ou excluir.</p> : <p className="empty">Toque numa peça na prévia ou em Camadas para editar posição, tamanho, rotação, cores e mais.</p>}
+      {selected.length > 1 ? <GroupControls count={selected.length} hasGroup={selected.some((x) => x.group)} apply={(op) => p.edit('Transformar seleção', (list, proj) => transformPieces(list.filter((x) => sel.includes(x.id)), proj, op))} /> : <p className="empty">Toque numa peça na prévia ou em Camadas para editar posição, tamanho, rotação, cores e mais.</p>}
       {selected.length > 1 && <SliderNumberField label="Opacidade (todas)" unit="%" display={100} min={0} max={1} sliderMin={0} sliderMax={100} value={selected[0]!.opacity} onChange={(v) => editSel('Opacidade', (pc) => { pc.opacity = v; }, 'pc-multi-o')} />}
     </div>
   );
 
+  const onKey = (e: React.KeyboardEvent) => {
+    const t = e.target as HTMLElement;
+    if (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable) return;
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (ctrl && e.key.toLowerCase() === 'a') { e.preventDefault(); setSel(p.pieces.filter((x) => x.visible).map((x) => x.id)); return; }
+    if (!sel.length) return;
+    if (ctrl && e.key.toLowerCase() === 'd') { e.preventDefault(); duplicate(); return; }
+    if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); remove(); return; }
+    const step = e.shiftKey ? 10 : 1;
+    const d: Record<string, [number, number]> = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
+    const v = d[e.key];
+    if (v) { e.preventDefault(); p.edit('Mover peças', (list, proj) => transformPieces(list.filter((x) => sel.includes(x.id)), proj, { dx: v[0], dy: v[1] }), `nudge-${sel.join(',')}`); }
+  };
   const vb = finalView && p.finalBox ? p.finalBox : p.viewBox;
   const handle = Math.max(vb.w, vb.h) / 160;
   return (
-    <div className="studio" data-testid={p.testId}>
+    <div className="studio" data-testid={p.testId} onKeyDown={onKey}>
       <div className="studio-stage">
         <div className="studio-stage-bar">
           <ToggleField label="Prévia final" hint="" testId={`${p.testId}-final`} checked={finalView} onChange={setFinalView} />
@@ -287,12 +301,14 @@ export function PieceStudio(p: StudioProps) {
         </div>
         <svg
           ref={svgRef}
+          tabIndex={0}
           className="studio-svg"
           viewBox={`${vb.x} ${vb.y} ${vb.w} ${vb.h}`}
           role="img"
           aria-label="Prévia da composição"
           data-testid={`${p.testId}-canvas`}
           onPointerDown={(e) => {
+            svgRef.current?.focus({ preventScroll: true });
             const w = toWorld(e);
             const id = hit(w.x, w.y);
             if (!id) return select(null);
@@ -320,10 +336,10 @@ export function PieceStudio(p: StudioProps) {
             <g dangerouslySetInnerHTML={{ __html: body }} />
           </g>
           {!(finalView && p.finalBox) && <g dangerouslySetInnerHTML={{ __html: p.overlay ?? '' }} />}
-          {!finalView && selected.map((pc) => {
-            const b = pieceBox(pc, p.project);
-            return <rect key={pc.id} x={b.x} y={b.y} width={b.w} height={b.h} fill="none" stroke="#7fc8ff" strokeWidth={handle * 0.6} strokeDasharray={`${handle * 2} ${handle}`} pointerEvents="none" />;
-          })}
+          {!finalView && selected.map((pc) => (
+            <polygon key={pc.id} data-testid="piece-outline" points={pieceCorners(pc, p.project).map((q) => `${q[0]},${q[1]}`).join(' ')} fill="none" stroke="#7fc8ff" strokeWidth={handle * 0.6} strokeDasharray={`${handle * 2} ${handle}`} pointerEvents="none" />
+          ))}
+          {!finalView && selected.length > 1 && groupBox && <rect data-testid="group-box" x={groupBox.x} y={groupBox.y} width={groupBox.w} height={groupBox.h} fill="none" stroke="#f2a65a" strokeWidth={handle * 0.7} strokeDasharray={`${handle * 4} ${handle * 1.5}`} pointerEvents="none" />}
         </svg>
       </div>
       <div className="studio-tools">
@@ -362,3 +378,33 @@ export function StudioShell({ title, children, actions, onClose, testId }: { tit
   );
 }
 
+
+/** Controles do bloco: mover, girar e escalar tudo junto, em torno do centro da caixa do grupo. */
+function GroupControls({ count, hasGroup, apply }: { count: number; hasGroup: boolean; apply: (op: { rotate?: number; scale?: number; dx?: number; dy?: number }) => void }) {
+  const [step, setStep] = useState('10');
+  const [deg, setDeg] = useState('15');
+  const [pct, setPct] = useState('10');
+  const num = (v: string, fb: number) => { const n = Number(v.replace(',', '.')); return Number.isFinite(n) && n !== 0 ? n : fb; };
+  const st = num(step, 10);
+  const dg = num(deg, 15);
+  const pc = Math.min(90, Math.abs(num(pct, 10)));
+  return (
+    <div className="group-controls" data-testid="group-controls">
+      <p className="hint">{count} peças selecionadas{hasGroup ? ' (grupo)' : ''}. Mover, girar e escalar valem para o bloco todo, em torno do centro dele.</p>
+      <div className="gc-row"><label>Passo <input className="input input-sm" inputMode="decimal" aria-label="Passo em pixels" value={step} onChange={(e) => setStep(e.target.value)} onKeyDown={(e) => e.stopPropagation()} /> px</label></div>
+      <div className="gc-pad" role="group" aria-label="Mover o bloco">
+        <button type="button" className="btn btn-sm" aria-label="Mover para cima" data-testid="group-up" onClick={() => apply({ dy: -st })}>↑</button>
+        <button type="button" className="btn btn-sm" aria-label="Mover para a esquerda" data-testid="group-left" onClick={() => apply({ dx: -st })}>←</button>
+        <button type="button" className="btn btn-sm" aria-label="Mover para a direita" data-testid="group-right" onClick={() => apply({ dx: st })}>→</button>
+        <button type="button" className="btn btn-sm" aria-label="Mover para baixo" data-testid="group-down" onClick={() => apply({ dy: st })}>↓</button>
+      </div>
+      <div className="gc-row"><label>Girar <input className="input input-sm" inputMode="decimal" aria-label="Graus" value={deg} onChange={(e) => setDeg(e.target.value)} onKeyDown={(e) => e.stopPropagation()} /> °</label>
+        <button type="button" className="btn btn-sm" data-testid="group-rot-left" onClick={() => apply({ rotate: -dg })}>⟲</button>
+        <button type="button" className="btn btn-sm" data-testid="group-rot-right" onClick={() => apply({ rotate: dg })}>⟳</button></div>
+      <div className="gc-row"><label>Escalar <input className="input input-sm" inputMode="decimal" aria-label="Porcentagem" value={pct} onChange={(e) => setPct(e.target.value)} onKeyDown={(e) => e.stopPropagation()} /> %</label>
+        <button type="button" className="btn btn-sm" data-testid="group-shrink" onClick={() => apply({ scale: 1 - pc / 100 })}>−</button>
+        <button type="button" className="btn btn-sm" data-testid="group-grow" onClick={() => apply({ scale: 1 + pc / 100 })}>+</button></div>
+      <p className="hint">Teclado: setas movem (Shift: 10 px), Ctrl+A seleciona tudo, Ctrl+D duplica, Delete exclui.</p>
+    </div>
+  );
+}

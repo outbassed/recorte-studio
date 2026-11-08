@@ -744,3 +744,11 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
 /* Celular: o estado de salvamento vira só o ícone (o texto continua para leitores de tela). */
 @media (max-width: 480px) { .topbar.is-compact .save-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } .topbar.is-compact .save-badge { padding: 2px 4px; } }
 @media (max-width: 345px) { .topbar.is-compact [data-testid='redo'] { display: none; } }
+.m-quick .chip.is-danger { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 50%, var(--line-2)); }
+.studio-svg:focus-visible { outline: 2px solid var(--accent-2); outline-offset: -2px; }
+.group-controls { display: grid; gap: 8px; }
+.gc-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.gc-row label { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2); }
+.gc-row .input { width: 64px; text-align: right; }
+.gc-pad { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.gc-pad .btn, .gc-row .btn { min-width: 40px; min-height: 36px; }
