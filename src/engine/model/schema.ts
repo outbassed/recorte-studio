@@ -193,6 +193,8 @@ export const RigSchema = z.object({
   headNod: finite.default(0),
   bodyY: finite.default(0),
   sit: finite.default(0),
+  /** Respiração (0–1): expansão sutil do tronco, usada pelo movimento secundário. */
+  breath: finite.default(0),
 });
 export type Rig = z.infer<typeof RigSchema>;
 export type RigKey = keyof Rig;
@@ -211,6 +213,27 @@ export const GazeSchema = z.object({
 });
 export type Gaze = z.infer<typeof GazeSchema>;
 
+/** Movimento secundário: vida sutil e determinística (função do tempo). */
+export const SecondaryMotionSchema = z.object({
+  enabled: z.boolean().default(false),
+  breathing: finite.default(0.6),
+  headSway: finite.default(0.5),
+  eyeDarts: finite.default(0.5),
+  posture: finite.default(0.4),
+});
+export type SecondaryMotion = z.infer<typeof SecondaryMotionSchema>;
+
+/** Profundidade dos membros em relação à cabeça. Esquerda/direita = lados do personagem. */
+export const LimbDepthModeSchema = z.enum(['auto', 'front', 'behind']);
+export type LimbDepthMode = z.infer<typeof LimbDepthModeSchema>;
+export const LimbDepthSchema = z.object({
+  armL: LimbDepthModeSchema.default('auto'),
+  handL: LimbDepthModeSchema.default('auto'),
+  armR: LimbDepthModeSchema.default('auto'),
+  handR: LimbDepthModeSchema.default('auto'),
+});
+export type LimbDepth = z.infer<typeof LimbDepthSchema>;
+
 export const CharacterNodeSchema = z.object({
   ...baseNode,
   kind: z.literal('character'),
@@ -226,7 +249,9 @@ export const CharacterNodeSchema = z.object({
   rig: RigSchema.prefault({}),
   handL: z.enum(['open', 'fist', 'point']).default('open'),
   handR: z.enum(['open', 'fist', 'point']).default('open'),
+  limbDepth: LimbDepthSchema.prefault({}),
   appearanceOverrides: AppearanceOverridesSchema,
+  secondary: SecondaryMotionSchema.prefault({}),
 });
 export type CharacterNode = z.infer<typeof CharacterNodeSchema>;
 
@@ -239,6 +264,12 @@ export const PropNodeSchema = z.object({
   state: z.string().default(''),
   /** Personagem que segura o objeto: "nodeId:L" ou "nodeId:R". */
   heldBy: z.string().default(''),
+  /** Objeto montado com animação própria: '' = a padrão do objeto, 'static' = desenho estático, ou o ID da animação. */
+  clip: z.string().default(''),
+  /** Velocidade da animação própria nesta instância (1 = normal). */
+  clipSpeed: finite.default(1),
+  /** Defasagem da animação própria nesta instância, em ms (instâncias iguais começam em pontos diferentes). */
+  clipOffsetMs: finite.default(0),
 });
 export type PropNode = z.infer<typeof PropNodeSchema>;
 
@@ -343,6 +374,8 @@ export const ActionClipSchema = z.object({
   /** Lado do braço para gestos: auto escolhe o braço voltado ao alvo. */
   side: z.enum(['auto', 'L', 'R']).default('auto'),
   easing: EasingSchema.default('easeInOut'),
+  /** Transição de entrada e saída; ausente usa o padrão da ação. */
+  blendMs: z.number().int().min(0).max(5000).optional(),
 });
 export type ActionClip = z.infer<typeof ActionClipSchema>;
 
@@ -436,7 +469,7 @@ export type DialogueTrack = z.infer<typeof DialogueTrackSchema>;
 export const AudioTrackSchema = z.object({
   ...trackBase,
   type: z.literal('audio'),
-  role: z.enum(['dialogue', 'voice', 'music', 'sfx']).default('sfx'),
+  role: z.enum(['dialogue', 'voice', 'music', 'sfx', 'ambient']).default('sfx'),
   clips: z.array(AudioClipSchema).default([]),
 });
 export type AudioTrack = z.infer<typeof AudioTrackSchema>;
@@ -482,6 +515,8 @@ export const BackgroundSchema = z.object({
   parallax: finite.default(0.55),
   blur: finite.default(0),
   transparent: z.boolean().default(false),
+  /** Horário de um cenário personalizado (presetId = "custom:<id>"). */
+  timeOfDay: z.enum(['morning', 'day', 'afternoon', 'sunset', 'night']).optional(),
 });
 export type Background = z.infer<typeof BackgroundSchema>;
 
@@ -540,8 +575,144 @@ export const AssetSchema = z.object({
   /** Picos normalizados (0–1) a cada PEAK_WINDOW_MS, para onda e lip-sync. */
   peaks: z.array(finite).optional(),
   createdAt: z.number().default(0),
+  /** Biblioteca de áudio: voz, música, efeitos ou ambiente. */
+  category: z.enum(['voice', 'music', 'sfx', 'ambient']).optional(),
+  /** SHA-256 do conteúdo, quando conhecido. */
+  hash: z.string().optional(),
 });
 export type Asset = z.infer<typeof AssetSchema>;
+
+export const TIMES_OF_DAY = ['morning', 'day', 'afternoon', 'sunset', 'night'] as const;
+export type TimeOfDay = (typeof TIMES_OF_DAY)[number];
+
+
+
+/* ---------- 1.2: peças 2D (Criador de Objetos e Criador de Cenários) ---------- */
+/** Personagem estático: cópia congelada da aparência e da pose, imune a mudanças no elenco. */
+export const StaticCharacterSchema = z.object({
+  def: CharacterDefinitionSchema,
+  sourceId: z.string().optional(),
+  view: ViewIdSchema.default('front'),
+  expression: z.string().default('neutral'),
+  poseId: z.string().default('idle'),
+  rig: RigSchema.prefault({}),
+  handL: z.enum(['open', 'fist', 'point']).default('open'),
+  handR: z.enum(['open', 'fist', 'point']).default('open'),
+  limbDepth: LimbDepthSchema.prefault({}),
+});
+export type StaticCharacter = z.infer<typeof StaticCharacterSchema>;
+
+export const PieceKindSchema = z.enum(['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line', 'image', 'prop', 'object', 'character', 'text']);
+export type PieceKind = z.infer<typeof PieceKindSchema>;
+export const PieceSchema = z.object({
+  id: z.string(),
+  name: z.string().default('Peça'),
+  kind: PieceKindSchema,
+  x: finite.default(0),
+  y: finite.default(0),
+  /** Largura e altura (formas e imagens). Para objetos e personagens, use `scale`. */
+  w: finite.default(120),
+  h: finite.default(120),
+  scale: finite.default(1),
+  rotation: finite.default(0),
+  flipX: z.boolean().default(false),
+  flipY: z.boolean().default(false),
+  opacity: finite.default(1),
+  fill: z.string().default('#f2a65a'),
+  stroke: z.string().default('#23202b'),
+  strokeWidth: finite.default(4),
+  radius: finite.default(0),
+  sides: z.number().int().min(3).max(12).default(6),
+  assetId: z.string().optional(),
+  /** Objeto nativo (prop) ou objeto personalizado (object). */
+  refId: z.string().optional(),
+  colorA: z.string().default(''),
+  colorB: z.string().default(''),
+  state: z.string().default(''),
+  character: StaticCharacterSchema.optional(),
+  /** Peça de texto (criadores): conteúdo e estilo ficam estruturados e editáveis; cor = fill, contorno = stroke. */
+  text: z.string().max(500).default(''),
+  fontFamily: z.enum(['sans', 'serif', 'hand', 'mono']).default('sans'),
+  fontSize: finite.default(64),
+  fontWeight: z.enum(['400', '700', '900']).default('700'),
+  italic: z.boolean().default(false),
+  align: z.enum(['start', 'middle', 'end']).default('middle'),
+  letterSpacing: finite.default(0),
+  group: z.string().optional(),
+  visible: z.boolean().default(true),
+});
+export type Piece = z.infer<typeof PieceSchema>;
+
+/** Quadro de uma animação do objeto: desenho completo (peças) e duração própria. */
+export const ObjectFrameSchema = z.object({
+  id: z.string(),
+  durationMs: z.number().int().min(20).max(10_000).default(120),
+  pieces: z.array(PieceSchema).max(400).default([]),
+});
+export type ObjectFrame = z.infer<typeof ObjectFrameSchema>;
+
+export const CLIP_MODES = ['loop', 'once', 'pingpong'] as const;
+export const ObjectClipSchema = z.object({
+  id: z.string(),
+  name: z.string().default('Animação'),
+  /** loop = repete; once = toca uma vez e para no último quadro; pingpong = vai e volta. */
+  mode: z.enum(CLIP_MODES).default('loop'),
+  frames: z.array(ObjectFrameSchema).max(240).default([]),
+});
+export type ObjectClip = z.infer<typeof ObjectClipSchema>;
+
+export const CustomObjectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  /** Caixa do objeto: origem no centro da base (como os objetos nativos). */
+  width: finite.default(200),
+  height: finite.default(200),
+  pivotX: finite.default(0),
+  pivotY: finite.default(0),
+  pieces: z.array(PieceSchema).default([]),
+  /** Animações internas (quadros), salvas no objeto e reaproveitadas em toda instância. Vazio = objeto estático. */
+  clips: z.array(ObjectClipSchema).max(16).default([]),
+  /** Animação que toca ao inserir ('' = desenho estático). */
+  defaultClip: z.string().default(''),
+  createdAt: z.number().default(0),
+  updatedAt: z.number().default(0),
+});
+export type CustomObject = z.infer<typeof CustomObjectSchema>;
+
+/** Composição editável de um horário do cenário (coordenadas do mundo). */
+export const CompositionSchema = z.object({
+  sky: z.string().default('#9fd3f0'),
+  pieces: z.array(PieceSchema).default([]),
+});
+export type Composition = z.infer<typeof CompositionSchema>;
+
+export const CustomVariantSchema = z.object({
+  assetId: z.string(),
+  fit: z.enum(['cover', 'contain']).default('cover'),
+});
+
+/** Cenário do usuário: qualquer subconjunto de horários, cada um com a própria imagem. */
+export const CustomBackgroundSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  variants: z.object({
+    morning: CustomVariantSchema.optional(),
+    day: CustomVariantSchema.optional(),
+    afternoon: CustomVariantSchema.optional(),
+    sunset: CustomVariantSchema.optional(),
+    night: CustomVariantSchema.optional(),
+  }).prefault({}),
+  /** 1.2: composições editáveis por horário (Criador de Cenários). Têm prioridade sobre a imagem. */
+  compositions: z.object({
+    morning: CompositionSchema.optional(),
+    day: CompositionSchema.optional(),
+    afternoon: CompositionSchema.optional(),
+    sunset: CompositionSchema.optional(),
+    night: CompositionSchema.optional(),
+  }).prefault({}),
+  createdAt: z.number().default(0),
+});
+export type CustomBackground = z.infer<typeof CustomBackgroundSchema>;
 
 export const SettingsSchema = z.object({
   width: z.number().int().min(16).default(1920),
@@ -567,6 +738,9 @@ export const ProjectSchema = z.object({
   scenes: z.record(z.string(), SceneSchema),
   characters: z.record(z.string(), CharacterDefinitionSchema).default({}),
   assets: z.record(z.string(), AssetSchema).default({}),
+  customBackgrounds: z.record(z.string(), CustomBackgroundSchema).default({}),
+  /** 1.2: objetos do Criador de Objetos. */
+  customObjects: z.record(z.string(), CustomObjectSchema).default({}),
   currentSceneId: z.string().nullable().default(null),
   metadata: z
     .object({

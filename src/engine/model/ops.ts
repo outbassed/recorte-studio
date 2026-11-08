@@ -10,6 +10,7 @@ import { poseRig, getPose } from '../character/presets';
 import { FLOOR_Y, getBackground } from '../world/backgrounds';
 import { createCharacterNode, createGroupNode, createKeyframe, createPropNode, createScene, ensureBuiltinCharacter } from './factory';
 import { deepClone, uid } from './ids';
+import { decompose, IDENTITY, invert, mul, worldMatrix } from './hierarchy';
 import { getPath, setPath, type PropertyDef, clampToDef, getPropertyDef } from './properties';
 import {
   ActionClipSchema, AudioClipSchema, CAMERA_TARGET, DialogueClipSchema, EffectClipSchema, SubtitleClipSchema, frameSize, type ActionClip, type AnyClip, type AudioTrack,
@@ -272,18 +273,24 @@ export function groupNodes(scene: Scene, ids: string[], name = 'Grupo'): string 
 export function ungroup(scene: Scene, groupId: string): string[] {
   const group = scene.nodes[groupId];
   if (!group || group.kind !== 'group') return [];
-  const idx = scene.layerOrder.indexOf(groupId);
-  const kids = [...group.children];
-  scene.layerOrder.splice(idx, 1, ...kids);
+  const kids = group.children.filter((k) => scene.nodes[k]);
+  // Mantém cada filho EXATAMENTE onde estava no mundo (matrizes 2D com pivô), mesmo com o grupo girado ou escalado.
+  const worlds = new Map(kids.map((k) => [k, worldMatrix(scene, k)]));
+  const outer = group.parentId ? scene.nodes[group.parentId] : undefined;
+  const outerW = outer ? worldMatrix(scene, outer.id) : IDENTITY;
+  if (outer?.kind === 'group') {
+    // Grupo dentro de grupo: os filhos sobem um nível, no lugar do grupo desfeito.
+    const i = outer.children.indexOf(groupId);
+    outer.children.splice(i < 0 ? outer.children.length : i, i < 0 ? 0 : 1, ...kids);
+  } else {
+    const idx = scene.layerOrder.indexOf(groupId);
+    if (idx >= 0) scene.layerOrder.splice(idx, 1, ...kids);
+    else scene.layerOrder.push(...kids);
+  }
   for (const k of kids) {
-    const child = scene.nodes[k];
-    if (!child) continue;
-    child.parentId = null;
-    child.transform.x += group.transform.x;
-    child.transform.y += group.transform.y;
-    child.transform.scaleX *= group.transform.scaleX;
-    child.transform.scaleY *= group.transform.scaleY;
-    child.transform.rotationDeg += group.transform.rotationDeg;
+    const child = scene.nodes[k]!;
+    child.parentId = outer?.kind === 'group' ? outer.id : null;
+    Object.assign(child.transform, decompose(mul(invert(outerW), worlds.get(k)!), child.transform.pivotX, child.transform.pivotY));
   }
   delete scene.nodes[groupId];
   scene.tracks = scene.tracks.filter((t) => !((t.type === 'property' || t.type === 'action') && t.targetNodeId === groupId));
@@ -408,7 +415,7 @@ export function getOrCreateDialogueTrack(scene: Scene, nodeId: string) {
 }
 
 export function addAudioTrack(scene: Scene, role: AudioTrack['role']): AudioTrack {
-  const label = { dialogue: 'Diálogo', voice: 'Voz', music: 'Música', sfx: 'Efeitos sonoros' }[role];
+  const label = { dialogue: 'Diálogo', voice: 'Voz', music: 'Música', sfx: 'Efeitos sonoros', ambient: 'Ambiente' }[role];
   const track: AudioTrack = { id: uid('track'), name: label, type: 'audio', role, enabled: true, locked: false, muted: false, solo: false, clips: [] };
   scene.tracks.push(track);
   return track;
@@ -715,6 +722,7 @@ export function applyPose(node: CharacterNode, poseId: string): void {
   node.rig = poseRig(poseId);
   node.handL = pose.handL ?? 'open';
   node.handR = pose.handR ?? 'open';
+  node.limbDepth = { armL: 'auto', handL: 'auto', armR: 'auto', handR: 'auto', ...(pose.limbDepth ?? {}) };
 }
 
 /* ------------------------------ Biblioteca do projeto ------------------------------ */
@@ -780,4 +788,107 @@ export function countSceneActions(scene: Scene): number {
   let c = 0;
   for (const t of scene.tracks) c += t.type === 'property' ? t.keyframes.length : t.clips.length;
   return c;
+}
+
+/* ------------------------------ Sequências e câmera ------------------------------ */
+
+export interface SequenceItem {
+  kind: 'action' | 'dialogue';
+  offsetMs: number;
+  durationMs: number;
+  action?: string;
+  intensity?: number;
+  speed?: number;
+  side?: 'auto' | 'L' | 'R';
+  blendMs?: number;
+  text?: string;
+  bubbleStyle?: string;
+}
+export interface Sequence { version: 1; items: SequenceItem[]; durationMs: number }
+
+/** Copia as ações e falas de um personagem como sequência relativa, reaproveitável. */
+export function extractSequence(scene: Scene, nodeId: string): Sequence | null {
+  const items: SequenceItem[] = [];
+  for (const t of scene.tracks) {
+    if (t.type === 'action' && t.targetNodeId === nodeId) for (const c of t.clips) items.push({ kind: 'action', offsetMs: c.startMs, durationMs: c.durationMs, action: c.action, intensity: c.intensity, speed: c.speed, side: c.side, blendMs: c.blendMs });
+    if (t.type === 'dialogue' && t.targetNodeId === nodeId) for (const c of t.clips) items.push({ kind: 'dialogue', offsetMs: c.startMs, durationMs: c.durationMs, text: c.text, bubbleStyle: c.bubbleStyle });
+  }
+  if (items.length === 0) return null;
+  const start = Math.min(...items.map((i) => i.offsetMs));
+  for (const i of items) i.offsetMs -= start;
+  items.sort((a, b) => a.offsetMs - b.offsetMs);
+  return { version: 1, items, durationMs: Math.max(...items.map((i) => i.offsetMs + i.durationMs)) };
+}
+
+/** Aplica uma sequência a qualquer personagem, a partir de um tempo. Gera clips normais. */
+export function applySequence(scene: Scene, nodeId: string, seq: Sequence, atMs: number): number {
+  let count = 0;
+  for (const it of seq.items) {
+    const start = Math.max(0, Math.round(atMs + it.offsetMs));
+    if (it.kind === 'dialogue') {
+      addDialogue(scene, nodeId, it.text ?? '', start, it.durationMs, { bubbleStyle: it.bubbleStyle ?? 'speech' });
+    } else if (it.action && getAction(it.action)) {
+      const clip = addActionClip(scene, nodeId, it.action, start, it.durationMs, { intensity: it.intensity, speed: it.speed, side: it.side });
+      if (it.blendMs !== undefined) clip.blendMs = it.blendMs;
+    } else continue;
+    count++;
+  }
+  extendToFit(scene, atMs + seq.durationMs);
+  return count;
+}
+
+export type FramingPreset = 'wide' | 'medium' | 'close' | 'two-shot';
+export const FRAMING_PRESETS: Array<{ id: FramingPreset; label: string; needs: 0 | 1 | 2 }> = [
+  { id: 'wide', label: 'Plano geral', needs: 0 },
+  { id: 'medium', label: 'Plano médio', needs: 1 },
+  { id: 'close', label: 'Close no rosto', needs: 1 },
+  { id: 'two-shot', label: 'Dois personagens', needs: 2 },
+];
+
+/**
+ * Enquadra a câmera (X, Y e zoom coerentes) num tempo. Com duração > 0 faz um
+ * movimento suave a partir do enquadramento atual; com 0 é um corte seco.
+ */
+export function frameCamera(project: Project, scene: Scene, preset: FramingPreset, targets: string[], atMs: number, durationMs = 0): boolean {
+  const fh = 1080;
+  const nodeBox = (id: string) => {
+    const n = scene.nodes[id];
+    if (!n) return null;
+    const x = readProperty(scene, id, 'transform.x', atMs) as number;
+    const y = readProperty(scene, id, 'transform.y', atMs) as number;
+    const s = Math.abs(n.transform.scaleY);
+    const def = n.kind === 'character' ? project.characters[n.characterId] : undefined;
+    const h = (def ? 600 * def.body.height * (def.body.age === 'child' ? 0.72 : 1) : 300) * s;
+    return { x, top: y - h, bottom: y, headY: y - h * 0.78, h };
+  };
+  let cam: { x: number; y: number; zoom: number };
+  if (preset === 'wide') cam = { x: 0, y: 0, zoom: 1 };
+  else if (preset === 'two-shot') {
+    const a = nodeBox(targets[0] ?? '');
+    const b = nodeBox(targets[1] ?? '');
+    if (!a || !b) return false;
+    const fw = frameSize(project.settings).w;
+    const width = Math.abs(a.x - b.x) + 520;
+    const zoom = Math.max(0.6, Math.min(2.2, Math.min(fw / width, fh / (Math.max(a.h, b.h) * 1.35))));
+    cam = { x: (a.x + b.x) / 2, y: (Math.min(a.top, b.top) + Math.max(a.bottom, b.bottom)) / 2, zoom };
+  } else {
+    const a = nodeBox(targets[0] ?? '');
+    if (!a) return false;
+    if (preset === 'medium') cam = { x: a.x, y: a.top + a.h * 0.45, zoom: Math.max(1, Math.min(3, fh / (a.h * 0.95))) };
+    else cam = { x: a.x, y: a.headY, zoom: Math.max(1.4, Math.min(5, fh / (a.h * 0.42))) };
+  }
+  const t = Math.max(0, Math.round(atMs));
+  for (const [path, value] of [['x', cam.x], ['y', cam.y], ['zoom', cam.zoom]] as const) {
+    const track = ensurePropertyTrack(scene, CAMERA_TARGET, path);
+    if (durationMs > 0) {
+      setKeyframe(track, t, readProperty(scene, CAMERA_TARGET, path, t) as number, { interpolation: 'bezier', easing: 'easeInOut' });
+      setKeyframe(track, t + durationMs, value, { interpolation: 'bezier', easing: 'easeInOut' });
+    } else {
+      // Corte: segura o valor anterior até o instante e troca de uma vez.
+      if (t > 0 && !track.keyframes.some((k) => k.timeMs < t)) setKeyframe(track, 0, readProperty(scene, CAMERA_TARGET, path, 0) as number, { interpolation: 'hold' });
+      setKeyframe(track, t, value, { interpolation: 'hold' });
+    }
+  }
+  extendToFit(scene, t + durationMs);
+  return true;
 }

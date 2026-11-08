@@ -1,7 +1,7 @@
 /** Exportação: quadro, sequência, vídeo e projeto. Mostra o suporte REAL do navegador. */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { buildMontage } from '@/engine/render/montage';
-import { detectVideoSupport, exportFramePng, exportPngSequence, exportProjectJson, exportProjectPackage, exportVideo, resolveOutputSize, RESOLUTIONS, MAX_EXPORT_DIMENSION, type ExportScope, type VideoSupport } from '@/features/export/pipeline';
+import { detectVideoSupport, exportFramePng, exportPngSequence, exportVideo, resolveOutputSize, RESOLUTIONS, MAX_EXPORT_DIMENSION, type ExportScope, type VideoSupport } from '@/features/export/pipeline';
 import { downloadBlob } from '@/features/projects/session';
 import { useCurrentScene, useProject } from '@/state/projectStore';
 import { transport } from '@/state/transport';
@@ -11,7 +11,7 @@ import { SliderNumberField } from '../controls/SliderNumberField';
 import { Modal } from './Modal';
 import { formatTime } from '../timeline/Timeline';
 
-type Kind = 'video' | 'frame' | 'sequence' | 'project-json' | 'project-zip';
+type Kind = 'video' | 'frame' | 'sequence';
 
 export function ExportDialog() {
   const project = useProject();
@@ -73,14 +73,6 @@ export function ExportDialog() {
         const r = await exportVideo(project, expScope, { format, fps, size, includeAudio: audio, onProgress: setProgress, signal });
         downloadBlob(r.blob, `${file}.${format}`);
         setResult(`Vídeo ${format.toUpperCase()} salvo: ${size.w}×${size.h}, ${r.frames} quadros, ${(r.blob.size / 1048576).toFixed(1).replace('.', ',')} MB, ${r.hasAudio ? 'com áudio' : 'sem áudio'}.${r.warnings.length ? ` ${r.warnings.join(' ')}` : ''}`);
-      } else if (kind === 'project-json') {
-        downloadBlob(exportProjectJson(project), `${file}.recorte.json`);
-        const hasMedia = Object.keys(project.assets).length > 0;
-        setResult(hasMedia ? 'JSON salvo, mas ele NÃO inclui as mídias. Para levar áudio e imagens, use o pacote .zip.' : 'JSON do projeto salvo.');
-      } else {
-        const blob = await exportProjectPackage(project, setProgress);
-        downloadBlob(blob, `${file}.recorte.zip`);
-        setResult('Pacote salvo, com projeto e mídias. Abra em Projetos → Importar em qualquer instalação.');
       }
       toast('Exportação concluída.', 'success');
     } catch (e) {
@@ -97,13 +89,13 @@ export function ExportDialog() {
   const pct = progress ? Math.round((progress.done / Math.max(1, progress.total)) * 100) : 0;
 
   return (
-    <Modal title="Exportar" size="md" testId="export-dialog" onClose={() => { if (!busy) closeDialog(); }}
+    <Modal title="Exportar vídeo ou imagem" size="md" testId="export-dialog" onClose={() => { if (!busy) closeDialog(); }}
       footer={<>
         {busy ? <button type="button" className="btn" data-testid="export-cancel" onClick={() => abort.current?.abort()}>Cancelar</button> : <button type="button" className="btn" onClick={closeDialog}>Fechar</button>}
         <button type="button" className="btn btn-primary" data-testid="export-run" disabled={busy || (kind === 'video' && !canVideo)} onClick={() => void run()}>{busy ? 'Exportando…' : 'Exportar'}</button>
       </>}>
       <SelectField label="O que exportar" value={kind} testId="export-kind" onChange={(v) => setKind(v as Kind)} options={[
-        { id: 'video', label: 'Vídeo' }, { id: 'frame', label: 'Quadro atual (PNG)' }, { id: 'sequence', label: 'Sequência de PNGs (ZIP)' }, { id: 'project-zip', label: 'Projeto com mídias (.zip)' }, { id: 'project-json', label: 'Projeto sem mídias (.json)' },
+        { id: 'video', label: 'Vídeo' }, { id: 'frame', label: 'Quadro atual (PNG)' }, { id: 'sequence', label: 'Sequência de PNGs (ZIP)' },
       ]} />
       <TextField label="Nome do arquivo" value={name} testId="export-name" onChange={setName} />
       {kind === 'video' && (
@@ -147,6 +139,7 @@ export function ExportDialog() {
           </ul>
         </div>
       )}
+      <p className="hint">Para guardar o projeto editável, use <strong>Salvar projeto (.jrec)</strong> na barra superior.</p>
       <p className="hint">Sai apenas o quadro exportável: guias, seleção, réguas e a área escurecida nunca entram no arquivo.</p>
       {progress && (
         <div className="progress" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Progresso da exportação" data-testid="export-progress">

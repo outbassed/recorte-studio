@@ -16,7 +16,8 @@ import { beginGroup, commit, endGroup, useCurrentScene, useProject } from '@/sta
 import { pause, seek, setProjectMode, setRate, stop, togglePlay, transport, useTransport } from '@/state/transport';
 import { openContextMenu, promptDialog, selectCamera, selectNodes, selectTimeline, toast, useUI, type ContextMenuItem } from '@/state/uiStore';
 import { AUDIO_ACCEPT } from '@/features/library/assets';
-import { importAudio } from '@/state/actions';
+import { AUDIO_CATEGORIES, importAudioToLibrary, placeAudioInScene } from '@/state/mediaActions';
+import type { AudioCategory } from '@/features/library/assets';
 import { IconButton, MoreButton } from '../controls/fields';
 import { parseNumberInput } from '../controls/SliderNumberField';
 import { buildMontage } from '@/engine/render/montage';
@@ -58,11 +59,16 @@ function buildRows(scene: Scene, expanded: Record<string, boolean>): Row[] {
     if (isOpen) for (const t of propTracks) rows.push({ kind: 'track', id: t.id, track: t, indent: true });
   };
   pushGroup(CAMERA_TARGET, 'Câmera');
-  for (const id of [...scene.layerOrder].reverse()) {
+  // Elementos dentro de grupos também têm faixas (falas, ações, keyframes): listados logo abaixo do grupo.
+  const seen = new Set<string>();
+  const visit = (id: string, prefix: string, depth: number) => {
     const node = scene.nodes[id];
-    if (node && !node.backgroundOwned) pushGroup(id, node.name);
-    else if (node && byTarget.has(id)) pushGroup(id, node.name);
-  }
+    if (!node || seen.has(id) || depth > 16) return;
+    seen.add(id);
+    if (!node.backgroundOwned || byTarget.has(id)) pushGroup(id, prefix + node.name);
+    if (node.kind === 'group') for (const c of [...node.children].reverse()) visit(c, `${prefix}${node.name} › `, depth + 1);
+  };
+  for (const id of [...scene.layerOrder].reverse()) visit(id, '', 0);
   for (const t of globals) rows.push({ kind: 'track', id: t.id, track: t, indent: false });
   return rows;
 }
@@ -118,6 +124,7 @@ export function Timeline({ compact = false }: { compact?: boolean }) {
   const [viewH, setViewH] = useState(200);
   const interaction = useRef<Interaction | null>(null);
   const audioInput = useRef<HTMLInputElement>(null);
+  const audioCategory = useRef<AudioCategory>('voice');
   const pxPerSec = ui.timelineZoom;
   const labelW = compact ? LABEL_W_MOBILE : LABEL_W_DESKTOP;
 
@@ -332,7 +339,6 @@ export function Timeline({ compact = false }: { compact?: boolean }) {
     const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
     const t = transport.getState().timeMs;
     openContextMenu({ x: r.left, y: r.top - 8, title: 'Adicionar à timeline', items: [
-      { label: 'Áudio (arquivo)…', onSelect: () => audioInput.current?.click() },
       { label: 'Legenda', onSelect: () => commit('Adicionar legenda', (d) => void addSubtitle(sceneOf(d as Project, scene.id), 'Legenda', t, 2000)) },
       { label: 'Efeito: tremor', onSelect: () => commit('Adicionar efeito', (d) => void addEffect(sceneOf(d as Project, scene.id), 'shake', t, 500)) },
       { label: 'Efeito: flash', onSelect: () => commit('Adicionar efeito', (d) => void addEffect(sceneOf(d as Project, scene.id), 'flash', t, 300)) },
@@ -392,11 +398,16 @@ export function Timeline({ compact = false }: { compact?: boolean }) {
           if (!selectedClip) return;
           commit('Cortar clip', (d) => void splitClip(sceneOf(d as Project, scene.id), selectedClip, transport.getState().timeMs));
         }}><Scissors size={16} /></IconButton>
-        <IconButton label="Adicionar à timeline" testId="tl-add" onClick={addMenu}><Plus size={16} /></IconButton>
-        <input ref={audioInput} hidden type="file" accept={AUDIO_ACCEPT} data-testid="audio-input" onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) void importAudio(f, 'voice');
+        <button type="button" className="btn btn-sm tl-audio-btn" data-testid="tl-import-audio" title="Importar áudio e colocar na trilha certa, no tempo da agulha" onClick={(e) => {
+          const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+          openContextMenu({ x: r.left, y: r.top - 8, title: 'Importar áudio como…', items: AUDIO_CATEGORIES.map((c) => ({ label: c.label, onSelect: () => { audioCategory.current = c.id; audioInput.current?.click(); } })) });
+        }}><Music size={14} />{!compact && ' Áudio'}</button>
+        <IconButton label="Adicionar legenda ou efeito" testId="tl-add" onClick={addMenu}><Plus size={16} /></IconButton>
+        <input ref={audioInput} hidden type="file" multiple accept={AUDIO_ACCEPT} data-testid="audio-input" onChange={async (e) => {
+          const files = [...(e.target.files ?? [])];
           e.target.value = '';
+          const assets = await importAudioToLibrary(files, audioCategory.current);
+          for (const a of assets) placeAudioInScene(a.id);
         }} />
       </div>
       {projectMode && <ProjectModeBar />}

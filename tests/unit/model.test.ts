@@ -27,6 +27,8 @@ function twoActorScene(): { p: Project; s: Scene; a: string; b: string } {
   const s = p.scenes[p.sceneOrder[0]!]!;
   const a = addBuiltinToScene(p, s, 'nina', -300)!;
   const b = addBuiltinToScene(p, s, 'zeca', 300)!;
+  // Estes testes isolam as ações: o movimento secundário (novo na 1.1) fica desligado.
+  for (const id of [a, b]) { const n = s.nodes[id]!; if (n.kind === 'character') n.secondary.enabled = false; }
   return { p, s, a, b };
 }
 

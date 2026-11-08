@@ -11,13 +11,25 @@ import { leaveEditor, openProjectById, restoreProjectFromUrl } from './features/
 import { getProjectIdFromUrl, updateProjectsUrl } from './features/projects/urls';
 import { useProjectStore } from './state/projectStore';
 import { toast } from './state/uiStore';
+import { applyPrefs, usePrefs } from './state/prefs';
+import { getProjectIdFromUrl as urlProject } from './features/projects/urls';
+
+applyPrefs();
 
 function App() {
   const screen = useUI((s) => s.screen);
   const [ready, setReady] = useState(false);
   useEffect(() => {
     // Recarregar mantém o projeto indicado no endereço; a raiz abre Meus projetos.
-    void restoreProjectFromUrl().finally(() => setReady(true));
+    void restoreProjectFromUrl()
+      .then(async () => {
+        // Configurações → Geral → Começar em: último projeto (só sem link de projeto no endereço).
+        const p = usePrefs.getState();
+        if (!urlProject() && p.startup === 'last' && p.lastProjectId && !useProjectStore.getState().project) {
+          await openProjectById(p.lastProjectId).catch(() => false);
+        }
+      })
+      .finally(() => setReady(true));
     const onHistoryChange = () => {
       const id = getProjectIdFromUrl();
       const openedId = useProjectStore.getState().project?.id;
@@ -34,6 +46,13 @@ function App() {
       }).catch(() => toast('Não foi possível abrir este projeto.', 'error'));
     };
     window.addEventListener('popstate', onHistoryChange);
+    // PWA: quando uma versão nova assume o controle, oferece recarregar (sem forçar).
+    if ('serviceWorker' in navigator) {
+      const hadController = !!navigator.serviceWorker.controller;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (hadController) toast('Uma versão nova do Recorte Studio foi instalada.', 'info', { label: 'Recarregar', run: () => location.reload() });
+      });
+    }
     // Pede ao navegador para não apagar os projetos sob pressão de espaço.
     void navigator.storage?.persist?.();
     return () => window.removeEventListener('popstate', onHistoryChange);

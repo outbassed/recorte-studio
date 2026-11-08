@@ -23,7 +23,12 @@ export interface CharacterPose {
   face: FaceState;
   handL: 'open' | 'fist' | 'point';
   handR: 'open' | 'fist' | 'point';
+  /** Profundidade de braços e mãos em relação à cabeça (padrão: automática). */
+  limbDepth?: Partial<Record<'armL' | 'handL' | 'armR' | 'handR', 'auto' | 'front' | 'behind'>>;
 }
+
+/** Camada de desenho de um membro dentro do tronco. */
+export type LimbLayer = 'body-behind' | 'head-behind' | 'head-front';
 
 export const AGE_SCALE: Record<string, { body: number; head: number; shoulders: number }> = {
   child: { body: 0.68, head: 0.9, shoulders: 0.72 },
@@ -289,7 +294,7 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
     const rest = bodyV.cls === 'profile' ? 2 : 7;
     return { near, x, side, upperDeg: -side * (upper + rest), lowerDeg: -side * lower };
   };
-  const renderArm = (name: 'L' | 'R'): string => {
+  const renderArm = (name: 'L' | 'R', part: 'all' | 'arm' | 'hand' = 'all', depth = ''): string => {
     const g = armGeom(name);
     const handKind = name === 'L' ? pose.handL : pose.handR;
     const sleeve = info.sleeveColor;
@@ -308,12 +313,20 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
     const watch = acc('watch') && name === 'L'
       ? rect(-m.limbW * 0.6, m.forearm * 0.72, m.limbW * 1.2, 10, `rx="2" fill="${acc('watch')!.color}" stroke="${ink}" stroke-width="2"`)
       : '';
+    const handSvg = hand(0, m.forearm + 2, handKind, g.side * -1 * (bodyV.cls === 'profile' ? 1 : 1), skin, ink, ow, handSize);
+    if (part === 'hand') {
+      // Só a mão, com a mesma cadeia de transformações do braço.
+      return (
+        `<g data-part="hand-${name}" data-depth="${depth}" transform="translate(${n(g.x)} ${n(shoulderY)}) rotate(${n(g.upperDeg)})">` +
+        `<g transform="translate(0 ${n(m.upperArm)}) rotate(${n(g.lowerDeg)})">${handSvg}</g></g>`
+      );
+    }
     return (
-      `<g data-part="arm-${name}" transform="translate(${n(g.x)} ${n(shoulderY)}) rotate(${n(g.upperDeg)})">` +
+      `<g data-part="arm-${name}" data-depth="${depth}" transform="translate(${n(g.x)} ${n(shoulderY)}) rotate(${n(g.upperDeg)})">` +
       upperArm +
       `<g transform="translate(0 ${n(m.upperArm)}) rotate(${n(g.lowerDeg)})">` +
       lowerArm + watch +
-      hand(0, m.forearm + 2, handKind, g.side * -1 * (bodyV.cls === 'profile' ? 1 : 1), skin, ink, ow, handSize) +
+      (part === 'all' ? handSvg : '') +
       `</g></g>`
     );
   };
@@ -472,7 +485,7 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   const headLocalY = -m.torso - m.neck - m.ry * 0.8;
   const hair = renderHair({
     styleId: def.hair.style, color: def.hair.color, highlight: def.hair.highlight, ink, ow,
-    rx: m.rx, ry: m.ry, view: headV,
+    rx: m.rx, ry: m.ry, view: headV, idPrefix: id,
   });
   const ears = renderEars({ def, rx: m.rx, ry: m.ry, view: headV });
   const headD = headOutline(def.face.headShape, m.rx, m.ry, headV);
@@ -496,14 +509,35 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   // ---- ordem por vista ----
   const armLBehind = limbNear(bodyV, 'L') < -0.2;
   const armRBehind = limbNear(bodyV, 'R') < -0.2;
+  const layers = limbLayers({
+    pose, bodyClass: bodyV.cls, far: { L: armLBehind, R: armRBehind },
+    head: { x: 0, y: headLocalY + rig.headNod, rx: m.rx, ry: m.ry },
+    armPoints: (name) => {
+      const g = armGeom(name);
+      const a1 = rad(g.upperDeg);
+      const a2 = rad(g.upperDeg + g.lowerDeg);
+      const sh: Pt = [g.x, shoulderY];
+      const el: Pt = [sh[0] - Math.sin(a1) * m.upperArm, sh[1] + Math.cos(a1) * m.upperArm];
+      const wr: Pt = [el[0] - Math.sin(a2) * m.forearm, el[1] + Math.cos(a2) * m.forearm];
+      const hd: Pt = [el[0] - Math.sin(a2) * (m.forearm + handSize), el[1] + Math.cos(a2) * (m.forearm + handSize)];
+      return { shoulder: sh, elbow: el, wrist: wr, hand: hd, handR: handSize * 1.1 };
+    },
+  });
+  const limbsIn = (layer: LimbLayer) => (['L', 'R'] as const).map((name) => {
+    const l = layers[name];
+    const depth = layer === 'head-front' ? 'front' : layer === 'head-behind' ? 'behind' : 'body';
+    if (l.arm === layer && l.hand === layer) return renderArm(name, 'all', depth);
+    return (l.arm === layer ? renderArm(name, 'arm', depth) : '') + (l.hand === layer ? renderArm(name, 'hand', depth) : '');
+  }).join('');
   const legOrder: Array<'L' | 'R'> = limbNear(bodyV, 'L') <= limbNear(bodyV, 'R') ? ['L', 'R'] : ['R', 'L'];
   const lean = rig.torsoLean + (def.body.age === 'elder' ? (bodyV.facing || 0) * 4 : 0);
 
-  const armsBehind = (armLBehind ? renderArm('L') : '') + (armRBehind ? renderArm('R') : '');
-  const armsFront = (!armLBehind ? renderArm('L') : '') + (!armRBehind ? renderArm('R') : '');
+  const armsBehind = limbsIn('body-behind');
+  const armsFront = limbsIn('head-behind');
+  const armsOverHead = limbsIn('head-front');
 
   const torsoGroup =
-    `<g data-part="torso-group" transform="translate(0 ${n(hipY)}) rotate(${n(lean)})">` +
+    `<g data-part="torso-group" transform="translate(0 ${n(hipY)}) rotate(${n(lean)})${rig.breath ? ` scale(${(1 + 0.006 * rig.breath).toFixed(4)} ${(1 + 0.014 * rig.breath).toFixed(4)})` : ''}">` +
     (hair.backBehindBody ? `<g transform="translate(0 ${n(headLocalY + rig.headNod)})">${hair.backBehindBody}</g>` : '') +
     armsBehind +
     pelvis +
@@ -512,6 +546,7 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
     (hair.backOverBody ? `<g transform="translate(0 ${n(headLocalY + rig.headNod)})">${hair.backOverBody}</g>` : '') +
     armsFront +
     headGroup +
+    armsOverHead +
     `</g>`;
 
   const legs = renderLeg(legOrder[0]!) + renderLeg(legOrder[1]!);
@@ -616,6 +651,53 @@ function renderHeadAccessories(def: CharacterDefinition, view: ViewInfo, m: Body
       out += rect(-rx * 0.72, headTopY - ry * 0.9, rx * 1.44, ry * 0.9 + 6, `rx="5" fill="${c}" ${stroke}`);
       out += rect(-rx * 0.72, headTopY - 26, rx * 1.44, 20, `fill="${shade(c, 0.5)}" ${stroke}`);
     }
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------------ */
+/* Profundidade contextual de braços e mãos                             */
+/* ------------------------------------------------------------------ */
+interface LimbLayerInput {
+  pose: CharacterPose;
+  bodyClass: string;
+  /** Braço do lado de trás do corpo (perfil, costas, 3/4 distante). */
+  far: Record<'L' | 'R', boolean>;
+  head: { x: number; y: number; rx: number; ry: number };
+  armPoints: (name: 'L' | 'R') => { shoulder: Pt; elbow: Pt; wrist: Pt; hand: Pt; handR: number };
+}
+
+const insideEllipse = (p: Pt, e: { x: number; y: number; rx: number; ry: number }, grow = 0) =>
+  ((p[0] - e.x) / (e.rx + grow)) ** 2 + ((p[1] - e.y) / (e.ry + grow)) ** 2 <= 1;
+
+/** O segmento a→b passa por dentro da elipse? (amostrado; suficiente para membros). */
+function segmentHits(a: Pt, b: Pt, e: { x: number; y: number; rx: number; ry: number }): boolean {
+  for (let i = 0; i <= 8; i++) {
+    const t = i / 8;
+    if (insideEllipse([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t], e)) return true;
+  }
+  return false;
+}
+
+/**
+ * Decide em que camada cada braço e cada mão é desenhado:
+ * atrás do corpo, entre o corpo e a cabeça, ou na frente da cabeça.
+ * Automático: um membro do lado de cá do corpo que cruza a cabeça (vitória, mão no rosto,
+ * aceno alto) fica na frente dela; nas costas a cabeça fica na frente. Manual sempre vence.
+ */
+export function limbLayers(i: LimbLayerInput): Record<'L' | 'R', { arm: LimbLayer; hand: LimbLayer }> {
+  const out = {} as Record<'L' | 'R', { arm: LimbLayer; hand: LimbLayer }>;
+  for (const name of ['L', 'R'] as const) {
+    const pts = i.armPoints(name);
+    const back = i.bodyClass === 'back';
+    const armHits = segmentHits(pts.shoulder, pts.elbow, i.head) || segmentHits(pts.elbow, pts.wrist, i.head);
+    const handHits = insideEllipse(pts.hand, i.head, pts.handR);
+    const autoArm: LimbLayer = i.far[name] ? 'body-behind' : !back && armHits ? 'head-front' : 'head-behind';
+    const autoHand: LimbLayer = i.far[name] ? 'body-behind' : !back && (handHits || armHits) ? 'head-front' : 'head-behind';
+    const pick = (mode: 'auto' | 'front' | 'behind' | undefined, auto: LimbLayer): LimbLayer =>
+      mode === 'front' ? 'head-front' : mode === 'behind' ? (auto === 'body-behind' ? 'body-behind' : 'head-behind') : auto;
+    const d = i.pose.limbDepth ?? {};
+    out[name] = { arm: pick(d[`arm${name}`], autoArm), hand: pick(d[`hand${name}`], autoHand) };
   }
   return out;
 }

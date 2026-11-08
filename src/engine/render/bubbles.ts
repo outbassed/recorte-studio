@@ -7,7 +7,14 @@ export function wrapText(text: string, maxChars: number): string[] {
   const lines: string[] = [];
   for (const raw of text.split('\n')) {
     let line = '';
-    for (const word of raw.split(/\s+/)) {
+    const words = raw.split(/\s+/).flatMap((w) => {
+      if (w.length <= maxChars) return [w];
+      // Palavra maior que a linha: quebra com hífen em pedaços que cabem.
+      const parts: string[] = [];
+      for (let i = 0; i < w.length; i += maxChars - 1) parts.push(i + maxChars - 1 < w.length ? `${w.slice(i, i + maxChars - 1)}-` : w.slice(i));
+      return parts;
+    });
+    for (const word of words) {
       if (!word) continue;
       const next = line ? `${line} ${word}` : word;
       if (next.length > maxChars && line) {
@@ -44,9 +51,14 @@ export function bubbleLayout(o: {
   text: string; style: string; scale: number; offsetX: number; offsetY: number; frameW: number; frameH: number;
   headX: number; headY: number; headR: number;
 }): BubbleLayout {
-  const fontSize = 38 * o.scale;
-  const maxChars = Math.max(10, Math.floor(((o.frameW * 0.62) / fontSize) / CHAR_W));
-  const lines = wrapText(o.text, Math.min(maxChars, 26));
+  let fontSize = 38 * o.scale;
+  let lines: string[] = [];
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const maxChars = Math.max(8, Math.min(Math.floor(((o.frameW * 0.62) / fontSize) / CHAR_W), Math.round(26 * (38 * o.scale) / fontSize)));
+    lines = wrapText(o.text, maxChars);
+    if (lines.length * fontSize * 1.22 + fontSize * 1.1 <= o.frameH * 0.55) break;
+    fontSize *= 0.85;
+  }
   const longest = Math.max(...lines.map((l) => l.length), 1);
   const w = longest * fontSize * CHAR_W + fontSize * 1.6;
   const h = lines.length * fontSize * 1.22 + fontSize * 1.1;

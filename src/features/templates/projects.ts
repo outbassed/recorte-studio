@@ -6,11 +6,16 @@ import { ProjectSchema, type Project } from '@/engine/model/schema';
 import { buildTemplateScene } from './scenes';
 import { Builder } from './scenes';
 import { applyBackground } from '@/engine/model/ops';
+import { SHOWCASE_TEMPLATES } from './showcase';
 
 export interface ProjectTemplate {
   id: string;
   name: string;
   description: string;
+  /** Formatos (prontos para editar), Ambientes (cenários completos) ou Técnicos (demonstram recursos). */
+  category?: 'Formatos' | 'Ambientes' | 'Técnicos';
+  /** Texto curto "O que testar neste modelo". */
+  whatToTest?: string[];
   aspect: string;
   width: number;
   height: number;
@@ -81,6 +86,7 @@ export const PROJECT_TEMPLATES: ProjectTemplate[] = [
     id: 'abertura', name: 'Abertura e encerramento', description: 'Vinhetas de entrada e saída para o seu canal.', aspect: '16:9', width: 1920, height: 1080,
     build: fromTemplates(['abertura', 'encerramento']),
   },
+  ...SHOWCASE_TEMPLATES,
 ];
 
 export function createFromProjectTemplate(id: string, title?: string): Project {

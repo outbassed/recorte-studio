@@ -1,5 +1,6 @@
 /** Modal acessível: trap de foco, Esc fecha, foco volta ao elemento de origem. */
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { IconButton } from '../controls/fields';
 
@@ -14,7 +15,9 @@ export function Modal({ title, onClose, children, size = 'md', testId, footer }:
     ref.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
     return () => previous?.focus?.();
   }, []);
-  return (
+  // Portal no <body>: um ancestral com transform/filter (ex.: cartão com :hover) transformaria o
+  // position:fixed em "relativo ao ancestral" e o modal oscilaria junto com o :hover.
+  return createPortal(
     <div className="modal-back" onPointerDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
       <div
         ref={ref}
@@ -48,6 +51,7 @@ export function Modal({ title, onClose, children, size = 'md', testId, footer }:
         <div className="modal-body">{children}</div>
         {footer && <footer className="modal-foot">{footer}</footer>}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

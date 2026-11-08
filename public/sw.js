@@ -1,7 +1,8 @@
 /* Recorte Studio: instalação e uso offline dos arquivos do aplicativo.
    Os projetos continuam salvos no IndexedDB do navegador. */
 const CACHE_PREFIX = 'recorte-studio-pwa-';
-const CACHE_NAME = CACHE_PREFIX + '2';
+// Substituído no build por um ID do conteúdo (vite.config.ts → pwaCacheVersion).
+const CACHE_NAME = CACHE_PREFIX + 'dev';
 const APP_ROOT = new URL(self.registration.scope);
 const SHELL = [
   './',
@@ -11,11 +12,18 @@ const SHELL = [
   './icon-192.png',
   './icon-512.png',
 ];
+// Leitor de .7z/.rar/.tar.xz/.tar.bz2 (WebAssembly) e imagens do manual: precisam existir offline
+// mesmo que nunca tenham sido usados com conexão. Falha em um deles não impede a instalação.
+const OPTIONAL = [
+  './vendor/libarchive/worker-bundle.js',
+  './vendor/libarchive/libarchive.wasm',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     await cache.addAll(SHELL);
+    await Promise.allSettled(OPTIONAL.map((url) => cache.add(url)));
 
     // O Vite gera um nome com hash para o JavaScript. Descobri-lo no HTML
     // garante que a primeira instalação já tenha a interface disponível offline.
@@ -68,7 +76,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   const path = url.pathname.slice(APP_ROOT.pathname.length);
-  const isAppAsset = path.startsWith('assets/')
+  const isAppAsset = path.startsWith('assets/') || path.startsWith('vendor/')
     || /^(?:manifest\.webmanifest|favicon\.svg|icon-(?:192|512)\.png)$/.test(path);
   if (!isAppAsset) return; // Não guardar respostas de APIs e serviços externos.
 

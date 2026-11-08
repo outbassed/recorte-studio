@@ -1,12 +1,12 @@
-# Recorte Studio 1.0
+# Recorte Studio 1.2
 
-Editor de animação narrativa 2D com personagens de recorte: cenas, camadas, timeline com keyframes, áudio, lip-sync básico e exportação de vídeo. Roda no navegador, funciona offline e guarda tudo localmente. É 100% 2D: não há WebGL nem malhas 3D.
+Editor de animação narrativa 2D com personagens de recorte: cenas, camadas, timeline simples e avançada, keyframes, áudio, lip-sync básico, Criador de Personagens, de Objetos e de Cenários e exportação de vídeo. Roda no navegador, funciona offline e guarda tudo localmente. É 100% 2D: não há WebGL nem malhas 3D.
 
 ![Editor](docs/capturas/tela-1920x1080.png)
 
 ## Como abrir
 
-**Só usar:** abra `dist/index.html` com dois cliques no Chrome ou Edge. Não precisa instalar nada.
+**Só usar:** publique `dist/` em qualquer hospedagem estática (Vercel, por exemplo) ou rode `npm run preview`. Também abre com dois cliques em `dist/index.html`, com estas limitações: sem modo offline instalável (service worker) e sem importação de .7z/.rar/.tar.xz/.tar.bz2, que usam um worker WebAssembly.
 
 **Desenvolver** (requer Node 22.12 ou mais novo; testado no 24):
 
@@ -48,6 +48,12 @@ npm run typecheck
 npm run shots
 ```
 
+Para refazer as capturas do manual (public/manual) e as marcações medidas:
+
+```bash
+npm run manual:shots
+```
+
 Os testes E2E usam o Chrome instalado no sistema (`channel: 'chrome'`) e `ffprobe`/`ffmpeg` no PATH para inspecionar os vídeos exportados. Resultados registrados em [docs/TESTES.md](docs/TESTES.md).
 
 ## Fluxo em cinco minutos
@@ -60,6 +66,15 @@ Os testes E2E usam o Chrome instalado no sistema (`channel: 'chrome'`) e `ffprob
 6. **Exportar:** quadro PNG, sequência de PNGs, vídeo WebM (e MP4, quando o navegador tem H.264) ou pacote do projeto com mídias.
 
 Atalhos: tecla `?` dentro do editor.
+
+## Projetos (.jrec)
+
+- **Salvar projeto** baixa um `.jrec` com tudo: cenas, personagens, timeline e as mídias em binário. É o único formato de projeto editável; serve de backup e para abrir em outro aparelho.
+- **Exportar vídeo/imagem** gera WebM/MP4, PNG ou sequência PNG (em ZIP). Não serve para reabrir o projeto.
+- **Importar** aceita .jrec, projetos .json e .zip de versões anteriores e pacotes .7z, .rar, .tar, .tar.gz, .tar.xz e .tar.bz2. O tipo é detectado pelo conteúdo.
+- Os links `?projeto=` identificam projetos guardados **neste navegador**. Não são links de compartilhamento.
+
+Detalhes do formato em [docs/MIGRACAO.md](docs/MIGRACAO.md#formato-jrec).
 
 ## Exportação de vídeo
 
@@ -104,9 +119,11 @@ Decisões que sustentam o resto:
 
 ## Documentação
 
-- [CHANGELOG.md](CHANGELOG.md): mudanças da 0.4 para a 1.0
+- [CHANGELOG.md](CHANGELOG.md): mudanças de cada versão, da 0.4 à 1.2
+- **Manual:** dentro do app (Manual na tela inicial, F1 ou os ícones ? do editor); funciona offline
 - [docs/ACEITACAO.md](docs/ACEITACAO.md): checklist com PASSOU, PARCIAL ou NÃO IMPLEMENTADO
 - [docs/TESTES.md](docs/TESTES.md): comandos, números e ambiente
+- [docs/CATALOGO.md](docs/CATALOGO.md): catálogo unificado, biblioteca, animação por quadros e vínculo pai/filho (arquitetura, compatibilidade e estado de cada critério)
 - [docs/AUDITORIA-0.4.md](docs/AUDITORIA-0.4.md): inventário do legado
 - [docs/MIGRACAO.md](docs/MIGRACAO.md): como os dados antigos são convertidos
 - [docs/LICENCAS.md](docs/LICENCAS.md): dependências e autoria dos assets

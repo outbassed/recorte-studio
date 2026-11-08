@@ -2,6 +2,7 @@ import { expect, type Download, type Page } from '@playwright/test';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { strFromU8, unzipSync } from 'fflate';
 
 export const OUT = resolve('test-results/e2e');
 mkdirSync(OUT, { recursive: true });
@@ -129,4 +130,18 @@ export async function boxOf(page: Page, testId: string) {
 
 export function inViewport(b: { x: number; y: number; width: number; height: number }, vp: { width: number; height: number }) {
   return b.x >= -0.5 && b.y >= -0.5 && b.x + b.width <= vp.width + 0.5 && b.y + b.height <= vp.height + 0.5;
+}
+
+/** Lê um .jrec (ZIP) baixado: manifest e project.json. */
+export function readJrec(path: string): { manifest: { format: string; appVersion: string; assets: Array<{ id: string }>; missing: string[] }; project: { schemaVersion: number; sceneOrder: string[] } } {
+  const files = unzipSync(new Uint8Array(readFileSync(path)));
+  return { manifest: JSON.parse(strFromU8(files['manifest.json'])), project: JSON.parse(strFromU8(files['project.json'])) };
+}
+
+/** Imagem SVG simples (cor sólida) para testes de cenário. */
+export function svgFile(name: string, color: string): string {
+  const p = resolve(OUT, name);
+  mkdirSync(OUT, { recursive: true });
+  writeFileSync(p, `<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080"><rect width="1920" height="1080" fill="${color}"/></svg>`);
+  return p;
 }

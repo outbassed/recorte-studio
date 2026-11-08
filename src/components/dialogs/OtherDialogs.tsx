@@ -1,4 +1,5 @@
 /** Configurações do projeto, atalhos, relatório de importação e feedback global. */
+import { SHORTCUTS } from '@/features/shortcuts';
 import { useEffect, useRef, useState } from 'react';
 import { ASPECT_PRESETS, frameSize } from '@/engine/model/schema';
 import { totalDurationMs } from '@/engine/model/ops';
@@ -20,7 +21,7 @@ export function SettingsDialog() {
   const isPreset = ASPECT_PRESETS.some((a) => a.id === s.aspectRatio);
   const fs = frameSize(s);
   return (
-    <Modal title="Configurações do projeto" testId="settings-dialog" onClose={closeDialog}>
+    <Modal title="Configurações do projeto (formato, tamanho e FPS)" testId="settings-dialog" onClose={closeDialog}>
       <TextField label="Nome do projeto" value={project.title} testId="project-title" onChange={(v) => commit('Renomear projeto', (d) => { d.title = v; }, { coalesce: 'title' })} />
       <SelectField label="Formato de saída" value={isPreset ? s.aspectRatio : 'custom'} testId="aspect" onChange={(v) => {
         const p = ASPECT_PRESETS.find((a) => a.id === v);
@@ -49,32 +50,13 @@ export function SettingsDialog() {
   );
 }
 
-const SHORTCUTS: Array<[string, string]> = [
-  ['Espaço', 'Reproduzir / pausar'],
-  ['Ctrl+Z', 'Desfazer'],
-  ['Ctrl+Shift+Z ou Ctrl+Y', 'Refazer'],
-  ['Delete', 'Excluir seleção (com confirmação)'],
-  ['Ctrl+D', 'Duplicar seleção'],
-  ['Ctrl+C / Ctrl+V', 'Copiar / colar keyframe'],
-  ['Setas', 'Mover o elemento 1 px'],
-  ['Shift+Setas', 'Mover o elemento 10 px'],
-  ['F', 'Ajustar o palco à janela'],
-  ['G', 'Grade de terços'],
-  ['Q', 'Ver somente o quadro exportável'],
-  ['K', 'Criar keyframes de posição no tempo atual'],
-  [', e .', 'Quadro anterior / próximo'],
-  ['Esc', 'Fechar popup ou limpar seleção'],
-  ['?', 'Esta ajuda'],
-  ['Ctrl+roda do mouse', 'Zoom do palco ou da timeline'],
-  ['Alt+arrastar', 'Mover a área de trabalho'],
-  ['Shift+clique', 'Selecionar vários'],
-];
+
 
 export function ShortcutsDialog() {
   return (
     <Modal title="Atalhos de teclado" size="sm" testId="shortcuts" onClose={closeDialog}>
       <dl className="shortcuts">
-        {SHORTCUTS.map(([k, d]) => <div key={k}><dt><kbd>{k}</kbd></dt><dd>{d}</dd></div>)}
+        {SHORTCUTS.map((x) => <div key={x.keys}><dt><kbd>{x.keys}</kbd></dt><dd>{x.action}</dd></div>)}
       </dl>
     </Modal>
   );

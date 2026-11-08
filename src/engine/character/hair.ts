@@ -230,11 +230,14 @@ function capPath(st: HairStyleDef, viewYaw: number, rx: number, ry: number): str
 function backShape(st: HairStyleDef, view: ViewInfo, rx: number, ry: number): string {
   const s = view.facing;
   const isBack = view.cls === 'back' || view.cls === 'backQuarter';
-  const shift = view.cls === 'profile' ? -s * rx * 0.42 : view.cls === 'quarter' ? -s * rx * 0.16 : view.cls === 'backQuarter' ? s * rx * 0.08 : 0;
-  const wMul = view.cls === 'profile' ? 0.72 : view.cls === 'quarter' || view.cls === 'backQuarter' ? 0.92 : 1;
-  const w = rx * st.backWidth * wMul;
+  // Perfil: a massa fica inteira atrás da linha da nuca (nunca passa para a frente do pescoço/peito).
+  // 3/4: deslocada para o lado da nuca. Frente e costas: centrada.
+  const profileHalf = rx * Math.min(0.56, 0.42 * st.backWidth);
+  const shift = view.cls === 'profile' ? -s * (rx * 0.12 + profileHalf) : view.cls === 'quarter' ? -s * rx * 0.2 : view.cls === 'backQuarter' ? s * rx * 0.08 : 0;
+  const wMul = view.cls === 'quarter' || view.cls === 'backQuarter' ? 0.9 : 1;
+  const w = view.cls === 'profile' ? profileHalf : rx * st.backWidth * wMul;
   const bottom = st.backLen * ry;
-  const top = -ry * 0.25;
+  const top = view.cls === 'profile' ? -ry * 0.35 : -ry * 0.25;
   const cols = st.backEdge === 'smooth' ? 5 : 9;
   const left: Pt[] = [];
   const right: Pt[] = [];
@@ -320,32 +323,31 @@ function blobShape(b: Blob, yaw: number, rx: number, ry: number, color: string, 
   };
 }
 
-/** Crista do moicano: acompanha a linha sagital; estreita de frente, larga de lado. */
-function mohawkShape(yaw: number, rx: number, ry: number, color: string, ink: string, ow: number): string {
+/** Crista do moicano: estreita de frente/costas, barbatana de perfil. Retorna o contorno. */
+function mohawkPath(yaw: number, rx: number, ry: number): string {
   const sinY = Math.sin((yaw * Math.PI) / 180);
   const cosY = Math.abs(Math.cos((yaw * Math.PI) / 180));
+  if (cosY > 0.3) {
+    const w = 18 * cosY + Math.abs(sinY) * 30;
+    const shift = sinY * rx * 0.12;
+    const pts: Pt[] = [[-w, -ry * 0.86], [-w * 0.9, -ry - 30], [-w * 0.4, -ry - 64], [0, -ry - 74], [w * 0.4, -ry - 64], [w * 0.9, -ry - 30], [w, -ry * 0.86]];
+    return pts.map((p, i) => `${i ? 'L' : 'M'}${n(p[0] + shift)} ${n(p[1])}`).join('') + 'Z';
+  }
+  // Perfil: arco da testa (55°) à nuca alta (-115°), com pontas alternadas.
   const outer: Pt[] = [];
   const base: Pt[] = [];
-  const count = 11;
+  const count = 10;
   for (let i = 0; i <= count; i++) {
-    const e = -150 + (200 * i) / count;
-    const er = (e * Math.PI) / 180;
-    const f = Math.sin(er);
-    const up = Math.cos(er);
-    const bx = f * rx * sinY;
-    const by = -up * ry;
+    const e = ((-115 + (170 * i) / count) * Math.PI) / 180;
+    const f = Math.sin(e);
+    const up = Math.cos(e);
+    const bx = f * rx * 0.97 * Math.sign(sinY);
+    const by = -up * ry * 0.97;
     base.push([bx, by]);
-    const h = i % 2 === 0 ? 60 : 30;
-    outer.push([bx + f * sinY * h, by - up * h]);
+    const h = i === 0 || i === count ? 4 : i % 2 === 0 ? 52 : 26;
+    outer.push([bx + f * Math.sign(sinY) * h, by - up * h]);
   }
-  if (cosY > 0.3) {
-    // Vista frontal/costas: a crista é um leque estreito sobre o topo.
-    const w = 20 * cosY + Math.abs(sinY) * 28;
-    const pts: Pt[] = [[-w, -ry * 0.82], [-w * 0.9, -ry - 30], [-w * 0.4, -ry - 66], [0, -ry - 76], [w * 0.4, -ry - 66], [w * 0.9, -ry - 30], [w, -ry * 0.82]];
-    return path(pts.map((p, i) => `${i ? 'L' : 'M'}${n(p[0])} ${n(p[1])}`).join('') + 'Z', `fill="${color}" stroke="${ink}" stroke-width="${n(ow)}" stroke-linejoin="round"`);
-  }
-  const d = outer.map((p, i) => `${i ? 'L' : 'M'}${n(p[0])} ${n(p[1])}`).join('') + [...base].reverse().map((p) => `L${n(p[0])} ${n(p[1])}`).join('') + 'Z';
-  return path(d, `fill="${color}" stroke="${ink}" stroke-width="${n(ow)}" stroke-linejoin="round"`);
+  return outer.map((p, i) => `${i ? 'L' : 'M'}${n(p[0])} ${n(p[1])}`).join('') + [...base].reverse().map((p) => `L${n(p[0])} ${n(p[1])}`).join('') + 'Z';
 }
 
 export interface HairRender {
@@ -359,44 +361,74 @@ export interface HairRender {
   front: string;
 }
 
+/** Mesmo giro comprimido do template do rosto (3/4 = 30°), para cabelo e rosto concordarem. */
+const hairYaw = (yaw: number): number => (Math.abs(yaw) === 45 ? Math.sign(yaw) * 30 : Math.abs(yaw) === 135 ? Math.sign(yaw) * 150 : yaw);
+
 export function renderHair(opts: {
-  styleId: string; color: string; highlight: string; ink: string; ow: number; rx: number; ry: number; view: ViewInfo;
+  styleId: string; color: string; highlight: string; ink: string; ow: number; rx: number; ry: number; view: ViewInfo; idPrefix?: string;
 }): HairRender {
   const { color, highlight, ink, ow, rx, ry, view } = opts;
   const st = getHairStyle(opts.styleId);
   const res: HairRender = { backBehindBody: '', backOverBody: '', behindHead: '', front: '' };
   if (st.bald) return res;
   const yaw = view.yaw;
+  const clipId = `${opts.idPrefix ?? 'h'}-hairclip`;
   const isBackView = view.cls === 'back' || view.cls === 'backQuarter';
   const attrs = `fill="${color}" stroke="${ink}" stroke-width="${n(ow)}" stroke-linejoin="round"`;
 
   if (st.backLen > 0) {
-    const shape = path(backShape(st, view, rx, ry), `data-part="hair-back" ${attrs}`);
-    if (isBackView) res.backOverBody += shape;
+    // Camada por vista: costas e perfil = sobre as costas do tronco (abaixo do braço do lado de cá);
+    // frente e 3/4 de frente = atrás do tronco inteiro.
+    const over = isBackView || view.cls === 'profile';
+    const shape = path(backShape(st, view, rx, ry), `data-part="hair-back" data-layer="${over ? 'over-body' : 'behind-body'}" ${attrs}`);
+    if (over) res.backOverBody += shape;
     else res.backBehindBody += shape;
+    // De costas, cabelo que desce pela nuca cobre a parte de baixo da cabeça:
+    // sem isso a nuca (pele) aparece por cima da massa de cabelo.
+    if (isBackView) {
+      const pts: Pt[] = [];
+      const y0 = -ry * 0.62;
+      for (let a = 0; a <= 180; a += 10) {
+        const t = (a * Math.PI) / 180;
+        pts.push([Math.cos(t) * rx * 1.04, Math.max(y0, Math.sin(t) * ry * 1.04)]);
+      }
+      const d = pts.map((p, i) => `${i ? 'L' : 'M'}${n(p[0])} ${n(p[1])}`).join('') + 'Z';
+      res.front += path(d, `data-part="hair-nape" ${attrs}`);
+    }
   }
 
+  // Profundidade real: o que está voltado para o observador (z > 0) é desenhado
+  // por cima da cabeça; o resto, atrás dela. Vale para presos em todas as vistas.
   for (const lock of st.locks) {
     const { svg, z } = lockShape(lock, yaw, rx, ry, color, ink, ow);
-    const part = `<g data-part="hair-lock">${svg}</g>`;
-    if (lock.layer === 'front' && view.showsFace) res.front += part;
-    else if (z > 0.15) res.backOverBody += part;
+    const front = lock.layer === 'front' ? z > -0.2 : z > 0.15;
+    const part = `<g data-part="hair-lock" data-depth="${front ? 'front' : 'behind'}">${svg}</g>`;
+    if (front) res.front += part;
     else res.behindHead += part;
   }
+  const blobsFront: string[] = [];
   for (const b of st.blobs) {
     const { svg, z } = blobShape(b, yaw, rx, ry, color, ink, ow);
-    if (z > 0.35 && !(b.dist === 0)) res.front += svg;
-    else res.behindHead += svg;
+    // Coque no alto (dist 0) assenta sobre o topo: atrás da cabeça, mas visível acima dela.
+    const front = z > 0.35 && b.dist !== 0;
+    const part = `<g data-part="hair-blob" data-depth="${front ? 'front' : 'behind'}">${svg}</g>`;
+    if (front) blobsFront.push(part);
+    else res.behindHead += part;
   }
 
-  let cap = '';
+  // Calota: a mesma forma serve de máscara para brilho e mechas (nada vaza da silhueta).
+  let capD = '';
+  const capPaths: string[] = [];
   if (st.crownBald) {
-    // Calvo no topo: duas faixas nas laterais/nuca, sem cobrir a coroa.
+    // Calvo no topo: faixas só nas laterais e na nuca, nunca sobre o rosto.
+    const hy = hairYaw(yaw);
     const y0 = -ry * 0.16;
+    // Só atrás da linha da orelha: nunca invade bochecha nem olhos.
+    const FACE_FREE = 82;
     const segments: Array<[number, number]> = [];
     let open: number | null = null;
     for (let d = -90; d <= 90; d += 6) {
-      const near = Math.abs(normAz(d - yaw)) >= 58;
+      const near = Math.abs(normAz(d - hy)) >= FACE_FREE;
       if (near && open === null) open = d;
       if (!near && open !== null) {
         segments.push([open, d - 6]);
@@ -404,15 +436,15 @@ export function renderHair(opts: {
       }
     }
     if (open !== null) segments.push([open, 90]);
-    for (const [a, b] of segments) {
+    for (const [sa, sb] of segments) {
+      if (sb - sa < 6) continue;
       const steps = 8;
       const topEdge: Pt[] = [];
       const lowEdge: Pt[] = [];
       for (let i = 0; i <= steps; i++) {
-        const dl = a + ((b - a) * i) / steps;
-        const az = dl - yaw;
+        const dl = sa + ((sb - sa) * i) / steps;
         const sx = Math.sin((dl * Math.PI) / 180);
-        const t = clamp((Math.abs(normAz(az)) - 58) / 122, 0, 1);
+        const t = clamp((Math.abs(normAz(dl - hy)) - FACE_FREE) / (180 - FACE_FREE), 0, 1);
         const yTop = y0 - ry * 0.05 * t;
         const yLow = y0 + ry * (0.2 + 0.7 * t);
         const latT = Math.sqrt(Math.max(0.02, 1 - (yTop / ry) ** 2));
@@ -420,34 +452,41 @@ export function renderHair(opts: {
         topEdge.push([sx * rx * 1.03 * latT, yTop]);
         lowEdge.push([sx * rx * 1.02 * latL, yLow]);
       }
-      const d = smoothPath([...topEdge, ...[...lowEdge].reverse()], true);
-      cap += path(d, `data-part="hair-cap" ${attrs}`);
+      capPaths.push(smoothPath([...topEdge, ...[...lowEdge].reverse()], true));
     }
-  } else if (!st.mohawk) {
-    cap = path(capPath(st, yaw, rx, ry), `data-part="hair-cap" ${attrs}`);
-    if (st.flat) cap = path(capPath(st, yaw, rx, ry), `data-part="hair-cap" fill="${color}" fill-opacity=".75" stroke="${ink}" stroke-width="${n(ow * 0.5)}" stroke-linejoin="round"`);
+    for (const d of capPaths) res.front += path(d, `data-part="hair-cap" ${attrs}`);
+    capD = capPaths.join('');
+  } else if (st.mohawk) {
+    capD = mohawkPath(yaw, rx, ry);
+    res.front += `<g data-part="hair-mohawk">${path(capD, `fill="${color}" stroke="${ink}" stroke-width="${n(ow)}" stroke-linejoin="round"`)}</g>`;
+  } else {
+    capD = capPath(st, yaw, rx, ry);
+    res.front += st.flat
+      ? path(capD, `data-part="hair-cap" fill="${color}" fill-opacity=".75" stroke="${ink}" stroke-width="${n(ow * 0.5)}" stroke-linejoin="round"`)
+      : path(capD, `data-part="hair-cap" ${attrs}`);
   }
-  res.front += cap;
-  if (st.mohawk) res.front += `<g data-part="hair-mohawk">${mohawkShape(yaw, rx, ry, color, ink, ow)}</g>`;
+  res.front += blobsFront.join('');
 
-  // Brilho do cabelo: faixa curva discreta. Mechas opcionais em outra cor.
-  if (!st.flat && !st.crownBald) {
-    const hl = shade(color, 0.16);
-    res.front += path(
+  // Brilho e mechas: sempre recortados pela calota.
+  let deco = '';
+  if (!st.flat && !st.crownBald && !st.mohawk) {
+    deco += path(
       `M${n(-rx * 0.55)} ${n(-ry * 0.82)}Q${n(-rx * 0.1)} ${n(-ry * 1.02)} ${n(rx * 0.42)} ${n(-ry * 0.85)}`,
-      `fill="none" stroke="${hl}" stroke-width="7" stroke-linecap="round" stroke-opacity=".55"`,
+      `data-part="hair-shine" fill="none" stroke="${shade(color, 0.16)}" stroke-width="7" stroke-linecap="round" stroke-opacity=".55"`,
     );
   }
-  if (highlight) {
+  if (highlight && capD) {
+    const hy = hairYaw(yaw);
     let streaks = '';
     for (const off of [-0.5, -0.15, 0.25, 0.55]) {
       const az = off * 90;
-      const x = azX(yaw, az) * rx * 0.9;
-      if (azZ(yaw, az) < 0.05 && view.showsFace) continue;
-      streaks += `M${n(x * 0.75)} ${n(-ry * 0.98)}Q${n(x)} ${n(-ry * 0.8)} ${n(x * 1.08)} ${n(-ry * 0.52)}`;
+      if (azZ(hy, az) < 0.05 && view.showsFace) continue;
+      const x = azX(hy, az) * rx * 0.9;
+      streaks += `M${n(x * 0.75)} ${n(-ry * 1.15)}Q${n(x)} ${n(-ry * 0.8)} ${n(x * 1.08)} ${n(-ry * 0.45)}`;
     }
-    if (streaks) res.front += path(streaks, `data-part="hair-highlight" fill="none" stroke="${highlight}" stroke-width="7" stroke-linecap="round"`);
+    if (streaks) deco += path(streaks, `data-part="hair-highlight" fill="none" stroke="${highlight}" stroke-width="8" stroke-linecap="round"`);
   }
+  if (deco) res.front += `<clipPath id="${clipId}"><path d="${capD}"/></clipPath><g clip-path="url(#${clipId})">${deco}</g>`;
   return res;
 }
 
