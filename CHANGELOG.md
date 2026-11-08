@@ -1,5 +1,41 @@
 # Changelog
 
+## 1.2.0
+
+Tela inicial e Configurações novas, manual dentro do app, propriedades em abas, Criador de Objetos e de Cenários, profundidade de braços e mãos, cabelos longos corrigidos, interface própria para celular. Sem backend e sem dependência online; projetos 1.0 e 1.1 continuam abrindo.
+
+### Novidades
+
+- **Tela inicial** com Início, Meus projetos (miniaturas reais, busca, ordenação, filtros, arquivar, salvar .jrec, link local), Modelos (miniaturas reais e prévia) e atalhos para o manual.
+- **Configurações do aplicativo**, todas com efeito real: tema escuro, claro ou do sistema; tamanho do texto; reduzir animações; começar no último projeto; modo inicial da timeline; volume do editor; limite de FPS da prévia; miniaturas das cenas; espaço usado e limpeza segura; atalhos com busca; sobre e changelog.
+- **Manual** com 35 capítulos, busca sem acento, links entre páginas, capturas reais com marcações numeradas medidas nos elementos e ajuda contextual (F1 e ícones ?). Funciona offline.
+- **Propriedades em abas** por tipo de seleção (personagem, objeto, imagem, câmera, cena, fala, áudio, legenda, efeito); a última aba usada é lembrada.
+- **Criador de Objetos:** formas, linhas, imagens SVG/PNG/JPEG/WebP, objetos prontos e outros objetos seus; pivô, camadas, agrupar, duplicar, espelhar. Entra na cena como objeto animável, em cenários e na biblioteca.
+- **Criador de Cenários:** um horário (Manhã, Dia, Tarde, Entardecer, Noite) por composição, cada um opcional; começar de tela vazia, imagem, modelo, cenário pronto, outro horário ou composição salva. **Personagens estáticos** com cópia congelada de aparência e pose, fora da timeline.
+- **Braços e mãos** na frente ou atrás da cabeça: automático (vitória, mãos no rosto, aceno) e manual por braço e por mão, animável. Poses novas: Mãos no rosto e Mãos atrás da cabeça.
+- **Celular:** dock por etapas da história, barra rápida contextual do elemento selecionado, barra superior que cabe em 320 px, painéis sem estouro horizontal.
+- **Câmera** selecionável no dock do celular; botão de ajuda em várias áreas.
+
+### Correções
+
+- **Cabelos longos:** massa traseira por vista (perfil atrás da nuca e sobre as costas; costas com a nuca coberta), com testes geométricos de oclusão e folhas de inspeção.
+- **Pré-escuta de áudio** não começa depois de você mandar parar ou trocar de arquivo.
+- **Modo simples** recusa início negativo, duração zero e valores inválidos, com mensagem clara.
+- **Mídias:** depois de revincular, a disponibilidade atualiza na hora.
+- **.7z e .rar:** testados com arquivos reais (7-Zip e WinRAR); RAR com senha e 7z truncado agora dão erro claro; o leitor funciona offline sem uso prévio.
+- **Biblioteca de cenários e objetos:** pacote versionado com imagens, objetos aninhados e personagens estáticos; lê os formatos antigos (1.1 e 1.2 inicial); registro ilegível mostra o motivo e pode ser apagado; "Trazer" reaproveita o que já existe e copia quando o conteúdo difere. Cenários da biblioteca também aplicam pela aba Biblioteca.
+- **Caches de objetos:** editar um objeto refaz os objetos que o contêm, as composições de cenário e as miniaturas das cenas; carregar ou relinkar uma imagem refaz o desenho; personagem estático usa prefixo de ids por uso.
+- **Dependências:** um objeto não pode conter a si mesmo, direta ou indiretamente.
+- **Criador de Cenários em quadros não 16:9:** o guia mostra o quadro real (9:16, 1:1, 4:3…), a área fora dele fica escurecida, "Prévia final" recorta no quadro e os modelos se ajustam à largura.
+- **Ações rápidas do celular** de verdade contextuais: mudam com o tipo de seleção e com o estado no tempo atual ("Falar" vira "Editar fala"), e levam à aba, seção e campo certos.
+- **Seleção de peças giradas:** o clique e o contorno seguem rotação, espelho e escala; grupos têm caixa própria, pivô estável e controles para mover, girar e escalar em bloco; Shift alterna; setas, Ctrl+A, Ctrl+D e Delete no estúdio.
+
+### Melhorias por iniciativa própria
+
+- Service worker pré-armazena o leitor de arquivos compactados e as imagens do manual.
+- Limite de FPS da prévia, miniaturas de cena opcionais e volume do editor para máquinas mais simples.
+- Teste de estresse: história de 5 cenas com cenário de 60+ peças e multidão estática exportada em 1080p.
+
 ## 1.1.0
 
 Correções de integridade, formato de projeto próprio (.jrec), biblioteca de áudio, cenários próprios por horário, movimento natural e modo simples. Sem backend, sem dependência online.

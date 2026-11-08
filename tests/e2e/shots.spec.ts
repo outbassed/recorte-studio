@@ -22,6 +22,7 @@ test('desktop 1366×768: painéis', async ({ page }) => {
   }
   await selectLayer(page, 'Nina');
   await shot(page, 'desktop-1366-propriedades');
+  await page.getByTestId('insp-tab-rosto').click();
   await page.getByTestId('edit-library').click();
   await page.waitForTimeout(200);
   await shot(page, 'criador-corpo');
@@ -49,6 +50,8 @@ for (const [w, h] of [[390, 844], [375, 667], [430, 932]] as const) {
   test(`mobile ${w}×${h}`, async ({ page }) => {
     await page.setViewportSize({ width: w, height: h });
     await openDemo(page);
+    await shot(page, `mobile-${w}x${h}-simples`);
+    await page.getByTestId('mode-advanced').click();
     await at(page, '1');
     await shot(page, `mobile-${w}x${h}`);
     await page.getByTestId('dock-characters').click();
@@ -57,7 +60,8 @@ for (const [w, h] of [[390, 844], [375, 667], [430, 932]] as const) {
     await page.getByTestId('dock-scenes').click();
     await page.waitForTimeout(200);
     await shot(page, `mobile-${w}x${h}-cenas`);
-    await page.getByTestId('dock-layers').click();
+    await page.getByTestId('dock-more').click();
+    await page.getByTestId('more-layers').click();
     await page.locator('[data-testid="layer-row"][data-node-name="Zeca"] .layer-name').click();
     await page.getByTestId('dock-properties').click();
     await page.waitForTimeout(200);

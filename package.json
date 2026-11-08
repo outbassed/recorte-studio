@@ -1,7 +1,7 @@
 {
   "name": "recorte-studio",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Editor de animação narrativa 2D com personagens recortados.",
   "type": "module",
   "scripts": {

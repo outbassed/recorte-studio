@@ -49,6 +49,17 @@ assets/         uma entrada por mídia: assets/media_<sha256>.<ext>
 - Projetos .json e .zip da 1.0 continuam importando. Pacotes .zip, .7z, .rar e .tar com um projeto dentro (inclusive dentro de uma pasta) também.
 - A importação sempre cria um projeto novo; o arquivo original vai para `backups` no IndexedDB.
 
+## Pacotes da biblioteca (1.2)
+
+Objetos e cenários salvos na biblioteca do usuário usam um pacote versionado (`bundle: 2`) com o item, os **objetos que ele usa** (fecho transitivo) e as **imagens** de horários, composições e peças. A leitura aceita os formatos antigos:
+
+- **1.1:** `{ background, assets: { id: asset } }` (só imagens de horários).
+- **1.2 inicial:** `{ background | object, assets: [asset] }` (sem objetos aninhados).
+
+Registro que não segue nenhum formato aparece na biblioteca com o motivo e a opção de apagar; nunca gera erro nem some em silêncio. Ao trazer: o que já existe com o mesmo ID e conteúdo é reaproveitado; com conteúdo diferente vira uma cópia e as referências do item trazido passam a apontar para a cópia. Imagens que não estão mais neste navegador entram como mídia ausente (revincular em Mídias).
+
+Projetos 1.0 e 1.1 abrem sem conversão: `customObjects` e `compositions` entram vazios e `limbDepth` de cada personagem entra como automático. O .jrec continua na versão 1 do formato (os campos novos são aditivos).
+
 ## Itens não compatíveis
 
 Vão para o relatório, nunca somem em silêncio: cabelos, roupas, expressões, cenários ou objetos desconhecidos (recebem substituto nomeado), ações de personagens inexistentes e tipos de ação desconhecidos (ignorados, mas preservados no JSON guardado).
