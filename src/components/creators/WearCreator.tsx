@@ -22,6 +22,7 @@ import { HelpLink } from '../manual/HelpLink';
 import { PieceStudio, StudioShell } from './PieceStudio';
 
 const QUICK_VIEWS: ViewId[] = ['front', 'left', 'right', 'back'];
+const QUICK_LABELS: Partial<Record<ViewId, string>> = { front: 'Frente', left: 'Esquerda', right: 'Direita', back: 'Costas' };
 const face = { expression: 'neutral', intensity: 1, viseme: null, visemeAmount: 0, blink: 0, gazeX: 0, gazeY: 0 };
 
 /** SVG do corpo vestindo (ou não) a peça. */
@@ -147,7 +148,7 @@ export function WearCreator() {
             <SelectField label="Vista" value={view} testId="wear-view" options={VIEW_ORDER.map((v) => ({ id: v, label: VIEW_LABELS[v] }))} onChange={(v) => setView(v as ViewId)} />
           </div>
           <div className="btn-row wear-quick">
-            {QUICK_VIEWS.map((v) => <button key={v} type="button" className={`chip${view === v ? ' is-active' : ''}`} aria-pressed={view === v} data-testid={`wear-view-${v}`} onClick={() => setView(v)}>{VIEW_LABELS[v].replace('Perfil ', '')}</button>)}
+            {QUICK_VIEWS.map((v) => <button key={v} type="button" className={`chip${view === v ? ' is-active' : ''}`} aria-pressed={view === v} data-testid={`wear-view-${v}`} onClick={() => setView(v)}>{QUICK_LABELS[v]}</button>)}
             <button type="button" className={`chip${tryOn ? ' is-active' : ''}`} aria-pressed={tryOn} data-testid="wear-tryon" onClick={() => setTryOn(!tryOn)}><Shirt size={12} /> {tryOn ? 'Vestido' : 'Sem a peça'}</button>
             <button type="button" className={`chip${fcs === 'head' ? ' is-active' : ''}`} aria-pressed={fcs === 'head'} data-testid="wear-focus-head" onClick={() => setFocus(fcs === 'head' ? 'body' : 'head')}>Foco na cabeça</button>
             <label className="anim-check">Zoom <input type="range" min={1} max={3} step={0.25} value={zoom} data-testid="wear-zoom" aria-label="Zoom da prévia" onChange={(e) => setZoom(Number(e.target.value))} /></label>

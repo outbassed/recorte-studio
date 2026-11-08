@@ -155,7 +155,7 @@ export function PieceStudio(p: StudioProps) {
         </>
       )}
       <h4>Texto</h4>
-      <button type="button" className="btn btn-sm" data-testid="add-text-piece" onClick={() => add(createPiece('text', { name: 'Texto', text: 'Texto', fontSize: 72, fill: '#23202b', stroke: '#ffffff', strokeWidth: 0, x: center.x, y: center.y }))}><Type size={14} /> Adicionar texto</button>
+      <button type="button" className="btn btn-sm" data-testid="add-text-piece" onClick={() => add(createPiece('text', { name: 'Texto', text: 'Texto', fontSize: p.vectorOnly ? 28 : 72, fill: '#23202b', stroke: '#ffffff', strokeWidth: 0, x: center.x, y: center.y }))}><Type size={14} /> Adicionar texto</button>
       {!p.vectorOnly && <>
       <h4>Imagem (SVG, PNG, JPEG, WebP)</h4>
       <button type="button" className="btn btn-sm" data-testid="add-image" onClick={() => fileRef.current?.click()}><ImagePlus size={14} /> Importar imagem</button>

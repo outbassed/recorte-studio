@@ -944,7 +944,7 @@ button.libh-card:hover { background: var(--bg-3); border-color: var(--line-2); }
 .created-wear h4 { margin: 0; font-size: calc(13px * var(--ui-scale, 1)); }
 @media (max-width: 860px) {
   [data-testid="wear-creator"] { display: flex; flex-direction: column; }
-  [data-testid="wear-creator"] > * { flex: none; }
+  [data-testid="wear-creator"] > *, .wear-preview, .wear-edit { flex: none; }
   .wear-main { display: contents; }
   .wear-strip { order: 2; }
   .wear-layers { order: 3; }
