@@ -5,19 +5,20 @@
  */
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import {
-  AlertTriangle, Check, Keyboard, Music, Save, ListChecks, Workflow, ChevronLeft, ChevronsUpDown, Clapperboard, Download, Expand, FileUp, Film, FolderOpen, HelpCircle, Layers, Link2, Loader2, Minimize, Package, Redo2, Settings, Shapes, SlidersHorizontal, Sparkles, Trees, Undo2, Users, X,
+  AlertTriangle, Check, Keyboard, Music, Save, ListChecks, Workflow, ChevronLeft, ChevronsUpDown, Clapperboard, Download, Expand, FileUp, Film, FolderOpen, HelpCircle, Layers, Link2, Loader2, Minimize, Package, Redo2, Settings, Shapes, SlidersHorizontal, Sparkles, Trees, Undo2, Users, X, Video,
 } from 'lucide-react';
 import { useProjectStore, useCurrentScene, useProject, commit, currentScene } from '@/state/projectStore';
 import { useSession, leaveEditor, saveNow } from '@/features/projects/session';
 import { copyProjectLink } from '@/features/projects/urls';
 import { closeDialog, clearSelection, closeOverlay, openAppSettings, openDialog, openManual, selectNodes, useUI, useFeedback, toast, type LeftTab, type MobilePanel } from '@/state/uiStore';
 import { ManualView } from '../manual/ManualView';
+import { ObjectCreator, SceneCreator } from '../creators/Creators';
 import { SettingsView } from '../settings/SettingsView';
 import { Logo } from './ProjectsScreen';
 import { pause, seek, togglePlay, transport } from '@/state/transport';
 import { copySelectedKey, deleteSelection, doRedo, doUndo, duplicateSelection, pasteKey } from '@/state/actions';
 import { addKeyAtTime, readProperty, sceneOf, writeProperty } from '@/engine/model/ops';
-import { IconButton } from '../controls/fields';
+import { IconButton, MoreButton } from '../controls/fields';
 import { Stage } from '../stage/Stage';
 import { Timeline } from '../timeline/Timeline';
 import { Inspector } from '../panels/Inspector';
@@ -224,6 +225,26 @@ function TopBar({ compact }: { compact?: boolean }) {
       </div>
       <SaveBadge />
       <span className="tl-spacer" />
+      {compact ? (
+        <>
+          <IconButton label="Desfazer (Ctrl+Z)" testId="undo" disabled={!canUndo} onClick={doUndo}><Undo2 size={17} /></IconButton>
+          <IconButton label="Refazer (Ctrl+Shift+Z)" testId="redo" disabled={!canRedo} onClick={doRedo}><Redo2 size={17} /></IconButton>
+          <MoreButton label="Mais opções do projeto" testId="top-more" items={() => [
+            { label: 'Refazer', onSelect: doRedo, disabled: !canRedo },
+            { label: 'Copiar link local deste projeto', onSelect: () => void copyProjectLink(project).then(() => toast('Link copiado. Ele abre o projeto só neste navegador.', 'success')).catch(() => toast('Não foi possível copiar o link.', 'error')) },
+            { label: 'Configurações do projeto', onSelect: () => openDialog('settings') },
+            { label: 'Configurações do aplicativo', onSelect: () => openAppSettings() },
+            { label: 'Manual', onSelect: () => openManual('celular') },
+            { label: 'Importar arquivo', onSelect: () => fileRef.current?.click() },
+          ]} />
+          <input ref={fileRef} hidden type="file" accept={PROJECT_ACCEPT} onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void importAnything(f, true);
+            e.target.value = '';
+          }} />
+        </>
+      ) : (
+        <>
       <IconButton label="Copiar link deste projeto" onClick={async () => {
         try {
           await copyProjectLink(project);
@@ -242,6 +263,8 @@ function TopBar({ compact }: { compact?: boolean }) {
       {!compact && <IconButton label="Atalhos de teclado (?)" testId="open-shortcuts" onClick={() => openDialog('shortcuts')}><Keyboard size={17} /></IconButton>}
       <IconButton label="Manual (F1)" testId="open-manual" onClick={() => openManual('editor')}><HelpCircle size={17} /></IconButton>
       {!compact && <IconButton label="Configurações do aplicativo" testId="open-app-settings" onClick={() => openAppSettings()}><SlidersHorizontal size={17} /></IconButton>}
+        </>
+      )}
       <ModeToggle compact={compact} />
       <button type="button" className="btn btn-save" data-testid="save-project" title="Baixar o projeto editável com todas as mídias (.jrec)" onClick={() => void saveProjectWithChecks()}><Save size={15} />{compact ? '' : ' Salvar projeto'}</button>
       <button type="button" className="btn btn-primary btn-export" data-testid="open-export" title="Exportar vídeo ou imagens" onClick={() => openDialog('export')}><Download size={15} />{!compact && ' Exportar vídeo/imagem'}</button>
@@ -276,6 +299,8 @@ function Dialogs() {
       {dialog === 'shortcuts' && <ShortcutsDialog />}
       {dialog === 'creator' && <CreatorDialog />}
       {dialog === 'import-report' && <ImportReportDialog />}
+      {dialog === 'object-creator' && <ObjectCreator />}
+      {dialog === 'scene-creator' && <SceneCreator />}
     </>
   );
 }
@@ -349,17 +374,53 @@ function DesktopEditor() {
 }
 
 /* ----------------- mobile ----------------- */
-const DOCK: Array<{ id: Exclude<MobilePanel, null>; label: string; icon: React.ReactNode }> = [
+/** Dock do celular: o caminho de uma história (cenas → elenco → cenário → áudio → câmera → editar). */
+const DOCK: Array<{ id: Exclude<MobilePanel, null> | 'camera'; label: string; icon: React.ReactNode }> = [
+  { id: 'scenes', label: 'Cenas', icon: <Film size={19} /> },
   { id: 'characters', label: 'Elenco', icon: <Users size={19} /> },
   { id: 'backgrounds', label: 'Cenários', icon: <Trees size={19} /> },
-  { id: 'objects', label: 'Objetos', icon: <Shapes size={19} /> },
-  { id: 'scenes', label: 'Cenas', icon: <Film size={19} /> },
-  { id: 'layers', label: 'Camadas', icon: <Layers size={19} /> },
+  { id: 'media', label: 'Áudio', icon: <Music size={19} /> },
+  { id: 'camera', label: 'Câmera', icon: <Video size={19} /> },
   { id: 'properties', label: 'Editar', icon: <SlidersHorizontal size={19} /> },
 ];
 const EXTRA: Array<{ id: LeftTab; label: string }> = [
-  { id: 'media', label: 'Mídias e áudio' }, { id: 'templates', label: 'Modelos' }, { id: 'library', label: 'Biblioteca' }, { id: 'direction', label: 'Direção' },
+  { id: 'objects', label: 'Objetos e meus objetos' }, { id: 'layers', label: 'Camadas' }, { id: 'templates', label: 'Modelos de cena' }, { id: 'library', label: 'Biblioteca' }, { id: 'direction', label: 'Direção (comandos)' },
 ];
+
+/**
+ * Barra rápida do celular para o elemento selecionado: cada botão abre a aba certa
+ * das propriedades (sem mostrar tudo de uma vez).
+ */
+function QuickBar() {
+  const ui = useUI();
+  const scene = useCurrentScene();
+  const id = ui.nodeIds.length === 1 ? ui.nodeIds[0]! : null;
+  const node = id && scene ? scene.nodes[id] : undefined;
+  if (!node) return null;
+  const go = (ctx: string, tab: string) => useUI.setState((s) => ({ inspectorTabs: { ...s.inspectorTabs, [ctx]: tab }, mobilePanel: 'properties', mobilePanelExpanded: false }));
+  const items: Array<[string, string, () => void]> = node.kind === 'character'
+    ? [
+      ['Mover', 'move', () => go('character', 'Transformar')],
+      ['Expressão', 'face', () => go('character', 'Rosto')],
+      ['Olhar', 'gaze', () => go('character', 'Rosto')],
+      ['Pose', 'pose', () => go('character', 'Pose')],
+      ['Falar', 'talk', () => go('character', 'Animar')],
+      ['Ações', 'actions', () => go('character', 'Animar')],
+      ['Aparência', 'look', () => useUI.setState({ dialog: 'creator', creatorCharacterId: node.characterId })],
+    ]
+    : [
+      ['Mover', 'move', () => go(node.kind, 'Transformar')],
+      ['Aparência', 'look', () => go(node.kind, (NODE_TAB_SECOND as Record<string, string>)[node.kind] ?? 'Transformar')],
+      ['Camadas', 'layers', () => go(node.kind, 'Camadas')],
+    ];
+  return (
+    <nav className="m-quick" aria-label={`Ações rápidas: ${node.name}`} data-testid="mobile-quick">
+      <strong>{node.name}</strong>
+      {items.map(([label, key, run]) => <button key={key} type="button" className="chip" data-testid={`quick-${key}`} onClick={run}>{label}</button>)}
+    </nav>
+  );
+}
+const NODE_TAB_SECOND = { prop: 'Aparência', text: 'Aparência', shape: 'Aparência', light: 'Aparência', image: 'Imagem' };
 
 function MobileEditor({ landscape }: { landscape: boolean }) {
   const ui = useUI();
@@ -367,7 +428,15 @@ function MobileEditor({ landscape }: { landscape: boolean }) {
   const panel = ui.mobilePanel;
   const label = panel === 'properties' ? 'Propriedades' : LEFT_TABS.find((t) => t.id === panel)?.label ?? '';
   const Panel = panel && panel !== 'properties' ? PANEL_COMPONENTS[panel] : null;
-  const open = (id: Exclude<MobilePanel, null>) => useUI.setState({ mobilePanel: panel === id ? null : id, mobilePanelExpanded: false });
+  const open = (id: Exclude<MobilePanel, null> | 'camera') => {
+    if (id === 'camera') {
+      // Câmera = seleção da câmera + propriedades (Enquadramento, Movimento, Seguir).
+      const opened = ui.camera && panel === 'properties';
+      useUI.setState(opened ? { mobilePanel: null } : { camera: true, nodeIds: [], timeline: null, mobilePanel: 'properties', mobilePanelExpanded: false });
+      return;
+    }
+    useUI.setState({ mobilePanel: panel === id ? null : id, mobilePanelExpanded: false });
+  };
   // Selecionar um elemento no palco não abre popup sozinho, mas o botão Editar destaca.
   const hasSel = ui.nodeIds.length > 0 || !!ui.timeline || ui.camera;
   return (
@@ -375,6 +444,7 @@ function MobileEditor({ landscape }: { landscape: boolean }) {
       <TopBar compact />
       <div className="m-stage">
         <Stage />
+        {!ui.previewFocus && !panel && <QuickBar />}
         <IconButton label={ui.previewFocus ? 'Sair do modo foco' : 'Modo foco no palco'} className="m-focus-btn" testId="focus-mode" onClick={() => useUI.setState({ previewFocus: !ui.previewFocus, mobilePanel: null })}>{ui.previewFocus ? <Minimize size={17} /> : <Expand size={17} />}</IconButton>
       </div>
       {!ui.previewFocus && <div className="m-timeline">{ui.simpleMode ? <SimpleTimeline /> : <Timeline compact />}</div>}
@@ -398,7 +468,7 @@ function MobileEditor({ landscape }: { landscape: boolean }) {
       )}
       <nav className="m-dock" aria-label="Ferramentas" data-testid="mobile-dock">
         {DOCK.map((d) => (
-          <button key={d.id} type="button" className={`dock-btn${panel === d.id ? ' is-active' : ''}${d.id === 'properties' && hasSel ? ' has-dot' : ''}`} aria-pressed={panel === d.id} data-testid={`dock-${d.id}`} onClick={() => open(d.id)}>
+          <button key={d.id} type="button" className={`dock-btn${(d.id === 'camera' ? ui.camera && panel === 'properties' : panel === d.id && !(d.id === 'properties' && ui.camera)) ? ' is-active' : ''}${d.id === 'properties' && hasSel ? ' has-dot' : ''}`} aria-pressed={d.id === 'camera' ? ui.camera && panel === 'properties' : panel === d.id} data-testid={`dock-${d.id}`} onClick={() => open(d.id)}>
             {d.icon}<span>{d.label}</span>
           </button>
         ))}

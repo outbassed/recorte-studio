@@ -4,6 +4,7 @@
  *  - a exportação serializa o plano para SVG e rasteriza em canvas (toSvgString).
  * Guias, seleção, gizmos e máscara fora do quadro NUNCA fazem parte do plano.
  */
+import { customObjectBounds, isCustomObjectId, renderCustomObject } from '../world/pieces';
 import { frameSize, type Project, type Scene, type SceneNode, WORLD_HEIGHT } from '../model/schema';
 import { evaluateScene, type ResolvedScene } from '../animation/evaluate';
 import { renderCharacter, type CharacterRenderResult } from '../character/render';
@@ -56,6 +57,7 @@ export function nodeLocalBounds(node: SceneNode, project: Project): NodeBox {
       return r;
     }
     case 'prop': {
+      if (isCustomObjectId(node.propId)) return customObjectBounds(project, node.propId);
       const p = getProp(node.propId);
       return p ? propBounds(p) : { x: -50, y: -100, w: 100, h: 100 };
     }
@@ -157,6 +159,10 @@ function shadowFor(node: SceneNode, ctx: NodeRenderCtx): string {
     return ellipse(s.offsetX, 20 + s.offsetY, w * k, 15 * k * s.size, `data-part="shadow" fill="${color}" fill-opacity="${s.opacity}"`);
   }
   if (node.kind === 'prop') {
+    if (isCustomObjectId(node.propId)) {
+      const b = customObjectBounds(ctx.project, node.propId);
+      return node.heldBy ? '' : ellipse(s.offsetX, 2 + s.offsetY, b.w * 0.5 * s.size, Math.min(26, b.w * 0.08) * s.size, `fill="${color}" fill-opacity="${s.opacity}"`);
+    }
     const def = getProp(node.propId);
     if (!def || def.wall || def.handheld || node.heldBy) return '';
     return ellipse(s.offsetX, 2 + s.offsetY, def.w * 0.5 * s.size, Math.min(26, def.w * 0.08) * s.size, `fill="${color}" fill-opacity="${s.opacity}"`);
@@ -221,6 +227,7 @@ function renderNodeInner(node: SceneNode, ctx: NodeRenderCtx): string {
       return ctx.charCache.get(node.id)?.svg ?? '';
     }
     case 'prop':
+      if (isCustomObjectId(node.propId)) return renderCustomObject(ctx.project, node.propId, ctx.assets, node.id);
       return cachedProp(node.propId, safeColor(node.colorA, ''), safeColor(node.colorB, ''), node.state);
     case 'image': {
       const url = ctx.assets(node.assetId);

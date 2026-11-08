@@ -28,6 +28,10 @@ import { usePrefs } from '@/state/prefs';
 import { backgroundThumbUrl, CharacterThumb, PropThumb, SceneThumb } from './thumbs';
 import { formatTime } from '../timeline/Timeline';
 import { MediaPanel } from './MediaPanel';
+import { HelpLink } from '../manual/HelpLink';
+import { previewAssetUrl } from '@/features/library/assets';
+import { bringObjectFromLibrary, deleteCustomObject, insertCustomObject, newCustomObject, openObjectCreator } from '@/state/creatorActions';
+import { OBJECT_PREFIX, renderCustomObject } from '@/engine/world/pieces';
 import { CustomBackgroundsSection } from './CustomBackgrounds';
 
 /* ---------------------------------- CENAS ---------------------------------- */
@@ -355,6 +359,45 @@ export function BackgroundsPanel() {
 }
 
 /* ---------------------------------- OBJETOS ---------------------------------- */
+function MyObjectsSection() {
+  const project = useProject();
+  const [lib, setLib] = useState<LibraryRecord[]>([]);
+  useEffect(() => { void repo.listLibrary('object').then(setLib); }, []);
+  if (!project) return null;
+  const list = Object.values(project.customObjects);
+  const fromLib = lib.filter((r) => !list.some((o) => o.name === r.name));
+  return (
+    <div className="cbg-section" data-testid="my-objects">
+      <div className="cbg-title">
+        <h3 className="group-title">Meus objetos</h3>
+        <HelpLink chapter="criador-objetos" />
+        <button type="button" className="btn btn-sm" data-testid="object-new" onClick={() => void newCustomObject()}><Plus size={13} /> Criar objeto</button>
+      </div>
+      {list.length === 0 && <p className="hint">Monte objetos com formas, cores e imagens no Criador de Objetos e use-os nas cenas e nos cenários.</p>}
+      {list.map((o) => (
+        <div key={o.id} className="lib-row" data-testid="my-object" data-name={o.name}>
+          <svg className="obj-thumb" viewBox={`${-Math.max(o.width, o.height) * 0.6} ${-Math.max(o.width, o.height) * 1.1} ${Math.max(o.width, o.height) * 1.2} ${Math.max(o.width, o.height) * 1.2}`} aria-hidden="true" dangerouslySetInnerHTML={{ __html: renderCustomObject(project, OBJECT_PREFIX + o.id, previewAssetUrl) }} />
+          <span className="lib-main"><strong>{o.name}</strong><small>{o.pieces.length} peça(s)</small></span>
+          <IconButton label={`Inserir ${o.name} na cena`} testId="my-object-insert" onClick={() => insertCustomObject(o.id)}><Plus size={14} /></IconButton>
+          <IconButton label={`Editar ${o.name}`} testId="my-object-edit" onClick={() => openObjectCreator(o.id)}><Pencil size={14} /></IconButton>
+          <IconButton label={`Excluir ${o.name}`} danger onClick={() => void deleteCustomObject(o.id)}><Trash2 size={14} /></IconButton>
+        </div>
+      ))}
+      {fromLib.length > 0 && (
+        <>
+          <h3 className="group-title">Da minha biblioteca</h3>
+          {fromLib.map((r) => (
+            <div key={r.id} className="lib-row">
+              <span className="lib-main"><strong>{r.name}</strong></span>
+              <button type="button" className="btn btn-sm" onClick={() => void bringObjectFromLibrary(r.data as Parameters<typeof bringObjectFromLibrary>[0])}>Trazer</button>
+            </div>
+          ))}
+        </>
+      )}
+    </div>
+  );
+}
+
 export function ObjectsPanel() {
   const [query, setQuery] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
@@ -378,6 +421,7 @@ export function ObjectsPanel() {
         }} />
       </div>
       <div className="panel-scroll">
+        <MyObjectsSection />
         {cats.map((cat) => (
           <div key={cat}>
             <h3 className="group-title">{PROP_CATEGORY_LABELS[cat]}</h3>
@@ -488,7 +532,7 @@ export function LibraryPanel() {
   const fileRef = useRef<HTMLInputElement>(null);
   if (!project || !scene) return null;
   const filtered = items.filter((i) => matchesSearch(query, i.name, i.kind)).sort((a, b) => b.favorite - a.favorite || b.createdAt - a.createdAt);
-  const label = { character: 'Personagem', scene: 'Cena', pose: 'Pose', background: 'Cenário', animation: 'Sequência', prop: 'Objeto', audio: 'Áudio' } as const;
+  const label = { character: 'Personagem', scene: 'Cena', pose: 'Pose', background: 'Cenário', animation: 'Sequência', prop: 'Objeto', audio: 'Áudio', object: 'Meu objeto' } as const;
   const saveScene = async () => {
     await repo.putLibrary({ id: uid('lib'), kind: 'scene', name: scene.name, favorite: 0, createdAt: Date.now(), data: { scene: deepClone(scene), characters: deepClone(project.characters) } });
     reload();
@@ -520,6 +564,8 @@ export function LibraryPanel() {
         replaceSceneContent(d as Project, s.id, data.scene);
       });
       seek(0);
+    } else if (r.kind === 'object') {
+      void bringObjectFromLibrary(r.data as Parameters<typeof bringObjectFromLibrary>[0]);
     } else if (r.kind === 'animation') {
       const id = useUI.getState().nodeIds[0];
       const n = id ? scene.nodes[id] : undefined;

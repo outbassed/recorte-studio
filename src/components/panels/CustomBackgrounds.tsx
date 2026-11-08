@@ -1,5 +1,7 @@
 /** Seção "Meus cenários": cada cenário tem só os horários que o usuário cadastrar. */
 import { useEffect, useRef, useState } from 'react';
+import { newScenery, openSceneCreator } from '@/state/creatorActions';
+import { Wand2 } from 'lucide-react';
 import { BookmarkPlus, Pencil, Plus, Trash2, X } from 'lucide-react';
 import { TIMES_OF_DAY, type CustomBackground, type Project, type TimeOfDay } from '@/engine/model/schema';
 import { applyCustomBackground, availableTimes, createCustomBackground, customBackgroundUsage, deleteCustomBackground, TIME_LABELS } from '@/engine/world/customBackgrounds';
@@ -85,6 +87,7 @@ export function CustomBackgroundsSection() {
             );
           })}
         </div>
+        <button type="button" className="btn btn-sm btn-block" data-testid="scenery-open" onClick={() => openSceneCreator(cb.id, scene.background.presetId === `custom:${cb.id}` && scene.background.timeOfDay ? scene.background.timeOfDay : 'day')}><Wand2 size={13} /> Abrir no Criador de Cenários</button>
         <button type="button" className="btn btn-sm btn-block" data-testid="custom-bg-apply" disabled={!times.length} onClick={() => {
           commit('Usar cenário', (d) => {
             const c = (d as Project).customBackgrounds[cb.id];
@@ -100,7 +103,8 @@ export function CustomBackgroundsSection() {
     <div className="cbg-section" data-testid="custom-bgs">
       <div className="cbg-title">
         <h3 className="group-title">Meus cenários</h3>
-        <button type="button" className="btn btn-sm" data-testid="custom-bg-new" onClick={() => void create()}><Plus size={13} /> Novo</button>
+        <button type="button" className="btn btn-sm" data-testid="custom-bg-new" onClick={() => void create()}><Plus size={13} /> Por imagem</button>
+        <button type="button" className="btn btn-sm btn-primary" data-testid="scenery-new" onClick={() => void newScenery()}><Wand2 size={13} /> Criar no estúdio</button>
       </div>
       {list.length === 0 && <p className="hint">Importe imagens PNG, JPG, WebP ou SVG. Cada cenário pode ter só os horários que você quiser.</p>}
       {list.map(card)}

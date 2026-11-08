@@ -1,4 +1,5 @@
 /** Ações de mídia da 1.1: biblioteca de áudio, revincular, remover com aviso, salvar .jrec. */
+import { pieceAssetIds } from '@/engine/world/pieces';
 import { addAudioClip, addAudioTrack, assetUsage, deleteNode, sceneOf } from '@/engine/model/ops';
 import { createImageNode } from '@/engine/model/factory';
 import { frameSize, WORLD_HEIGHT, type Asset, type AudioTrack, type Project } from '@/engine/model/schema';
@@ -79,7 +80,9 @@ export function placeImageInScene(assetId: string): void {
 }
 
 export const mediaUsage = (p: Project, id: string): number =>
-  assetUsage(p, id) + Object.values(p.customBackgrounds).reduce((n, b) => n + Object.values(b.variants).filter((v) => v?.assetId === id).length, 0);
+  assetUsage(p, id)
+  + Object.values(p.customBackgrounds).reduce((n, b) => n + Object.values(b.variants).filter((v) => v?.assetId === id).length, 0)
+  + pieceAssetIds(p).filter((x) => x === id).length;
 
 /** Remove a mídia do projeto. Se estiver em uso, pede confirmação e remove os usos (com Undo). */
 export async function removeMedia(assetId: string): Promise<void> {
@@ -104,6 +107,8 @@ export async function removeMedia(assetId: string): Promise<void> {
     }
     for (const c of Object.values(proj.characters)) if (c.spriteAssetId === assetId) c.spriteAssetId = undefined;
     for (const b of Object.values(proj.customBackgrounds)) for (const key of Object.keys(b.variants) as Array<keyof typeof b.variants>) if (b.variants[key]?.assetId === assetId) delete b.variants[key];
+    for (const o of Object.values(proj.customObjects)) o.pieces = o.pieces.filter((pc) => pc.assetId !== assetId);
+    for (const b of Object.values(proj.customBackgrounds)) for (const c of Object.values(b.compositions ?? {})) if (c) c.pieces = c.pieces.filter((pc) => pc.assetId !== assetId);
     delete proj.assets[assetId];
   });
   forgetBuffer(assetId);

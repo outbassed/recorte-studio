@@ -5,6 +5,8 @@
 import { Diamond, Layers, Trash2, UserRound, Wand2 } from 'lucide-react';
 import { createContext, useContext, useState } from 'react';
 import { HelpLink } from '../manual/HelpLink';
+import { customObjectIdOf, isCustomObjectId } from '@/engine/world/pieces';
+import { openObjectCreator } from '@/state/creatorActions';
 import {
   ACTION_PRESETS, addDialogue, applyBackground, applyPose, bakeActionClip, deleteClip, deleteKeyframe, ensurePropertyTrack, extendToFit, findClip, findPropertyTrack, insertAction, moveLayer, readProperty, sceneOf, setKeyframe, writeProperty,
 } from '@/engine/model/ops';
@@ -327,6 +329,12 @@ function PropSections({ scene, node }: { scene: Scene; node: Extract<SceneNode, 
   const owners = Object.values(scene.nodes).filter((n) => n.kind === 'character');
   return (
     <Pane tab="Aparência">
+    {isCustomObjectId(node.propId) && (
+      <Section title="Meu objeto" testId="sec-custom-object">
+        <p className="hint">Objeto do Criador de Objetos. Editar muda todas as cópias nas cenas e cenários.</p>
+        <button type="button" className="btn btn-block" data-testid="edit-custom-object" onClick={() => openObjectCreator(customObjectIdOf(node.propId))}>Editar no Criador de Objetos</button>
+      </Section>
+    )}
     <Section title="Aparência do objeto" testId="sec-prop">
       <ColorField label="Cor principal" value={node.colorA || def?.a || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorA = v; })} />
       <ColorField label="Cor secundária" value={node.colorB || def?.b || '#888888'} onChange={(v) => set('Cor do objeto', (n) => { n.colorB = v; })} />

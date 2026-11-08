@@ -16,7 +16,7 @@ export type Screen = 'projects' | 'editor';
 export type HomeSection = 'home' | 'projects' | 'templates' | 'manual' | 'settings';
 /** Manual e Configurações abertos por cima do editor, sem sair do projeto. */
 export type Overlay = null | { kind: 'manual'; chapter?: string } | { kind: 'settings'; section?: string };
-export type DialogKind = null | 'export' | 'settings' | 'shortcuts' | 'creator' | 'import-report';
+export type DialogKind = null | 'export' | 'settings' | 'shortcuts' | 'creator' | 'import-report' | 'object-creator' | 'scene-creator';
 
 interface UIState extends Selection {
   screen: Screen;
@@ -28,6 +28,9 @@ interface UIState extends Selection {
   inspectorTabs: Record<string, string>;
   dialog: DialogKind;
   creatorCharacterId: string | null;
+  objectCreatorId: string | null;
+  sceneCreatorId: string | null;
+  sceneCreatorTime: 'morning' | 'day' | 'afternoon' | 'sunset' | 'night';
   leftTab: LeftTab;
   mobilePanel: MobilePanel;
   mobilePanelExpanded: boolean;
@@ -73,6 +76,9 @@ export const useUI = create<UIState>(() => ({
   inspectorTabs: {},
   dialog: null,
   creatorCharacterId: null,
+  objectCreatorId: null,
+  sceneCreatorId: null,
+  sceneCreatorTime: 'day',
   nodeIds: [],
   timeline: null,
   camera: false,

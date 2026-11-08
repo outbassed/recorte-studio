@@ -24,7 +24,7 @@ export type ProjectRow = Omit<ProjectRecord, 'data'> & { width: number; height: 
 export interface BlobRecord { id: string; blob: Blob; name: string; mime: string; size: number; createdAt: number }
 export interface BackupRecord { id?: number; projectId: string; createdAt: number; label: string; raw: string }
 export interface LibraryRecord { id: string; kind: LibraryKind; name: string; favorite: number; createdAt: number; data: unknown }
-export type LibraryKind = 'character' | 'pose' | 'scene' | 'background' | 'animation' | 'prop' | 'audio';
+export type LibraryKind = 'character' | 'pose' | 'scene' | 'background' | 'animation' | 'prop' | 'audio' | 'object';
 export interface MetaRecord { key: string; value: unknown }
 
 class RecorteDB extends Dexie {

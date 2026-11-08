@@ -579,6 +579,77 @@ export type Asset = z.infer<typeof AssetSchema>;
 export const TIMES_OF_DAY = ['morning', 'day', 'afternoon', 'sunset', 'night'] as const;
 export type TimeOfDay = (typeof TIMES_OF_DAY)[number];
 
+
+
+/* ---------- 1.2: peças 2D (Criador de Objetos e Criador de Cenários) ---------- */
+/** Personagem estático: cópia congelada da aparência e da pose, imune a mudanças no elenco. */
+export const StaticCharacterSchema = z.object({
+  def: CharacterDefinitionSchema,
+  sourceId: z.string().optional(),
+  view: ViewIdSchema.default('front'),
+  expression: z.string().default('neutral'),
+  poseId: z.string().default('idle'),
+  rig: RigSchema.prefault({}),
+  handL: z.enum(['open', 'fist', 'point']).default('open'),
+  handR: z.enum(['open', 'fist', 'point']).default('open'),
+  limbDepth: LimbDepthSchema.prefault({}),
+});
+export type StaticCharacter = z.infer<typeof StaticCharacterSchema>;
+
+export const PieceKindSchema = z.enum(['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line', 'image', 'prop', 'object', 'character']);
+export type PieceKind = z.infer<typeof PieceKindSchema>;
+export const PieceSchema = z.object({
+  id: z.string(),
+  name: z.string().default('Peça'),
+  kind: PieceKindSchema,
+  x: finite.default(0),
+  y: finite.default(0),
+  /** Largura e altura (formas e imagens). Para objetos e personagens, use `scale`. */
+  w: finite.default(120),
+  h: finite.default(120),
+  scale: finite.default(1),
+  rotation: finite.default(0),
+  flipX: z.boolean().default(false),
+  flipY: z.boolean().default(false),
+  opacity: finite.default(1),
+  fill: z.string().default('#f2a65a'),
+  stroke: z.string().default('#23202b'),
+  strokeWidth: finite.default(4),
+  radius: finite.default(0),
+  sides: z.number().int().min(3).max(12).default(6),
+  assetId: z.string().optional(),
+  /** Objeto nativo (prop) ou objeto personalizado (object). */
+  refId: z.string().optional(),
+  colorA: z.string().default(''),
+  colorB: z.string().default(''),
+  state: z.string().default(''),
+  character: StaticCharacterSchema.optional(),
+  group: z.string().optional(),
+  visible: z.boolean().default(true),
+});
+export type Piece = z.infer<typeof PieceSchema>;
+
+export const CustomObjectSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  /** Caixa do objeto: origem no centro da base (como os objetos nativos). */
+  width: finite.default(200),
+  height: finite.default(200),
+  pivotX: finite.default(0),
+  pivotY: finite.default(0),
+  pieces: z.array(PieceSchema).default([]),
+  createdAt: z.number().default(0),
+  updatedAt: z.number().default(0),
+});
+export type CustomObject = z.infer<typeof CustomObjectSchema>;
+
+/** Composição editável de um horário do cenário (coordenadas do mundo). */
+export const CompositionSchema = z.object({
+  sky: z.string().default('#9fd3f0'),
+  pieces: z.array(PieceSchema).default([]),
+});
+export type Composition = z.infer<typeof CompositionSchema>;
+
 export const CustomVariantSchema = z.object({
   assetId: z.string(),
   fit: z.enum(['cover', 'contain']).default('cover'),
@@ -594,6 +665,14 @@ export const CustomBackgroundSchema = z.object({
     afternoon: CustomVariantSchema.optional(),
     sunset: CustomVariantSchema.optional(),
     night: CustomVariantSchema.optional(),
+  }).prefault({}),
+  /** 1.2: composições editáveis por horário (Criador de Cenários). Têm prioridade sobre a imagem. */
+  compositions: z.object({
+    morning: CompositionSchema.optional(),
+    day: CompositionSchema.optional(),
+    afternoon: CompositionSchema.optional(),
+    sunset: CompositionSchema.optional(),
+    night: CompositionSchema.optional(),
   }).prefault({}),
   createdAt: z.number().default(0),
 });
@@ -624,6 +703,8 @@ export const ProjectSchema = z.object({
   characters: z.record(z.string(), CharacterDefinitionSchema).default({}),
   assets: z.record(z.string(), AssetSchema).default({}),
   customBackgrounds: z.record(z.string(), CustomBackgroundSchema).default({}),
+  /** 1.2: objetos do Criador de Objetos. */
+  customObjects: z.record(z.string(), CustomObjectSchema).default({}),
   currentSceneId: z.string().nullable().default(null),
   metadata: z
     .object({
