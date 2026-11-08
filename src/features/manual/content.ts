@@ -1,5 +1,6 @@
 /** Conteúdo do manual. Só documenta o que existe nesta versão. Imagens: public/manual (capturas reais). */
 import { normalizeText as normalize } from '@/features/library/search';
+import { MANUAL_CHAPTERS, MANUAL_GROUPS } from './chapters';
 
 export type Block =
   | { p: string }
@@ -15,13 +16,8 @@ export type Block =
 
 export interface Chapter { id: string; title: string; group: string; summary: string; blocks: Block[]; related?: string[] }
 
-export const GROUPS = [
-  { id: 'comecar', label: 'Começar' },
-];
-
-export const CHAPTERS: Chapter[] = [
-  { id: 'inicio', title: 'Manual', group: 'comecar', summary: 'Página inicial do manual.', blocks: [] },
-];
+export const GROUPS = MANUAL_GROUPS;
+export const CHAPTERS: Chapter[] = MANUAL_CHAPTERS;
 
 export const chapterById = (id: string) => CHAPTERS.find((c) => c.id === id);
 

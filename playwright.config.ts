@@ -26,5 +26,6 @@ export default defineConfig({
   projects: [
     { name: 'e2e', testMatch: /flows\.spec\.ts/ },
     { name: 'shots', testMatch: /shots\.spec\.ts/ },
+    { name: 'manual', testMatch: /manual\.spec\.ts/ },
   ],
 });

@@ -6,6 +6,7 @@ import { SHORTCUTS } from '@/features/shortcuts';
 import { APP_VERSION } from '@/features/projects/jrec';
 import { useUI } from '@/state/uiStore';
 import { Logo } from '../layout/ProjectsScreen';
+import { MARKS } from '@/features/manual/marks.generated';
 
 const go = (id: string) => useUI.setState({ manualChapter: id });
 
@@ -29,7 +30,7 @@ function Figure({ b }: { b: Extract<Block, { img: string }> }) {
     <figure className="man-fig">
       <div className="man-shot">
         <img src={`manual/${b.img}`} alt={b.alt} loading="lazy" />
-        {b.marks?.map((m) => <span key={m.n} className="man-mark" style={{ left: `${m.x}%`, top: `${m.y}%` }} aria-hidden="true">{m.n}</span>)}
+        {(b.marks ?? MARKS[b.img] ?? []).map((m) => <span key={m.n} className="man-mark" style={{ left: `${m.x}%`, top: `${m.y}%` }} aria-hidden="true">{m.n}</span>)}
       </div>
       {b.legend && <ol className="man-legend">{b.legend.map((l, i) => <li key={i}><Inline text={l} /></li>)}</ol>}
       {b.caption && <figcaption><Inline text={b.caption} /></figcaption>}
