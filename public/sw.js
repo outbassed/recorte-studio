@@ -12,11 +12,18 @@ const SHELL = [
   './icon-192.png',
   './icon-512.png',
 ];
+// Leitor de .7z/.rar/.tar.xz/.tar.bz2 (WebAssembly) e imagens do manual: precisam existir offline
+// mesmo que nunca tenham sido usados com conexão. Falha em um deles não impede a instalação.
+const OPTIONAL = [
+  './vendor/libarchive/worker-bundle.js',
+  './vendor/libarchive/libarchive.wasm',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     await cache.addAll(SHELL);
+    await Promise.allSettled(OPTIONAL.map((url) => cache.add(url)));
 
     // O Vite gera um nome com hash para o JavaScript. Descobri-lo no HTML
     // garante que a primeira instalação já tenha a interface disponível offline.

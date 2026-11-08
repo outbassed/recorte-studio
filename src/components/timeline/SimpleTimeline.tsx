@@ -14,6 +14,19 @@ import { IconButton } from '../controls/fields';
 import { parseNumberInput } from '../controls/SliderNumberField';
 import { formatTime } from './Timeline';
 
+const MAX_STEP_S = 3600;
+/** Valida início e duração de um passo; devolve a mensagem de erro ou null. */
+export function validateStep(startS: number | null | undefined, durS: number | null | undefined): string | null {
+  if (startS === null || startS === undefined || !Number.isFinite(startS)) return 'Início inválido: use um número em segundos, por exemplo 1,5.';
+  if (startS < 0) return 'O início não pode ser negativo.';
+  if (startS > MAX_STEP_S) return 'O início passa de 1 hora.';
+  if (durS === null || durS === undefined || !Number.isFinite(durS)) return 'Duração inválida: use um número em segundos, por exemplo 2.';
+  if (durS <= 0) return 'A duração precisa ser maior que zero.';
+  if (durS < 0.05) return 'A duração mínima é 0,05 s.';
+  if (durS > MAX_STEP_S) return 'A duração passa de 1 hora.';
+  return null;
+}
+
 const SIMPLE_ACTIONS = ACTION_PRESETS.filter((a) => !a.needs || a.needs === 'target').filter((a) => a.id !== 'talk' && a.id !== 'stop');
 const sec = (ms: number) => (ms / 1000).toFixed(1).replace('.', ',');
 
@@ -42,8 +55,15 @@ export function SimpleTimeline() {
   steps.sort((a, b) => a.clip.startMs - b.clip.startMs);
 
   const add = () => {
-    const startMs = Math.round((parseNumberInput(at) ?? (time < 0 ? transport.getState().timeMs : time) / 1000) * 1000);
-    const durMs = Math.round((parseNumberInput(dur) ?? 2) * 1000);
+    const startS = at.trim() ? parseNumberInput(at) : (time < 0 ? transport.getState().timeMs : time) / 1000;
+    const durS = dur.trim() ? parseNumberInput(dur) : 2;
+    const problem = validateStep(startS, what.startsWith('cam:') ? 1 : durS);
+    if (problem) {
+      toast(problem, 'error');
+      return;
+    }
+    const startMs = Math.round(startS! * 1000);
+    const durMs = Math.round(durS! * 1000);
     if (what.startsWith('cam:')) {
       const preset = what.slice(4) as FramingPreset;
       const ids = [actor?.id, target].filter(Boolean) as string[];
@@ -72,7 +92,11 @@ export function SimpleTimeline() {
 
   const editClip = (id: string, field: 'startMs' | 'durationMs', value: string) => {
     const v = parseNumberInput(value);
-    if (v === null || v < 0) return;
+    const problem = field === 'startMs' ? validateStep(v, 1) : validateStep(0, v);
+    if (problem || v === null) {
+      toast(problem ?? 'Valor inválido.', 'error');
+      return;
+    }
     commit('Editar passo', (d) => {
       const f = findClip(sceneOf(d as Project, scene.id), id);
       if (f) f.clip[field] = Math.max(field === 'durationMs' ? 50 : 0, Math.round(v * 1000));

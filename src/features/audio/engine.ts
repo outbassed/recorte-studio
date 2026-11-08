@@ -136,17 +136,38 @@ export async function playAudio(events: AudioEvent[], fromMs: number, rate: numb
 /** Pré-escuta da biblioteca, independente da timeline. */
 let previewEl: HTMLAudioElement | null = null;
 let previewUrl: string | null = null;
+let previewToken = 0;
 export async function previewAudio(assetId: string | null, onEnd?: () => void): Promise<boolean> {
-  previewEl?.pause();
+  const token = ++previewToken;
+  if (previewEl) {
+    previewEl.onended = null;
+    previewEl.pause();
+  }
   if (previewUrl) URL.revokeObjectURL(previewUrl);
   previewEl = null;
   previewUrl = null;
   if (!assetId) return false;
   const blob = await repo.getBlob(assetId);
-  if (!blob) return false;
-  previewUrl = URL.createObjectURL(blob);
-  previewEl = new Audio(previewUrl);
-  previewEl.onended = () => onEnd?.();
-  await previewEl.play();
+  // Pediram para parar ou trocaram de arquivo enquanto o blob carregava: descarta.
+  if (!blob || token !== previewToken) return false;
+  const url = URL.createObjectURL(blob);
+  const el = new Audio(url);
+  previewUrl = url;
+  previewEl = el;
+  el.onended = () => {
+    if (token === previewToken) onEnd?.();
+  };
+  try {
+    await el.play();
+  } catch (e) {
+    if (token !== previewToken) return false;
+    throw e;
+  }
+  if (token !== previewToken) {
+    el.pause();
+    return false;
+  }
   return true;
 }
+/** Para testes: estado atual da pré-escuta. */
+export const previewState = () => ({ token: previewToken, playing: !!previewEl && !previewEl.paused });

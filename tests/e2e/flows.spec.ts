@@ -947,3 +947,33 @@ test.describe('1.1', () => {
     await page.getByTestId('mode-advanced').click();
   });
 });
+
+test.describe('1.2: pacotes reais (7-Zip e WinRAR)', () => {
+  const arc = (n: string) => resolve(`tests/fixtures/archives/${n}`);
+  for (const n of ['projeto.7z', 'projeto.rar', 'projeto.tar.xz', 'projeto.tar.bz2']) {
+    test(`importa ${n} com o leitor real`, async ({ page }) => {
+      await page.goto('/');
+      await page.getByTestId('project-input').setInputFiles(arc(n));
+      await expect(page.getByTestId('import-report')).toBeVisible({ timeout: 20000 });
+      await expect(page.getByTestId('report-counts')).toContainText('2 cena(s)');
+    });
+  }
+  for (const [n, msg] of [['projeto-senha.rar', /senha/], ['projeto-senha.7z', /senha|corrompido/], ['projeto-corrompido.7z', /corrompido|não suportada/]] as const) {
+    test(`recusa ${n} com mensagem clara`, async ({ page }) => {
+      await page.goto('/');
+      await page.getByTestId('project-input').setInputFiles(arc(n));
+      await expect(page.getByTestId('toasts')).toContainText(msg, { timeout: 20000 });
+      await expect(page.getByTestId('import-report')).toHaveCount(0);
+    });
+  }
+  test('importa .7z offline sem nunca ter usado o leitor online', async ({ page, context }) => {
+    await page.goto('/');
+    await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));
+    await page.reload();
+    await page.waitForFunction(() => !!navigator.serviceWorker.controller);
+    await context.setOffline(true);
+    await page.getByTestId('project-input').setInputFiles(arc('projeto.7z'));
+    await expect(page.getByTestId('import-report')).toBeVisible({ timeout: 20000 });
+    await context.setOffline(false);
+  });
+});

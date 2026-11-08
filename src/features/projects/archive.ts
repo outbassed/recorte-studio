@@ -247,6 +247,8 @@ export async function extractWithLibarchive(file: Blob, reader: LibarchiveReader
   try {
     if ((await archive.hasEncryptedData()) === true) throw new ArchiveError('encrypted', 'Este arquivo está protegido por senha. Descompacte-o com a senha e importe novamente.');
     const list = await archive.getFilesArray();
+    // RAR com cabeçalho cifrado e 7z truncado chegam aqui sem erro e sem nenhuma entrada.
+    if (!list.length) throw new ArchiveError('corrupt', 'Não foi possível ler o conteúdo deste arquivo: ele pode estar protegido por senha, corrompido ou vazio.');
     checkBudget(list.map((f) => ({ name: `${f.path}${f.file.name}`, size: f.file.size })), limits);
     const out: Entry[] = [];
     let total = 0;
