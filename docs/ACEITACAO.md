@@ -90,7 +90,7 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | Sem sucesso falso com mídia ausente | PASSOU | `v11-integrity`; E2E mídia ausente |
 | Extração segura de pacotes | PASSOU | `v11-integrity` (caminhos, limites, senha) |
 | .jrec como único formato de projeto, reimportação completa | PASSOU | E2E .jrec em contexto limpo; E2E projeto 0.4 |
-| Importar .json/.zip legados, .7z, .rar, .tar.* | PARCIAL | .json, .zip, .tar, .tar.gz testados; .7z/.rar só com leitor simulado; não funcionam por `file://` |
+| Importar .json/.zip legados, .7z, .rar, .tar.* | PASSOU* | Na 1.2 testado com arquivos reais (7-Zip e WinRAR), senha, corrompido e offline. *Não funcionam por `file://` |
 | Áudio: play/pausa/busca sincronizados, memória limitada | PASSOU | `v11-integrity` (LRU); E2E 12 e 14 |
 | Balões e legendas quebram e cabem | PASSOU | `v11-integrity` (quebra) |
 | Cabelo nas 8 vistas sem esconder | PASSOU | `hair-matrix` (30 × 8); `test-results/hair-matrix.svg` |
@@ -100,6 +100,29 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 | Modo simples e avançado nos mesmos dados | PASSOU | E2E modo simples |
 | PWA atualiza e funciona offline no link do projeto | PASSOU | E2E PWA offline; cache com nome por build |
 | Telas pequenas | PASSOU* | E2E 390×844 e capturas. *Chrome desktop emulando o tamanho |
+
+## Versão 1.2
+
+| Requisito | Estado | Evidência |
+| --- | --- | --- |
+| Pré-escuta de áudio descarta carregamento antigo | PASSOU | `v12` |
+| Modo simples valida início e duração | PASSOU | `v12` |
+| Revincular atualiza o painel na hora | PASSOU | E2E mídia ausente |
+| .7z e .rar com arquivos reais, senha, corrompido e offline | PASSOU | E2E `stories`/pacotes reais (fixtures em `tests/fixtures/archives`) |
+| Tela inicial, Meus projetos, Modelos, Manual, Configurações | PASSOU | E2E 11, 20 e demais; capturas `inicio`, `projetos`, `modelos` |
+| Configurações com efeito real e persistência | PARCIAL | Tema, escala, FPS, volume, início e modo implementados e usados pelo app, mas sem teste automatizado por opção |
+| Manual com busca, capítulos, ajuda contextual, offline | PASSOU | `manual`; `npm run manual:shots`; pré-cache no service worker |
+| Propriedades em abas por tipo de seleção | PASSOU | E2E 2, 4, 6, 12, 16 e outros, adaptados |
+| Criador de Objetos | PASSOU | `creators`; E2E objeto criado e editado; `library` |
+| Criador de Cenários com horários e personagens estáticos | PASSOU | `creators`; E2E cenário com personagem estático |
+| Quadro vertical/1:1/4:3 no Criador de Cenários | PASSOU | `creators` (modelos); captura 9:16 inspecionada |
+| Biblioteca de objetos e cenários com dependências e formatos antigos | PASSOU | `library-bundles`; E2E `library` |
+| Caches invalidam ao editar objetos | PASSOU | `library-bundles`; E2E |
+| Seleção de peças giradas e grupos | PASSOU | `creators`; E2E `library` |
+| Profundidade de braços e mãos, automática e manual | PASSOU | `limb-depth` (8 vistas × poses) |
+| Cabelos longos nas 8 vistas | PASSOU | `hair-matrix` (geometria + folha visual) |
+| Celular: dock, barra rápida contextual, criadores | PASSOU* | `quick-actions`; E2E celular. *Janela emulada, sem aparelho físico |
+| História completa e exportação grande | PASSOU | E2E `stories` (1080p, 29 s, 5 cenas) |
 
 ## Limitações importantes
 
@@ -112,3 +135,5 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 7. **Sem GIF e sem colaboração.** Não foram pedidos.
 8. **Projetos da 0.4** precisam ser exportados em JSON antes de importar.
 9. **.7z, .rar, .tar.xz e .tar.bz2** dependem de um worker WebAssembly: funcionam por HTTP (Vercel, `npm run preview`), não por `file://`.
+10. **Celular:** testado só com janelas emuladas no Chrome de desktop; nenhum aparelho físico.
+11. **Configurações:** cada opção tem efeito real, mas só o tema claro foi conferido visualmente; as demais têm cobertura apenas de código e uso no app.

@@ -1,6 +1,6 @@
 # Resultados de testes
 
-Versão 1.1.0, executados em 07/11/2026. Nada aqui é estimativa: são as saídas das execuções.
+Versão 1.2.0, executados em 08/11/2026. Nada aqui é estimativa: são as saídas das execuções.
 
 ## Ambiente
 
@@ -14,10 +14,11 @@ Versão 1.1.0, executados em 07/11/2026. Nada aqui é estimativa: são as saída
 | --- | --- |
 | `npm run lint` | Sem erros nem avisos (`--max-warnings=0`) |
 | `npm run typecheck` | Sem erros (TypeScript estrito) |
-| `npm test` | **214 de 214** testes, 10 arquivos |
-| `npm run build` | OK, 2,4 MB em `dist/` (inclui o WebAssembly da libarchive, ~1 MB) |
-| `npm run test:e2e` | **54 de 54** testes |
-| `npm run shots` | 12 de 12, capturas em `docs/capturas/` (na primeira rodada um worker do Playwright caiu com código 0xC0000142 do Windows, sem falha de asserção; a nova rodada passou inteira) |
+| `npm test` | **302 de 302** testes, 17 arquivos |
+| `npm run build` | OK, 4,5 MB em `dist/` (inclui o WebAssembly da libarchive, ~1 MB, e as 23 capturas do manual, ~2 MB) |
+| `npm run test:e2e` | **73 de 73** testes, numa única execução (4,7 min) |
+| `npm run shots` | 12 de 12, capturas em `docs/capturas/` |
+| `npm run manual:shots` | 2 de 2: refaz as 23 capturas do manual (`public/manual/`) e mede as marcações numeradas; falha se uma marcação ficar fora da imagem |
 
 ## O que os testes cobrem
 
@@ -28,6 +29,12 @@ Versão 1.1.0, executados em 07/11/2026. Nada aqui é estimativa: são as saída
 **Novos na 1.1** (`v11-integrity`, `hair-matrix`, `v11-features`): detecção de formato pelos bytes; caminhos perigosos (`..`, absolutos, unidades); limites de entradas, tamanho e taxa de compressão; ZIP com senha; TAR e TAR.GZ; 7z com leitor simulado; ida e volta de .jrec; mídia ausente sem sucesso falso; colisão de IDs; arquivo adulterado (tamanho e SHA-256); SVG malicioso dentro de pacote; ZIP legado; pacote só com mídias; limpeza de mídias órfãs entre projetos; salvamento concorrente, troca de projeto e espera crescente; cache LRU de áudio; quebra de texto; 30 cabelos × 8 vistas (profundidade, recorte do brilho, snapshot); movimento natural, piscada dupla, transição por clip, sequências, enquadramentos e cenários com 1, 3 e 5 horários.
 
 **E2E novos na 1.1:** salvar .jrec e reabrir em contexto limpo com áudio; projeto 0.4 regravado em .jrec; mídia ausente (aviso, "Salvar incompleto", lista no manifest, alerta em Mídias); aba Mídias (importar por categoria, reaproveitar arquivo repetido, usar na cena, remover com aviso de uso e desfazer); cenário próprio com 1, 3 e 5 horários, troca de horário e persistência; modo simples × avançado sobre os mesmos dados, com desfazer; PWA recarregando offline no mesmo link `?projeto=`; 390×844 com Salvar, Áudio e modo simples sem estourar a tela.
+
+## Novos na 1.2
+
+**Unitários** (`library-bundles`, `creators`, `limb-depth`, `quick-actions`, `story-load`, `manual`, `v12`): pacotes de biblioteca (fecho de objetos aninhados, leitura de formatos antigos e de lixo, reaproveitar × copiar, ciclos); invalidação dos caches de objetos, cenários e miniaturas; quadro vertical, 1:1 e 4:3 nos modelos do Criador de Cenários; seleção de peças giradas, espelhadas e escaladas; mover, girar e escalar grupos sem deriva; profundidade de braços e mãos em 8 vistas × poses; ações rápidas do celular por tipo de seleção e por estado no tempo; história grande (validade, determinismo, preview × exportação, **120 quadros de uma cena com cenário de 80 peças e 10 figurantes abaixo de 25 ms por quadro**); manual (todo link, ajuda contextual, imagem e marcação existem; busca); validação do modo simples; pré-escuta de áudio com cancelamento.
+
+**E2E** (`stories`, `library`, mais os existentes adaptados às abas e ao dock): história de 5 cenas com cenário de 60+ peças exportada **inteira em 1080p** (29 s de vídeo em ~45 s, ~16 MB; duração, tamanho e o céu de cada horário conferidos com ffprobe/ffmpeg); .jrec da história aberto numa instalação limpa com o quadro PNG igual; vertical 9:16 em 1080p; cenário com personagem estático que sai no vídeo mas não aparece em Camadas nem na timeline; editar um objeto no criador muda a cena na hora; biblioteca 1.1 e registro ilegível; objeto com dependências e ciclos impedidos; celular (Editar fala × Falar, foco no campo certo, ações de câmera); seleção por desenho girado e grupos; **.7z, .rar, .tar.xz e .tar.bz2 reais** (fixtures criadas com 7-Zip e WinRAR), RAR com senha, 7z truncado e importação de .7z offline.
 
 ## Verificações de mídia
 
@@ -58,7 +65,9 @@ Em 200 cenas, o DOM mantém menos de 40 linhas da lista por causa da virtualiza�
 
 ## O que não foi testado
 
-- **.rar real e .7z/.tar.xz/.tar.bz2 reais no navegador.** A leitura usa libarchive.js; os testes cobrem o caminho com um leitor simulado e o worker é empacotado e servido, mas nenhum arquivo .rar real foi importado em teste automatizado. Por `file://` esses formatos não funcionam (o worker exige HTTP).
+- **Variantes de .7z e .rar além das criadas aqui.** Os testes usam arquivos reais feitos com 7-Zip e WinRAR (um de cada formato, mais senha e truncado). Outras ferramentas, RAR5 com cabeçalho cifrado, volumes e arquivos muito grandes não foram exercitados. Por `file://` esses formatos não funcionam (o worker exige HTTP).
+- **Aparelhos reais.** Os testes de celular (320 a 430 px, retrato e paisagem) usam janelas emuladas no Chrome de desktop. Toque real, teclado virtual, áreas seguras e barras do sistema não foram testados em hardware; não há resultado de aparelho físico.
+- **Exportação maior que 1080p ou mais longa que ~30 s.** O maior caso medido é 29 s em 1080p (1.920 × 1.080, 30 fps) em ~45 s.
 
 - **Firefox, Safari e celulares reais.** Os testes de "celular" usam tamanhos de janela no Chrome de desktop. Toque real, teclado virtual, notch e o caminho de exportação via MediaRecorder não foram exercitados.
 - **Ollama e serviços reais de IA.** Só mocks.
