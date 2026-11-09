@@ -7,12 +7,15 @@ import { bodyMetrics } from '@/engine/character/render';
 import { getPose, poseRig } from '@/engine/character/presets';
 import { createCharacterNode, createGroupNode, createProject, createPropNode, createScene, createShapeNode, createTextNode } from '@/engine/model/factory';
 import {
-  addDialogue, addEffect, addNode, applyBackground, ensurePropertyTrack, extendToFit, insertAction, readProperty, setKeyframe,
+  addAudioClip, addAudioTrack, addDialogue, addEffect, addNode, applyBackground, ensurePropertyTrack, extendToFit, insertAction, readProperty, setKeyframe,
 } from '@/engine/model/ops';
 import {
   CAMERA_TARGET, ProjectSchema, type Background, type CharacterDefinition, type CustomObject, type Easing, type KeyValue, type Project, type Rig, type RigKey, type Scene, type ViewOrAuto,
 } from '@/engine/model/schema';
 import { OBJECT_PREFIX } from '@/engine/world/pieces';
+import { createHash } from 'node:crypto';
+import { computePeaks, PEAK_WINDOW_MS } from '@/engine/animation/lipsync';
+import type { Asset } from '@/engine/model/schema';
 
 export type Ease = Easing | 'hold';
 export type KF = [number, KeyValue, Ease?];
@@ -45,7 +48,48 @@ export class Builder {
   bgs: Record<string, BgSpec> = {};
   dub: DubRow[] = [];
   seq = '';
+  blobs = new Map<string, Blob>();
+  audio: Record<string, { id: string; durMs: number }> = {};
+  private beds: Array<{ asset: string; from: number; to: number; vol: number; role: 'music' | 'ambient' | 'sfx'; endInLastMs?: number; fadeInMs?: number; fadeOutMs?: number; skipFirstMs?: number }> = [];
   private counter = 0;
+
+  /** Registra um áudio original (WAV 16-bit mono) como mídia do projeto. */
+  addAudio(key: string, wav: Uint8Array, samples: Float32Array, sr: number, name: string, category: Asset['category']) {
+    const hash = createHash('sha256').update(wav).digest('hex');
+    const id = `media_${hash.slice(0, 40)}`;
+    const durMs = Math.round((samples.length / sr) * 1000);
+    this.project.assets[id] = { id, kind: 'audio', name, mime: 'audio/wav', size: wav.length, durationMs: durMs, peaks: computePeaks([samples], sr), createdAt: 1, category, hash } as Asset;
+    this.blobs.set(id, new Blob([wav as Uint8Array<ArrayBuffer>], { type: 'audio/wav' }));
+    this.audio[key] = { id, durMs };
+    void PEAK_WINDOW_MS;
+  }
+
+  /** Cama sonora contínua (música/ambiente) sobre as tomadas de índice `from`..`to` (1-based); repete o arquivo em laço. */
+  bed(asset: string, from: number, to: number, o: { vol?: number; role?: 'music' | 'ambient'; endInLastMs?: number; fadeInMs?: number; fadeOutMs?: number; skipFirstMs?: number } = {}) {
+    this.beds.push({ asset, from: from - 1, to: to - 1, vol: o.vol ?? 0.6, role: o.role ?? 'ambient', endInLastMs: o.endInLastMs, fadeInMs: o.fadeInMs, fadeOutMs: o.fadeOutMs, skipFirstMs: o.skipFirstMs });
+  }
+
+  private applyBeds() {
+    for (const b of this.beds) {
+      const a = this.audio[b.asset]!;
+      let loopPos = b.skipFirstMs ?? 0;
+      for (let i = b.from; i <= b.to; i++) {
+        const sc = this.scenes[i]!;
+        const track = addAudioTrack(sc, b.role);
+        const end = i === b.to && b.endInLastMs !== undefined ? b.endInLastMs : sc.durationMs;
+        let t = 0;
+        while (t < end) {
+          const left = a.durMs - (loopPos % a.durMs);
+          const d = Math.min(left, end - t);
+          addAudioClip(sc, track.id, a.id, t, d, { offsetMs: loopPos % a.durMs, volume: b.vol, fadeInMs: i === b.from && t === 0 ? (b.fadeInMs ?? 0) : 0, fadeOutMs: i === b.to && t + d >= end ? (b.fadeOutMs ?? 0) : 0 });
+          t += d; loopPos += d;
+        }
+      }
+    }
+    this.beds = [];
+    // nenhum áudio passa do fim da cena (sem vazar para a tomada seguinte)
+    for (const sc of this.scenes) for (const t of sc.tracks) if (t.type === 'audio') t.clips = t.clips.filter((c) => c.startMs < sc.durationMs).map((c) => ({ ...c, durationMs: Math.max(1, Math.min(c.durationMs, sc.durationMs - c.startMs)) }));
+  }
 
   constructor(title: string) {
     this.project = createProject(title, { width: 1920, height: 1080, aspect: '16:9', fps: 30 });
@@ -85,6 +129,7 @@ export class Builder {
   }
 
   finish(): Project {
+    this.applyBeds();
     this.project.currentSceneId = this.project.sceneOrder[0] ?? null;
     this.project.updatedAt = Date.now();
     return ProjectSchema.parse(JSON.parse(JSON.stringify(this.project)));
@@ -333,8 +378,9 @@ export class Shot {
     const k = Math.abs(n.transform.scaleX);
     const px = (o.run ? 640 : 300) * k * (o.speed ?? 1);
     const dur = o.dur ?? Math.max(500, (Math.abs(x1 - x0) / px) * 1000);
-    this.k(key, 'transform.x', [[t, x0, 'linear'], [t + dur, x1, 'linear']]);
+    // A ação nativa grava os próprios keyframes de X (alvo padrão +300): por isso entra primeiro e os nossos sobrescrevem.
     this.act(key, o.run ? 'run' : 'walk', t, { dur, speed: (o.speed ?? 1) * (o.run ? 1 : 1) });
+    this.k(key, 'transform.x', [[t, x0, 'linear'], [t + dur, x1, 'linear']]);
     return dur;
   }
 
@@ -382,6 +428,14 @@ export class Shot {
   }
 
   wait(ms: number) { this.t += ms; }
+  /** Efeito sonoro pontual (trilha SFX da cena). */
+  snd(asset: string, t: number, vol = 0.8, o: { dur?: number; offset?: number } = {}) {
+    const a = this.B.audio[asset];
+    if (!a) throw new Error(`áudio "${asset}" não existe`);
+    let tr = this.scene.tracks.find((x) => x.type === 'audio' && x.role === 'sfx');
+    if (!tr) tr = addAudioTrack(this.scene, 'sfx');
+    if (tr.type === 'audio') addAudioClip(this.scene, tr.id, a.id, t, o.dur ?? a.durMs, { volume: vol, offsetMs: o.offset ?? 0 });
+  }
   fx(effect: 'shake' | 'flash' | 'fadeBlack' | 'fadeFromBlack' | 'vignette' | 'tint', t: number, dur: number, intensity?: number) {
     const c = addEffect(this.scene, effect, t, dur);
     if (intensity !== undefined) c.intensity = intensity;

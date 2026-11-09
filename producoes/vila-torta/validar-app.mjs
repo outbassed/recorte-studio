@@ -5,8 +5,9 @@ import { mkdirSync, writeFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
-const OUT = '/tmp/claude-0/app'; mkdirSync(OUT, { recursive: true });
-const JREC = resolve('producoes/vila-torta/entrega/Vila-Torta-T1E1-Politicos-de-Estimacao.jrec');
+const OUT = process.argv[5] ?? '/tmp/claude-0/app'; mkdirSync(OUT, { recursive: true });
+const JREC = resolve(process.argv[2] ?? 'producoes/vila-torta/entrega/Vila-Torta-T1E1-Politicos-de-Estimacao.jrec');
+const NCENAS = Number(process.argv[3] ?? 145); const TITULO = process.argv[4] ?? 'Políticos de Estimação'; const OUTDIR = process.argv[5] ?? '/tmp/claude-0/app';
 const log = []; const ok = (n, v, d = '') => { log.push({ teste: n, ok: !!v, detalhe: d }); console.log(v ? 'OK ' : 'FALHOU', n, d); };
 const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--no-sandbox'] });
 const ctx = await browser.newContext({ baseURL: 'http://localhost:4173', viewport: { width: 1600, height: 900 }, acceptDownloads: true });
@@ -21,9 +22,9 @@ await page.getByTestId('stage').waitFor({ timeout: 60000 });
 await page.waitForTimeout(1500);
 await page.getByTestId('tab-scenes').click();
 ok('A1. Importação do .jrec pela interface abre o editor', await page.getByTestId('stage').isVisible());
-ok('A2. Título do projeto', (await page.getByTestId('project-name').innerText()).includes('Políticos de Estimação'), await page.getByTestId('project-name').innerText());
+ok('A2. Título do projeto', (await page.getByTestId('project-name').innerText()).includes(TITULO), await page.getByTestId('project-name').innerText());
 const n = Number(await page.getByTestId('scene-count').innerText());
-ok('A3. Lista de cenas com as 145 tomadas', n === 145, String(n));
+ok('A3. Lista de cenas com as 145 tomadas', n === NCENAS, String(n));
 await page.screenshot({ path: `${OUT}/editor-aberto.png` });
 
 // reprodução: avança o playhead e fica em "Reproduzindo"
@@ -44,11 +45,11 @@ const goto = async (i) => {
 };
 await goto(0); await page.screenshot({ path: `${OUT}/cena-001.png` });
 await goto(3); await page.screenshot({ path: `${OUT}/cena-004-impacto.png` });
-await goto(70); await page.screenshot({ path: `${OUT}/cena-071-debate.png` });
-await goto(139); await page.screenshot({ path: `${OUT}/cena-140-placa.png` });
+await goto(Math.floor(NCENAS / 2)); await page.screenshot({ path: `${OUT}/cena-071-debate.png` });
+await goto(NCENAS - 6); await page.screenshot({ path: `${OUT}/cena-140-placa.png` });
 
 // editar: seleciona um personagem pela camada e troca a expressão; verifica salvamento
-await goto(130);
+await goto(NCENAS - 14);
 await page.getByTestId('tab-layers').click();
 const layer = page.locator('[data-testid="layer-row"]').first();
 const nLayers = await page.locator('[data-testid="layer-row"]').count();
@@ -78,7 +79,7 @@ if (!reabriuSozinho) {
 ok('A9. Após recarregar a página, o projeto reabre do armazenamento do navegador', await page.getByTestId('stage').isVisible(), reabriuSozinho ? 'reabriu direto no editor' : 'reaberto pela lista de projetos');
 await page.getByTestId('tab-scenes').click();
 const n2 = Number(await page.getByTestId('scene-count').innerText());
-ok('A10. Reabrir preserva as 145 tomadas', n2 === 145, String(n2));
+ok('A10. Reabrir preserva as 145 tomadas', n2 === NCENAS, String(n2));
 await page.getByTestId('back-projects').click();
 await page.waitForTimeout(800);
 ok('A10b. O projeto aparece na lista "Meus projetos"', (await page.getByTestId('project-card').count()) >= 1);
@@ -90,7 +91,7 @@ const p2 = await ctx2.newPage(); const err2 = []; p2.on('pageerror', (e) => err2
 await p2.goto('/'); await p2.getByTestId('project-input').setInputFiles(saved);
 await p2.getByTestId('stage').waitFor({ timeout: 60000 }); await p2.getByTestId('tab-scenes').click();
 const n3 = Number(await p2.getByTestId('scene-count').innerText());
-ok('A11. O .jrec salvo pelo app reabre numa instalação limpa', n3 === 145, String(n3));
+ok('A11. O .jrec salvo pelo app reabre numa instalação limpa', n3 === NCENAS, String(n3));
 await p2.getByTestId('play').click(); await p2.waitForTimeout(1500); await p2.getByTestId('play').click();
 ok('A12. Sem erros de console/página', errors.filter((e) => !/favicon|manifest|service/i.test(e)).length === 0 && err2.length === 0, JSON.stringify(errors.slice(0, 3)));
 writeFileSync(`${OUT}/validacao-app.json`, JSON.stringify(log, null, 2));

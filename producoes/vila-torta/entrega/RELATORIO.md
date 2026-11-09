@@ -52,6 +52,10 @@ Distribuição por sequência (tomadas · duração): S1 22 · 77,8 s | S2 abert
 
 **No Recorte Studio real** (build de produção do repositório servido localmente, Chromium; `entrega/validacao-app-real.json` + `entrega/evidencias/*.png`): importação do `.jrec` pela interface → editor abre com o título certo → painel Cenas mostra **145** → botão Reproduzir entra em "Reproduzindo" → navegação por cenas → camadas/timeline editáveis (personagens, grupos, objetos, trilhas de câmera) → autosave "Salvo" → **Salvar projeto** baixa um `.jrec` de 169 KB → recarregar a página reabre o projeto → lista "Meus projetos" → o `.jrec` salvo pelo app abre em um navegador limpo com as 145 cenas; **0 erros de console**.
 
+## Correção posterior
+
+Ao produzir o T1E2 encontrei um defeito no meu gerador: a ação nativa "andar" sobrescrevia o keyframe final de X, então todas as caminhadas do T1E1 paravam 300 px depois do ponto de partida. Corrigido e o `.jrec` foi regerado e revalidado (mesmos números; caminhadas agora percorrem o trajeto previsto).
+
 ## Limitações honestas
 
 1. **Sem áudio.** Não há dublagem, música nem efeitos (não havia fonte licenciada e não inventei vozes). Todas as falas estão como balões legíveis, com tempo calculado para leitura, e **prontas para dublagem**: cada fala é um clip de diálogo na trilha do personagem, listada também nas notas de cada cena e em `entrega/roteiro-de-falas-para-dublagem.csv`.

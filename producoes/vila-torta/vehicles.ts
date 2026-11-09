@@ -2,17 +2,17 @@
 import type { Shot } from './lib';
 
 export interface Veh {
-  g: string; body: string; wf: string; wr: string; sf: string; sr: string; gs: number; baseY: number; kind: 'car' | 'truck';
+  g: string; body: string; wf: string; wr: string; sf: string; sr: string; gs: number; baseY: number; kind: 'car' | 'truck' | 'viatura' | 'preto';
   front: number; rear: number;
 }
 const WHEEL_R = 60;
 
 /** Cria o veículo como grupo (editável) de nós: carroceria, molas, rodas. */
-export function vehicle(s: Shot, key: string, kind: 'car' | 'truck', o: { x: number; y: number; gs?: number; bodyTilt?: number; frontDip?: number }): Veh {
+export function vehicle(s: Shot, key: string, kind: 'car' | 'truck' | 'viatura' | 'preto', o: { x: number; y: number; gs?: number; bodyTilt?: number; frontDip?: number }): Veh {
   const gs = o.gs ?? 0.8;
-  const front = kind === 'car' ? 210 : 200;
+  const front = kind === 'truck' ? 200 : 210;
   const rear = -210;
-  const bodyId = kind === 'car' ? 'obj_carro_corpo' : 'obj_caminhao';
+  const bodyId = kind === 'car' ? 'obj_carro_corpo' : kind === 'viatura' ? 'obj_viatura_corpo' : kind === 'preto' ? 'obj_carro_preto' : 'obj_caminhao';
   s.prop(`${key}:corpo`, bodyId, { x: 0, y: 0, scale: 1, noShadow: true, pivot: [rear, -WHEEL_R] });
   s.prop(`${key}:mola-tras`, 'obj_mola', { x: rear, y: -138, noShadow: true });
   s.prop(`${key}:mola-frente`, 'obj_mola', { x: front, y: -138, noShadow: true });

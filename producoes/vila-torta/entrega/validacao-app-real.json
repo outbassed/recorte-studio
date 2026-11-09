@@ -22,12 +22,12 @@
   {
     "teste": "A5. Camadas editáveis listadas (personagens, objetos, grupos)",
     "ok": true,
-    "detalhe": "32 camadas na tomada 131"
+    "detalhe": "18 camadas na tomada 131"
   },
   {
     "teste": "A6. Timeline mostra clips/keyframes editáveis",
     "ok": true,
-    "detalhe": "6 elementos"
+    "detalhe": "8 elementos"
   },
   {
     "teste": "A7. Autosave local (\"Salvo\")",
@@ -37,7 +37,7 @@
   {
     "teste": "A8. \"Salvar projeto\" baixa um .jrec",
     "ok": true,
-    "detalhe": "vila-torta-t1e1-politicos-de-estimacao.jrec (169834 bytes)"
+    "detalhe": "vila-torta-t1e1-politicos-de-estimacao.jrec (169927 bytes)"
   },
   {
     "teste": "A9. Após recarregar a página, o projeto reabre do armazenamento do navegador",

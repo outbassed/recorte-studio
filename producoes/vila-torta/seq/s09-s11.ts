@@ -249,9 +249,9 @@ export function seq11(B: Builder) {
     s.walk('func1', 400, 470, 300, { dur: 1600, speed: 0.9 });
     s.k('Placa', 'transform.x', [[0, 0, 'hold'], [2300, 0, 'linear'], [4800, -440, 'easeInOut']]);
     s.k('Placa', 'transform.y', [[2300, 0, 'linear'], [2600, -60, 'easeOut'], [4800, -50, 'linear']]);
-    s.k('func1', 'transform.x', [[2000, 300, 'hold'], [4800, -160, 'easeInOut']]);
-    s.k('func2', 'transform.x', [[2000, 430, 'hold'], [4800, -40, 'easeInOut']]);
     s.act('func1', 'walk', 2500, { dur: 2300 }); s.act('func2', 'walk', 2500, { dur: 2300 });
+    s.k('func1', 'transform.x', [[2000, 300, 'hold'], [2500, 300, 'linear'], [4800, -160, 'easeInOut']]);
+    s.k('func2', 'transform.x', [[2000, 430, 'hold'], [2500, 430, 'linear'], [4800, -40, 'easeInOut']]);
     s.cam0({ x: 150, y: 140, zoom: 1.2 }); s.cam(0, { x: 120, y: 150, zoom: 1.25 }, 6000, 'linear');
     s.dur(6400);
   });

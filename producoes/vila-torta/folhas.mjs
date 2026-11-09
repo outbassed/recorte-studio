@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 import { readdirSync, writeFileSync } from 'node:fs';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
-const dir = '/tmp/claude-0/shots';
+const dir = process.argv[2] ?? '/tmp/claude-0/shots';
 const files = readdirSync(dir).filter((f) => /^s\d+_\d+\.svg$/.test(f)).sort();
 const per = 20; const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', args: ['--no-sandbox', '--allow-file-access-from-files'] });
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
