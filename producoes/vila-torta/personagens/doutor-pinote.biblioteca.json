@@ -1,0 +1,81 @@
+{
+  "format": "recorte-studio-library",
+  "version": 1,
+  "items": [
+    {
+      "id": "lib_fkhe60vp59",
+      "kind": "character",
+      "name": "Doutor Pinote",
+      "favorite": 0,
+      "createdAt": 1794182451205,
+      "updatedAt": 1794183534574,
+      "data": {
+        "id": "char_4hyrsp6py6",
+        "name": "Doutor Pinote",
+        "skin": "#e8b48c",
+        "outlineColor": "#23202b",
+        "outlineWidth": 4,
+        "body": {
+          "age": "adult",
+          "height": 1.14,
+          "build": 1,
+          "shoulders": 1,
+          "torsoLength": 1,
+          "armLength": 1,
+          "legLength": 1,
+          "headWidth": 1,
+          "headHeight": 1,
+          "belly": 0
+        },
+        "face": {
+          "headShape": "long",
+          "ears": "big",
+          "eyes": "wide",
+          "eyeSize": 0.91,
+          "eyeSpacing": 0.99,
+          "eyeColor": "#2a2f3d",
+          "brows": "soft",
+          "browColor": "#3a2b28",
+          "nose": "hook",
+          "noseSize": 1,
+          "mouth": "simple",
+          "lipColor": "#b4525c",
+          "cheeks": false,
+          "freckles": false,
+          "wrinkles": false,
+          "lashes": false,
+          "mustache": "thick",
+          "beard": "chinstrap",
+          "facialHairColor": "#8a5a33"
+        },
+        "hair": {
+          "style": "crew",
+          "color": "#8a5a33",
+          "highlight": ""
+        },
+        "outfit": {
+          "top": "jacket",
+          "topColor": "#3d4a66",
+          "topPattern": "none",
+          "topPatternColor": "#ffffff",
+          "bottom": "pants",
+          "bottomColor": "#2b2d3a",
+          "shoes": "sneakers",
+          "shoeColor": "#2b2d3a"
+        },
+        "accessories": [
+          {
+            "id": "watch",
+            "color": "#ffea00"
+          },
+          {
+            "id": "tie",
+            "color": "#5c5c5c"
+          }
+        ],
+        "notes": "**Nome completo:** Eduardo Moisés Pinote\n**Nome público:** Doutor Pinote\n**Cargo:** Político de oposição\n**Situação política:** Candidato derrotado à prefeitura\n\n**Aparência:** Homem adulto de pele clara a morena-clara, com cabelo castanho curto, barba castanha bem marcada e bigode. Possui olhos grandes e expressão séria. Usa terno azul-escuro, camisa clara, gravata escura e sapatos pretos.\n\n**Personalidade:** Ambicioso, convencido, combativo, oportunista e provocador. Gosta de discursos grandiosos sobre mudança, renovação e esperança. Demonstra irritação quando precisa explicar suas propostas em detalhes.\n\n**Histórico:** Disputou a prefeitura de Vila Torta contra Senhor Gaivota e perdeu com 49,2% dos votos. Após a derrota, já demonstra interesse em preparar uma nova campanha.\n\n**Política:** Utiliza os problemas da administração atual como principais argumentos eleitorais, mas frequentemente não apresenta soluções concretas. Sua estratégia costuma se resumir a criticar o prefeito e prometer mudanças.\n\n**Relacionamentos:** Principal adversário político de Senhor Gaivota. Possui eleitores extremamente fiéis, como Seu Agenor.\n\n**Detalhes:** É um personagem fictício de sátira política brasileira. Não deve ser retratado como o único candidato capaz de resolver os problemas da cidade. Assim como Gaivota, representa o oportunismo político e a disputa por poder.\n\n**Marca visual:** Barba castanha, cabelo curto e terno azul-escuro, contrastando com o visual extravagante de Gaivota.",
+        "favorite": false
+      }
+    }
+  ]
+}

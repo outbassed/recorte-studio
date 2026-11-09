@@ -1,0 +1,72 @@
+{
+  "format": "recorte-studio-library",
+  "version": 1,
+  "items": [
+    {
+      "id": "lib_ouclzpahtb",
+      "kind": "character",
+      "name": "Caíque",
+      "favorite": 0,
+      "createdAt": 1794180170762,
+      "updatedAt": 1794183544062,
+      "data": {
+        "id": "vt-caique",
+        "name": "Caíque",
+        "skin": "#bc8058",
+        "outlineColor": "#393b35",
+        "outlineWidth": 3.6,
+        "body": {
+          "age": "teen",
+          "height": 1.02,
+          "build": 0.94,
+          "shoulders": 1,
+          "torsoLength": 1,
+          "armLength": 1,
+          "legLength": 1,
+          "headWidth": 0.92,
+          "headHeight": 0.83,
+          "belly": 0
+        },
+        "face": {
+          "headShape": "square",
+          "ears": "round",
+          "eyes": "round",
+          "eyeSize": 0.91,
+          "eyeSpacing": 1,
+          "eyeColor": "#362b22",
+          "brows": "thick",
+          "browColor": "#3a2b28",
+          "nose": "wide",
+          "noseSize": 1,
+          "mouth": "simple",
+          "lipColor": "#b4525c",
+          "cheeks": false,
+          "freckles": false,
+          "wrinkles": false,
+          "lashes": false,
+          "mustache": "none",
+          "beard": "none",
+          "facialHairColor": "#3a2b28"
+        },
+        "hair": {
+          "style": "curly",
+          "color": "#292924",
+          "highlight": ""
+        },
+        "outfit": {
+          "top": "tshirt",
+          "topColor": "#d56a45",
+          "topPattern": "none",
+          "topPatternColor": "#ffffff",
+          "bottom": "shorts",
+          "bottomColor": "#4a5e56",
+          "shoes": "sneakers",
+          "shoeColor": "#e8c582"
+        },
+        "accessories": [],
+        "notes": "**Nome completo:** Caíque Barbosa\n**Idade:** aproximadamente 12 anos\n**Time:** Vasco da Gama\n\n**Aparência:** Garoto de pele marrom, cabelos pretos curtos e bagunçados, olhos castanhos grandes e expressão descontraída. Usa camiseta laranja, bermuda verde-escura e tênis claros.\n\n**Personalidade:** Brincalhão, debochado, provocador, impulsivo, desbocado e competitivo. Adora sarcasmo, piadas pesadas e irritar os amigos. É confiante e às vezes age antes de pensar, acabando envolvido em confusões.\n\n**Relacionamentos:** Melhor amigo de Rafael. Vive flertando descaradamente com Bia e se divertindo com as respostas irritadas dela. É amigo de Samuca e sabe que ele gosta de Larissa, segredo que guarda junto com Rafael.\n\n**Futebol:** Vascaíno assumido. Gosta de provocar Larissa e Samuca por serem flamenguistas. Também faz piadas com o Corinthians de Rafael e Bia. É o único vascaíno do grupo principal.\n\n**Detalhes:** Apesar de irritante, é leal aos amigos e sabe reconhecer situações sérias. Pode provocar Samuca, mas não pratica bullying contra ele nem revela seu segredo romântico. Também precisa receber provocações e enfrentar consequências por suas besteiras.\n\n**Importante:** Sua personalidade não deve ser reduzida a xingamentos e piadas. Caíque também possui sentimentos, momentos de sinceridade e atitudes de amizade verdadeira.",
+        "favorite": false
+      }
+    }
+  ]
+}

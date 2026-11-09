@@ -1,0 +1,72 @@
+{
+  "format": "recorte-studio-library",
+  "version": 1,
+  "items": [
+    {
+      "id": "lib_f8clmvx2kg",
+      "kind": "character",
+      "name": "Samuca",
+      "favorite": 0,
+      "createdAt": 1794180173394,
+      "updatedAt": 1794183542078,
+      "data": {
+        "id": "vt-samuca",
+        "name": "Samuca",
+        "skin": "#d9ab76",
+        "outlineColor": "#393b35",
+        "outlineWidth": 3.6,
+        "body": {
+          "age": "teen",
+          "height": 0.95,
+          "build": 1.1,
+          "shoulders": 1,
+          "torsoLength": 1,
+          "armLength": 1,
+          "legLength": 0.94,
+          "headWidth": 0.94,
+          "headHeight": 0.88,
+          "belly": 0.3
+        },
+        "face": {
+          "headShape": "round",
+          "ears": "round",
+          "eyes": "round",
+          "eyeSize": 1.02,
+          "eyeSpacing": 1,
+          "eyeColor": "#5d482c",
+          "brows": "soft",
+          "browColor": "#3a2b28",
+          "nose": "button",
+          "noseSize": 1,
+          "mouth": "simple",
+          "lipColor": "#b4525c",
+          "cheeks": false,
+          "freckles": true,
+          "wrinkles": false,
+          "lashes": false,
+          "mustache": "none",
+          "beard": "none",
+          "facialHairColor": "#3a2b28"
+        },
+        "hair": {
+          "style": "messy",
+          "color": "#5b3d27",
+          "highlight": "#8b603b"
+        },
+        "outfit": {
+          "top": "tshirt",
+          "topColor": "#dbba56",
+          "topPattern": "stripes",
+          "topPatternColor": "#e9d18a",
+          "bottom": "shorts",
+          "bottomColor": "#536c76",
+          "shoes": "sneakers",
+          "shoeColor": "#efe5cc"
+        },
+        "accessories": [],
+        "notes": "**Nome completo:** Samuel Oliveira\n**Apelido:** Samuca\n**Idade:** aproximadamente 12 anos\n**Time:** Flamengo, por influência de Larissa.\n\n**Aparência:** Garoto de pele clara, cabelos castanhos espetados, grandes olhos castanhos e pequenas sardas no rosto. Usa camiseta amarela com listras horizontais, bermuda e tênis claros.\n\n**Personalidade:** Extremamente tagarela, curioso, distraído, espontâneo, gentil e um pouco ingênuo em situações sociais. Possui déficit de atenção e costuma mudar de assunto inesperadamente. É tímido com desconhecidos e garotas, mas muito comunicativo perto dos amigos.\n\n**Gostos:** Adora café, comida e curiosidades. Pode comer coisas absurdas, como pedras, em situações cartunescas. Seus interesses são variados e às vezes surpreendentes.\n\n**Relacionamentos:** Amigo dos outros quatro protagonistas. Gosta secretamente de Larissa, mas somente Rafael e Caíque sabem disso. Larissa e Bia desconhecem seus sentimentos. Também pode achar outras garotas bonitas, embora considere Larissa especial.\n\n**Futebol:** Passou a se declarar flamenguista principalmente porque Larissa torce pelo Flamengo. Não entende praticamente nada de futebol e não revela o verdadeiro motivo de sua escolha.\n\n**REGRA ABSOLUTA:** Samuca nunca fala palavrões, mesmo quando está assustado, irritado ou confuso.\n\n**Detalhes:** Não é burro e não deve ser tratado como tal. Seu humor surge naturalmente da distração, espontaneidade e comentários inesperados. Nenhum protagonista pratica bullying contra ele. Não deve falar exclusivamente sobre café ou Larissa.",
+        "favorite": false
+      }
+    }
+  ]
+}

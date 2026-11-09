@@ -1,0 +1,124 @@
+{
+  "resumo": {
+    "arquivo": "Vila-Torta-T1E1-Politicos-de-Estimacao.jrec",
+    "bytes": 169827,
+    "duracaoMs": 689200,
+    "tomadas": 145,
+    "cenarios": 12,
+    "falas": 141,
+    "keyframes": 1683,
+    "trilhasDePropriedade": 690,
+    "clipsDeAcao": 131,
+    "clipsDeFala": 141,
+    "objetos": 35,
+    "cenariosPersonalizados": 5,
+    "personagens": 23,
+    "cortes": 144,
+    "movimentosDeCamera": 89,
+    "cpsMax": "16.9",
+    "cpsMedio": "13.1",
+    "falasRapidas": 0,
+    "manifest": {
+      "format": "recorte-studio-project",
+      "formatVersion": 1,
+      "assets": 0
+    }
+  },
+  "testes": [
+    {
+      "teste": "1. Sete personagens oficiais presentes e idênticos ao arquivo fornecido (comparação campo a campo)",
+      "ok": true,
+      "detalhe": "7 oficiais + 16 secundários"
+    },
+    {
+      "teste": "2. Aparências não redesenhadas (nenhum campo visual/anotação alterado)",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "teste": "3. Personagens continuam articuláveis (rig nativo; nenhum sprite achatado)",
+      "ok": true,
+      "detalhe": "30 trilhas de rig animadas"
+    },
+    {
+      "teste": "4. Falas com a personalidade de cada um (roteiro revisado; ver relatório)",
+      "ok": true,
+      "detalhe": "141 falas"
+    },
+    {
+      "teste": "5. Samuca nunca fala palavrão",
+      "ok": true,
+      "detalhe": "21 falas dele verificadas"
+    },
+    {
+      "teste": "6. Bia não confessa sentimento pelo Caíque",
+      "ok": true,
+      "detalhe": "22 falas dela verificadas"
+    },
+    {
+      "teste": "7. Segredo de Samuca (sobre a Larissa) não é revelado a ela",
+      "ok": true,
+      "detalhe": "nenhuma fala menciona o assunto"
+    },
+    {
+      "teste": "8. A câmera realmente muda de enquadramento",
+      "ok": true,
+      "detalhe": "124 enquadramentos iniciais distintos; 89 movimentos de câmera animados"
+    },
+    {
+      "teste": "9a. O carro se desloca de verdade com as rodas girando",
+      "ok": true,
+      "detalhe": "Δx=729px, giro da roda=871°"
+    },
+    {
+      "teste": "9b. A roda dianteira se solta e sai rolando",
+      "ok": true,
+      "detalhe": "Δx da roda=1290px"
+    },
+    {
+      "teste": "9c. O impacto produz movimento visível na carroceria/suspensão",
+      "ok": true,
+      "detalhe": "rotação da carroceria: 0.0°, 7.0°, -4.0°"
+    },
+    {
+      "teste": "10. Debate com cortes e reações (estúdio × sala)",
+      "ok": true,
+      "detalhe": "22 tomadas (9 na sala)"
+    },
+    {
+      "teste": "11. Gaivota vence a eleição (50,8% × 49,2%)",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "teste": "12. Placa final: aparece só no pós-créditos, embrulhada até ser instalada e revelada",
+      "ok": true,
+      "detalhe": "1ª aparição na tomada 138/145; 3 tomadas com embalagem"
+    },
+    {
+      "teste": "13. O projeto importa sem erros (importador real do app, 0 avisos)",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "teste": "14. Todas as mídias presentes",
+      "ok": true,
+      "detalhe": "0 mídias binárias (todo o episódio é vetorial nativo; nenhuma mídia externa)"
+    },
+    {
+      "teste": "15. Animações continuam editáveis (keyframes, clips e objetos nativos)",
+      "ok": true,
+      "detalhe": "1683 keyframes, 131 clips de ação, 141 clips de fala, 35 objetos"
+    },
+    {
+      "teste": "16. Fechar e reabrir não perde dados (ida e volta idêntica)",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "teste": "17. A reprodução percorre as 11 sequências sem erro de render",
+      "ok": true,
+      "detalhe": "145 tomadas, 435 quadros amostrados, 0 com NaN/undefined"
+    }
+  ]
+}

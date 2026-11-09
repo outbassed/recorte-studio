@@ -1,0 +1,89 @@
+{
+  "format": "recorte-studio-library",
+  "version": 1,
+  "items": [
+    {
+      "id": "lib_cf32anqm7k",
+      "kind": "character",
+      "name": "Senhor Gaivota",
+      "favorite": 0,
+      "createdAt": 1794182449117,
+      "updatedAt": 1794183532239,
+      "data": {
+        "id": "char_o0wjzz1rvi",
+        "name": "Senhor Gaivota",
+        "skin": "#e8b48c",
+        "outlineColor": "#23202b",
+        "outlineWidth": 4,
+        "body": {
+          "age": "elder",
+          "height": 1.04,
+          "build": 1.44,
+          "shoulders": 1,
+          "torsoLength": 1.03,
+          "armLength": 1.01,
+          "legLength": 0.91,
+          "headWidth": 1.05,
+          "headHeight": 1,
+          "belly": 1.4
+        },
+        "face": {
+          "headShape": "wide",
+          "ears": "pointy",
+          "eyes": "sleepy",
+          "eyeSize": 1,
+          "eyeSpacing": 1,
+          "eyeColor": "#2a2f3d",
+          "brows": "soft",
+          "browColor": "#3a2b28",
+          "nose": "upturned",
+          "noseSize": 1,
+          "mouth": "simple",
+          "lipColor": "#b4525c",
+          "cheeks": false,
+          "freckles": false,
+          "wrinkles": true,
+          "lashes": false,
+          "mustache": "thin",
+          "beard": "goatee",
+          "facialHairColor": "#e6e6e6"
+        },
+        "hair": {
+          "style": "short",
+          "color": "#f4f1ea",
+          "highlight": "#7a7a7a"
+        },
+        "outfit": {
+          "top": "blazer",
+          "topColor": "#e98f4e",
+          "topPattern": "none",
+          "topPatternColor": "#ffffff",
+          "bottom": "pants",
+          "bottomColor": "#3c2d20",
+          "shoes": "dress",
+          "shoeColor": "#f4f1ea"
+        },
+        "accessories": [
+          {
+            "id": "sunglasses",
+            "color": "#000000"
+          },
+          {
+            "id": "tie",
+            "color": "#ffffff"
+          },
+          {
+            "id": "tophat",
+            "color": "#e98f4e"
+          },
+          {
+            "id": "watch",
+            "color": "#e1ff00"
+          }
+        ],
+        "notes": "**Nome completo:** Eulis Lavado Gaivota Cassilda\n**Nome público:** Senhor Gaivota\n**Cargo:** Prefeito de Vila Torta\n**Situação política:** Reeleito\n\n**Aparência:** Homem adulto de pele clara, com cartola laranja de aba larga, óculos escuros redondos, bigode fino e cavanhaque branco pontudo. Usa paletó laranja, gravata branca, calça escura e sapatos claros. Sua aparência extravagante funciona como marca registrada.\n\n**Personalidade:** Carismático, oportunista, teatral, esperto e habilidoso com discursos. Gosta de se apresentar como representante do povo e utiliza frases emocionantes para conquistar eleitores. Evita responder diretamente a perguntas difíceis.\n\n**Histórico:** Já era prefeito de Vila Torta e venceu a eleição para mais um mandato com 50,8% dos votos, derrotando Doutor Pinote.\n\n**Política:** Promete melhorias na saúde, educação, segurança e infraestrutura, mesmo quando os problemas já existiam durante sua própria administração. Frequentemente prefere atacar a oposição a explicar suas soluções.\n\n**Relacionamentos:** Rival político de Doutor Pinote. Possui apoiadores extremamente fiéis, como Dona Marta.\n\n**Detalhes:** É um personagem fictício de sátira política brasileira. Não deve ser apresentado como herói ou salvador da cidade. Sua aparência excêntrica e seu discurso populista contrastam com os problemas reais de Vila Torta.\n\n**Marca visual:** Cartola laranja, óculos escuros e cavanhaque branco.",
+        "favorite": false
+      }
+    }
+  ]
+}

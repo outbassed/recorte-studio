@@ -1,0 +1,81 @@
+{
+  "format": "recorte-studio-library",
+  "version": 1,
+  "items": [
+    {
+      "id": "lib_f38cjroh70",
+      "kind": "character",
+      "name": "Beatriz",
+      "favorite": 0,
+      "createdAt": 1794182562339,
+      "updatedAt": 1794183538462,
+      "data": {
+        "id": "char_nanob6ccx9",
+        "name": "Beatriz",
+        "skin": "#e8b48c",
+        "outlineColor": "#23202b",
+        "outlineWidth": 4,
+        "body": {
+          "age": "teen",
+          "height": 1,
+          "build": 1,
+          "shoulders": 1,
+          "torsoLength": 1,
+          "armLength": 1,
+          "legLength": 1,
+          "headWidth": 1,
+          "headHeight": 1,
+          "belly": 0
+        },
+        "face": {
+          "headShape": "round",
+          "ears": "round",
+          "eyes": "round",
+          "eyeSize": 1,
+          "eyeSpacing": 1,
+          "eyeColor": "#1e3c3c",
+          "brows": "soft",
+          "browColor": "#000000",
+          "nose": "button",
+          "noseSize": 1,
+          "mouth": "simple",
+          "lipColor": "#b4525c",
+          "cheeks": false,
+          "freckles": false,
+          "wrinkles": false,
+          "lashes": true,
+          "mustache": "none",
+          "beard": "none",
+          "facialHairColor": "#3a2b28"
+        },
+        "hair": {
+          "style": "medium",
+          "color": "#17141a",
+          "highlight": ""
+        },
+        "outfit": {
+          "top": "dress",
+          "topColor": "#3d4a66",
+          "topPattern": "dots",
+          "topPatternColor": "#ffffff",
+          "bottom": "shorts",
+          "bottomColor": "#2b2d3a",
+          "shoes": "sandals",
+          "shoeColor": "#2b2d3a"
+        },
+        "accessories": [
+          {
+            "id": "earrings",
+            "color": "#fff700"
+          },
+          {
+            "id": "necklace",
+            "color": "#d4ff00"
+          }
+        ],
+        "notes": "**Nome completo:** Beatriz Nogueira  \n**Apelido:** Bia  \n**Idade:** aproximadamente 12 anos  \n**Time:** Corinthians, por tradição familiar.\n\n**Aparência:** Menina baixinha, pele clara, cabelos pretos, lisos e compridos. Olhos expressivos, brincos amarelos e vestido azul-escuro de bolinhas brancas.\n\n**Personalidade:** Organizada, inteligente, impaciente e explosiva. Não tolera idiotices e costuma falar o que pensa, inclusive com palavrões. Apesar do temperamento forte, é carinhosa, leal e se preocupa muito com os amigos. Não tem paciência para acompanhar futebol, mas se considera corinthiana.\n\n**Relacionamentos:** Irmã mais nova de Rafael e melhor amiga de Larissa. Caíque flerta constantemente com ela, provocando sua irritação. Bia sente algo por ele, mas nega veementemente, mesmo quando fica vermelha.\n\n**Detalhes importantes:** Não passa o tempo inteiro gritando. Possui momentos tranquilos, humor próprio e atitudes carinhosas. Desconhece que Samuca gosta de Larissa e não admite seus próprios sentimentos por Caíque.",
+        "favorite": false
+      }
+    }
+  ]
+}

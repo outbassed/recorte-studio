@@ -1,0 +1,67 @@
+[
+  {
+    "teste": "A1. Importação do .jrec pela interface abre o editor",
+    "ok": true,
+    "detalhe": ""
+  },
+  {
+    "teste": "A2. Título do projeto",
+    "ok": true,
+    "detalhe": "Vila Torta · T1E1 · Políticos de Estimação"
+  },
+  {
+    "teste": "A3. Lista de cenas com as 145 tomadas",
+    "ok": true,
+    "detalhe": "145"
+  },
+  {
+    "teste": "A4. Reprodução inicia e pausa",
+    "ok": true,
+    "detalhe": "Reproduzindo"
+  },
+  {
+    "teste": "A5. Camadas editáveis listadas (personagens, objetos, grupos)",
+    "ok": true,
+    "detalhe": "32 camadas na tomada 131"
+  },
+  {
+    "teste": "A6. Timeline mostra clips/keyframes editáveis",
+    "ok": true,
+    "detalhe": "6 elementos"
+  },
+  {
+    "teste": "A7. Autosave local (\"Salvo\")",
+    "ok": true,
+    "detalhe": "Salvo"
+  },
+  {
+    "teste": "A8. \"Salvar projeto\" baixa um .jrec",
+    "ok": true,
+    "detalhe": "vila-torta-t1e1-politicos-de-estimacao.jrec (169834 bytes)"
+  },
+  {
+    "teste": "A9. Após recarregar a página, o projeto reabre do armazenamento do navegador",
+    "ok": true,
+    "detalhe": "reabriu direto no editor"
+  },
+  {
+    "teste": "A10. Reabrir preserva as 145 tomadas",
+    "ok": true,
+    "detalhe": "145"
+  },
+  {
+    "teste": "A10b. O projeto aparece na lista \"Meus projetos\"",
+    "ok": true,
+    "detalhe": ""
+  },
+  {
+    "teste": "A11. O .jrec salvo pelo app reabre numa instalação limpa",
+    "ok": true,
+    "detalhe": "145"
+  },
+  {
+    "teste": "A12. Sem erros de console/página",
+    "ok": true,
+    "detalhe": "[]"
+  }
+]

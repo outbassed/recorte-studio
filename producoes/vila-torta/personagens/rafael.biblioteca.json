@@ -1,0 +1,72 @@
+{
+  "format": "recorte-studio-library",
+  "version": 1,
+  "items": [
+    {
+      "id": "lib_7g43l9g50o",
+      "kind": "character",
+      "name": "Rafael",
+      "favorite": 0,
+      "createdAt": 1794180167146,
+      "updatedAt": 1794183540319,
+      "data": {
+        "id": "vt-rafa",
+        "name": "Rafael",
+        "skin": "#f0c5a0",
+        "outlineColor": "#393b35",
+        "outlineWidth": 3.6,
+        "body": {
+          "age": "teen",
+          "height": 1.14,
+          "build": 0.9,
+          "shoulders": 1,
+          "torsoLength": 1,
+          "armLength": 1,
+          "legLength": 1.06,
+          "headWidth": 0.83,
+          "headHeight": 0.87,
+          "belly": 0
+        },
+        "face": {
+          "headShape": "round",
+          "ears": "round",
+          "eyes": "round",
+          "eyeSize": 0.87,
+          "eyeSpacing": 1,
+          "eyeColor": "#293a37",
+          "brows": "straight",
+          "browColor": "#3a2b28",
+          "nose": "button",
+          "noseSize": 1,
+          "mouth": "simple",
+          "lipColor": "#b4525c",
+          "cheeks": false,
+          "freckles": false,
+          "wrinkles": false,
+          "lashes": false,
+          "mustache": "none",
+          "beard": "none",
+          "facialHairColor": "#3a2b28"
+        },
+        "hair": {
+          "style": "crew",
+          "color": "#202a2a",
+          "highlight": "#3c4440"
+        },
+        "outfit": {
+          "top": "tshirt",
+          "topColor": "#407f81",
+          "topPattern": "none",
+          "topPatternColor": "#ffffff",
+          "bottom": "jeans",
+          "bottomColor": "#324451",
+          "shoes": "sneakers",
+          "shoeColor": "#eee7d1"
+        },
+        "accessories": [],
+        "notes": "**Nome completo:** Rafael Nogueira\n**Apelido:** Rafa\n**Idade:** aproximadamente 13 anos\n**Time:** Corinthians\n\n**Aparência:** Garoto de pele clara, relativamente alto, com cabelo preto curto e camiseta verde-azulada, calça escura e tênis claros. Possui olhos grandes, expressão tranquila e aparência considerada bonita por várias garotas.\n\n**Personalidade:** Calmo, sensato, paciente, observador e respeitado pelos colegas. Costuma pensar antes de agir, mas também gosta de brincar e participar das conversas. É frequentemente a voz da razão quando seus amigos fazem alguma besteira.\n\n**Relacionamentos:** Irmão mais velho de Beatriz e melhor amigo de Caíque. Não gosta das investidas românticas de Caíque na irmã. É amigo próximo de Samuca e costuma defendê-lo quando outros garotos o intimidam.\n\n**Segredos:** Sabe que Samuca gosta de Larissa e mantém essa informação em segredo.\n\n**Detalhes:** Não deve agir como adulto ou valentão. É um adolescente tranquilo que sabe se divertir, rir e provocar os amigos de maneira saudável.",
+        "favorite": false
+      }
+    }
+  ]
+}

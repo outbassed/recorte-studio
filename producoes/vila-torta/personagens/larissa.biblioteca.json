@@ -1,0 +1,77 @@
+{
+  "format": "recorte-studio-library",
+  "version": 1,
+  "items": [
+    {
+      "id": "lib_gd0rknd6ye",
+      "kind": "character",
+      "name": "Larissa",
+      "favorite": 0,
+      "createdAt": 1794182556867,
+      "updatedAt": 1794183545927,
+      "data": {
+        "id": "char_22g90u3upp",
+        "name": "Larissa",
+        "skin": "#9a6443",
+        "outlineColor": "#23202b",
+        "outlineWidth": 4,
+        "body": {
+          "age": "teen",
+          "height": 1,
+          "build": 1,
+          "shoulders": 1,
+          "torsoLength": 1,
+          "armLength": 1,
+          "legLength": 1,
+          "headWidth": 1,
+          "headHeight": 1,
+          "belly": 0
+        },
+        "face": {
+          "headShape": "round",
+          "ears": "round",
+          "eyes": "round",
+          "eyeSize": 1,
+          "eyeSpacing": 1,
+          "eyeColor": "#2a2f3d",
+          "brows": "soft",
+          "browColor": "#000000",
+          "nose": "button",
+          "noseSize": 1,
+          "mouth": "simple",
+          "lipColor": "#b4525c",
+          "cheeks": false,
+          "freckles": false,
+          "wrinkles": false,
+          "lashes": true,
+          "mustache": "none",
+          "beard": "none",
+          "facialHairColor": "#3a2b28"
+        },
+        "hair": {
+          "style": "wavy",
+          "color": "#17141a",
+          "highlight": ""
+        },
+        "outfit": {
+          "top": "tshirt",
+          "topColor": "#d65f5f",
+          "topPattern": "stripes",
+          "topPatternColor": "#2b2d3a",
+          "bottom": "skirt",
+          "bottomColor": "#2b2d3a",
+          "shoes": "sneakers",
+          "shoeColor": "#2b2d3a"
+        },
+        "accessories": [
+          {
+            "id": "earrings",
+            "color": "#ffffff"
+          }
+        ],
+        "notes": "**Nome completo:** Larissa Almeida\n**Apelido:** Lari\n**Idade:** aproximadamente 12 anos\n**Time:** Flamengo\n\n**Aparência:** Menina de pele marrom-escura, cabelos pretos longos e volumosos, olhos grandes e brincos claros. Usa blusa listrada em vermelho e preto, saia escura e tênis pretos. As cores rubro-negras refletem sua torcida pelo Flamengo.\n\n**Personalidade:** Sociável, divertida, esportiva, amigável e espontânea. Gosta de sair, conversar, praticar esportes e aproveitar o tempo com seus amigos. Tem opiniões próprias, sabe responder a provocações e possui bastante personalidade.\n\n**Relacionamentos:** Melhor amiga de Bia, com quem possui grande intimidade. Costuma ajudá-la a se acalmar quando está irritada. É amiga de Rafael, Caíque e Samuca.\n\n**Romance:** Não sabe que Samuca gosta secretamente dela. Tem interesse por outro garoto, aproximadamente um ano mais velho.\n\n**Futebol:** Flamenguista assumida. Gosta do Flamengo e frequentemente troca provocações futebolísticas com Caíque, que é vascaíno.\n\n**Detalhes:** Não deve existir apenas como interesse romântico de Samuca ou para acalmar Bia. Precisa participar ativamente das histórias, com suas próprias vontades, opiniões e iniciativas.",
+        "favorite": false
+      }
+    }
+  ]
+}
