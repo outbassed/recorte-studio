@@ -879,6 +879,7 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
 .libh-filters { display: grid; gap: 8px; }
 .libh-filters .cat-row2 .hint { margin-left: auto; }
 .libh-body { display: grid; gap: 14px; align-items: start; }
+.libh-official { display: grid; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); scroll-margin-top: 18px; }
 .libh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
 .libh-grid.is-packs { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
 .libh-list { display: grid; gap: 4px; }
