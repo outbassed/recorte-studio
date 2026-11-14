@@ -63,6 +63,7 @@ export async function buildOfficial(src: PackSource): Promise<BuiltPack> {
     itemInfo.push({
       id: it.id, name: it.name, kind: it.kind,
       category: it.meta?.category || m.category, subcategory: it.meta?.subcategory,
+      animated: it.kind === 'object' && !!(it.data as { object?: { clips?: unknown[] } }).object?.clips?.length,
       thumbSvg,
       single: { file: singleFile, sha256: createHash('sha256').update(one).digest('hex'), size: one.length },
     });
