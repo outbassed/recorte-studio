@@ -3,7 +3,7 @@
  * (de um a cinco), cada um com a própria imagem. Nada é gerado por filtro.
  */
 import { TIMES_OF_DAY, type Background, type CustomBackground, type Project, type Scene, type TimeOfDay } from '../model/schema';
-import { uid } from '../model/ids';
+import { newItemId } from '../model/ids';
 import { deleteNode } from '../model/ops';
 import { esc, n } from '../render/svg';
 import { availabilityKey, nestedFrameKey, renderPieces } from './pieces';
@@ -75,7 +75,7 @@ export function renderCustomBackground(project: Project, bg: Background, url: (a
 }
 
 export function createCustomBackground(project: Project, name: string): CustomBackground {
-  const cb: CustomBackground = { id: uid('cbg'), name: name.trim() || 'Meu cenário', variants: {}, compositions: {}, createdAt: Date.now() };
+  const cb: CustomBackground = { id: newItemId(), name: name.trim() || 'Meu cenário', variants: {}, compositions: {}, createdAt: Date.now() };
   project.customBackgrounds[cb.id] = cb;
   return cb;
 }

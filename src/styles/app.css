@@ -918,3 +918,23 @@ button.libh-card:hover { background: var(--bg-3); border-color: var(--line-2); }
   .pack-hero { grid-template-columns: 1fr; }
   .libh-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }
+
+/* ------------------------------ Conflito de ID na importação ------------------------------ */
+.conf { display: grid; gap: 12px; }
+.conf-intro { display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--warn, #e0b04c) 60%, var(--line)); background: color-mix(in srgb, var(--warn, #e0b04c) 10%, var(--bg-2)); }
+.conf-intro svg { flex: none; margin-top: 2px; color: var(--warn, #e0b04c); }
+.conf-card { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-3); }
+.conf-card h3 { font-size: calc(15px * var(--ui-scale, 1)); }
+.conf-card h3 small { color: var(--text-3); font-weight: 500; margin-left: 6px; }
+.conf-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.conf-pair > div { display: grid; gap: 2px; padding: 8px 10px; border-radius: 8px; background: var(--bg-2); border: 1px solid var(--line); min-width: 0; overflow-wrap: anywhere; font-size: calc(12.5px * var(--ui-scale, 1)); }
+.conf-pair code, .libd code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .92em; background: var(--bg-3); padding: 0 4px; border-radius: 4px; user-select: all; }
+.conf-opts { display: grid; gap: 6px; }
+.conf-opts label { display: flex; gap: 8px; align-items: flex-start; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+.conf-opts label:hover { background: var(--bg-2); }
+.conf-opts label.is-off { opacity: .55; cursor: not-allowed; }
+.conf-opts input[type="radio"] { margin-top: 4px; flex: none; }
+.conf-opts small { color: var(--text-3); }
+.conf-manual { display: grid; gap: 4px; margin: 0 0 4px 26px; }
+.conf-ok { color: var(--ok, #6dad6f); }
+@media (max-width: 640px) { .conf-pair { grid-template-columns: 1fr; } }

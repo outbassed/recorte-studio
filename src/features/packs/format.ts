@@ -11,7 +11,7 @@
  */
 import { strFromU8, strToU8, unzip, unzipSync, zipSync, type UnzipOptions, type Zippable } from 'fflate';
 import { z } from 'zod';
-import type { Asset, Piece } from '@/engine/model/schema';
+import { CharacterDefinitionSchema, RigSchema, type Asset, type CharacterDefinition, type Piece, type Rig } from '@/engine/model/schema';
 import { objectPieceLists } from '@/engine/world/pieces';
 import { readBackgroundBundle, readObjectBundle, type BackgroundBundle, type ObjectBundle } from '@/features/library/bundles';
 import { mediaIdFor, sha256Hex, sniffMedia } from '@/features/library/media';
@@ -26,6 +26,17 @@ const SAFE_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/;
 const SAFE_PATH = /^(items|media)\/[A-Za-z0-9][A-Za-z0-9._-]{0,99}$/;
 const semver = z.string().regex(/^\d{1,4}\.\d{1,4}\.\d{1,4}$/, 'versão deve ser como 1.0.0');
 
+export const PACK_ITEM_KINDS = ['object', 'background', 'character', 'pose'] as const;
+export type PackItemKind = (typeof PACK_ITEM_KINDS)[number];
+
+/** Metadados opcionais de cada item (pacotes antigos não têm: o item herda a categoria do pacote). */
+const itemMeta = {
+  category: z.string().trim().max(40).optional(),
+  subcategory: z.string().trim().max(40).optional(),
+  tags: z.array(z.string().trim().min(1).max(30)).max(24).default([]),
+  description: z.string().max(300).default(''),
+};
+
 export const PackManifestSchema = z.object({
   format: z.literal(PACK_FORMAT),
   formatVersion: z.literal(1),
@@ -36,13 +47,19 @@ export const PackManifestSchema = z.object({
   author: z.string().max(80).default(''),
   license: z.string().trim().min(1, 'informe a licença').max(200),
   category: z.string().max(40).default('Geral'),
+  /** Coleção temática (ex.: "Natal"): vários volumes podem pertencer a ela. */
+  collection: z.string().trim().max(60).optional(),
+  /** Número do volume dentro da coleção. Não é a versão do pacote. */
+  volume: z.number().int().min(1).max(999).optional(),
+  tags: z.array(z.string().trim().min(1).max(30)).max(24).default([]),
   dependencies: z.array(z.object({ id: z.string().max(64), version: semver })).max(20).default([]),
   items: z.array(z.object({
     id: z.string().regex(SAFE_NAME),
-    kind: z.enum(['object', 'background']),
+    kind: z.enum(PACK_ITEM_KINDS),
     name: z.string().trim().min(1).max(80),
     file: z.string().regex(SAFE_PATH),
     sha256: hex64,
+    ...itemMeta,
   })).min(1).max(LIMITS.entries),
   media: z.array(z.object({
     id: z.string().regex(/^media_[a-z0-9]+$/),
@@ -54,7 +71,15 @@ export const PackManifestSchema = z.object({
 });
 export type PackManifest = z.infer<typeof PackManifestSchema>;
 
-export type PackItemData = { id: string; kind: 'object'; name: string; data: ObjectBundle } | { id: string; kind: 'background'; name: string; data: BackgroundBundle };
+export interface PoseData { rig: Rig; handL: 'open' | 'fist' | 'point'; handR: 'open' | 'fist' | 'point' }
+export const PoseDataSchema = z.object({ rig: RigSchema, handL: z.enum(['open', 'fist', 'point']).default('open'), handR: z.enum(['open', 'fist', 'point']).default('open') });
+export interface PackItemMeta { category?: string; subcategory?: string; tags: string[]; description: string }
+export type PackItemData = (
+  | { id: string; kind: 'object'; name: string; data: ObjectBundle }
+  | { id: string; kind: 'background'; name: string; data: BackgroundBundle }
+  | { id: string; kind: 'character'; name: string; data: CharacterDefinition }
+  | { id: string; kind: 'pose'; name: string; data: PoseData }
+) & { meta?: PackItemMeta };
 export interface ParsedPack { manifest: PackManifest; items: PackItemData[]; media: Array<{ asset: Asset; bytes: Uint8Array }>; size: number }
 export type PackRead = { ok: true; pack: ParsedPack } | { ok: false; reason: string };
 
@@ -80,11 +105,59 @@ async function unzipFiles(bytes: Uint8Array, opts: UnzipOptions): Promise<Record
   return unzipSync(bytes, opts);
 }
 
-/** Peças de um item: objeto (com quadros) + objetos aninhados, ou composições do cenário. */
-function itemPieces(it: { kind: 'object'; data: ObjectBundle } | { kind: 'background'; data: BackgroundBundle }): Piece[] {
+/** Peças de um item: objeto (com quadros) + objetos aninhados, ou composições do cenário. Personagem e pose não têm peças. */
+function itemPieces(it: PackItemData): Piece[] {
+  if (it.kind === 'character' || it.kind === 'pose') return [];
   const objs = it.kind === 'object' ? [it.data.object, ...it.data.objects] : it.data.objects;
   const own = it.kind === 'background' ? Object.values(it.data.background.compositions).flatMap((c) => c?.pieces ?? []) : [];
   return [...own, ...objs.flatMap((o) => objectPieceLists(o).flat())];
+}
+
+/** ID da entidade dentro do item (é ele que identifica o item no catálogo). Pose não tem ID interno: vale o do item. */
+export function innerIdOf(it: PackItemData): string {
+  switch (it.kind) {
+    case 'object': return it.data.object.id;
+    case 'background': return it.data.background.id;
+    case 'character': return it.data.id;
+    case 'pose': return it.id;
+  }
+}
+
+/**
+ * Referências internas: todo objeto aninhado e toda imagem usada pelas peças vêm junto no item.
+ * Devolve o motivo da recusa ou null. Também usada depois de trocar IDs na importação.
+ */
+export function itemIntegrityProblem(item: PackItemData): string | null {
+  if (item.kind === 'character') return item.data.spriteAssetId ? `"${item.name}" usa uma imagem de personagem (sprite), que pacotes ainda não carregam.` : null;
+  if (item.kind === 'pose') return null;
+  const objIds = new Set(item.kind === 'object' ? [item.data.object.id, ...item.data.objects.map((o) => o.id)] : item.data.objects.map((o) => o.id));
+  const assetIds = new Set(item.data.assets.map((a) => a.id));
+  if (item.kind === 'background') for (const v of Object.values(item.data.background.variants)) if (v && !assetIds.has(v.assetId)) return `"${item.name}": imagem de horário fora do item (${v.assetId}).`;
+  for (const pc of itemPieces(item)) {
+    if (pc.kind === 'object' && pc.refId && !objIds.has(pc.refId)) return `"${item.name}" usa um objeto que não veio junto (${pc.refId}).`;
+    if (pc.assetId && !assetIds.has(pc.assetId)) return `"${item.name}" usa uma imagem que não veio junto (${pc.assetId}).`;
+    const sprite = pc.character?.def.spriteAssetId;
+    if (sprite && !assetIds.has(sprite)) return `"${item.name}" usa uma imagem de personagem que não veio junto (${sprite}).`;
+  }
+  return null;
+}
+
+type ItemRead = { ok: true; item: PackItemData; assetIds: string[] } | { ok: false; reason: string };
+function readItemData(kind: PackItemKind, id: string, name: string, data: unknown): ItemRead {
+  if (kind === 'object' || kind === 'background') {
+    const read = kind === 'object' ? readObjectBundle(data) : readBackgroundBundle(data);
+    if (!read.ok) return { ok: false, reason: `"${name}": ${read.reason}` };
+    const item: PackItemData = kind === 'object' ? { id, kind, name, data: read.bundle as ObjectBundle } : { id, kind, name, data: read.bundle as BackgroundBundle };
+    return { ok: true, item, assetIds: read.bundle.assets.map((a) => a.id) };
+  }
+  if (kind === 'character') {
+    const c = CharacterDefinitionSchema.safeParse(data);
+    if (!c.success) return { ok: false, reason: `"${name}": o personagem está incompleto ou é de uma versão incompatível.` };
+    return { ok: true, item: { id, kind, name, data: c.data }, assetIds: [] };
+  }
+  const p = PoseDataSchema.safeParse(data);
+  if (!p.success) return { ok: false, reason: `"${name}": a pose está ilegível.` };
+  return { ok: true, item: { id, kind, name, data: p.data }, assetIds: [] };
 }
 
 export async function readPack(bytes: Uint8Array, onProgress?: (done: number, total: number) => void): Promise<PackRead> {
@@ -165,28 +238,26 @@ export async function readPack(bytes: Uint8Array, onProgress?: (done: number, to
     if ((await sha256Hex(b)) !== it.sha256) return fail(`Item corrompido (sha256 não confere): ${it.file}.`);
     let data: unknown;
     try { data = JSON.parse(strFromU8(b)); } catch { return fail(`Item não é JSON válido: ${it.file}.`); }
-    const read = it.kind === 'object' ? readObjectBundle(data) : readBackgroundBundle(data);
-    if (!read.ok) return fail(`"${it.name}": ${read.reason}`);
-    const missing = read.bundle.assets.find((a) => !mediaIds.has(a.id));
-    if (missing) return fail(`"${it.name}" usa uma imagem que não está no pacote (${missing.id}).`);
-    const item: PackItemData = it.kind === 'object' ? { id: it.id, kind: 'object', name: it.name, data: read.bundle as ObjectBundle } : { id: it.id, kind: 'background', name: it.name, data: read.bundle as BackgroundBundle };
-    // Referências internas: todo objeto aninhado e toda imagem usada pelas peças vêm junto no item.
-    const objIds = new Set(item.kind === 'object' ? [item.data.object.id, ...item.data.objects.map((o) => o.id)] : item.data.objects.map((o) => o.id));
-    const assetIds = new Set(read.bundle.assets.map((a) => a.id));
-    if (item.kind === 'background') for (const v of Object.values(item.data.background.variants)) if (v && !assetIds.has(v.assetId)) return fail(`"${it.name}": imagem de horário fora do item (${v.assetId}).`);
-    for (const pc of itemPieces(item)) {
-      if (pc.kind === 'object' && pc.refId && !objIds.has(pc.refId)) return fail(`"${it.name}" usa um objeto que não veio junto (${pc.refId}).`);
-      if (pc.assetId && !assetIds.has(pc.assetId)) return fail(`"${it.name}" usa uma imagem que não veio junto (${pc.assetId}).`);
-      const sprite = pc.character?.def.spriteAssetId;
-      if (sprite && !assetIds.has(sprite)) return fail(`"${it.name}" usa uma imagem de personagem que não veio junto (${sprite}).`);
-    }
-    items.push(item);
+    const read = readItemData(it.kind, it.id, it.name, data);
+    if (!read.ok) return fail(read.reason);
+    const missing = read.assetIds.find((id) => !mediaIds.has(id));
+    if (missing) return fail(`"${it.name}" usa uma imagem que não está no pacote (${missing}).`);
+    const problem = itemIntegrityProblem(read.item);
+    if (problem) return fail(problem);
+    items.push({ ...read.item, meta: { category: it.category, subcategory: it.subcategory, tags: it.tags, description: it.description } });
   }
   return { ok: true, pack: { manifest, items, media, size: bytes.length } };
 }
 
-/** Monta um .rspack a partir de dados (pacote de demonstração e exportação). */
-export async function buildPack(meta: Omit<PackManifest, 'format' | 'formatVersion' | 'items' | 'media'>, items: Array<{ id: string; kind: 'object' | 'background'; name: string; data: unknown }>, media: Array<{ bytes: Uint8Array; mime: string; ext: string }>): Promise<Uint8Array> {
+export interface BuildItem { id: string; kind: PackItemKind; name: string; data: unknown; meta?: Partial<PackItemMeta> }
+export interface BuildOptions {
+  /** Data fixa nos arquivos do ZIP: o mesmo conteúdo gera sempre os mesmos bytes (pacotes oficiais reproduzíveis). */
+  deterministic?: boolean;
+}
+const FIXED_MTIME = new Date(Date.UTC(2000, 0, 1));
+
+/** Monta um .rspack a partir de dados (pacotes oficiais, demonstração e exportação). */
+export async function buildPack(meta: Omit<PackManifest, 'format' | 'formatVersion' | 'items' | 'media' | 'tags'> & { tags?: string[] }, items: BuildItem[], media: Array<{ bytes: Uint8Array; mime: string; ext: string }>, opts: BuildOptions = {}): Promise<Uint8Array> {
   const zip: Zippable = {};
   const mediaOut: PackManifest['media'] = [];
   for (const md of media) {
@@ -200,9 +271,9 @@ export async function buildPack(meta: Omit<PackManifest, 'format' | 'formatVersi
     const b = strToU8(JSON.stringify(it.data));
     const file = `items/${it.id}.json`;
     zip[file] = b;
-    itemsOut.push({ id: it.id, kind: it.kind, name: it.name, file, sha256: (await sha256Hex(b))! });
+    itemsOut.push({ id: it.id, kind: it.kind, name: it.name, file, sha256: (await sha256Hex(b))!, category: it.meta?.category, subcategory: it.meta?.subcategory, tags: it.meta?.tags ?? [], description: it.meta?.description ?? '' });
   }
-  const manifest: PackManifest = { format: PACK_FORMAT, formatVersion: 1, ...meta, items: itemsOut, media: mediaOut };
+  const manifest: PackManifest = { format: PACK_FORMAT, formatVersion: 1, ...meta, tags: meta.tags ?? [], items: itemsOut, media: mediaOut };
   zip['manifest.json'] = strToU8(JSON.stringify(manifest, null, 2));
-  return zipSync(zip, { level: 6 });
+  return zipSync(zip, opts.deterministic ? { level: 6, mtime: FIXED_MTIME } : { level: 6 });
 }

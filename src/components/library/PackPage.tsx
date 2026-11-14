@@ -5,19 +5,18 @@
 import { useMemo, useRef, useState } from 'react';
 import { ArrowLeft, Download, FileUp, Package, Trash2 } from 'lucide-react';
 import { createProject } from '@/engine/model/factory';
-import { availableTimes } from '@/engine/world/customBackgrounds';
-import type { CatalogEntry } from '@/features/catalog/catalog';
+import { entryForPackItem, type CatalogEntry } from '@/features/catalog/catalog';
 import { compareVersions, readPack, type PackItemData, type PackManifest, type ParsedPack } from '@/features/packs/format';
 import { buildDemoPack, DEMO_PACK_ID } from '@/features/packs/demo';
 import { matchesSearch } from '@/features/library/search';
 import { registerAssetBlob } from '@/features/library/assets';
-import { exportPack, installPackBytes, removePack, reportInstall, setPackEnabled, usePacks } from '@/state/packActions';
+import { exportPack, installInteractive, removePack, reportInstall, setPackEnabled, usePacks } from '@/state/packActions';
 import { toast } from '@/state/uiStore';
 import type { Asset } from '@/engine/model/schema';
 import { SearchBox } from '../controls/fields';
 import { EntryThumb } from '../panels/Catalog';
 
-export interface Inspected { pack: ParsedPack; bytes: Uint8Array; fileName: string }
+export interface Inspected { pack: ParsedPack; bytes: Uint8Array; fileName: string; source?: 'official' | 'imported' }
 const fmtSize = (n: number) => (n < 1024 * 1024 ? `${Math.max(1, Math.round(n / 1024))} KB` : `${(n / 1024 / 1024).toFixed(1).replace('.', ',')} MB`);
 const MAX_FILE = 60 * 1024 * 1024;
 
@@ -35,11 +34,10 @@ export async function inspectPackFile(f: File, onProgress?: (done: number, total
 export const inspectDemoPack = async () => inspectBytes(await buildDemoPack(), 'Kit Cozinha Retrô (demonstração)');
 
 /** Item de pacote no formato do catálogo (para as mesmas miniaturas e prévias). */
+const emptyProject = createProject('Pacote');
 function entryOf(packId: string, packName: string, category: string, it: PackItemData): CatalogEntry {
-  const ref = { type: 'pack-item' as const, packId, itemId: it.id };
-  const base = { key: `pack:${packId}:${it.id}`, name: it.name, origin: 'pack' as const, editable: false, favorite: false, updatedAt: 0, usage: 0, inProject: false, ref, packName, keywords: [], category };
-  if (it.kind === 'object') return { ...base, view: 'objects', kind: 'object', states: it.data.object.clips.map((c) => ({ id: c.id, label: c.name })), objectBundle: it.data };
-  return { ...base, view: 'scenery', kind: 'background', states: [], times: availableTimes(it.data.background), backgroundBundle: it.data };
+  const manifest = { category, tags: [], dependencies: [] } as unknown as PackManifest;
+  return entryForPackItem({ id: packId, name: packName, manifest, installedAt: 0 }, it, emptyProject);
 }
 
 function PackPage({ manifest, items, size, assets, inspected, onBack }: { manifest: PackManifest; items: PackItemData[]; size: number; assets: Asset[]; inspected?: Inspected; onBack: () => void }) {
@@ -87,7 +85,7 @@ function PackPage({ manifest, items, size, assets, inspected, onBack }: { manife
           <div className="libh-actions">
             {inspected && (!installed || cmp > 0) && (
               <button type="button" className="btn btn-primary" data-testid="pack-install" disabled={busy || depProblem} onClick={() => void run(async () => {
-                const r = await installPackBytes(inspected.bytes);
+                const r = await installInteractive(inspected.bytes, { source: inspected.source });
                 reportInstall(r);
                 if (r.ok) onBack();
               })}>{installed ? `Atualizar para ${manifest.version}` : 'Instalar pacote'}</button>

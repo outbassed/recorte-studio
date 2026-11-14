@@ -8,7 +8,7 @@
  * Registro ilegível vira um erro claro, nunca uma exceção.
  */
 import { AssetSchema, CustomBackgroundSchema, CustomObjectSchema, type Asset, type CustomBackground, type CustomObject, type Piece, type Project } from '@/engine/model/schema';
-import { deepClone, uid } from '@/engine/model/ids';
+import { deepClone, newItemId } from '@/engine/model/ids';
 import { objectPieceLists } from '@/engine/world/pieces';
 
 export const BUNDLE_VERSION = 2;
@@ -170,7 +170,7 @@ export function mergeBundleObjects(draft: Project, objects: CustomObject[], asse
       res.reusedObjects++;
       return id;
     }
-    const finalId = existing ? uid('obj') : id;
+    const finalId = existing ? newItemId() : id;
     draft.customObjects[finalId] = { ...deepClone(candidate), id: finalId, updatedAt: Date.now() };
     done.set(id, finalId);
     res.addedObjects++;
@@ -198,7 +198,7 @@ export function mergeBackgroundBundle(draft: Project, b: BackgroundBundle): { id
   if (existing && strip(deepClone(existing)) === strip(cb)) return { id: cb.id, result, copied: false };
   let copied = false;
   if (existing) {
-    cb.id = uid('cbg');
+    cb.id = newItemId();
     cb.name = `${cb.name} (cópia)`;
     copied = true;
   }

@@ -3,7 +3,7 @@ import { pieceAssetIds } from '@/engine/world/pieces';
 import { addAudioClip, addAudioTrack, assetUsage, deleteNode, sceneOf } from '@/engine/model/ops';
 import { createImageNode } from '@/engine/model/factory';
 import { frameSize, WORLD_HEIGHT, type Asset, type AudioTrack, type Project } from '@/engine/model/schema';
-import { uid, deepClone } from '@/engine/model/ids';
+import { deepClone, newItemId } from '@/engine/model/ids';
 import { AssetError, importAudioFile, importImageFile, registerAssetBlob, type AudioCategory } from '@/features/library/assets';
 import { SvgRejectedError } from '@/features/library/sanitizeSvg';
 import { remapAssetRefs, MissingMediaError } from '@/features/projects/jrec';
@@ -149,7 +149,7 @@ export function renameMedia(assetId: string, name: string): void {
 export async function saveMediaToUserLibrary(assetId: string): Promise<void> {
   const a = currentProject().assets[assetId];
   if (!a) return;
-  await repo.putLibrary({ id: uid('lib'), kind: 'audio', name: a.name, favorite: 0, createdAt: Date.now(), data: { assetId: a.id, asset: deepClone(a) } });
+  await repo.putLibrary({ id: newItemId(), kind: 'audio', name: a.name, favorite: 0, createdAt: Date.now(), data: { assetId: a.id, asset: deepClone(a) } });
   toast(`"${a.name}" salvo na sua biblioteca, para usar em outros projetos.`, 'success');
 }
 

@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { BackgroundSchema, CharacterDefinitionSchema, type CharacterDefinition, type CustomBackground, type Project, type ViewId } from '@/engine/model/schema';
 import { createLightNode, createShapeNode, createTextNode, newCharacterDefinition } from '@/engine/model/factory';
-import { deepClone, uid } from '@/engine/model/ids';
+import { deepClone, newItemId } from '@/engine/model/ids';
 import { BUILTIN_CHARACTERS } from '@/engine/character/presets';
 import { getProp } from '@/engine/world/props';
 import { OBJECT_PREFIX, renderCustomObject } from '@/engine/world/pieces';
@@ -284,7 +284,7 @@ function FooterFor({ view, onCreatedBackground }: { view: CatalogView; onCreated
             if (selChar?.kind !== 'character') return;
             const name = await promptDialog('Salvar pose', 'Nome da pose', `Pose de ${selChar.name}`);
             if (!name) return;
-            await repo.putLibrary({ id: uid('lib'), kind: 'pose', name, favorite: 0, createdAt: Date.now(), updatedAt: Date.now(), data: { rig: deepClone(selChar.rig), handL: selChar.handL, handR: selChar.handR } });
+            await repo.putLibrary({ id: newItemId(), kind: 'pose', name, favorite: 0, createdAt: Date.now(), updatedAt: Date.now(), data: { rig: deepClone(selChar.rig), handL: selChar.handL, handR: selChar.handR } });
             await reloadLibrary();
             toast(`Pose "${name}" salva em Elenco → Poses.`, 'success');
           }}>Salvar pose</button>
@@ -297,7 +297,7 @@ function FooterFor({ view, onCreatedBackground }: { view: CatalogView; onCreated
             const raw = JSON.parse(await f.text()) as { format?: string; character?: unknown };
             if (raw.format !== 'recorte-studio-character') throw new Error('arquivo não é um personagem do Recorte Studio');
             const parsed = CharacterDefinitionSchema.parse(raw.character);
-            const copy: CharacterDefinition = { ...parsed, id: uid('char'), builtinId: undefined, spriteAssetId: undefined };
+            const copy: CharacterDefinition = { ...parsed, id: newItemId(), builtinId: undefined, spriteAssetId: undefined };
             commit('Importar personagem', (d) => { d.characters[copy.id] = copy; });
             toast(`"${copy.name}" importado.`, 'success');
           } catch (err) {
@@ -503,7 +503,7 @@ export function ToolboxPanel() {
         <button type="button" className="btn btn-primary" data-testid="toolbox-open-library" onClick={openLibrary}><Library size={15} /> Abrir Biblioteca completa</button>
         <button type="button" className="btn btn-sm" data-testid="lib-save-scene" onClick={async () => {
           try {
-            await repo.putLibrary({ id: uid('lib'), kind: 'scene', name: scene.name, favorite: 0, createdAt: Date.now(), updatedAt: Date.now(), data: { scene: deepClone(scene), characters: deepClone(project.characters) } });
+            await repo.putLibrary({ id: newItemId(), kind: 'scene', name: scene.name, favorite: 0, createdAt: Date.now(), updatedAt: Date.now(), data: { scene: deepClone(scene), characters: deepClone(project.characters) } });
             await reloadLibrary();
             toast(`Cena "${scene.name}" salva na biblioteca (Cenários → Cenas-molde).`, 'success');
           } catch (err) { toast(storageError(err, 'Não foi possível salvar a cena'), 'error'); }

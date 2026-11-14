@@ -9,6 +9,7 @@ import { closeContextMenu, closeDialog, useFeedback } from '@/state/uiStore';
 import { repo } from '@/storage/db';
 import { ColorField, SelectField, TextField } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
+import { ImportConflictDialog } from './ImportConflictDialog';
 import { Modal } from './Modal';
 import { formatTime } from '../timeline/Timeline';
 
@@ -86,7 +87,7 @@ export function ImportReportDialog() {
 }
 
 export function FeedbackLayer() {
-  const { toasts, confirm, prompt, context } = useFeedback();
+  const { toasts, confirm, prompt, context, importConflict } = useFeedback();
   const menuRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState('');
   useEffect(() => { if (prompt) setValue(prompt.value); }, [prompt]);
@@ -117,6 +118,7 @@ export function FeedbackLayer() {
           <p>{confirm.message}</p>
         </Modal>
       )}
+      {importConflict && <ImportConflictDialog key={importConflict.prepared.sha256 + importConflict.prepared.pack.manifest.id} req={importConflict} onClose={() => useFeedback.setState({ importConflict: null })} />}
       {prompt && (
         <Modal title={prompt.title} size="sm" testId="prompt-dialog" onClose={() => { prompt.resolve(null); useFeedback.setState({ prompt: null }); }} footer={<>
           <button type="button" className="btn" onClick={() => { prompt.resolve(null); useFeedback.setState({ prompt: null }); }}>Cancelar</button>

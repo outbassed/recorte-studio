@@ -19,13 +19,16 @@ import { characterUsage } from '@/engine/model/ops';
 import { customObjectUsage } from '@/engine/world/pieces';
 import { availableTimes, customBackgroundUsage } from '@/engine/world/customBackgrounds';
 import { readBackgroundBundle, readObjectBundle, type BackgroundBundle, type ObjectBundle } from '@/features/library/bundles';
-import { matchesSearch } from '@/features/library/search';
+import { normalizeText } from '@/features/library/search';
+import type { PackItemData } from '@/features/packs/format';
 import { ANIMATED_CATEGORY, ANIMATED_TEMPLATES, animatedTemplate, TEMPLATE_PREFIX } from './animatedTemplates';
 import type { LibraryRecord, PackRecord } from '@/storage/db';
 
 export type CatalogView = 'cast' | 'scenery' | 'objects';
 export type CatalogOrigin = 'builtin' | 'project' | 'mine' | 'pack';
-export type CatalogFilter = 'all' | 'builtin' | 'packs' | 'mine' | 'favorites' | 'recent' | 'project';
+export type CatalogFilter = 'all' | 'builtin' | 'official' | 'packs' | 'mine' | 'favorites' | 'recent' | 'project';
+/** Tema transversal: independe do tipo do item (um objeto de Natal continua sendo Objeto). */
+export type CatalogTheme = 'series' | 'holiday' | 'event';
 export type CatalogSort = 'default' | 'name' | 'updated' | 'favorites';
 export type CatalogKind = 'character' | 'pose' | 'sequence' | 'prop' | 'object' | 'background' | 'scene';
 
@@ -46,6 +49,19 @@ export interface SceneData { scene: Scene; characters: Project['characters'] }
 export interface CatalogEntry {
   /** Chave estável e com espaço de nomes (favoritos e recentes usam esta chave). */
   key: string;
+  /**
+   * ID de identidade do item (UUID v4 nos itens novos; IDs legados continuam como estão). É o ID que o usuário vê,
+   * busca e que decide conflitos de importação. Diferente de `key`, que só existe para favoritos e recentes.
+   */
+  id: string;
+  subcategory?: string;
+  tags?: string[];
+  description?: string;
+  /** Coleção temática do pacote (ex.: Natal, Vila Torta). */
+  collection?: string;
+  packId?: string;
+  /** Pacote oficial (instalado pelo catálogo do app), não importado de arquivo. */
+  official?: boolean;
   view: CatalogView;
   kind: CatalogKind;
   category: string;
@@ -83,7 +99,8 @@ export interface CatalogEntry {
 
 export const VIEW_LABELS: Record<CatalogView, string> = { cast: 'Elenco', scenery: 'Cenários', objects: 'Objetos' };
 export const ORIGIN_LABELS: Record<CatalogOrigin, string> = { builtin: 'Padrão', project: 'Projeto', mine: 'Minha biblioteca', pack: 'Pacote' };
-export const FILTER_LABELS: Record<CatalogFilter, string> = { all: 'Todos', builtin: 'Padrão', packs: 'Pacotes', mine: 'Meus', favorites: 'Favoritos', recent: 'Recentes', project: 'No projeto' };
+export const FILTER_LABELS: Record<CatalogFilter, string> = { all: 'Todos', builtin: 'Padrão', official: 'Oficiais', packs: 'Pacotes', mine: 'Meus', favorites: 'Favoritos', recent: 'Recentes', project: 'No projeto' };
+export const THEME_LABELS: Record<CatalogTheme, string> = { series: 'Vila Torta', holiday: 'Feriados', event: 'Eventos' };
 export const SORT_LABELS: Record<CatalogSort, string> = { default: 'Por seção', name: 'Nome (A–Z)', updated: 'Mais recentes', favorites: 'Favoritos primeiro' };
 
 export const CAT = {
@@ -144,6 +161,36 @@ function propUsage(project: Project, propId: string): number {
 const backgroundUsage = (project: Project, presetId: string) => Object.values(project.scenes).filter((s) => s.background.presetId === presetId).length;
 const cbTimes = (cb: CustomBackground) => availableTimes(cb) as string[];
 
+type PackLike = Pick<PackRecord, 'id' | 'name' | 'manifest' | 'installedAt'> & { source?: PackRecord['source'] };
+
+/** Entrada de catálogo de um item de pacote (objeto, cenário, personagem ou pose): usada pelo catálogo e pela página do pacote. */
+export function entryForPackItem(pk: PackLike, it: PackItemData, project: Project, fav: (key: string) => boolean = () => false, mineKeys: ReadonlySet<string> = new Set()): CatalogEntry {
+  const ref: CatalogRef = { type: 'pack-item', packId: pk.id, itemId: it.id };
+  const key = keyOf(ref);
+  const m = it.meta;
+  const tags = [...(m?.tags ?? []), ...(pk.manifest.tags ?? [])];
+  const base = {
+    key, name: it.name, origin: 'pack' as const, editable: false, favorite: fav(key), updatedAt: pk.installedAt, usage: 0, inProject: false,
+    states: [] as Array<{ id: string; label: string }>, ref, packName: pk.name, packId: pk.id, official: pk.source === 'official', collection: pk.manifest.collection,
+    subcategory: m?.subcategory, tags, description: m?.description || undefined,
+    keywords: [pk.name, pk.manifest.category, ...(pk.manifest.collection ? [pk.manifest.collection] : []), ...tags], category: m?.category || pk.manifest.category,
+  };
+  switch (it.kind) {
+    case 'object': {
+      const o = it.data.object;
+      return { ...base, id: o.id, view: 'objects', kind: 'object', usage: customObjectUsage(project, o.id), shadowed: !!project.customObjects[o.id] || mineKeys.has(`object:${o.id}`), states: o.clips.map((c) => ({ id: c.id, label: c.name })), objectBundle: it.data };
+    }
+    case 'background': {
+      const bg = it.data.background;
+      return { ...base, id: bg.id, view: 'scenery', kind: 'background', usage: customBackgroundUsage(project, bg.id), shadowed: !!project.customBackgrounds[bg.id] || mineKeys.has(`background:${bg.id}`), times: cbTimes(bg), backgroundBundle: it.data };
+    }
+    case 'character':
+      return { ...base, id: it.data.id, view: 'cast', kind: 'character', usage: characterUsage(project, it.data.id), shadowed: !!project.characters[it.data.id] || mineKeys.has(`character:${it.data.id}`), character: it.data };
+    case 'pose':
+      return { ...base, id: it.id, view: 'cast', kind: 'pose', pose: it.data };
+  }
+}
+
 /** Monta a lista completa. Ordem natural: projeto, minha biblioteca, padrão. */
 export function buildCatalog({ project, library, favorites, packs = [] }: CatalogInput): CatalogEntry[] {
   const out: CatalogEntry[] = [];
@@ -165,7 +212,7 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     if (c.builtinId) builtinInProject.add(c.builtinId);
     const ref: CatalogRef = { type: 'project-character', id: c.id };
     out.push({
-      key: keyOf(ref), view: 'cast', kind: 'character', category: CAT.characters, name: c.name,
+      key: keyOf(ref), id: c.id, view: 'cast', kind: 'character', category: CAT.characters, name: c.name,
       keywords: [c.hair.style, c.outfit.top, c.builtinId ?? ''], origin: 'project', editable: true, favorite: c.favorite,
       updatedAt: project.updatedAt, usage: characterUsage(project, c.id), inProject: true, libId: libChar.get(c.id)?.id,
       fromBuiltin: !!c.builtinId, states: [], ref, character: c,
@@ -175,7 +222,7 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     const ref: CatalogRef = { type: 'project-object', id: o.id };
     const key = keyOf(ref);
     out.push({
-      key, view: 'objects', kind: 'object', category: o.clips.length ? CAT.animated : CAT.objects, name: o.name, keywords: o.pieces.flatMap((p) => (p.kind === 'text' ? [p.name, p.text] : [p.name])),
+      key, id: o.id, view: 'objects', kind: 'object', category: o.clips.length ? CAT.animated : CAT.objects, name: o.name, keywords: o.pieces.flatMap((p) => (p.kind === 'text' ? [p.name, p.text] : [p.name])),
       origin: 'project', editable: true, favorite: fav(key), updatedAt: o.updatedAt || o.createdAt, usage: customObjectUsage(project, o.id),
       inProject: true, libId: libObj.get(o.id)?.id, states: o.clips.map((c) => ({ id: c.id, label: c.name })), ref, fromBuiltin: o.id.startsWith(TEMPLATE_PREFIX),
     });
@@ -184,7 +231,7 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     const ref: CatalogRef = { type: 'project-background', id: cb.id };
     const key = keyOf(ref);
     out.push({
-      key, view: 'scenery', kind: 'background', category: CAT.custom, name: cb.name, keywords: [],
+      key, id: cb.id, view: 'scenery', kind: 'background', category: CAT.custom, name: cb.name, keywords: [],
       origin: 'project', editable: true, favorite: fav(key), updatedAt: cb.createdAt, usage: customBackgroundUsage(project, cb.id),
       inProject: true, libId: libBg.get(cb.id)?.id, states: [], times: cbTimes(cb), ref,
     });
@@ -194,13 +241,13 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
   for (const r of library) {
     const ref: CatalogRef = { type: 'library', libId: r.id };
     const base = {
-      key: keyOf(ref), name: r.name, origin: 'mine' as const, editable: true, favorite: !!r.favorite,
+      key: keyOf(ref), id: r.id, name: r.name, origin: 'mine' as const, editable: true, favorite: !!r.favorite,
       updatedAt: r.updatedAt ?? r.createdAt, usage: 0, inProject: false, states: [], ref, keywords: [] as string[],
     };
     if (r.kind === 'character') {
       const p = CharacterDefinitionSchema.safeParse(r.data);
       if (p.success && project.characters[p.data.id]) continue; // já no projeto (mesma identidade)
-      out.push({ ...base, view: 'cast', kind: 'character', category: CAT.characters, character: p.success ? p.data : undefined, broken: p.success ? undefined : 'O personagem salvo está incompleto ou é de uma versão incompatível.' });
+      out.push({ ...base, id: p.success ? p.data.id : r.id, view: 'cast', kind: 'character', category: CAT.characters, character: p.success ? p.data : undefined, broken: p.success ? undefined : 'O personagem salvo está incompleto ou é de uma versão incompatível.' });
     } else if (r.kind === 'pose') {
       const d = isObj(r.data) ? r.data : {};
       const rig = RigSchema.safeParse(d.rig);
@@ -213,11 +260,11 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     } else if (r.kind === 'object') {
       const read = readObjectBundle(r.data);
       if (read.ok && project.customObjects[read.bundle.object.id]) continue;
-      out.push({ ...base, view: 'objects', kind: 'object', category: CAT.objects, keywords: read.ok ? read.bundle.object.pieces.flatMap((p) => (p.kind === 'text' ? [p.name, p.text] : [p.name])) : [], objectBundle: read.ok ? read.bundle : undefined, broken: read.ok ? undefined : read.reason });
+      out.push({ ...base, id: read.ok ? read.bundle.object.id : r.id, view: 'objects', kind: 'object', category: CAT.objects, keywords: read.ok ? read.bundle.object.pieces.flatMap((p) => (p.kind === 'text' ? [p.name, p.text] : [p.name])) : [], objectBundle: read.ok ? read.bundle : undefined, broken: read.ok ? undefined : read.reason });
     } else if (r.kind === 'background') {
       const read = readBackgroundBundle(r.data);
       if (read.ok && project.customBackgrounds[read.bundle.background.id]) continue;
-      out.push({ ...base, view: 'scenery', kind: 'background', category: CAT.custom, backgroundBundle: read.ok ? read.bundle : undefined, times: read.ok ? cbTimes(read.bundle.background) : [], broken: read.ok ? undefined : read.reason });
+      out.push({ ...base, id: read.ok ? read.bundle.background.id : r.id, view: 'scenery', kind: 'background', category: CAT.custom, backgroundBundle: read.ok ? read.bundle : undefined, times: read.ok ? cbTimes(read.bundle.background) : [], broken: read.ok ? undefined : read.reason });
     } else if (r.kind === 'scene') {
       out.push({ ...base, view: 'scenery', kind: 'scene', category: CAT.scenes, ...readSceneData(r.data) });
     }
@@ -225,23 +272,12 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
   }
 
   /* ---------------- pacotes ativos (protegidos: editar cria cópia) ---------------- */
+  // Item de pacote com a mesma identidade de um item da minha biblioteca fica por trás dele (aparece uma vez só).
+  const mineKeys = new Set<string>();
+  for (const e of out) if (e.origin === 'mine' && !e.broken) mineKeys.add(`${e.kind}:${e.id}`);
   for (const pk of packs) {
     if (!pk.enabled) continue;
-    for (const it of pk.items) {
-      const ref: CatalogRef = { type: 'pack-item', packId: pk.id, itemId: it.id };
-      const key = keyOf(ref);
-      const base = {
-        key, name: it.name, origin: 'pack' as const, editable: false, favorite: fav(key), updatedAt: pk.installedAt, usage: 0, inProject: false,
-        states: [] as Array<{ id: string; label: string }>, ref, packName: pk.name, keywords: [pk.name, pk.manifest.category], category: pk.manifest.category,
-      };
-      if (it.kind === 'object') {
-        const o = it.data.object;
-        out.push({ ...base, view: 'objects', kind: 'object', usage: customObjectUsage(project, o.id), shadowed: !!project.customObjects[o.id], states: o.clips.map((c) => ({ id: c.id, label: c.name })), objectBundle: it.data });
-      } else {
-        const bg = it.data.background;
-        out.push({ ...base, view: 'scenery', kind: 'background', usage: customBackgroundUsage(project, bg.id), shadowed: !!project.customBackgrounds[bg.id], times: cbTimes(bg), backgroundBundle: it.data });
-      }
-    }
+    for (const it of pk.items) out.push(entryForPackItem(pk, it, project, fav, mineKeys));
   }
 
   /* ---------------- padrão ---------------- */
@@ -250,7 +286,7 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     const key = keyOf(ref);
     const inProj = Object.values(project.characters).find((d) => d.builtinId === c.builtinId);
     out.push({
-      key, view: 'cast', kind: 'character', category: CAT.characters, name: c.name, keywords: [c.hair.style, c.outfit.top],
+      key, id: c.builtinId!, view: 'cast', kind: 'character', category: CAT.characters, name: c.name, keywords: [c.hair.style, c.outfit.top],
       origin: 'builtin', editable: false, favorite: fav(key), updatedAt: 0, usage: inProj ? characterUsage(project, inProj.id) : 0,
       inProject: false, shadowed: builtinInProject.has(c.builtinId!), states: [], ref, character: c,
     });
@@ -260,7 +296,7 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     const key = keyOf(ref);
     const o = animatedTemplate(t.id)!;
     out.push({
-      key, view: 'objects', kind: 'object', category: t.category ?? CAT.animated, name: t.label, keywords: t.keywords, origin: 'builtin', editable: false,
+      key, id: t.id, view: 'objects', kind: 'object', category: t.category ?? CAT.animated, name: t.label, keywords: t.keywords, origin: 'builtin', editable: false,
       favorite: fav(key), updatedAt: 0, usage: customObjectUsage(project, o.id), inProject: false, shadowed: !!project.customObjects[o.id],
       states: o.clips.map((c) => ({ id: c.id, label: c.name })), ref,
     });
@@ -270,7 +306,7 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     const ref: CatalogRef = { type: 'builtin-background', presetId: b.id };
     const key = keyOf(ref);
     out.push({
-      key, view: 'scenery', kind: 'background', category: b.group, name: b.label, keywords: b.keywords, origin: 'builtin', editable: false,
+      key, id: b.id, view: 'scenery', kind: 'background', category: b.group, name: b.label, keywords: b.keywords, origin: 'builtin', editable: false,
       favorite: fav(key), updatedAt: 0, usage: backgroundUsage(project, b.id), inProject: false,
       states: [{ id: 'day', label: 'Dia' }, { id: 'night', label: 'Noite' }], ref,
     });
@@ -280,31 +316,72 @@ export function buildCatalog({ project, library, favorites, packs = [] }: Catalo
     const ref: CatalogRef = { type: 'builtin-prop', propId: p.id };
     const key = keyOf(ref);
     out.push({
-      key, view: 'objects', kind: 'prop', category: PROP_CATEGORY_LABELS[p.category], name: p.label, keywords: p.keywords, origin: 'builtin',
+      key, id: p.id, view: 'objects', kind: 'prop', category: PROP_CATEGORY_LABELS[p.category], name: p.label, keywords: p.keywords, origin: 'builtin',
       editable: false, favorite: fav(key), updatedAt: 0, usage: propUsage(project, p.id), inProject: false, states: p.states ?? [], ref,
     });
   }
   return out;
 }
 
-export interface CatalogQuery { text: string; filter: CatalogFilter; category: string | null; sort: CatalogSort; kind?: CatalogKind | null }
-export const DEFAULT_QUERY: CatalogQuery = { text: '', filter: 'all', category: null, sort: 'default', kind: null };
+export interface CatalogQuery {
+  text: string; filter: CatalogFilter; category: string | null; sort: CatalogSort; kind?: CatalogKind | null;
+  /** Tema transversal (Vila Torta, Feriados, Eventos). */
+  theme?: CatalogTheme | null;
+  /** Só itens animados (objetos com animação ou com estados). */
+  animated?: boolean;
+  collection?: string | null;
+  packId?: string | null;
+}
+export const DEFAULT_QUERY: CatalogQuery = { text: '', filter: 'all', category: null, sort: 'default', kind: null, theme: null, animated: false, collection: null, packId: null };
 /** Nomes dos tipos de item (Biblioteca principal e Toolbox). */
 export const KIND_LABELS: Record<CatalogKind, string> = { character: 'Personagens', pose: 'Poses', sequence: 'Sequências', prop: 'Objetos prontos', object: 'Objetos montados', background: 'Cenários', scene: 'Cenas-molde' };
 export type CatalogScope = CatalogView | 'all';
 
 const ORIGIN_RANK: Record<CatalogOrigin, number> = { project: 0, mine: 1, pack: 2, builtin: 3 };
 
-/** Filtra e ordena uma visão. Busca sem diferenciar maiúsculas nem acentos. */
+/** Tema de um item: pela coleção do pacote ("Vila Torta") ou pelas etiquetas `feriado` e `evento`. */
+export function themesOf(e: CatalogEntry): CatalogTheme[] {
+  const out: CatalogTheme[] = [];
+  if (e.collection === 'Vila Torta') out.push('series');
+  const tags = (e.tags ?? []).map(normalizeText);
+  if (tags.includes('feriado')) out.push('holiday');
+  if (tags.includes('evento')) out.push('event');
+  return out;
+}
+export const isAnimated = (e: CatalogEntry): boolean => (e.kind === 'object' || e.kind === 'prop') && e.states.length > 0;
+
+/**
+ * Busca de um item. Cada palavra precisa aparecer em algum campo de TEXTO (sem diferenciar maiúsculas nem acentos:
+ * nome, categoria, subcategoria, tags, descrição, pacote, coleção, tipo, origem) OU no ID (aqui a comparação é EXATA:
+ * "Rafael" e "rafael" são IDs diferentes). `id:<ID>` e `#<ID>` pedem só o item cujo ID é exatamente aquele.
+ */
+export function entryMatches(query: string, e: CatalogEntry): boolean {
+  const raw = query.trim();
+  if (!raw) return true;
+  const exact = /^(?:id:|#)(.+)$/.exec(raw);
+  if (exact) return e.id === exact[1]!.trim();
+  const hay = normalizeText([
+    e.name, e.category, e.subcategory ?? '', e.description ?? '', e.packName ?? '', e.collection ?? '', KIND_LABELS[e.kind], ORIGIN_LABELS[e.origin],
+    ...e.keywords, ...(e.tags ?? []), ...e.states.map((s) => s.label),
+  ].join(' '));
+  return raw.split(/\s+/).every((word) => e.id.includes(word) || hay.includes(normalizeText(word)));
+}
+
+/** Filtra e ordena uma visão. Busca sem diferenciar maiúsculas nem acentos (e ID exato com diferença de maiúsculas). */
 export function queryCatalog(entries: CatalogEntry[], view: CatalogScope, q: CatalogQuery, recents: readonly string[] = []): CatalogEntry[] {
   const recentIdx = new Map(recents.map((k, i) => [k, i]));
   let list = view === 'all' ? [...entries] : entries.filter((e) => e.view === view);
   if (q.kind) list = list.filter((e) => e.kind === q.kind);
   if (q.category) list = list.filter((e) => e.category === q.category);
-  list = list.filter((e) => matchesSearch(q.text, e.name, e.keywords, e.category));
+  if (q.theme) list = list.filter((e) => themesOf(e).includes(q.theme!));
+  if (q.animated) list = list.filter(isAnimated);
+  if (q.collection) list = list.filter((e) => e.collection === q.collection);
+  if (q.packId) list = list.filter((e) => e.packId === q.packId);
+  list = list.filter((e) => entryMatches(q.text, e));
   switch (q.filter) {
     case 'all': list = list.filter((e) => !e.shadowed); break;
     case 'builtin': list = list.filter((e) => e.origin === 'builtin'); break;
+    case 'official': list = list.filter((e) => e.origin === 'pack' && e.official); break;
     case 'packs': list = list.filter((e) => e.origin === 'pack'); break;
     case 'mine': list = list.filter((e) => e.origin === 'mine' || (e.origin === 'project' && !e.fromBuiltin)); break;
     case 'favorites': list = list.filter((e) => e.favorite); break;
@@ -312,11 +389,13 @@ export function queryCatalog(entries: CatalogEntry[], view: CatalogScope, q: Cat
     case 'project': list = list.filter((e) => e.inProject || e.usage > 0); break;
   }
   const byName = (a: CatalogEntry, b: CatalogEntry) => a.name.localeCompare(b.name, 'pt-BR', { sensitivity: 'base' });
+  // ID exato digitado por inteiro: o item dono desse ID vem primeiro.
+  const exactFirst = (l: CatalogEntry[]) => (q.text.trim() ? [...l.filter((e) => e.id === q.text.trim()), ...l.filter((e) => e.id !== q.text.trim())] : l);
   if (q.filter === 'recent' && q.sort === 'default') return list.sort((a, b) => recentIdx.get(a.key)! - recentIdx.get(b.key)!);
-  if (q.sort === 'name') return list.sort(byName);
-  if (q.sort === 'updated') return list.sort((a, b) => b.updatedAt - a.updatedAt || byName(a, b));
-  if (q.sort === 'favorites') return list.sort((a, b) => Number(b.favorite) - Number(a.favorite) || ORIGIN_RANK[a.origin] - ORIGIN_RANK[b.origin]);
-  return list.sort((a, b) => ORIGIN_RANK[a.origin] - ORIGIN_RANK[b.origin]);
+  if (q.sort === 'name') return exactFirst(list.sort(byName));
+  if (q.sort === 'updated') return exactFirst(list.sort((a, b) => b.updatedAt - a.updatedAt || byName(a, b)));
+  if (q.sort === 'favorites') return exactFirst(list.sort((a, b) => Number(b.favorite) - Number(a.favorite) || ORIGIN_RANK[a.origin] - ORIGIN_RANK[b.origin]));
+  return exactFirst(list.sort((a, b) => ORIGIN_RANK[a.origin] - ORIGIN_RANK[b.origin]));
 }
 
 /** Categorias de uma visão, na ordem em que aparecem, com contagem. */

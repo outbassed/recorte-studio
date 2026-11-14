@@ -39,6 +39,15 @@ export interface PackRecord {
   manifest: PackManifest;
   items: PackItemData[];
   assets: Asset[];
+  /**
+   * Origem do pacote: 'official' = instalado pelo catálogo do app (arquivo verificado pelo sha256 do índice);
+   * 'imported' = arquivo do usuário. Registros anteriores a esta versão não têm o campo e valem como 'imported'.
+   */
+  source?: 'official' | 'imported';
+  /** sha256 do arquivo .rspack original (reconhece o mesmo pacote reimportado e atualizações legítimas). */
+  fileSha256?: string;
+  /** IDs trocados na importação: ID original do arquivo → ID final na biblioteca (o arquivo original nunca muda). */
+  idMap?: Record<string, string>;
 }
 
 class RecorteDB extends Dexie {
