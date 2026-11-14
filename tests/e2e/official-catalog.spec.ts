@@ -134,7 +134,7 @@ test('catálogo oficial sem conexão: erro claro com "tentar de novo" e pacotes 
   await expect(page.getByTestId('official-error')).toContainText('continuam funcionando offline');
   await context.setOffline(false);
   await page.getByTestId('official-retry').click();
-  await expect(page.getByTestId('official-pack')).toHaveCount(7);
+  await expect.poll(() => page.getByTestId('official-pack').count()).toBeGreaterThanOrEqual(7);
 });
 
 test.describe('celular', () => {

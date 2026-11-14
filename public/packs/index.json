@@ -3,6 +3,1529 @@
  "formatVersion": 1,
  "packs": [
   {
+   "id": "corpos-1",
+   "file": "corpos-1.rspack",
+   "sha256": "98b02b84e81b67849ccd828d248bd4895ae8ad1f8ebb10e1ba4179cf72420421",
+   "size": 12747,
+   "name": "Corpos · Base 1",
+   "version": "1.0.0",
+   "description": "Dezoito corpos-base com biotipos, idades e proporções (magro, robusto, musculoso, infantil, idoso, cabeçudo, chibi…). Vêm com roupa neutra cinza: aplique roupas, cabelos e cores no Criador.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Corpos",
+   "collection": "Corpos",
+   "volume": 1,
+   "tags": [
+    "corpo",
+    "base"
+   ],
+   "dependencies": [],
+   "itemCount": 18,
+   "counts": {
+    "character": 18
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-corpo-magro",
+     "name": "Corpo magro",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Biotipos"
+    },
+    {
+     "id": "rs-corpo-medio",
+     "name": "Corpo médio",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Biotipos"
+    },
+    {
+     "id": "rs-corpo-robusto",
+     "name": "Corpo robusto",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Biotipos"
+    },
+    {
+     "id": "rs-corpo-musculoso",
+     "name": "Corpo musculoso",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Biotipos"
+    },
+    {
+     "id": "rs-corpo-corpulento",
+     "name": "Corpo corpulento",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Biotipos"
+    },
+    {
+     "id": "rs-corpo-atletico",
+     "name": "Corpo atlético",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Biotipos"
+    },
+    {
+     "id": "rs-corpo-esguio-alto",
+     "name": "Corpo alto e esguio",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Biotipos"
+    },
+    {
+     "id": "rs-corpo-baixo-largo",
+     "name": "Corpo baixo e largo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Biotipos"
+    },
+    {
+     "id": "rs-corpo-infantil",
+     "name": "Corpo infantil",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idades"
+    },
+    {
+     "id": "rs-corpo-adolescente",
+     "name": "Corpo adolescente",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idades"
+    },
+    {
+     "id": "rs-corpo-adulto",
+     "name": "Corpo adulto",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idades"
+    },
+    {
+     "id": "rs-corpo-idoso",
+     "name": "Corpo idoso",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idades"
+    },
+    {
+     "id": "rs-corpo-cabecudo",
+     "name": "Corpo cabeçudo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Proporções"
+    },
+    {
+     "id": "rs-corpo-caricatural",
+     "name": "Corpo caricatural",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Proporções"
+    },
+    {
+     "id": "rs-corpo-chibi",
+     "name": "Corpo chibi",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Proporções"
+    },
+    {
+     "id": "rs-corpo-pernalonga",
+     "name": "Corpo pernalonga",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Proporções"
+    },
+    {
+     "id": "rs-corpo-bracos-longos",
+     "name": "Corpo de braços longos",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Proporções"
+    },
+    {
+     "id": "rs-corpo-barrigudo",
+     "name": "Corpo barrigudo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Proporções"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -638.4 440 668.4\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(27.7 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"21.7\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"20\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.2 77l12.4 0M-6.2 83l12.4 0\" stroke=\"#aeb2b7\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-27.7 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"21.7\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"20\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.2 77l12.4 0M-6.2 83l12.4 0\" stroke=\"#aeb2b7\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -178) rotate(0)\"><path d=\"M-45.3 -4Q0 6 45.3 -4L39.7 22L-39.7 22Z\" fill=\"#6b7684\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-24.2 -164C-33.8 -161.5 -41.2 -159.2 -44 -146C-46.8 -132.8 -44.2 -91.3 -44.3 -69.7C-44.3 -48.2 -56.8 -2.9 -44.4 8C-32 18.9 32 18.9 44.4 8C56.8 -2.9 44.3 -48.2 44.3 -69.7C44.2 -91.3 46.8 -132.8 44 -146C41.2 -159.2 33.8 -161.5 24.2 -164C14.7 -166.5 -14.7 -166.5 -24.2 -164Z\" data-part=\"torso\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-156\" rx=\"18.5\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-45.7 -6Q0 4 45.7 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-26 -162Q0 -142 26 -162\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"23.3\" stroke-linecap=\"round\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#bdc1c7\" stroke-width=\"16.1\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(43.1 -148) rotate(-7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"24.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"16.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#9aa3ad\" stroke-width=\"20.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"23\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"15.1\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#85898c\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-43.1 -148) rotate(7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"24.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"16.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#9aa3ad\" stroke-width=\"20.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"23\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"15.1\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#85898c\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -272.4) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#909397\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#909397\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10.1 -118 20.7 -116.3 30.4 -113.2C40.2 -110.1 49.9 -105.3 58.4 -99.3C66.9 -93.3 75 -85.6 81.6 -77.3C88.3 -68.9 94 -59.1 98.2 -49C102.5 -38.9 105.7 -27.8 106.9 -16.8C108.1 -5.8 107.9 5.8 105.7 16.8C103.5 27.8 99 38.9 93.9 49C88.7 59.1 82 68.9 75 77.3C68 85.6 60 93.3 51.9 99.3C43.8 105.3 35 110.1 26.4 113.2C17.7 116.3 8.8 118 0 118C-8.8 118 -17.7 116.3 -26.4 113.2C-35 110.1 -43.8 105.3 -51.9 99.3C-60 93.3 -68 85.6 -75 77.3C-82 68.9 -88.7 59.1 -93.9 49C-99 38.9 -103.5 27.8 -105.7 16.8C-107.9 5.8 -108.1 -5.8 -106.9 -16.8C-105.7 -27.8 -102.5 -38.9 -98.2 -49C-94 -59.1 -88.3 -68.9 -81.6 -77.3C-75 -85.6 -66.9 -93.3 -58.4 -99.3C-49.9 -105.3 -40.2 -110.1 -30.4 -113.2C-20.7 -116.3 -10.1 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"eye\" data-eye=\"R\" data-rx=\"25\" data-ry=\"27\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"12.7\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\"/></clipPath><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"12.7\" fill=\"#2a2f3d\"/><circle cx=\"3.8\" cy=\"-4.6\" r=\"3.4\" fill=\"#fff\"/></g><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M-20.4 -46.7C-24.5 -47.4 -37 -50.7 -45.4 -50.7C-53.7 -50.7 -66.2 -47.4 -70.4 -46.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"25\" data-ry=\"27\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"12.7\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\"/></clipPath><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"12.7\" fill=\"#2a2f3d\"/><circle cx=\"3.8\" cy=\"-4.6\" r=\"3.4\" fill=\"#fff\"/></g><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M20.4 -46.7C24.5 -47.4 37 -50.7 45.4 -50.7C53.7 -50.7 66.2 -47.4 70.4 -46.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-1.3 -12.6Q-9 7.7 -4.9 11.9Q0 17.5 5 11.9Q9 7.7 1.3 -12.6\" fill=\"#c3c8cd\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g></g></g></g></g></svg>"
+  },
+  {
+   "id": "figurantes-1",
+   "file": "figurantes-1.rspack",
+   "sha256": "0dcfef6504a740c7e04b73c68c84576dfac1ceeb9954fa92658fda2a6acfb367",
+   "size": 11343,
+   "name": "Figurantes · Cidade e Escola 1",
+   "version": "1.0.0",
+   "description": "Dez moradores de cidade e seis escolares de uniforme para encher ruas, praças, escritórios e pátios.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Personagens",
+   "collection": "Personagens",
+   "volume": 1,
+   "tags": [
+    "personagem",
+    "pré-pronto"
+   ],
+   "dependencies": [],
+   "itemCount": 16,
+   "counts": {
+    "character": 16
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-fig-morador-1",
+     "name": "Morador de rua Cidinho",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-fig-jogger",
+     "name": "Corredora Paula",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-fig-office-1",
+     "name": "Executivo apressado",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-fig-office-2",
+     "name": "Executiva de óculos",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-fig-turista",
+     "name": "Turista de bermuda",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-fig-skatista",
+     "name": "Skatista Dani",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-fig-mae-carrinho",
+     "name": "Mãe com sacolas",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-fig-idosa-bengala",
+     "name": "Senhora na calçada",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-fig-estudante-u",
+     "name": "Universitário Caio",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-fig-vendedor",
+     "name": "Vendedor de picolé",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Moradores de cidade"
+    },
+    {
+     "id": "rs-esc-aluno-1",
+     "name": "Aluno de uniforme Leo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Escolares"
+    },
+    {
+     "id": "rs-esc-aluna-1",
+     "name": "Aluna de uniforme Bia",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Escolares"
+    },
+    {
+     "id": "rs-esc-aluno-2",
+     "name": "Aluno de uniforme Téo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Escolares"
+    },
+    {
+     "id": "rs-esc-aluna-2",
+     "name": "Aluna de uniforme Lia",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Escolares"
+    },
+    {
+     "id": "rs-esc-diretor",
+     "name": "Diretor Almeida",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Escolares"
+    },
+    {
+     "id": "rs-esc-merendeira",
+     "name": "Merendeira Cleide",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Escolares"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -645.16 440 675.16\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(35.6 -181.2)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 85.7\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"35.9\" stroke-linecap=\"round\"/><path d=\"M0 0L0 85.7\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"27.9\" stroke-linecap=\"round\"/><g transform=\"translate(0 85.7) rotate(0)\"><path d=\"M0 0L0 77.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"33.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 77.5\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"25.7\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 77.5)\"><g data-part=\"foot\"><path d=\"M-25.3 95.5L25.3 95.5Q27.3 81.5 15.3 67.5L-15.3 67.5Q-27.3 81.5 -25.3 95.5Z\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-25.3\" y=\"92.5\" width=\"50.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.3 78.5l12.6 0M-6.3 84.5l12.6 0\" stroke=\"#d2d6da\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-35.6 -181.2)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 85.7\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"35.9\" stroke-linecap=\"round\"/><path d=\"M0 0L0 85.7\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"27.9\" stroke-linecap=\"round\"/><g transform=\"translate(0 85.7) rotate(0)\"><path d=\"M0 0L0 77.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"33.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 77.5\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"25.7\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 77.5)\"><g data-part=\"foot\"><path d=\"M-25.3 95.5L25.3 95.5Q27.3 81.5 15.3 67.5L-15.3 67.5Q-27.3 81.5 -25.3 95.5Z\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-25.3\" y=\"92.5\" width=\"50.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.3 78.5l12.6 0M-6.3 84.5l12.6 0\" stroke=\"#d2d6da\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -181.2) rotate(0)\"><path d=\"M-55.9 -4Q0 6 55.9 -4L51 22L-51 22Z\" fill=\"#3d4a66\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-36.6 -167.3C-51.1 -164.8 -63.4 -162.8 -66.6 -149.3C-69.8 -135.9 -61.2 -93.1 -59.5 -71.1C-57.9 -49.1 -70.8 -3.1 -54.8 8C-38.8 19.1 38.8 19.1 54.8 8C70.8 -3.1 57.9 -49.1 59.5 -71.1C61.2 -93.1 69.8 -135.9 66.6 -149.3C63.4 -162.8 51.1 -164.8 36.6 -167.3C22.2 -169.8 -22.2 -169.8 -36.6 -167.3Z\" data-part=\"torso\" fill=\"#6b7684\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-159.3\" rx=\"28\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-56.4 -6Q0 4 56.4 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-36 -163.3Q0 -125.3 36 -163.3Q0 -151.3 -36 -163.3Z\" fill=\"#58616c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-12 -139.3v26M12 -139.3v26\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-34 -14L-20 -48L20 -48L34 -14Z\" fill=\"#606a77\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M0 -191.6L0 -161.3\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"30.5\" stroke-linecap=\"round\"/><path d=\"M0 -191.6L0 -161.3\" fill=\"none\" stroke=\"#aa754e\" stroke-width=\"23.3\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(65.3 -151.3) rotate(-7)\"><path d=\"M0 0L0 77.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 77.5\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 77.5) rotate(0)\"><path d=\"M0 0L0 71.4\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"30.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 71.4\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"22.5\" stroke-linecap=\"round\"/><rect x=\"-13.9\" y=\"65.4\" width=\"27.9\" height=\"10\" rx=\"3\" fill=\"#565e6a\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 76.1q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 76.1q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#b97f55\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"86.2\" rx=\"12.8\" ry=\"16.2\" fill=\"#b97f55\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 99.1v-9.4M2 100.4v-9.4\" stroke=\"#785337\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-65.3 -151.3) rotate(7)\"><path d=\"M0 0L0 77.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 77.5\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 77.5) rotate(0)\"><path d=\"M0 0L0 71.4\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"30.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 71.4\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"22.5\" stroke-linecap=\"round\"/><rect x=\"-13.9\" y=\"65.4\" width=\"27.9\" height=\"10\" rx=\"3\" fill=\"#565e6a\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 76.1q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 76.1q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#b97f55\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"86.2\" rx=\"12.8\" ry=\"16.2\" fill=\"#b97f55\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 99.1v-9.4M2 100.4v-9.4\" stroke=\"#785337\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -276) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#b97f55\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#82593c\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#b97f55\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#82593c\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10.1 -118 20.7 -116.3 30.4 -113.2C40.2 -110.1 49.9 -105.3 58.4 -99.3C66.9 -93.3 75 -85.6 81.6 -77.3C88.3 -68.9 94 -59.1 98.2 -49C102.5 -38.9 105.7 -27.8 106.9 -16.8C108.1 -5.8 107.9 5.8 105.7 16.8C103.5 27.8 99 38.9 93.9 49C88.7 59.1 82 68.9 75 77.3C68 85.6 60 93.3 51.9 99.3C43.8 105.3 35 110.1 26.4 113.2C17.7 116.3 8.8 118 0 118C-8.8 118 -17.7 116.3 -26.4 113.2C-35 110.1 -43.8 105.3 -51.9 99.3C-60 93.3 -68 85.6 -75 77.3C-82 68.9 -88.7 59.1 -93.9 49C-99 38.9 -103.5 27.8 -105.7 16.8C-107.9 5.8 -108.1 -5.8 -106.9 -16.8C-105.7 -27.8 -102.5 -38.9 -98.2 -49C-94 -59.1 -88.3 -68.9 -81.6 -77.3C-75 -85.6 -66.9 -93.3 -58.4 -99.3C-49.9 -105.3 -40.2 -110.1 -30.4 -113.2C-20.7 -116.3 -10.1 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#b97f55\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"beard\" fill=\"#4e403e\" fill-opacity=\".75\"><circle cx=\"74.5\" cy=\"74.1\" r=\"1.5\"/><circle cx=\"68.1\" cy=\"78.7\" r=\"1.5\"/><circle cx=\"60.8\" cy=\"81.4\" r=\"1.5\"/><circle cx=\"69.7\" cy=\"87.7\" r=\"1.5\"/><circle cx=\"60.7\" cy=\"88.3\" r=\"1.5\"/><circle cx=\"51.5\" cy=\"95.9\" r=\"1.5\"/><circle cx=\"55.8\" cy=\"94.4\" r=\"1.5\"/><circle cx=\"45.5\" cy=\"102.8\" r=\"1.5\"/><circle cx=\"35.6\" cy=\"99.3\" r=\"1.5\"/><circle cx=\"34.6\" cy=\"108\" r=\"1.5\"/><circle cx=\"24.3\" cy=\"102.8\" r=\"1.5\"/><circle cx=\"15\" cy=\"111.3\" r=\"1.5\"/><circle cx=\"9\" cy=\"104.5\" r=\"1.5\"/><circle cx=\"0\" cy=\"112.4\" r=\"1.5\"/><circle cx=\"-7.5\" cy=\"104.5\" r=\"1.5\"/><circle cx=\"-17.8\" cy=\"111.3\" r=\"1.5\"/><circle cx=\"-24.3\" cy=\"102.8\" r=\"1.5\"/><circle cx=\"-29.1\" cy=\"108\" r=\"1.5\"/><circle cx=\"-42.3\" cy=\"99.3\" r=\"1.5\"/><circle cx=\"-45.5\" cy=\"102.8\" r=\"1.5\"/><circle cx=\"-46.9\" cy=\"94.4\" r=\"1.5\"/><circle cx=\"-61.3\" cy=\"95.9\" r=\"1.5\"/><circle cx=\"-60.7\" cy=\"88.3\" r=\"1.5\"/><circle cx=\"-58.5\" cy=\"87.7\" r=\"1.5\"/><circle cx=\"-72.4\" cy=\"81.4\" r=\"1.5\"/><circle cx=\"-68.1\" cy=\"78.7\" r=\"1.5\"/></g><g data-part=\"eye\" data-eye=\"R\" data-rx=\"25\" data-ry=\"21\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M25 -3C25 -0.6 24.3 2 23.1 4.6C21.9 7.1 19.9 9.9 17.7 12.2C15.4 14.4 12.5 16.7 9.6 18.1C6.6 19.6 3.2 20.6 0 21C-3.2 21.4 -6.6 21.2 -9.6 20.4C-12.5 19.7 -15.4 18.1 -17.7 16.4C-19.9 14.7 -21.9 12.3 -23.1 10.1C-24.3 7.9 -25 5.4 -25 3C-25 0.6 -24.3 -2 -23.1 -4.6C-21.9 -7.1 -19.9 -9.9 -17.7 -12.2C-15.4 -14.4 -12.5 -16.7 -9.6 -18.1C-6.6 -19.6 -3.2 -20.6 0 -21C3.2 -21.4 6.6 -21.2 9.6 -20.4C12.5 -19.7 15.4 -18.1 17.7 -16.4C19.9 -14.7 21.9 -12.3 23.1 -10.1C24.3 -7.9 25 -5.4 25 -3Z\"/></clipPath><path d=\"M25 -3C25 -0.6 24.3 2 23.1 4.6C21.9 7.1 19.9 9.9 17.7 12.2C15.4 14.4 12.5 16.7 9.6 18.1C6.6 19.6 3.2 20.6 0 21C-3.2 21.4 -6.6 21.2 -9.6 20.4C-12.5 19.7 -15.4 18.1 -17.7 16.4C-19.9 14.7 -21.9 12.3 -23.1 10.1C-24.3 7.9 -25 5.4 -25 3C-25 0.6 -24.3 -2 -23.1 -4.6C-21.9 -7.1 -19.9 -9.9 -17.7 -12.2C-15.4 -14.4 -12.5 -16.7 -9.6 -18.1C-6.6 -19.6 -3.2 -20.6 0 -21C3.2 -21.4 6.6 -21.2 9.6 -20.4C12.5 -19.7 15.4 -18.1 17.7 -16.4C19.9 -14.7 21.9 -12.3 23.1 -10.1C24.3 -7.9 25 -5.4 25 -3Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14\" fill=\"#2a2f3d\"/><circle cx=\"4.2\" cy=\"-5\" r=\"3.8\" fill=\"#fff\"/></g><path d=\"M25 -3C25 -0.6 24.3 2 23.1 4.6C21.9 7.1 19.9 9.9 17.7 12.2C15.4 14.4 12.5 16.7 9.6 18.1C6.6 19.6 3.2 20.6 0 21C-3.2 21.4 -6.6 21.2 -9.6 20.4C-12.5 19.7 -15.4 18.1 -17.7 16.4C-19.9 14.7 -21.9 12.3 -23.1 10.1C-24.3 7.9 -25 5.4 -25 3C-25 0.6 -24.3 -2 -23.1 -4.6C-21.9 -7.1 -19.9 -9.9 -17.7 -12.2C-15.4 -14.4 -12.5 -16.7 -9.6 -18.1C-6.6 -19.6 -3.2 -20.6 0 -21C3.2 -21.4 6.6 -21.2 9.6 -20.4C12.5 -19.7 15.4 -18.1 17.7 -16.4C19.9 -14.7 21.9 -12.3 23.1 -10.1C24.3 -7.9 25 -5.4 25 -3Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M-20.4 -40.7C-24.5 -41.4 -37 -44.7 -45.4 -44.7C-53.7 -44.7 -66.2 -41.4 -70.4 -40.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"25\" data-ry=\"21\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M25 3C25 5.4 24.3 7.9 23.1 10.1C21.9 12.3 19.9 14.7 17.7 16.4C15.4 18.1 12.5 19.7 9.6 20.4C6.6 21.2 3.2 21.4 0 21C-3.2 20.6 -6.6 19.6 -9.6 18.1C-12.5 16.7 -15.4 14.4 -17.7 12.2C-19.9 9.9 -21.9 7.1 -23.1 4.6C-24.3 2 -25 -0.6 -25 -3C-25 -5.4 -24.3 -7.9 -23.1 -10.1C-21.9 -12.3 -19.9 -14.7 -17.7 -16.4C-15.4 -18.1 -12.5 -19.7 -9.6 -20.4C-6.6 -21.2 -3.2 -21.4 0 -21C3.2 -20.6 6.6 -19.6 9.6 -18.1C12.5 -16.7 15.4 -14.4 17.7 -12.2C19.9 -9.9 21.9 -7.1 23.1 -4.6C24.3 -2 25 0.6 25 3Z\"/></clipPath><path d=\"M25 3C25 5.4 24.3 7.9 23.1 10.1C21.9 12.3 19.9 14.7 17.7 16.4C15.4 18.1 12.5 19.7 9.6 20.4C6.6 21.2 3.2 21.4 0 21C-3.2 20.6 -6.6 19.6 -9.6 18.1C-12.5 16.7 -15.4 14.4 -17.7 12.2C-19.9 9.9 -21.9 7.1 -23.1 4.6C-24.3 2 -25 -0.6 -25 -3C-25 -5.4 -24.3 -7.9 -23.1 -10.1C-21.9 -12.3 -19.9 -14.7 -17.7 -16.4C-15.4 -18.1 -12.5 -19.7 -9.6 -20.4C-6.6 -21.2 -3.2 -21.4 0 -21C3.2 -20.6 6.6 -19.6 9.6 -18.1C12.5 -16.7 15.4 -14.4 17.7 -12.2C19.9 -9.9 21.9 -7.1 23.1 -4.6C24.3 -2 25 0.6 25 3Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14\" fill=\"#2a2f3d\"/><circle cx=\"4.2\" cy=\"-5\" r=\"3.8\" fill=\"#fff\"/></g><path d=\"M25 3C25 5.4 24.3 7.9 23.1 10.1C21.9 12.3 19.9 14.7 17.7 16.4C15.4 18.1 12.5 19.7 9.6 20.4C6.6 21.2 3.2 21.4 0 21C-3.2 20.6 -6.6 19.6 -9.6 18.1C-12.5 16.7 -15.4 14.4 -17.7 12.2C-19.9 9.9 -21.9 7.1 -23.1 4.6C-24.3 2 -25 -0.6 -25 -3C-25 -5.4 -24.3 -7.9 -23.1 -10.1C-21.9 -12.3 -19.9 -14.7 -17.7 -16.4C-15.4 -18.1 -12.5 -19.7 -9.6 -20.4C-6.6 -21.2 -3.2 -21.4 0 -21C3.2 -20.6 6.6 -19.6 9.6 -18.1C12.5 -16.7 15.4 -14.4 17.7 -12.2C19.9 -9.9 21.9 -7.1 23.1 -4.6C24.3 -2 25 0.6 25 3Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M20.4 -40.7C24.5 -41.4 37 -44.7 45.4 -44.7C53.7 -44.7 66.2 -41.4 70.4 -40.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-2.2 -16.2Q-15 9.9 -8.2 15.3Q0 22.5 8.3 15.3Q15 9.9 2.3 -16.2\" fill=\"#b07951\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g></g><path d=\"M-107.2 -14L-108.3 -37.5L-110.6 -65.5L-91 -82.7L-85.1 -113.9L-57 -118.3L-40.5 -146.9L-12 -135.6L13.8 -154.1L35.4 -129.7L64.7 -133.1L75.8 -102.3L100.6 -90.8L102 -60.7L114.6 -39.6L107.2 -14L108.3 -14.2L103.7 -29.2L93.9 -42.8L78.4 -59.2L68.2 -55L48.5 -70.8L35.6 -61.5L17.5 -66.7L0 -52L-17.5 -66.7L-35.6 -61.5L-48.5 -70.8L-68.2 -55L-78.4 -59.2L-93.9 -42.8L-103.7 -29.2L-108.3 -14.2Z\" data-part=\"hair-cap\" fill=\"#3a2b28\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-107.2 -14L-108.3 -37.5L-110.6 -65.5L-91 -82.7L-85.1 -113.9L-57 -118.3L-40.5 -146.9L-12 -135.6L13.8 -154.1L35.4 -129.7L64.7 -133.1L75.8 -102.3L100.6 -90.8L102 -60.7L114.6 -39.6L107.2 -14L108.3 -14.2L103.7 -29.2L93.9 -42.8L78.4 -59.2L68.2 -55L48.5 -70.8L35.6 -61.5L17.5 -66.7L0 -52L-17.5 -66.7L-35.6 -61.5L-48.5 -70.8L-68.2 -55L-78.4 -59.2L-93.9 -42.8L-103.7 -29.2L-108.3 -14.2Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-59.4 -96.8Q-10.8 -120.4 45.4 -100.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#5a4d4a\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g><path d=\"M-112.3 -44.8C-110.2 -56 -118.1 -95.6 -99.4 -112.1C-80.6 -128.6 -33.1 -144 0 -144C33.1 -144 80.6 -128.6 99.4 -112.1C118.1 -95.6 110.2 -56 112.3 -44.8Z\" data-part=\"hat\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><rect x=\"-116.6\" y=\"-66.1\" width=\"233.3\" height=\"32\" rx=\"12\" fill=\"#b65151\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><circle cx=\"0\" cy=\"-151\" r=\"17\" fill=\"#e08787\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></g></g></svg>"
+  },
+  {
+   "id": "personagens-adolescentes-1",
+   "file": "personagens-adolescentes-1.rspack",
+   "sha256": "1404905f44a74d65e5f0712981fe41566de0580a2de3d3885d7873e96715c3d7",
+   "size": 9607,
+   "name": "Personagens · Adolescentes 1",
+   "version": "1.0.0",
+   "description": "Quatorze adolescentes originais: estudantes, esportistas e estilos variados.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Personagens",
+   "collection": "Personagens",
+   "volume": 1,
+   "tags": [
+    "personagem",
+    "pré-pronto"
+   ],
+   "dependencies": [],
+   "itemCount": 14,
+   "counts": {
+    "character": 14
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-teen-lucas",
+     "name": "Lucas",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-camila",
+     "name": "Camila",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-rodrigo",
+     "name": "Rodrigo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-bianca",
+     "name": "Bianca",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-felipe",
+     "name": "Felipe",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-isabela",
+     "name": "Isabela",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-vinicius",
+     "name": "Vinícius",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-ana-clara",
+     "name": "Ana Clara",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-gustavo",
+     "name": "Gustavo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-leticia",
+     "name": "Letícia",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-matheus",
+     "name": "Matheus",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-nicole",
+     "name": "Nicole",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-henrique",
+     "name": "Henrique",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    },
+    {
+     "id": "rs-teen-marina",
+     "name": "Marina",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adolescentes"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -603.7144000000001 440 633.7144000000001\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(32 -166.6)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 78\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 78\" fill=\"none\" stroke=\"#324451\" stroke-width=\"28.7\" stroke-linecap=\"round\"/><path d=\"M8 4L8 78\" stroke=\"#748089\" stroke-width=\"2\" stroke-dasharray=\"5 4\" fill=\"none\"/><g transform=\"translate(0 78) rotate(0)\"><path d=\"M0 0L0 70.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70.6\" fill=\"none\" stroke=\"#324451\" stroke-width=\"26.4\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 70.6)\"><g data-part=\"foot\"><path d=\"M-23.6 88.6L23.6 88.6Q25.6 74.6 14.3 60.6L-14.3 60.6Q-25.6 74.6 -23.6 88.6Z\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-23.6\" y=\"85.6\" width=\"47.1\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-5.9 71.6l11.8 0M-5.9 77.6l11.8 0\" stroke=\"#faf9f6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-32 -166.6)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 78\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 78\" fill=\"none\" stroke=\"#324451\" stroke-width=\"28.7\" stroke-linecap=\"round\"/><path d=\"M8 4L8 78\" stroke=\"#748089\" stroke-width=\"2\" stroke-dasharray=\"5 4\" fill=\"none\"/><g transform=\"translate(0 78) rotate(0)\"><path d=\"M0 0L0 70.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70.6\" fill=\"none\" stroke=\"#324451\" stroke-width=\"26.4\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 70.6)\"><g data-part=\"foot\"><path d=\"M-23.6 88.6L23.6 88.6Q25.6 74.6 14.3 60.6L-14.3 60.6Q-25.6 74.6 -23.6 88.6Z\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-23.6\" y=\"85.6\" width=\"47.1\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-5.9 71.6l11.8 0M-5.9 77.6l11.8 0\" stroke=\"#faf9f6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -166.6) rotate(0)\"><path d=\"M-52.5 -4Q0 6 52.5 -4L47.8 22L-47.8 22Z\" fill=\"#324451\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-34 -152.2C-47.4 -149.7 -58.8 -146.4 -61.9 -134.2C-64.9 -121.9 -57.1 -84.7 -55.6 -64.8C-54.2 -44.9 -66.5 -2.2 -51.5 8C-36.5 18.2 36.5 18.2 51.5 8C66.5 -2.2 54.2 -44.9 55.6 -64.8C57.1 -84.7 64.9 -121.9 61.9 -134.2C58.8 -146.4 47.4 -149.7 34 -152.2C20.6 -154.7 -20.6 -154.7 -34 -152.2Z\" data-part=\"torso\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-144.2\" rx=\"26\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-53 -6Q0 4 53 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-36 -148.2Q0 -110.2 36 -148.2Q0 -136.2 -36 -148.2Z\" fill=\"#232530\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-12 -124.2v26M12 -124.2v26\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-31.9 -14L-17.9 -48L17.9 -48L31.9 -14Z\" fill=\"#272934\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-37.1 -142.2Q-44.5 -84.2 -44.5 -54.2M37.1 -142.2Q44.5 -84.2 44.5 -54.2\" fill=\"none\" stroke=\"#d65f5f\" stroke-width=\"13\"/><path d=\"M0 -175.3L0 -146.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.5\" stroke-linecap=\"round\"/><path d=\"M0 -175.3L0 -146.2\" fill=\"none\" stroke=\"#d5a681\" stroke-width=\"25.3\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(60.6 -136.2) rotate(-7)\"><path d=\"M0 0L0 70.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"33\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70.6\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"25\" stroke-linecap=\"round\"/><g transform=\"translate(0 70.6) rotate(0)\"><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"23.2\" stroke-linecap=\"round\"/><rect x=\"-14.4\" y=\"59\" width=\"28.7\" height=\"10\" rx=\"3\" fill=\"#22242e\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.2 69.6q-11.8 2.6 -10.5 13.7\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.3\" stroke-linecap=\"round\"/><path d=\"M-9.2 69.6q-11.8 2.6 -10.5 13.7\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"6.5\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"79.5\" rx=\"12.4\" ry=\"15.7\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-3.9 91.9v-9.2M2 93.2v-9.2\" stroke=\"#97755b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-60.6 -136.2) rotate(7)\"><path d=\"M0 0L0 70.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"33\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70.6\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"25\" stroke-linecap=\"round\"/><g transform=\"translate(0 70.6) rotate(0)\"><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"23.2\" stroke-linecap=\"round\"/><rect x=\"-14.4\" y=\"59\" width=\"28.7\" height=\"10\" rx=\"3\" fill=\"#22242e\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.2 69.6q11.8 2.6 10.5 13.7\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.3\" stroke-linecap=\"round\"/><path d=\"M9.2 69.6q11.8 2.6 10.5 13.7\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"6.5\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"79.5\" rx=\"12.4\" ry=\"15.7\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-3.9 91.9v-9.2M2 93.2v-9.2\" stroke=\"#97755b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -255) rotate(0 0 89.7)\"><g data-part=\"ears\"><path d=\"M-98.5 -18Q-123.2 -15.3 -117.5 9Q-115.6 36 -98.5 33.3Z\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-103.2 -1.8Q-112.7 0.9 -107 17.1\" fill=\"none\" stroke=\"#a27e62\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M98.5 -18Q123.2 -15.3 117.5 9Q115.6 36 98.5 33.3Z\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M103.2 -1.8Q112.7 0.9 107 17.1\" fill=\"none\" stroke=\"#a27e62\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -112.1C9.6 -112.1 19.7 -110.5 28.9 -107.6C38.2 -104.6 47.4 -100 55.5 -94.3C63.6 -88.6 71.2 -81.4 77.5 -73.4C83.8 -65.5 89.3 -56.1 93.3 -46.6C97.3 -37 100.4 -26.4 101.6 -16C102.7 -5.5 102.5 5.5 100.4 16C98.4 26.4 94 37 89.2 46.6C84.3 56.1 77.9 65.5 71.3 73.4C64.6 81.4 57 88.6 49.3 94.3C41.6 100 33.3 104.6 25.1 107.6C16.9 110.5 8.4 112.1 0 112.1C-8.4 112.1 -16.9 110.5 -25.1 107.6C-33.3 104.6 -41.6 100 -49.3 94.3C-57 88.6 -64.6 81.4 -71.3 73.4C-77.9 65.5 -84.3 56.1 -89.2 46.6C-94 37 -98.4 26.4 -100.4 16C-102.5 5.5 -102.7 -5.5 -101.6 -16C-100.4 -26.4 -97.3 -37 -93.3 -46.6C-89.3 -56.1 -83.8 -65.5 -77.5 -73.4C-71.2 -81.4 -63.6 -88.6 -55.5 -94.3C-47.4 -100 -38.2 -104.6 -28.9 -107.6C-19.7 -110.5 -9.6 -112.1 0 -112.1Z\" data-part=\"head-shape\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"eye\" data-eye=\"R\" data-rx=\"20\" data-ry=\"30\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"10.6\" transform=\"translate(-43.1 -4.5)\"><clipPath id=\"pv-eyeR\"><path d=\"M20 0C20 3.8 19.5 7.9 18.5 11.5C17.5 15 15.9 18.5 14.1 21.2C12.3 23.9 10 26.3 7.7 27.7C5.3 29.2 2.6 30 0 30C-2.6 30 -5.3 29.2 -7.7 27.7C-10 26.3 -12.3 23.9 -14.1 21.2C-15.9 18.5 -17.5 15 -18.5 11.5C-19.5 7.9 -20 3.8 -20 0C-20 -3.8 -19.5 -7.9 -18.5 -11.5C-17.5 -15 -15.9 -18.5 -14.1 -21.2C-12.3 -23.9 -10 -26.3 -7.7 -27.7C-5.3 -29.2 -2.6 -30 0 -30C2.6 -30 5.3 -29.2 7.7 -27.7C10 -26.3 12.3 -23.9 14.1 -21.2C15.9 -18.5 17.5 -15 18.5 -11.5C19.5 -7.9 20 -3.8 20 0Z\"/></clipPath><path d=\"M20 0C20 3.8 19.5 7.9 18.5 11.5C17.5 15 15.9 18.5 14.1 21.2C12.3 23.9 10 26.3 7.7 27.7C5.3 29.2 2.6 30 0 30C-2.6 30 -5.3 29.2 -7.7 27.7C-10 26.3 -12.3 23.9 -14.1 21.2C-15.9 18.5 -17.5 15 -18.5 11.5C-19.5 7.9 -20 3.8 -20 0C-20 -3.8 -19.5 -7.9 -18.5 -11.5C-17.5 -15 -15.9 -18.5 -14.1 -21.2C-12.3 -23.9 -10 -26.3 -7.7 -27.7C-5.3 -29.2 -2.6 -30 0 -30C2.6 -30 5.3 -29.2 7.7 -27.7C10 -26.3 12.3 -23.9 14.1 -21.2C15.9 -18.5 17.5 -15 18.5 -11.5C19.5 -7.9 20 -3.8 20 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"10.6\" fill=\"#2a2f3d\"/><circle cx=\"3.2\" cy=\"-3.8\" r=\"2.9\" fill=\"#fff\"/></g><path d=\"M20 0C20 3.8 19.5 7.9 18.5 11.5C17.5 15 15.9 18.5 14.1 21.2C12.3 23.9 10 26.3 7.7 27.7C5.3 29.2 2.6 30 0 30C-2.6 30 -5.3 29.2 -7.7 27.7C-10 26.3 -12.3 23.9 -14.1 21.2C-15.9 18.5 -17.5 15 -18.5 11.5C-19.5 7.9 -20 3.8 -20 0C-20 -3.8 -19.5 -7.9 -18.5 -11.5C-17.5 -15 -15.9 -18.5 -14.1 -21.2C-12.3 -23.9 -10 -26.3 -7.7 -27.7C-5.3 -29.2 -2.6 -30 0 -30C2.6 -30 5.3 -29.2 7.7 -27.7C10 -26.3 12.3 -23.9 14.1 -21.2C15.9 -18.5 17.5 -15 18.5 -11.5C19.5 -7.9 20 -3.8 20 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M-16.1 -49.5C-20.6 -49.6 -34.1 -49.9 -43.1 -49.9C-52.1 -49.9 -65.6 -49.6 -70.1 -49.5\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#5c3b28\" stroke-width=\"6.5\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"20\" data-ry=\"30\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"10.6\" transform=\"translate(43.1 -4.5)\"><clipPath id=\"pv-eyeL\"><path d=\"M20 0C20 3.8 19.5 7.9 18.5 11.5C17.5 15 15.9 18.5 14.1 21.2C12.3 23.9 10 26.3 7.7 27.7C5.3 29.2 2.6 30 0 30C-2.6 30 -5.3 29.2 -7.7 27.7C-10 26.3 -12.3 23.9 -14.1 21.2C-15.9 18.5 -17.5 15 -18.5 11.5C-19.5 7.9 -20 3.8 -20 0C-20 -3.8 -19.5 -7.9 -18.5 -11.5C-17.5 -15 -15.9 -18.5 -14.1 -21.2C-12.3 -23.9 -10 -26.3 -7.7 -27.7C-5.3 -29.2 -2.6 -30 0 -30C2.6 -30 5.3 -29.2 7.7 -27.7C10 -26.3 12.3 -23.9 14.1 -21.2C15.9 -18.5 17.5 -15 18.5 -11.5C19.5 -7.9 20 -3.8 20 0Z\"/></clipPath><path d=\"M20 0C20 3.8 19.5 7.9 18.5 11.5C17.5 15 15.9 18.5 14.1 21.2C12.3 23.9 10 26.3 7.7 27.7C5.3 29.2 2.6 30 0 30C-2.6 30 -5.3 29.2 -7.7 27.7C-10 26.3 -12.3 23.9 -14.1 21.2C-15.9 18.5 -17.5 15 -18.5 11.5C-19.5 7.9 -20 3.8 -20 0C-20 -3.8 -19.5 -7.9 -18.5 -11.5C-17.5 -15 -15.9 -18.5 -14.1 -21.2C-12.3 -23.9 -10 -26.3 -7.7 -27.7C-5.3 -29.2 -2.6 -30 0 -30C2.6 -30 5.3 -29.2 7.7 -27.7C10 -26.3 12.3 -23.9 14.1 -21.2C15.9 -18.5 17.5 -15 18.5 -11.5C19.5 -7.9 20 -3.8 20 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"10.6\" fill=\"#2a2f3d\"/><circle cx=\"3.2\" cy=\"-3.8\" r=\"2.9\" fill=\"#fff\"/></g><path d=\"M20 0C20 3.8 19.5 7.9 18.5 11.5C17.5 15 15.9 18.5 14.1 21.2C12.3 23.9 10 26.3 7.7 27.7C5.3 29.2 2.6 30 0 30C-2.6 30 -5.3 29.2 -7.7 27.7C-10 26.3 -12.3 23.9 -14.1 21.2C-15.9 18.5 -17.5 15 -18.5 11.5C-19.5 7.9 -20 3.8 -20 0C-20 -3.8 -19.5 -7.9 -18.5 -11.5C-17.5 -15 -15.9 -18.5 -14.1 -21.2C-12.3 -23.9 -10 -26.3 -7.7 -27.7C-5.3 -29.2 -2.6 -30 0 -30C2.6 -30 5.3 -29.2 7.7 -27.7C10 -26.3 12.3 -23.9 14.1 -21.2C15.9 -18.5 17.5 -15 18.5 -11.5C19.5 -7.9 20 -3.8 20 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M16.1 -49.5C20.6 -49.6 34.1 -49.9 43.1 -49.9C52.1 -49.9 65.6 -49.6 70.1 -49.5\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#5c3b28\" stroke-width=\"6.5\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 24.7)\"><path d=\"M-1.5 -30.6Q-10 18.7 -5.5 28.9Q0 42.5 5.5 28.9Q10 18.7 1.5 -30.6\" fill=\"#dcab85\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 62.8)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g></g><path d=\"M-99.1 28.9C-100.3 25.1 -104.9 14.1 -106.2 6.5C-107.4 -1.1 -107.4 -9 -106.9 -16.8C-106.3 -24.5 -105 -32.4 -103 -40C-100.9 -47.6 -98 -55.1 -94.4 -62.2C-90.9 -69.2 -86.5 -76.1 -81.6 -82.3C-76.7 -88.5 -71 -94.4 -65 -99.4C-58.9 -104.4 -52.1 -108.9 -45.2 -112.4C-38.2 -115.9 -30.7 -118.7 -23.2 -120.5C-15.6 -122.4 -7.7 -123.3 0 -123.3C7.7 -123.3 15.6 -122.4 23.2 -120.5C30.7 -118.7 38.2 -115.9 45.2 -112.4C52.1 -108.9 58.9 -104.4 65 -99.4C71 -94.4 76.7 -88.5 81.6 -82.3C86.5 -76.1 90.9 -69.2 94.4 -62.2C98 -55.1 100.9 -47.6 103 -40C105 -32.4 106.3 -24.5 106.9 -16.8C107.4 -9 107.4 -1.1 106.2 6.5C104.9 14.1 100.3 25.1 99.1 28.9L100.1 29.1C100.2 26.9 101.3 20.7 100.6 15.9C99.9 11.1 98.5 6.9 95.7 0.3C93 -6.2 89.1 -15.5 84.3 -23.4C79.4 -31.3 72 -42.5 66.5 -47.1C61 -51.7 56.6 -49.8 51.2 -51.1C45.9 -52.5 40.4 -52.4 34.5 -55.2C28.7 -57.9 21.9 -63.2 16.1 -67.8C10.3 -72.5 5.4 -83 0 -83C-5.4 -83 -10.3 -72.5 -16.1 -67.8C-21.9 -63.2 -28.7 -57.9 -34.5 -55.2C-40.4 -52.4 -45.9 -52.5 -51.2 -51.1C-56.6 -49.8 -61 -51.7 -66.5 -47.1C-72 -42.5 -79.4 -31.3 -84.3 -23.4C-89.1 -15.5 -93 -6.2 -95.7 0.3C-98.5 6.9 -99.9 11.1 -100.6 15.9C-101.3 20.7 -100.2 26.9 -100.1 29.1Z\" data-part=\"hair-cap\" fill=\"#5c3b28\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-99.1 28.9C-100.3 25.1 -104.9 14.1 -106.2 6.5C-107.4 -1.1 -107.4 -9 -106.9 -16.8C-106.3 -24.5 -105 -32.4 -103 -40C-100.9 -47.6 -98 -55.1 -94.4 -62.2C-90.9 -69.2 -86.5 -76.1 -81.6 -82.3C-76.7 -88.5 -71 -94.4 -65 -99.4C-58.9 -104.4 -52.1 -108.9 -45.2 -112.4C-38.2 -115.9 -30.7 -118.7 -23.2 -120.5C-15.6 -122.4 -7.7 -123.3 0 -123.3C7.7 -123.3 15.6 -122.4 23.2 -120.5C30.7 -118.7 38.2 -115.9 45.2 -112.4C52.1 -108.9 58.9 -104.4 65 -99.4C71 -94.4 76.7 -88.5 81.6 -82.3C86.5 -76.1 90.9 -69.2 94.4 -62.2C98 -55.1 100.9 -47.6 103 -40C105 -32.4 106.3 -24.5 106.9 -16.8C107.4 -9 107.4 -1.1 106.2 6.5C104.9 14.1 100.3 25.1 99.1 28.9L100.1 29.1C100.2 26.9 101.3 20.7 100.6 15.9C99.9 11.1 98.5 6.9 95.7 0.3C93 -6.2 89.1 -15.5 84.3 -23.4C79.4 -31.3 72 -42.5 66.5 -47.1C61 -51.7 56.6 -49.8 51.2 -51.1C45.9 -52.5 40.4 -52.4 34.5 -55.2C28.7 -57.9 21.9 -63.2 16.1 -67.8C10.3 -72.5 5.4 -83 0 -83C-5.4 -83 -10.3 -72.5 -16.1 -67.8C-21.9 -63.2 -28.7 -57.9 -34.5 -55.2C-40.4 -52.4 -45.9 -52.5 -51.2 -51.1C-56.6 -49.8 -61 -51.7 -66.5 -47.1C-72 -42.5 -79.4 -31.3 -84.3 -23.4C-89.1 -15.5 -93 -6.2 -95.7 0.3C-98.5 6.9 -99.9 11.1 -100.6 15.9C-101.3 20.7 -100.2 26.9 -100.1 29.1Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-56.4 -91.9Q-10.3 -114.3 43.1 -95.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#765a4a\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g></g></g></g></svg>"
+  },
+  {
+   "id": "personagens-adultos-1",
+   "file": "personagens-adultos-1.rspack",
+   "sha256": "3854222a2b59014c77f833b42848c98276e4da01f582e65d2d93009ed1d348fa",
+   "size": 15111,
+   "name": "Personagens · Adultos 1",
+   "version": "1.0.0",
+   "description": "Vinte e dois adultos originais, de escritório a casual, com corpos, rostos, cabelos e barbas variados.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Personagens",
+   "collection": "Personagens",
+   "volume": 1,
+   "tags": [
+    "personagem",
+    "pré-pronto"
+   ],
+   "dependencies": [],
+   "itemCount": 22,
+   "counts": {
+    "character": 22
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-adulto-carlos",
+     "name": "Carlos Mendes",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-patricia",
+     "name": "Patrícia Rocha",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-andre",
+     "name": "André Souza",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-renata",
+     "name": "Renata Lima",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-bruno",
+     "name": "Bruno Alves",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-fernanda",
+     "name": "Fernanda Costa",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-ricardo",
+     "name": "Ricardo Dias",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-luciana",
+     "name": "Luciana Prado",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-marcos",
+     "name": "Marcos Tavares",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-juliana",
+     "name": "Juliana Freitas",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-eduardo",
+     "name": "Eduardo Pires",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-tatiana",
+     "name": "Tatiana Campos",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-sergio",
+     "name": "Sérgio Barros",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-viviane",
+     "name": "Viviane Moura",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-paulo",
+     "name": "Paulo Henrique",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-daniela",
+     "name": "Daniela Ribeiro",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-leandro",
+     "name": "Leandro Nunes",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-simone",
+     "name": "Simone Araújo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-otavio-j",
+     "name": "Otávio Junqueira",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-cristina",
+     "name": "Cristina Vaz",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-wagner",
+     "name": "Wagner Lopes",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    },
+    {
+     "id": "rs-adulto-elaine",
+     "name": "Elaine Martins",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Adultos"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -651.9200000000001 440 681.9200000000001\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(41.6 -184.4)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 87.4\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"40.6\" stroke-linecap=\"round\"/><path d=\"M0 0L0 87.4\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"32.6\" stroke-linecap=\"round\"/><g transform=\"translate(0 87.4) rotate(0)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"37.9\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"29.9\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 79)\"><g data-part=\"foot\"><path d=\"M-25.8 97L25.8 97Q27.8 83 15.6 69L-15.6 69Q-27.8 83 -25.8 97Z\" fill=\"#17141a\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-25.8\" y=\"94\" width=\"51.6\" height=\"6\" rx=\"3\" fill=\"#0d0b0e\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-41.6 -184.4)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 87.4\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"40.6\" stroke-linecap=\"round\"/><path d=\"M0 0L0 87.4\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"32.6\" stroke-linecap=\"round\"/><g transform=\"translate(0 87.4) rotate(0)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"37.9\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"29.9\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 79)\"><g data-part=\"foot\"><path d=\"M-25.8 97L25.8 97Q27.8 83 15.6 69L-15.6 69Q-27.8 83 -25.8 97Z\" fill=\"#17141a\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-25.8\" y=\"94\" width=\"51.6\" height=\"6\" rx=\"3\" fill=\"#0d0b0e\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -184.4) rotate(0)\"><path d=\"M-63.9 -4Q0 6 63.9 -4L59.5 22L-59.5 22Z\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-42.7 -170.6C-59.6 -168.1 -74.1 -166.4 -77.7 -152.6C-81.3 -138.9 -70.8 -95 -68.6 -72.5C-66.5 -50 -81 -3.3 -62.6 8C-44.2 19.3 44.2 19.3 62.6 8C81 -3.3 66.5 -50 68.6 -72.5C70.8 -95 81.3 -138.9 77.7 -152.6C74.1 -166.4 59.6 -168.1 42.7 -170.6C25.9 -173.2 -25.9 -173.2 -42.7 -170.6Z\" data-part=\"torso\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-162.6\" rx=\"32.6\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-64.5 -6Q0 4 64.5 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-34 -170.6L0 -142.6L34 -170.6L16 -156.6L0 -142.6L-16 -156.6Z\" fill=\"#f6f4ef\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><circle cx=\"0\" cy=\"-132.6\" r=\"3\" fill=\"#23202b\"/><circle cx=\"0\" cy=\"-106.6\" r=\"3\" fill=\"#23202b\"/><circle cx=\"0\" cy=\"-80.6\" r=\"3\" fill=\"#23202b\"/><circle cx=\"0\" cy=\"-54.6\" r=\"3\" fill=\"#23202b\"/><circle cx=\"0\" cy=\"-28.6\" r=\"3\" fill=\"#23202b\"/><path d=\"M-8 -140.6V-8\" stroke=\"#23202b\" stroke-opacity=\".35\" stroke-width=\"2\"/><path d=\"M-9 -156.6L9 -156.6L6 -142.6L15 -76.6L0 -58.6L-15 -76.6L-6 -142.6Z\" fill=\"#3d4a66\" stroke=\"#23202b\" stroke-width=\"2.4\" stroke-linejoin=\"round\"/><path d=\"M0 -195.1L0 -164.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"38.9\" stroke-linecap=\"round\"/><path d=\"M0 -195.1L0 -164.6\" fill=\"none\" stroke=\"#c38e65\" stroke-width=\"31.7\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(76.1 -154.6) rotate(-7)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#f4f1ea\" stroke-width=\"28.4\" stroke-linecap=\"round\"/><g transform=\"translate(0 79) rotate(0)\"><path d=\"M0 0L0 72.8\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 72.8\" fill=\"none\" stroke=\"#f4f1ea\" stroke-width=\"26.3\" stroke-linecap=\"round\"/><rect x=\"-16.3\" y=\"66.8\" width=\"32.6\" height=\"10\" rx=\"3\" fill=\"#c3c1bb\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 77.5q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 77.5q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#d49a6e\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"87.6\" rx=\"12.8\" ry=\"16.2\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 100.4v-9.4M2 101.8v-9.4\" stroke=\"#8a6448\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-76.1 -154.6) rotate(7)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#f4f1ea\" stroke-width=\"28.4\" stroke-linecap=\"round\"/><g transform=\"translate(0 79) rotate(0)\"><path d=\"M0 0L0 72.8\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 72.8\" fill=\"none\" stroke=\"#f4f1ea\" stroke-width=\"26.3\" stroke-linecap=\"round\"/><rect x=\"-16.3\" y=\"66.8\" width=\"32.6\" height=\"10\" rx=\"3\" fill=\"#c3c1bb\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 77.5q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 77.5q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#d49a6e\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"87.6\" rx=\"12.8\" ry=\"16.2\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 100.4v-9.4M2 101.8v-9.4\" stroke=\"#8a6448\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -279.5) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#946c4d\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#946c4d\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10 -118 20.1 -117.3 30 -114.9C39.9 -112.4 50.3 -109 59.3 -103.4C68.3 -97.7 77.3 -89.9 84.1 -81.1C90.9 -72.2 96.2 -61.1 100 -50.4C103.8 -39.7 105.8 -27.8 107 -16.9C108.2 -5.9 108.3 5 107.3 15.5C106.3 26.1 104.7 36.5 101 46.4C97.4 56.2 92.3 66.5 85.6 74.6C78.9 82.7 69.9 89.9 60.8 95.1C51.7 100.3 41 103.4 30.9 105.7C20.7 107.9 10.3 108.6 0 108.6C-10.3 108.6 -20.7 107.9 -30.9 105.7C-41 103.4 -51.7 100.3 -60.8 95.1C-69.9 89.9 -78.9 82.7 -85.6 74.6C-92.3 66.5 -97.4 56.2 -101 46.4C-104.7 36.5 -106.3 26.1 -107.3 15.5C-108.3 5 -108.2 -5.9 -107 -16.9C-105.8 -27.8 -103.8 -39.7 -100 -50.4C-96.2 -61.1 -90.9 -72.2 -84.1 -81.1C-77.3 -89.9 -68.3 -97.7 -59.3 -103.4C-50.3 -109 -39.9 -112.4 -30 -114.9C-20.1 -117.3 -10 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"eye\" data-eye=\"R\" data-rx=\"16\" data-ry=\"18\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"10.2\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\"/></clipPath><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"10.2\" fill=\"#2a2f3d\"/><circle cx=\"3.1\" cy=\"-3.7\" r=\"2.8\" fill=\"#fff\"/></g><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M-17.4 -37.7C-22 -38.3 -36 -40.9 -45.4 -40.9C-54.7 -40.9 -68.7 -38.3 -73.4 -37.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"11\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"16\" data-ry=\"18\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"10.2\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\"/></clipPath><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"10.2\" fill=\"#2a2f3d\"/><circle cx=\"3.1\" cy=\"-3.7\" r=\"2.8\" fill=\"#fff\"/></g><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M17.4 -37.7C22 -38.3 36 -40.9 45.4 -40.9C54.7 -40.9 68.7 -38.3 73.4 -37.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"11\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-1.5 -30.6Q-10 18.7 -5.5 28.9Q0 42.5 5.5 28.9Q10 18.7 1.5 -30.6\" fill=\"#c99269\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g><path d=\"M-34.5 57.1Q0 43.1 34.5 57.1Q0 52.2 -34.5 57.1Z\" data-part=\"mustache\" fill=\"#3a2b28\" stroke=\"#23202b\" stroke-width=\"2.4\" stroke-linejoin=\"round\"/></g><path d=\"M-105.9 -23.4C-105.6 -26.7 -105.4 -36.8 -104 -43.4C-102.6 -50 -100.2 -56.5 -97.5 -62.8C-94.8 -69.1 -91.5 -75.4 -87.9 -81.2C-84.2 -87.1 -79.9 -92.8 -75.3 -97.9C-70.7 -103.1 -65.6 -108 -60.3 -112.2C-54.9 -116.5 -49.1 -120.3 -43.2 -123.4C-37.2 -126.5 -30.9 -129.1 -24.5 -130.9C-18.1 -132.7 -11.5 -133.9 -5 -134.3C1.6 -134.7 8.3 -134.4 14.8 -133.4C21.3 -132.4 27.8 -130.6 34.1 -128.2C40.3 -125.8 46.4 -122.7 52.2 -119C57.9 -115.4 63.5 -111.1 68.5 -106.4C73.6 -101.7 78.4 -96.4 82.6 -90.8C86.9 -85.3 90.7 -79.2 94 -73.1C97.4 -66.9 100.2 -60.4 102.5 -53.9C104.8 -47.4 106.6 -40.7 107.9 -34C109.1 -27.4 110 -20.6 110 -13.9C110 -7.3 108.2 2.5 107.9 5.8L108.9 5.9C108.4 1.7 108.2 -10.7 105.6 -19.1C103 -27.4 97.5 -38.7 93.5 -44C89.5 -49.3 85.9 -49.5 81.8 -50.9C77.7 -52.4 73.7 -52.1 69 -52.7C64.3 -53.3 59.2 -53.7 53.7 -54.7C48.2 -55.7 42.2 -57.2 36.3 -58.5C30.3 -59.8 24.1 -61 18.1 -62.3C12 -63.6 5.8 -64.1 0 -66.1C-5.8 -68.1 -11.3 -72.4 -16.5 -74.3C-21.8 -76.3 -26.6 -77.1 -31.4 -77.9C-36.1 -78.6 -40.4 -79.3 -45.1 -78.7C-49.9 -78.1 -55.3 -75.7 -60 -74.2C-64.7 -72.7 -68.9 -71.7 -73.2 -69.6C-77.5 -67.6 -81.4 -66.3 -85.8 -61.8C-90.2 -57.3 -96.2 -49.1 -99.7 -42.7C-103.2 -36.3 -105.7 -26.8 -106.9 -23.6Z\" data-part=\"hair-cap\" fill=\"#3a2b28\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-105.9 -23.4C-105.6 -26.7 -105.4 -36.8 -104 -43.4C-102.6 -50 -100.2 -56.5 -97.5 -62.8C-94.8 -69.1 -91.5 -75.4 -87.9 -81.2C-84.2 -87.1 -79.9 -92.8 -75.3 -97.9C-70.7 -103.1 -65.6 -108 -60.3 -112.2C-54.9 -116.5 -49.1 -120.3 -43.2 -123.4C-37.2 -126.5 -30.9 -129.1 -24.5 -130.9C-18.1 -132.7 -11.5 -133.9 -5 -134.3C1.6 -134.7 8.3 -134.4 14.8 -133.4C21.3 -132.4 27.8 -130.6 34.1 -128.2C40.3 -125.8 46.4 -122.7 52.2 -119C57.9 -115.4 63.5 -111.1 68.5 -106.4C73.6 -101.7 78.4 -96.4 82.6 -90.8C86.9 -85.3 90.7 -79.2 94 -73.1C97.4 -66.9 100.2 -60.4 102.5 -53.9C104.8 -47.4 106.6 -40.7 107.9 -34C109.1 -27.4 110 -20.6 110 -13.9C110 -7.3 108.2 2.5 107.9 5.8L108.9 5.9C108.4 1.7 108.2 -10.7 105.6 -19.1C103 -27.4 97.5 -38.7 93.5 -44C89.5 -49.3 85.9 -49.5 81.8 -50.9C77.7 -52.4 73.7 -52.1 69 -52.7C64.3 -53.3 59.2 -53.7 53.7 -54.7C48.2 -55.7 42.2 -57.2 36.3 -58.5C30.3 -59.8 24.1 -61 18.1 -62.3C12 -63.6 5.8 -64.1 0 -66.1C-5.8 -68.1 -11.3 -72.4 -16.5 -74.3C-21.8 -76.3 -26.6 -77.1 -31.4 -77.9C-36.1 -78.6 -40.4 -79.3 -45.1 -78.7C-49.9 -78.1 -55.3 -75.7 -60 -74.2C-64.7 -72.7 -68.9 -71.7 -73.2 -69.6C-77.5 -67.6 -81.4 -66.3 -85.8 -61.8C-90.2 -57.3 -96.2 -49.1 -99.7 -42.7C-103.2 -36.3 -105.7 -26.8 -106.9 -23.6Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-59.4 -96.8Q-10.8 -120.4 45.4 -100.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#5a4d4a\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g></g></g></g></svg>"
+  },
+  {
+   "id": "personagens-criancas-1",
+   "file": "personagens-criancas-1.rspack",
+   "sha256": "f1774c2cbd6852124cfe81047c1eaa1569042090ba48603e951b4e22751b10b5",
+   "size": 9539,
+   "name": "Personagens · Crianças 1",
+   "version": "1.0.0",
+   "description": "Quatorze crianças originais, meninos e meninas de várias idades, aparências e roupas, prontas para animar nas 8 vistas.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Personagens",
+   "collection": "Personagens",
+   "volume": 1,
+   "tags": [
+    "personagem",
+    "pré-pronto"
+   ],
+   "dependencies": [],
+   "itemCount": 14,
+   "counts": {
+    "character": 14
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-crianca-pedro",
+     "name": "Pedro",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-julia",
+     "name": "Júlia",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-davi",
+     "name": "Davi",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-alice",
+     "name": "Alice",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-miguel",
+     "name": "Miguel",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-laura",
+     "name": "Laura",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-theo",
+     "name": "Théo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-sofia",
+     "name": "Sofia",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-enzo",
+     "name": "Enzo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-manu",
+     "name": "Manuela",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-bento",
+     "name": "Bento",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-helo",
+     "name": "Heloísa",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-gael",
+     "name": "Gael",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    },
+    {
+     "id": "rs-crianca-yasmin",
+     "name": "Yasmin",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Crianças"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -509 440 539\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><defs><pattern id=\"pv-pat\" width=\"26\" height=\"26\" patternUnits=\"userSpaceOnUse\"><rect width=\"26\" height=\"26\" fill=\"#e98f4e\"/><rect width=\"26\" height=\"10\" fill=\"#f4f1ea\"/></pattern></defs><g data-part=\"leg-L\" transform=\"translate(24.4 -126.8)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 57.1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"35.8\" stroke-linecap=\"round\"/><path d=\"M0 0L0 57.1\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"27.8\" stroke-linecap=\"round\"/><path d=\"M0 2L0 46.8\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"39.1\" stroke-linecap=\"round\"/><path d=\"M0 2L0 46.8\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"31.1\" stroke-linecap=\"round\"/><g transform=\"translate(0 57.1) rotate(0)\"><path d=\"M0 0L0 51.7\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"33.6\" stroke-linecap=\"round\"/><path d=\"M0 0L0 51.7\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"25.6\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 51.7)\"><g data-part=\"foot\"><path d=\"M-17.9 69.7L17.9 69.7Q19.9 55.7 10.8 41.7L-10.8 41.7Q-19.9 55.7 -17.9 69.7Z\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-17.9\" y=\"66.7\" width=\"35.7\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-4.5 52.7l8.9 0M-4.5 58.7l8.9 0\" stroke=\"#faf9f6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-24.4 -126.8)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 57.1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"35.8\" stroke-linecap=\"round\"/><path d=\"M0 0L0 57.1\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"27.8\" stroke-linecap=\"round\"/><path d=\"M0 2L0 46.8\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"39.1\" stroke-linecap=\"round\"/><path d=\"M0 2L0 46.8\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"31.1\" stroke-linecap=\"round\"/><g transform=\"translate(0 57.1) rotate(0)\"><path d=\"M0 0L0 51.7\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"33.6\" stroke-linecap=\"round\"/><path d=\"M0 0L0 51.7\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"25.6\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 51.7)\"><g data-part=\"foot\"><path d=\"M-17.9 69.7L17.9 69.7Q19.9 55.7 10.8 41.7L-10.8 41.7Q-19.9 55.7 -17.9 69.7Z\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-17.9\" y=\"66.7\" width=\"35.7\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-4.5 52.7l8.9 0M-4.5 58.7l8.9 0\" stroke=\"#faf9f6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -126.8) rotate(0)\"><path d=\"M-44.4 -4Q0 6 44.4 -4L39.7 22L-39.7 22Z\" fill=\"#3d4a66\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-27.8 -110.9C-38.8 -108.4 -48 -101.8 -50.6 -92.9C-53.2 -84 -47.4 -61.5 -46.4 -47.4C-45.4 -33.3 -56.2 0.2 -43.6 8C-31 15.8 31 15.8 43.6 8C56.2 0.2 45.4 -33.3 46.4 -47.4C47.4 -61.5 53.2 -84 50.6 -92.9C48 -101.8 38.8 -108.4 27.8 -110.9C16.9 -113.4 -16.9 -113.4 -27.8 -110.9Z\" data-part=\"torso\" fill=\"url(#pv-pat)\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-102.9\" rx=\"21.3\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-44.9 -6Q0 4 44.9 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-26 -108.9Q0 -88.9 26 -108.9\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0 -131L0 -104.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31.7\" stroke-linecap=\"round\"/><path d=\"M0 -131L0 -104.9\" fill=\"none\" stroke=\"#d5a681\" stroke-width=\"24.5\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(49.6 -94.9) rotate(-7)\"><path d=\"M0 0L0 51.7\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28.6\" stroke-linecap=\"round\"/><path d=\"M0 0L0 51.7\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"20.6\" stroke-linecap=\"round\"/><path d=\"M0 0L0 26.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 26.9\" fill=\"none\" stroke=\"url(#pv-pat)\" stroke-width=\"26.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 51.7) rotate(0)\"><path d=\"M0 0L0 47.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"27.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 47.6\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"19.3\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-8.8 52.1q-11.3 2.5 -10 13.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.1\" stroke-linecap=\"round\"/><path d=\"M-8.8 52.1q-11.3 2.5 -10 13.2\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"6.3\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"61.5\" rx=\"11.9\" ry=\"15.1\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-3.8 73.5v-8.8M1.9 74.7v-8.8\" stroke=\"#97755b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-49.6 -94.9) rotate(7)\"><path d=\"M0 0L0 51.7\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28.6\" stroke-linecap=\"round\"/><path d=\"M0 0L0 51.7\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"20.6\" stroke-linecap=\"round\"/><path d=\"M0 0L0 26.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 26.9\" fill=\"none\" stroke=\"url(#pv-pat)\" stroke-width=\"26.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 51.7) rotate(0)\"><path d=\"M0 0L0 47.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"27.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 47.6\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"19.3\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M8.8 52.1q11.3 2.5 10 13.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.1\" stroke-linecap=\"round\"/><path d=\"M8.8 52.1q11.3 2.5 10 13.2\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"6.3\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"61.5\" rx=\"11.9\" ry=\"15.1\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-3.8 73.5v-8.8M1.9 74.7v-8.8\" stroke=\"#97755b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -206) rotate(0 0 85)\"><g data-part=\"ears\"><path d=\"M-93.3 -18.5Q-118 -15.8 -112.3 8.5Q-110.4 35.5 -93.3 32.8Z\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-98.1 -2.3Q-107.6 0.4 -101.9 16.6\" fill=\"none\" stroke=\"#a27e62\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M93.3 -18.5Q118 -15.8 112.3 8.5Q110.4 35.5 93.3 32.8Z\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M98.1 -2.3Q107.6 0.4 101.9 16.6\" fill=\"none\" stroke=\"#a27e62\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -106.2C9.1 -106.2 18.6 -104.7 27.4 -101.9C36.1 -99.1 44.9 -94.7 52.6 -89.3C60.2 -83.9 67.5 -77.1 73.5 -69.5C79.4 -62 84.6 -53.2 88.4 -44.1C92.2 -35 94.9 -24.8 96.2 -15.1C97.5 -5.4 97.5 4.8 96.2 14.2C94.9 23.6 92.2 32.9 88.4 41.5C84.6 50 79.4 58.3 73.5 65.4C67.5 72.5 60.2 78.9 52.6 84C44.9 89 36.1 93.1 27.4 95.8C18.6 98.4 9.1 99.8 0 99.8C-9.1 99.8 -18.6 98.4 -27.4 95.8C-36.1 93.1 -44.9 89 -52.6 84C-60.2 78.9 -67.5 72.5 -73.5 65.4C-79.4 58.3 -84.6 50 -88.4 41.5C-92.2 32.9 -94.9 23.6 -96.2 14.2C-97.5 4.8 -97.5 -5.4 -96.2 -15.1C-94.9 -24.8 -92.2 -35 -88.4 -44.1C-84.6 -53.2 -79.4 -62 -73.5 -69.5C-67.5 -77.1 -60.2 -83.9 -52.6 -89.3C-44.9 -94.7 -36.1 -99.1 -27.4 -101.9C-18.6 -104.7 -9.1 -106.2 0 -106.2Z\" data-part=\"head-shape\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><ellipse data-part=\"cheek\" cx=\"-40.8\" cy=\"37.8\" rx=\"20\" ry=\"11\" fill=\"#c89b78\" fill-opacity=\"0.5\"/><ellipse data-part=\"cheek\" cx=\"40.8\" cy=\"37.8\" rx=\"20\" ry=\"11\" fill=\"#c89b78\" fill-opacity=\"0.5\"/><circle cx=\"-50.8\" cy=\"29.8\" r=\"1.7\" fill=\"#907057\"/><circle cx=\"-40.8\" cy=\"34.8\" r=\"1.7\" fill=\"#907057\"/><circle cx=\"-30.8\" cy=\"28.8\" r=\"1.7\" fill=\"#907057\"/><circle cx=\"-35.8\" cy=\"23.8\" r=\"1.7\" fill=\"#907057\"/><circle cx=\"-45.8\" cy=\"24.8\" r=\"1.7\" fill=\"#907057\"/><circle cx=\"30.8\" cy=\"29.8\" r=\"1.7\" fill=\"#907057\"/><circle cx=\"40.8\" cy=\"34.8\" r=\"1.7\" fill=\"#907057\"/><circle cx=\"50.8\" cy=\"28.8\" r=\"1.7\" fill=\"#907057\"/><circle cx=\"45.8\" cy=\"23.8\" r=\"1.7\" fill=\"#907057\"/><circle cx=\"35.8\" cy=\"24.8\" r=\"1.7\" fill=\"#907057\"/><g data-part=\"eye\" data-eye=\"R\" data-rx=\"28\" data-ry=\"32\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14.8\" transform=\"translate(-40.8 -4.2)\"><clipPath id=\"pv-eyeR\"><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\"/></clipPath><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14.8\" fill=\"#2a2f3d\"/><circle cx=\"4.4\" cy=\"-5.3\" r=\"4\" fill=\"#fff\"/></g><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M-15.8 -51.2C-20 -51.9 -32.5 -55.2 -40.8 -55.2C-49.2 -55.2 -61.7 -51.9 -65.8 -51.2\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#5c3b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"28\" data-ry=\"32\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14.8\" transform=\"translate(40.8 -4.2)\"><clipPath id=\"pv-eyeL\"><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\"/></clipPath><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14.8\" fill=\"#2a2f3d\"/><circle cx=\"4.4\" cy=\"-5.3\" r=\"4\" fill=\"#fff\"/></g><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M15.8 -51.2C20 -51.9 32.5 -55.2 40.8 -55.2C49.2 -55.2 61.7 -51.9 65.8 -51.2\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#5c3b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 23.4)\"><path d=\"M-1.3 -11.7Q-9 7.2 -4.9 11Q0 16.3 5 11Q9 7.2 1.3 -11.7\" fill=\"#dcab85\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 59.5)\"><path d=\"M-14.9 -1Q0 1.3 14.9 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g></g><path d=\"M-96.5 -12.6L-97.4 -33.8L-100.3 -59.4L-81.8 -74.3L-77.5 -103.5L-51.2 -106.3L-36.9 -133.8L-10.8 -121.9L12.6 -140.4L31.8 -116.6L59 -121.1L68.1 -91.9L91.4 -82.5L91.7 -54.6L103.7 -35.8L96.5 -12.6L97.5 -12.7L93.3 -26.3L84.6 -38.4L70.5 -53.6L61.6 -48.8L43.5 -64L32.2 -54.6L15.8 -60.4L0 -46.1L-15.8 -60.4L-32.2 -54.6L-43.5 -64L-61.6 -48.8L-70.5 -53.6L-84.6 -38.4L-93.3 -26.3L-97.5 -12.7Z\" data-part=\"hair-cap\" fill=\"#5c3b28\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-96.5 -12.6L-97.4 -33.8L-100.3 -59.4L-81.8 -74.3L-77.5 -103.5L-51.2 -106.3L-36.9 -133.8L-10.8 -121.9L12.6 -140.4L31.8 -116.6L59 -121.1L68.1 -91.9L91.4 -82.5L91.7 -54.6L103.7 -35.8L96.5 -12.6L97.5 -12.7L93.3 -26.3L84.6 -38.4L70.5 -53.6L61.6 -48.8L43.5 -64L32.2 -54.6L15.8 -60.4L0 -46.1L-15.8 -60.4L-32.2 -54.6L-43.5 -64L-61.6 -48.8L-70.5 -53.6L-84.6 -38.4L-93.3 -26.3L-97.5 -12.7Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-53.5 -87.1Q-9.7 -108.3 40.8 -90.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#765a4a\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g></g></g></g></svg>"
+  },
+  {
+   "id": "personagens-fantasia-1",
+   "file": "personagens-fantasia-1.rspack",
+   "sha256": "24ac0d27c18c0a803bf2b2518d9ace9737da74e1a1290a9a0c6244ace4ac8868",
+   "size": 15122,
+   "name": "Personagens · Fantasia e Caricaturas 1",
+   "version": "1.0.0",
+   "description": "Bruxa, mago, pirata, realeza, fada, elfo, vampira, zumbi, robô e ninja, mais dez caricaturas com proporções exageradas (cabeçudo, narigudo, fortão, magrelão…).",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Personagens",
+   "collection": "Personagens",
+   "volume": 1,
+   "tags": [
+    "personagem",
+    "pré-pronto"
+   ],
+   "dependencies": [],
+   "itemCount": 22,
+   "counts": {
+    "character": 22
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-fan-morgana",
+     "name": "Bruxa Morgana",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-merlinho",
+     "name": "Mago Merlinho",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-barba-ruiva",
+     "name": "Capitão Barba-Ruiva",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-aurora",
+     "name": "Princesa Aurora",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-teodosio",
+     "name": "Rei Teodósio",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-lancelo",
+     "name": "Cavaleiro Lancelo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-lirio",
+     "name": "Fada Lírio",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-silvano",
+     "name": "Elfo Silvano",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-carmilla",
+     "name": "Vampira Carmilla",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-zeca-zumbi",
+     "name": "Zumbi Zequinha",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-bipe",
+     "name": "Robô Bipe",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-fan-kuro",
+     "name": "Ninja Kuro",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-car-cabecao",
+     "name": "Cabeção Beto",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    },
+    {
+     "id": "rs-car-pernalonga",
+     "name": "Pernalonga Ludo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    },
+    {
+     "id": "rs-car-gordao",
+     "name": "Gordão Tuco",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    },
+    {
+     "id": "rs-car-brutus",
+     "name": "Fortão Brutus",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    },
+    {
+     "id": "rs-car-fiapo",
+     "name": "Magrelão Fiapo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    },
+    {
+     "id": "rs-car-pip",
+     "name": "Baixinho Pip",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    },
+    {
+     "id": "rs-car-nico",
+     "name": "Narigão Nico",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    },
+    {
+     "id": "rs-car-dumbo",
+     "name": "Orelhudo Dumbo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    },
+    {
+     "id": "rs-car-lola",
+     "name": "Boca-grande Lola",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    },
+    {
+     "id": "rs-car-olhao",
+     "name": "Olhão Pedrinho",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Caricaturais"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -651.9200000000001 440 681.9200000000001\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(33.7 -184.4)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 87.4\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 87.4\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"26.4\" stroke-linecap=\"round\"/><g transform=\"translate(0 87.4) rotate(0)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"24.2\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 79)\"><g data-part=\"foot\"><path d=\"M-25.8 97L25.8 97Q27.8 83 15.6 43L-15.6 43Q-27.8 83 -25.8 97Z\" fill=\"#17141a\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-25.8\" y=\"94\" width=\"51.6\" height=\"6\" rx=\"3\" fill=\"#0d0b0e\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-33.7 -184.4)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 87.4\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 87.4\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"26.4\" stroke-linecap=\"round\"/><g transform=\"translate(0 87.4) rotate(0)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"24.2\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 79)\"><g data-part=\"foot\"><path d=\"M-25.8 97L25.8 97Q27.8 83 15.6 43L-15.6 43Q-27.8 83 -25.8 97Z\" fill=\"#17141a\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-25.8\" y=\"94\" width=\"51.6\" height=\"6\" rx=\"3\" fill=\"#0d0b0e\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g></g></g></g></g><g transform=\"translate(0 -184.4)\"><path d=\"M-53.2 -2Q-76.6 71.3 -83.2 144.6Q0 156.6 83.2 144.6Q76.6 71.3 53.2 -2Z\" data-part=\"skirt\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-41.6 146.6L-16 6M41.6 146.6L16 6\" stroke=\"#23202b\" stroke-opacity=\".3\" stroke-width=\"2.4\" fill=\"none\"/></g><g data-part=\"torso-group\" transform=\"translate(0 -184.4) rotate(0)\"><g transform=\"translate(0 -279.5)\"><path d=\"M-77.7 -29.5C-110.2 -16 -110 24.6 -117.4 51.6C-124.8 78.7 -122.6 105.7 -122.1 132.8C-121.7 159.8 -118.4 186.8 -114.7 213.9C-111.1 240.9 -109.3 280.5 -100.2 295C-91.1 309.5 -73.5 299.3 -60.1 300.9C-46.8 302.5 -33.4 303.9 -20 304.5C-6.7 305.1 6.7 305.1 20 304.5C33.4 303.9 46.8 302.5 60.1 300.9C73.5 299.3 91.1 309.5 100.2 295C109.3 280.5 111.1 240.9 114.7 213.9C118.4 186.8 121.7 159.8 122.1 132.8C122.6 105.7 124.8 78.7 117.4 51.6C110 24.6 110.2 -16 77.7 -29.5C45.2 -43 -45.2 -43 -77.7 -29.5Z\" data-part=\"hair-back\" data-layer=\"behind-body\" fill=\"#17141a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><path d=\"M-34.6 -170.6C-48.2 -168.1 -59.8 -166.4 -62.9 -152.6C-66 -138.9 -58 -95 -56.5 -72.5C-55 -50 -67.4 -3.3 -52.2 8C-37 19.3 37 19.3 52.2 8C67.4 -3.3 55 -50 56.5 -72.5C58 -95 66 -138.9 62.9 -152.6C59.8 -166.4 48.2 -168.1 34.6 -170.6C20.9 -173.2 -20.9 -173.2 -34.6 -170.6Z\" data-part=\"torso\" fill=\"#4a3a5c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-162.6\" rx=\"26.4\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-26 -168.6L0 -10L26 -168.6Z\" fill=\"#aea6b6\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-26 -168.6L-38 -142.6L-16 -134.6L0 -10M26 -168.6L38 -142.6L16 -134.6L0 -10\" fill=\"#413351\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M0 -10V4\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-24 -166.6Q0 -128.6 24 -166.6\" fill=\"none\" stroke=\"#8e6fc1\" stroke-width=\"3.5\"/><circle cx=\"0\" cy=\"-144.6\" r=\"6\" fill=\"#8e6fc1\" stroke=\"#23202b\" stroke-width=\"2\"/><path d=\"M0 -195.1L0 -164.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28\" stroke-linecap=\"round\"/><path d=\"M0 -195.1L0 -164.6\" fill=\"none\" stroke=\"#dfb998\" stroke-width=\"20.8\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(61.6 -154.6) rotate(-7)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#4a3a5c\" stroke-width=\"23\" stroke-linecap=\"round\"/><g transform=\"translate(0 79) rotate(0)\"><path d=\"M0 0L0 72.8\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 72.8\" fill=\"none\" stroke=\"#4a3a5c\" stroke-width=\"21.3\" stroke-linecap=\"round\"/><rect x=\"-13.2\" y=\"66.8\" width=\"26.4\" height=\"10\" rx=\"3\" fill=\"#3b2e4a\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 77.5q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 77.5q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"87.6\" rx=\"12.8\" ry=\"16.2\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 100.4v-9.4M2 101.8v-9.4\" stroke=\"#9d836b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-61.6 -154.6) rotate(7)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#4a3a5c\" stroke-width=\"23\" stroke-linecap=\"round\"/><g transform=\"translate(0 79) rotate(0)\"><path d=\"M0 0L0 72.8\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 72.8\" fill=\"none\" stroke=\"#4a3a5c\" stroke-width=\"21.3\" stroke-linecap=\"round\"/><rect x=\"-13.2\" y=\"66.8\" width=\"26.4\" height=\"10\" rx=\"3\" fill=\"#3b2e4a\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 77.5q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 77.5q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"87.6\" rx=\"12.8\" ry=\"16.2\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 100.4v-9.4M2 101.8v-9.4\" stroke=\"#9d836b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -279.5) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#a98d74\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#a98d74\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C9.5 -118 19.2 -116.5 28.5 -113.6C37.7 -110.6 47.1 -106 55.5 -100.1C63.9 -94.2 72.1 -86.5 78.9 -78C85.8 -69.6 91.8 -59.5 96.4 -49.3C100.9 -39.1 104.8 -28.2 106.3 -16.8C107.7 -5.4 107.6 7 105.3 19.2C103 31.3 97.9 44.6 92.5 56.2C87.1 67.8 80.1 79.3 72.9 89C65.7 98.6 57.5 107.4 49.5 114.1C41.4 120.9 33 126 24.7 129.4C16.5 132.9 8.2 134.5 0 134.5C-8.2 134.5 -16.5 132.9 -24.7 129.4C-33 126 -41.4 120.9 -49.5 114.1C-57.5 107.4 -65.7 98.6 -72.9 89C-80.1 79.3 -87.1 67.8 -92.5 56.2C-97.9 44.6 -103 31.3 -105.3 19.2C-107.6 7 -107.7 -5.4 -106.3 -16.8C-104.8 -28.2 -100.9 -39.1 -96.4 -49.3C-91.8 -59.5 -85.8 -69.6 -78.9 -78C-72.1 -86.5 -63.9 -94.2 -55.5 -100.1C-47.1 -106 -37.7 -110.6 -28.5 -113.6C-19.2 -116.5 -9.5 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"eye\" data-eye=\"R\" data-rx=\"26\" data-ry=\"22\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14.3\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M26 7C26 9.3 25.3 11.2 24 13.2C22.8 15.3 20.7 17.6 18.4 19.1C16 20.7 13 22.2 9.9 22.7C6.9 23.2 3.3 22.9 0 22C-3.3 21.1 -6.9 19.5 -9.9 17.4C-13 15.2 -16 12.1 -18.4 9.2C-20.7 6.4 -22.8 3 -24 0.3C-25.3 -2.4 -26 -4.7 -26 -7C-26 -9.3 -25.3 -11.2 -24 -13.2C-22.8 -15.3 -20.7 -17.6 -18.4 -19.1C-16 -20.7 -13 -22.2 -9.9 -22.7C-6.9 -23.2 -3.3 -22.9 0 -22C3.3 -21.1 6.9 -19.5 9.9 -17.4C13 -15.2 16 -12.1 18.4 -9.2C20.7 -6.4 22.8 -3 24 -0.3C25.3 2.4 26 4.7 26 7Z\"/></clipPath><path d=\"M26 7C26 9.3 25.3 11.2 24 13.2C22.8 15.3 20.7 17.6 18.4 19.1C16 20.7 13 22.2 9.9 22.7C6.9 23.2 3.3 22.9 0 22C-3.3 21.1 -6.9 19.5 -9.9 17.4C-13 15.2 -16 12.1 -18.4 9.2C-20.7 6.4 -22.8 3 -24 0.3C-25.3 -2.4 -26 -4.7 -26 -7C-26 -9.3 -25.3 -11.2 -24 -13.2C-22.8 -15.3 -20.7 -17.6 -18.4 -19.1C-16 -20.7 -13 -22.2 -9.9 -22.7C-6.9 -23.2 -3.3 -22.9 0 -22C3.3 -21.1 6.9 -19.5 9.9 -17.4C13 -15.2 16 -12.1 18.4 -9.2C20.7 -6.4 22.8 -3 24 -0.3C25.3 2.4 26 4.7 26 7Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14.3\" fill=\"#2a2f3d\"/><circle cx=\"4.3\" cy=\"-5.1\" r=\"3.9\" fill=\"#fff\"/></g><path d=\"M26 7C26 9.3 25.3 11.2 24 13.2C22.8 15.3 20.7 17.6 18.4 19.1C16 20.7 13 22.2 9.9 22.7C6.9 23.2 3.3 22.9 0 22C-3.3 21.1 -6.9 19.5 -9.9 17.4C-13 15.2 -16 12.1 -18.4 9.2C-20.7 6.4 -22.8 3 -24 0.3C-25.3 -2.4 -26 -4.7 -26 -7C-26 -9.3 -25.3 -11.2 -24 -13.2C-22.8 -15.3 -20.7 -17.6 -18.4 -19.1C-16 -20.7 -13 -22.2 -9.9 -22.7C-6.9 -23.2 -3.3 -22.9 0 -22C3.3 -21.1 6.9 -19.5 9.9 -17.4C13 -15.2 16 -12.1 18.4 -9.2C20.7 -6.4 22.8 -3 24 -0.3C25.3 2.4 26 4.7 26 7Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-16.9 -15.8l-7 -7M-24.7 -6.6l-9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M-18.4 -41.7C-22.9 -43.1 -36.4 -49.7 -45.4 -49.7C-54.4 -49.7 -67.9 -43.1 -72.4 -41.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#17141a\" stroke-width=\"5.5\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"26\" data-ry=\"22\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14.3\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M26 -7C26 -4.7 25.3 -2.4 24 0.3C22.8 3 20.7 6.4 18.4 9.2C16 12.1 13 15.2 9.9 17.4C6.9 19.5 3.3 21.1 0 22C-3.3 22.9 -6.9 23.2 -9.9 22.7C-13 22.2 -16 20.7 -18.4 19.1C-20.7 17.6 -22.8 15.3 -24 13.2C-25.3 11.2 -26 9.3 -26 7C-26 4.7 -25.3 2.4 -24 -0.3C-22.8 -3 -20.7 -6.4 -18.4 -9.2C-16 -12.1 -13 -15.2 -9.9 -17.4C-6.9 -19.5 -3.3 -21.1 0 -22C3.3 -22.9 6.9 -23.2 9.9 -22.7C13 -22.2 16 -20.7 18.4 -19.1C20.7 -17.6 22.8 -15.3 24 -13.2C25.3 -11.2 26 -9.3 26 -7Z\"/></clipPath><path d=\"M26 -7C26 -4.7 25.3 -2.4 24 0.3C22.8 3 20.7 6.4 18.4 9.2C16 12.1 13 15.2 9.9 17.4C6.9 19.5 3.3 21.1 0 22C-3.3 22.9 -6.9 23.2 -9.9 22.7C-13 22.2 -16 20.7 -18.4 19.1C-20.7 17.6 -22.8 15.3 -24 13.2C-25.3 11.2 -26 9.3 -26 7C-26 4.7 -25.3 2.4 -24 -0.3C-22.8 -3 -20.7 -6.4 -18.4 -9.2C-16 -12.1 -13 -15.2 -9.9 -17.4C-6.9 -19.5 -3.3 -21.1 0 -22C3.3 -22.9 6.9 -23.2 9.9 -22.7C13 -22.2 16 -20.7 18.4 -19.1C20.7 -17.6 22.8 -15.3 24 -13.2C25.3 -11.2 26 -9.3 26 -7Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14.3\" fill=\"#2a2f3d\"/><circle cx=\"4.3\" cy=\"-5.1\" r=\"3.9\" fill=\"#fff\"/></g><path d=\"M26 -7C26 -4.7 25.3 -2.4 24 0.3C22.8 3 20.7 6.4 18.4 9.2C16 12.1 13 15.2 9.9 17.4C6.9 19.5 3.3 21.1 0 22C-3.3 22.9 -6.9 23.2 -9.9 22.7C-13 22.2 -16 20.7 -18.4 19.1C-20.7 17.6 -22.8 15.3 -24 13.2C-25.3 11.2 -26 9.3 -26 7C-26 4.7 -25.3 2.4 -24 -0.3C-22.8 -3 -20.7 -6.4 -18.4 -9.2C-16 -12.1 -13 -15.2 -9.9 -17.4C-6.9 -19.5 -3.3 -21.1 0 -22C3.3 -22.9 6.9 -23.2 9.9 -22.7C13 -22.2 16 -20.7 18.4 -19.1C20.7 -17.6 22.8 -15.3 24 -13.2C25.3 -11.2 26 -9.3 26 -7Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M16.9 -15.8l7 -7M24.7 -6.6l9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M18.4 -41.7C22.9 -43.1 36.4 -49.7 45.4 -49.7C54.4 -49.7 67.9 -43.1 72.4 -41.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#17141a\" stroke-width=\"5.5\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-1.6 -27Q-11 16.5 -6.1 25.5Q0 37.5 6.1 25.5Q11 16.5 1.7 -27\" fill=\"#e6bf9d\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g></g><path d=\"M-84.6 73.3C-87.7 69.3 -98.3 57.9 -103 49.1C-107.8 40.4 -110.8 30.5 -113 20.7C-115.1 11 -116 0.7 -115.8 -9.3C-115.6 -19.4 -114.3 -29.8 -111.7 -39.6C-109.2 -49.4 -105.3 -59.3 -100.4 -68.3C-95.4 -77.2 -89.2 -85.9 -82.2 -93.4C-75.2 -100.9 -67 -107.7 -58.3 -113C-49.6 -118.4 -40 -122.7 -30.2 -125.5C-20.5 -128.3 -10.1 -129.8 0 -129.8C10.1 -129.8 20.5 -128.3 30.2 -125.5C40 -122.7 49.6 -118.4 58.3 -113C67 -107.7 75.2 -100.9 82.2 -93.4C89.2 -85.9 95.4 -77.2 100.4 -68.3C105.3 -59.3 109.2 -49.4 111.7 -39.6C114.3 -29.8 115.6 -19.4 115.8 -9.3C116 0.7 115.1 11 113 20.7C110.8 30.5 107.8 40.4 103 49.1C98.3 57.9 87.7 69.3 84.6 73.3L85.2 73.8C87.4 69.1 96.1 61.3 98.5 46C100.9 30.6 102.5 -1.7 99.6 -18.2C96.7 -34.7 86.6 -46 81.1 -52.8C75.6 -59.7 71.8 -57.2 66.7 -59.2C61.6 -61.3 55.9 -63.8 50.5 -65.1C45.1 -66.4 39.9 -66.4 34.4 -67C28.8 -67.6 23 -68.3 17.3 -68.9C11.5 -69.5 5.8 -70.8 0 -70.8C-5.8 -70.8 -11.5 -69.5 -17.3 -68.9C-23 -68.3 -28.8 -67.6 -34.4 -67C-39.9 -66.4 -45.1 -66.4 -50.5 -65.1C-55.9 -63.8 -61.6 -61.3 -66.7 -59.2C-71.8 -57.2 -75.6 -59.7 -81.1 -52.8C-86.6 -46 -96.7 -34.7 -99.6 -18.2C-102.5 -1.7 -100.9 30.6 -98.5 46C-96.1 61.3 -87.4 69.1 -85.2 73.8Z\" data-part=\"hair-cap\" fill=\"#17141a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-84.6 73.3C-87.7 69.3 -98.3 57.9 -103 49.1C-107.8 40.4 -110.8 30.5 -113 20.7C-115.1 11 -116 0.7 -115.8 -9.3C-115.6 -19.4 -114.3 -29.8 -111.7 -39.6C-109.2 -49.4 -105.3 -59.3 -100.4 -68.3C-95.4 -77.2 -89.2 -85.9 -82.2 -93.4C-75.2 -100.9 -67 -107.7 -58.3 -113C-49.6 -118.4 -40 -122.7 -30.2 -125.5C-20.5 -128.3 -10.1 -129.8 0 -129.8C10.1 -129.8 20.5 -128.3 30.2 -125.5C40 -122.7 49.6 -118.4 58.3 -113C67 -107.7 75.2 -100.9 82.2 -93.4C89.2 -85.9 95.4 -77.2 100.4 -68.3C105.3 -59.3 109.2 -49.4 111.7 -39.6C114.3 -29.8 115.6 -19.4 115.8 -9.3C116 0.7 115.1 11 113 20.7C110.8 30.5 107.8 40.4 103 49.1C98.3 57.9 87.7 69.3 84.6 73.3L85.2 73.8C87.4 69.1 96.1 61.3 98.5 46C100.9 30.6 102.5 -1.7 99.6 -18.2C96.7 -34.7 86.6 -46 81.1 -52.8C75.6 -59.7 71.8 -57.2 66.7 -59.2C61.6 -61.3 55.9 -63.8 50.5 -65.1C45.1 -66.4 39.9 -66.4 34.4 -67C28.8 -67.6 23 -68.3 17.3 -68.9C11.5 -69.5 5.8 -70.8 0 -70.8C-5.8 -70.8 -11.5 -69.5 -17.3 -68.9C-23 -68.3 -28.8 -67.6 -34.4 -67C-39.9 -66.4 -45.1 -66.4 -50.5 -65.1C-55.9 -63.8 -61.6 -61.3 -66.7 -59.2C-71.8 -57.2 -75.6 -59.7 -81.1 -52.8C-86.6 -46 -96.7 -34.7 -99.6 -18.2C-102.5 -1.7 -100.9 30.6 -98.5 46C-96.1 61.3 -87.4 69.1 -85.2 73.8Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-59.4 -96.8Q-10.8 -120.4 45.4 -100.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#3c3a3f\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g><path d=\"M-162 -66.1C-162 -72 -153 -81.8 -108 -85C-63 -88.1 63 -88.1 108 -85C153 -81.8 162 -72 162 -66.1C162 -60.2 153 -52.3 108 -49.6C63 -46.8 -63 -46.8 -108 -49.6C-153 -52.3 -162 -60.2 -162 -66.1Z\" data-part=\"hat\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-86.4 -73.2Q-81 -153.4 -21.6 -139.2Q0 -127.4 21.6 -139.2Q81 -153.4 86.4 -73.2Z\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-86.4 -87.3L86.4 -87.3\" stroke=\"#181920\" stroke-width=\"13\"/></g></g></g></svg>"
+  },
+  {
+   "id": "personagens-idosos-1",
+   "file": "personagens-idosos-1.rspack",
+   "sha256": "c51502252ed4f82ce8ded3c6929a049a863393e8aead70765a700ed4f42f9b97",
+   "size": 8697,
+   "name": "Personagens · Idosos 1",
+   "version": "1.0.0",
+   "description": "Doze idosos originais, com rugas, cabelos brancos, óculos e chapéus.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Personagens",
+   "collection": "Personagens",
+   "volume": 1,
+   "tags": [
+    "personagem",
+    "pré-pronto"
+   ],
+   "dependencies": [],
+   "itemCount": 12,
+   "counts": {
+    "character": 12
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-idoso-seu-joaquim",
+     "name": "Seu Joaquim",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-dona-neide",
+     "name": "Dona Neide",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-vovo-zeca",
+     "name": "Vovô Aurélio",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-vovo-iara",
+     "name": "Vovó Iara",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-dr-benedito",
+     "name": "Seu Benedito",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-dona-cida",
+     "name": "Dona Cida",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-seu-armando",
+     "name": "Seu Armando",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-dona-ofelia",
+     "name": "Dona Ofélia",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-seu-tonico",
+     "name": "Seu Tonico",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-dona-lourdes-m",
+     "name": "Dona Marlene",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-prof-honorio",
+     "name": "Professor Honório",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    },
+    {
+     "id": "rs-idoso-dona-geni",
+     "name": "Dona Geni",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Idosos"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -602.2339999999999 440 632.2339999999999\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><defs><pattern id=\"pv-pat\" width=\"26\" height=\"26\" patternUnits=\"userSpaceOnUse\"><rect width=\"26\" height=\"26\" fill=\"#5b8dbe\"/><rect width=\"26\" height=\"10\" fill=\"#f4f1ea\"/></pattern></defs><g data-part=\"leg-L\" transform=\"translate(40.3 -160.9)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 75\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"41.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 75\" fill=\"none\" stroke=\"#7c5a44\" stroke-width=\"33.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 75) rotate(0)\"><path d=\"M0 0L0 67.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"39\" stroke-linecap=\"round\"/><path d=\"M0 0L0 67.9\" fill=\"none\" stroke=\"#7c5a44\" stroke-width=\"31\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 67.9)\"><g data-part=\"foot\"><path d=\"M-21.9 85.9L21.9 85.9Q23.9 71.9 13.3 57.9L-13.3 57.9Q-23.9 71.9 -21.9 85.9Z\" fill=\"#5b3a24\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-21.9\" y=\"82.9\" width=\"43.8\" height=\"6\" rx=\"3\" fill=\"#322014\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-40.3 -160.9)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 75\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"41.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 75\" fill=\"none\" stroke=\"#7c5a44\" stroke-width=\"33.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 75) rotate(0)\"><path d=\"M0 0L0 67.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"39\" stroke-linecap=\"round\"/><path d=\"M0 0L0 67.9\" fill=\"none\" stroke=\"#7c5a44\" stroke-width=\"31\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 67.9)\"><g data-part=\"foot\"><path d=\"M-21.9 85.9L21.9 85.9Q23.9 71.9 13.3 57.9L-13.3 57.9Q-23.9 71.9 -21.9 85.9Z\" fill=\"#5b3a24\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-21.9\" y=\"82.9\" width=\"43.8\" height=\"6\" rx=\"3\" fill=\"#322014\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -160.9) rotate(0)\"><path d=\"M-63 -4Q0 6 63 -4L58.8 22L-58.8 22Z\" fill=\"#7c5a44\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-42.1 -146.2C-58.7 -143.7 -72.2 -140 -76.5 -128.2C-80.8 -116.5 -74.9 -81.3 -72.9 -62.3C-70.8 -43.2 -80.6 -1.8 -61.8 8C-42.9 17.8 42.9 17.8 61.8 8C80.6 -1.8 70.8 -43.2 72.9 -62.3C74.9 -81.3 80.8 -116.5 76.5 -128.2C72.2 -140 58.7 -143.7 42.1 -146.2C25.5 -148.8 -25.5 -148.8 -42.1 -146.2Z\" data-part=\"torso\" fill=\"url(#pv-pat)\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-138.2\" rx=\"32.1\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-63.6 -6Q0 4 63.6 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-34 -146.2L0 -118.2L34 -146.2L16 -132.2L0 -118.2L-16 -132.2Z\" fill=\"#7fa6cc\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><circle cx=\"0\" cy=\"-108.2\" r=\"3\" fill=\"#23202b\"/><circle cx=\"0\" cy=\"-82.2\" r=\"3\" fill=\"#23202b\"/><circle cx=\"0\" cy=\"-56.2\" r=\"3\" fill=\"#23202b\"/><circle cx=\"0\" cy=\"-30.2\" r=\"3\" fill=\"#23202b\"/><circle cx=\"0\" cy=\"-4.2\" r=\"3\" fill=\"#23202b\"/><path d=\"M-8 -116.2V-8\" stroke=\"#23202b\" stroke-opacity=\".35\" stroke-width=\"2\"/><path d=\"M0 -169L0 -140.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"41.6\" stroke-linecap=\"round\"/><path d=\"M0 -169L0 -140.2\" fill=\"none\" stroke=\"#c38e65\" stroke-width=\"34.4\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(75 -130.2) rotate(-7)\"><path d=\"M0 0L0 67.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"37.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 67.9\" fill=\"none\" stroke=\"url(#pv-pat)\" stroke-width=\"29.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 67.9) rotate(0)\"><path d=\"M0 0L0 62.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"35.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 62.5\" fill=\"none\" stroke=\"url(#pv-pat)\" stroke-width=\"27.2\" stroke-linecap=\"round\"/><rect x=\"-16.8\" y=\"56.5\" width=\"33.7\" height=\"10\" rx=\"3\" fill=\"#497198\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.3 67.2q-12 2.7 -10.6 14\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.4\" stroke-linecap=\"round\"/><path d=\"M-9.3 67.2q-12 2.7 -10.6 14\" fill=\"none\" stroke=\"#d49a6e\" stroke-width=\"6.6\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"77.1\" rx=\"12.6\" ry=\"16\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 89.8v-9.3M2 91.1v-9.3\" stroke=\"#8a6448\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-75 -130.2) rotate(7)\"><path d=\"M0 0L0 67.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"37.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 67.9\" fill=\"none\" stroke=\"url(#pv-pat)\" stroke-width=\"29.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 67.9) rotate(0)\"><path d=\"M0 0L0 62.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"35.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 62.5\" fill=\"none\" stroke=\"url(#pv-pat)\" stroke-width=\"27.2\" stroke-linecap=\"round\"/><rect x=\"-16.8\" y=\"56.5\" width=\"33.7\" height=\"10\" rx=\"3\" fill=\"#497198\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.3 67.2q12 2.7 10.6 14\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.4\" stroke-linecap=\"round\"/><path d=\"M9.3 67.2q12 2.7 10.6 14\" fill=\"none\" stroke=\"#d49a6e\" stroke-width=\"6.6\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"77.1\" rx=\"12.6\" ry=\"16\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 89.8v-9.3M2 91.1v-9.3\" stroke=\"#8a6448\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -253.4) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#946c4d\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#946c4d\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C11 -118 22.4 -116.7 32.9 -113.9C43.5 -111 54.2 -106.8 63.2 -100.9C72.3 -95.1 80.7 -87.3 87.2 -78.8C93.7 -70.2 98.7 -59.9 102.1 -49.6C105.6 -39.3 107 -27.5 107.9 -16.8C108.7 -6.1 108.6 4.7 107.2 14.8C105.9 24.9 103.8 34.5 100 43.6C96.2 52.7 90.8 61.8 84.2 69.3C77.6 76.9 69.1 83.7 60.3 88.8C51.5 93.9 41.2 97.7 31.2 100.2C21.1 102.7 10.4 103.8 0 103.8C-10.4 103.8 -21.1 102.7 -31.2 100.2C-41.2 97.7 -51.5 93.9 -60.3 88.8C-69.1 83.7 -77.6 76.9 -84.2 69.3C-90.8 61.8 -96.2 52.7 -100 43.6C-103.8 34.5 -105.9 24.9 -107.2 14.8C-108.6 4.7 -108.7 -6.1 -107.9 -16.8C-107 -27.5 -105.6 -39.3 -102.1 -49.6C-98.7 -59.9 -93.7 -70.2 -87.2 -78.8C-80.7 -87.3 -72.3 -95.1 -63.2 -100.9C-54.2 -106.8 -43.5 -111 -32.9 -113.9C-22.4 -116.7 -11 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#d49a6e\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><path d=\"M-34 -49.6Q0 -55.5 34 -49.6M-24 -40.1Q0 -44.8 24 -40.1\" fill=\"none\" stroke=\"#90694b\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M-76.4 -8.7l-8 -3M-76.4 -0.7l-8 3\" fill=\"none\" stroke=\"#90694b\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M76.4 -8.7l8 -3M76.4 -0.7l8 3\" fill=\"none\" stroke=\"#90694b\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M-32 49.6q-5 12 2 24M32 49.6q5 12 -2 24\" fill=\"none\" stroke=\"#90694b\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"R\" data-rx=\"25\" data-ry=\"21\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M25 -3C25 -0.6 24.3 2 23.1 4.6C21.9 7.1 19.9 9.9 17.7 12.2C15.4 14.4 12.5 16.7 9.6 18.1C6.6 19.6 3.2 20.6 0 21C-3.2 21.4 -6.6 21.2 -9.6 20.4C-12.5 19.7 -15.4 18.1 -17.7 16.4C-19.9 14.7 -21.9 12.3 -23.1 10.1C-24.3 7.9 -25 5.4 -25 3C-25 0.6 -24.3 -2 -23.1 -4.6C-21.9 -7.1 -19.9 -9.9 -17.7 -12.2C-15.4 -14.4 -12.5 -16.7 -9.6 -18.1C-6.6 -19.6 -3.2 -20.6 0 -21C3.2 -21.4 6.6 -21.2 9.6 -20.4C12.5 -19.7 15.4 -18.1 17.7 -16.4C19.9 -14.7 21.9 -12.3 23.1 -10.1C24.3 -7.9 25 -5.4 25 -3Z\"/></clipPath><path d=\"M25 -3C25 -0.6 24.3 2 23.1 4.6C21.9 7.1 19.9 9.9 17.7 12.2C15.4 14.4 12.5 16.7 9.6 18.1C6.6 19.6 3.2 20.6 0 21C-3.2 21.4 -6.6 21.2 -9.6 20.4C-12.5 19.7 -15.4 18.1 -17.7 16.4C-19.9 14.7 -21.9 12.3 -23.1 10.1C-24.3 7.9 -25 5.4 -25 3C-25 0.6 -24.3 -2 -23.1 -4.6C-21.9 -7.1 -19.9 -9.9 -17.7 -12.2C-15.4 -14.4 -12.5 -16.7 -9.6 -18.1C-6.6 -19.6 -3.2 -20.6 0 -21C3.2 -21.4 6.6 -21.2 9.6 -20.4C12.5 -19.7 15.4 -18.1 17.7 -16.4C19.9 -14.7 21.9 -12.3 23.1 -10.1C24.3 -7.9 25 -5.4 25 -3Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14\" fill=\"#2a2f3d\"/><circle cx=\"4.2\" cy=\"-5\" r=\"3.8\" fill=\"#fff\"/></g><path d=\"M25 -3C25 -0.6 24.3 2 23.1 4.6C21.9 7.1 19.9 9.9 17.7 12.2C15.4 14.4 12.5 16.7 9.6 18.1C6.6 19.6 3.2 20.6 0 21C-3.2 21.4 -6.6 21.2 -9.6 20.4C-12.5 19.7 -15.4 18.1 -17.7 16.4C-19.9 14.7 -21.9 12.3 -23.1 10.1C-24.3 7.9 -25 5.4 -25 3C-25 0.6 -24.3 -2 -23.1 -4.6C-21.9 -7.1 -19.9 -9.9 -17.7 -12.2C-15.4 -14.4 -12.5 -16.7 -9.6 -18.1C-6.6 -19.6 -3.2 -20.6 0 -21C3.2 -21.4 6.6 -21.2 9.6 -20.4C12.5 -19.7 15.4 -18.1 17.7 -16.4C19.9 -14.7 21.9 -12.3 23.1 -10.1C24.3 -7.9 25 -5.4 25 -3Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M-15.4 -40.7C-20.4 -41.2 -35.4 -43.5 -45.4 -43.5C-55.4 -43.5 -70.4 -41.2 -75.4 -40.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#f4f1ea\" stroke-width=\"14\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"25\" data-ry=\"21\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M25 3C25 5.4 24.3 7.9 23.1 10.1C21.9 12.3 19.9 14.7 17.7 16.4C15.4 18.1 12.5 19.7 9.6 20.4C6.6 21.2 3.2 21.4 0 21C-3.2 20.6 -6.6 19.6 -9.6 18.1C-12.5 16.7 -15.4 14.4 -17.7 12.2C-19.9 9.9 -21.9 7.1 -23.1 4.6C-24.3 2 -25 -0.6 -25 -3C-25 -5.4 -24.3 -7.9 -23.1 -10.1C-21.9 -12.3 -19.9 -14.7 -17.7 -16.4C-15.4 -18.1 -12.5 -19.7 -9.6 -20.4C-6.6 -21.2 -3.2 -21.4 0 -21C3.2 -20.6 6.6 -19.6 9.6 -18.1C12.5 -16.7 15.4 -14.4 17.7 -12.2C19.9 -9.9 21.9 -7.1 23.1 -4.6C24.3 -2 25 0.6 25 3Z\"/></clipPath><path d=\"M25 3C25 5.4 24.3 7.9 23.1 10.1C21.9 12.3 19.9 14.7 17.7 16.4C15.4 18.1 12.5 19.7 9.6 20.4C6.6 21.2 3.2 21.4 0 21C-3.2 20.6 -6.6 19.6 -9.6 18.1C-12.5 16.7 -15.4 14.4 -17.7 12.2C-19.9 9.9 -21.9 7.1 -23.1 4.6C-24.3 2 -25 -0.6 -25 -3C-25 -5.4 -24.3 -7.9 -23.1 -10.1C-21.9 -12.3 -19.9 -14.7 -17.7 -16.4C-15.4 -18.1 -12.5 -19.7 -9.6 -20.4C-6.6 -21.2 -3.2 -21.4 0 -21C3.2 -20.6 6.6 -19.6 9.6 -18.1C12.5 -16.7 15.4 -14.4 17.7 -12.2C19.9 -9.9 21.9 -7.1 23.1 -4.6C24.3 -2 25 0.6 25 3Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14\" fill=\"#2a2f3d\"/><circle cx=\"4.2\" cy=\"-5\" r=\"3.8\" fill=\"#fff\"/></g><path d=\"M25 3C25 5.4 24.3 7.9 23.1 10.1C21.9 12.3 19.9 14.7 17.7 16.4C15.4 18.1 12.5 19.7 9.6 20.4C6.6 21.2 3.2 21.4 0 21C-3.2 20.6 -6.6 19.6 -9.6 18.1C-12.5 16.7 -15.4 14.4 -17.7 12.2C-19.9 9.9 -21.9 7.1 -23.1 4.6C-24.3 2 -25 -0.6 -25 -3C-25 -5.4 -24.3 -7.9 -23.1 -10.1C-21.9 -12.3 -19.9 -14.7 -17.7 -16.4C-15.4 -18.1 -12.5 -19.7 -9.6 -20.4C-6.6 -21.2 -3.2 -21.4 0 -21C3.2 -20.6 6.6 -19.6 9.6 -18.1C12.5 -16.7 15.4 -14.4 17.7 -12.2C19.9 -9.9 21.9 -7.1 23.1 -4.6C24.3 -2 25 0.6 25 3Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M15.4 -40.7C20.4 -41.2 35.4 -43.5 45.4 -43.5C55.4 -43.5 70.4 -41.2 75.4 -40.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#f4f1ea\" stroke-width=\"14\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-2.5 -23.4Q-17 14.3 -9.4 22.1Q0 32.5 9.4 22.1Q17 14.3 2.6 -23.4\" fill=\"#c99269\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g><path d=\"M-42.5 76.1C-43.6 72.2 -31.2 47.2 -24.1 42.1C-17.1 36.9 -8 45.1 0 45.1C8 45.1 17.1 36.9 24.2 42.1C31.2 47.2 43.7 72.2 42.5 76.1C41.4 79.9 24.3 67.2 17.3 65.1C10.2 62.9 5.8 63.1 0 63.1C-5.7 63.1 -10.2 62.9 -17.2 65.1C-24.3 67.2 -41.3 79.9 -42.5 76.1Z\" data-part=\"mustache\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"2.4\" stroke-linejoin=\"round\"/></g><path d=\"M-109.7 -19.4C-109.7 -24.5 -109.7 -19.3 -109.7 -19.3C-109.7 -19.3 -109.7 -19.3 -109.7 -19.3C-109.7 -19.3 -109.7 -19.2 -109.7 -19.2C-109.7 -19.2 -109.6 -19.2 -109.6 -19.2C-109.6 -19.2 -109.6 -19.2 -109.5 -19.1C-109.5 -19.1 -109.5 -19.1 -109.4 -19.1C-109.4 -19.1 -109.4 -19.1 -109.3 -19C-109.3 -19 -109.2 -23.2 -109.2 -19C-109.2 -14.8 -109.3 2.1 -109.4 6.4C-109.4 10.7 -109.5 6.8 -109.5 7C-109.5 7.2 -109.6 7.5 -109.6 7.7C-109.6 7.9 -109.6 8.1 -109.7 8.3C-109.7 8.5 -109.7 8.7 -109.7 8.9C-109.7 9.1 -109.7 9.4 -109.7 9.6C-109.7 9.8 -109.7 10 -109.7 10.2C-109.7 10.4 -109.7 10.6 -109.7 10.8C-109.7 11 -109.6 16.5 -109.6 11.5C-109.6 6.4 -109.7 -14.2 -109.7 -19.4Z\" data-part=\"hair-cap\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M109.2 -19C109.2 -23.2 109.3 -19 109.3 -19C109.4 -19.1 109.4 -19.1 109.4 -19.1C109.5 -19.1 109.5 -19.1 109.5 -19.1C109.6 -19.2 109.6 -19.2 109.6 -19.2C109.6 -19.2 109.7 -19.2 109.7 -19.2C109.7 -19.2 109.7 -19.3 109.7 -19.3C109.7 -19.3 109.7 -19.3 109.7 -19.3C109.7 -19.3 109.7 -24.5 109.7 -19.4C109.7 -14.2 109.6 6.4 109.6 11.5C109.6 16.5 109.7 11 109.7 10.8C109.7 10.6 109.7 10.4 109.7 10.2C109.7 10 109.7 9.8 109.7 9.6C109.7 9.4 109.7 9.1 109.7 8.9C109.7 8.7 109.7 8.5 109.7 8.3C109.6 8.1 109.6 7.9 109.6 7.7C109.6 7.5 109.5 7.2 109.5 7C109.5 6.8 109.4 10.7 109.4 6.4C109.3 2.1 109.2 -14.8 109.2 -19Z\" data-part=\"hair-cap\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><g data-part=\"glasses\"><ellipse cx=\"-45.4\" cy=\"-4.7\" rx=\"34\" ry=\"33\" fill=\"#ffffff\" fill-opacity=\"0.16\" stroke=\"#7c5a44\" stroke-width=\"5\"/><ellipse cx=\"45.4\" cy=\"-4.7\" rx=\"34\" ry=\"33\" fill=\"#ffffff\" fill-opacity=\"0.16\" stroke=\"#7c5a44\" stroke-width=\"5\"/><path d=\"M-15.4 -8.7Q0 -18.7 15.4 -8.7\" fill=\"none\" stroke=\"#7c5a44\" stroke-width=\"5\"/></g></g></g></g></svg>"
+  },
+  {
+   "id": "personagens-profissoes-1",
+   "file": "personagens-profissoes-1.rspack",
+   "sha256": "0a91fe1e6ea78d26d5f41f6de9a23e94bbec064f4148c18f8ffd88189cd875ca",
+   "size": 23940,
+   "name": "Personagens · Profissões 1",
+   "version": "1.0.0",
+   "description": "Trinta e cinco profissionais originais: professores, médicos e enfermagem, policiais, comerciantes, motoristas e trabalhadores, com uniformes e acessórios do ofício.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Personagens",
+   "collection": "Personagens",
+   "volume": 1,
+   "tags": [
+    "personagem",
+    "pré-pronto"
+   ],
+   "dependencies": [],
+   "itemCount": 35,
+   "counts": {
+    "character": 35
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-prof-marisa",
+     "name": "Professora Marisa",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Professores"
+    },
+    {
+     "id": "rs-prof-ernesto",
+     "name": "Professor Ernesto",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Professores"
+    },
+    {
+     "id": "rs-prof-lucia",
+     "name": "Professora Lúcia",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Professores"
+    },
+    {
+     "id": "rs-prof-claudio",
+     "name": "Professor Cláudio",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Professores"
+    },
+    {
+     "id": "rs-prof-rita",
+     "name": "Professora Rita",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Professores"
+    },
+    {
+     "id": "rs-prof-tadeu",
+     "name": "Professor Tadeu",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Professores"
+    },
+    {
+     "id": "rs-med-helena",
+     "name": "Dra. Helena Prado",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Médicos"
+    },
+    {
+     "id": "rs-med-fabio",
+     "name": "Dr. Fábio Neves",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Médicos"
+    },
+    {
+     "id": "rs-med-sandra",
+     "name": "Enfermeira Sandra",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Médicos"
+    },
+    {
+     "id": "rs-med-jorge",
+     "name": "Enfermeiro Jorge",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Médicos"
+    },
+    {
+     "id": "rs-med-amara",
+     "name": "Dra. Amara Okoye",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Médicos"
+    },
+    {
+     "id": "rs-med-roberto",
+     "name": "Dr. Roberto Salles",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Médicos"
+    },
+    {
+     "id": "rs-pol-ferreira",
+     "name": "Cabo Ferreira",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Policiais"
+    },
+    {
+     "id": "rs-pol-tania",
+     "name": "Soldado Tânia",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Policiais"
+    },
+    {
+     "id": "rs-pol-aguiar",
+     "name": "Delegado Aguiar",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Policiais"
+    },
+    {
+     "id": "rs-pol-edson",
+     "name": "Guarda Edson",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Policiais"
+    },
+    {
+     "id": "rs-pol-carvalho",
+     "name": "Inspetora Carvalho",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Policiais"
+    },
+    {
+     "id": "rs-com-valter",
+     "name": "Padeiro Valter",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Comerciantes"
+    },
+    {
+     "id": "rs-com-dino",
+     "name": "Açougueiro Dino",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Comerciantes"
+    },
+    {
+     "id": "rs-com-rosa",
+     "name": "Dona Rosa da Feira",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Comerciantes"
+    },
+    {
+     "id": "rs-com-lauro",
+     "name": "Seu Lauro do Mercado",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Comerciantes"
+    },
+    {
+     "id": "rs-com-vera",
+     "name": "Vera da Floricultura",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Comerciantes"
+    },
+    {
+     "id": "rs-com-anselmo",
+     "name": "Anselmo do Sebo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Comerciantes"
+    },
+    {
+     "id": "rs-mot-genival",
+     "name": "Genival, o Motorista",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Motoristas"
+    },
+    {
+     "id": "rs-mot-joel",
+     "name": "Joel, o Taxista",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Motoristas"
+    },
+    {
+     "id": "rs-mot-zeroberto",
+     "name": "Zé Roberto Caminhoneiro",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Motoristas"
+    },
+    {
+     "id": "rs-mot-kaua",
+     "name": "Kauã, o Motoboy",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Motoristas"
+    },
+    {
+     "id": "rs-trab-nelson",
+     "name": "Pedreiro Nelson",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Trabalhadores"
+    },
+    {
+     "id": "rs-trab-murilo",
+     "name": "Eletricista Murilo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Trabalhadores"
+    },
+    {
+     "id": "rs-trab-tereza",
+     "name": "Cozinheira Tereza",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Trabalhadores"
+    },
+    {
+     "id": "rs-trab-fabricio",
+     "name": "Garçom Fabrício",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Trabalhadores"
+    },
+    {
+     "id": "rs-trab-dalva",
+     "name": "Dona Dalva da Limpeza",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Trabalhadores"
+    },
+    {
+     "id": "rs-trab-osmar",
+     "name": "Mecânico Osmar",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Trabalhadores"
+    },
+    {
+     "id": "rs-trab-vicente",
+     "name": "Seu Vicente, o Agricultor",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Trabalhadores"
+    },
+    {
+     "id": "rs-trab-raimundo",
+     "name": "Raimundo, o Pescador",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Trabalhadores"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -638.4 440 668.4\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(37.6 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"37.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"29.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"35.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"27.1\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M0 94l0 12\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linecap=\"round\"/><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#181920\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-37.6 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"37.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"29.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"35.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#2b2d3a\" stroke-width=\"27.1\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M0 94l0 12\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linecap=\"round\"/><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#181920\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g></g></g></g></g><g transform=\"translate(0 -178)\"><path d=\"M-58.5 -2Q-81.5 68.5 -88.5 139Q0 151 88.5 139Q81.5 68.5 58.5 -2Z\" data-part=\"skirt\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-44.3 141L-17.6 6M44.3 141L17.6 6\" stroke=\"#23202b\" stroke-opacity=\".3\" stroke-width=\"2.4\" fill=\"none\"/></g><g data-part=\"torso-group\" transform=\"translate(0 -178) rotate(0)\"><path d=\"M-38.7 -164C-53.9 -161.5 -67 -159.2 -70.3 -146C-73.6 -132.8 -64.4 -91.3 -62.6 -69.7C-60.8 -48.2 -74.2 -2.9 -57.4 8C-40.6 18.9 40.6 18.9 57.4 8C74.2 -2.9 60.8 -48.2 62.6 -69.7C64.4 -91.3 73.6 -132.8 70.3 -146C67 -159.2 53.9 -161.5 38.7 -164C23.4 -166.5 -23.4 -166.5 -38.7 -164Z\" data-part=\"torso\" fill=\"#58a59a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-156\" rx=\"29.5\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-59.1 -6Q0 4 59.1 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-26 -162L0 -84L26 -162Z\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-26 -162L-38 -136L-16 -128L0 -84M26 -162L38 -136L16 -128L0 -84\" fill=\"#4d9188\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><circle cx=\"5\" cy=\"-68\" r=\"3.5\" fill=\"#23202b\"/><circle cx=\"5\" cy=\"-46\" r=\"3.5\" fill=\"#23202b\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"33.1\" stroke-linecap=\"round\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#d5a681\" stroke-width=\"25.9\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(68.9 -148) rotate(-7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"33.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#58a59a\" stroke-width=\"25.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31.8\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#58a59a\" stroke-width=\"23.8\" stroke-linecap=\"round\"/><rect x=\"-14.7\" y=\"64\" width=\"29.5\" height=\"10\" rx=\"3\" fill=\"#46847b\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#97755b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-68.9 -148) rotate(7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"33.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#58a59a\" stroke-width=\"25.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31.8\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#58a59a\" stroke-width=\"23.8\" stroke-linecap=\"round\"/><rect x=\"-14.7\" y=\"64\" width=\"29.5\" height=\"10\" rx=\"3\" fill=\"#46847b\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#97755b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -272.4) rotate(0 0 94.4)\"><g data-part=\"hair-blob\" data-depth=\"behind\"><circle cx=\"0\" cy=\"-112.1\" r=\"40\" fill=\"#5c3b28\" stroke=\"#23202b\" stroke-width=\"4\"/><path d=\"M-22 -120.1Q0 -144.9 22 -120.1\" fill=\"none\" stroke=\"#452c1e\" stroke-width=\"2.5\"/></g><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#a27e62\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#a27e62\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10.5 -118 21.5 -116.3 31.6 -113.2C41.6 -110.1 51.6 -105.3 60.3 -99.3C69 -93.3 77 -85.6 83.6 -77.3C90.1 -68.9 95.7 -59.1 99.6 -49C103.6 -38.9 106.5 -28 107.3 -16.8C108.1 -5.6 107.4 6.5 104.2 18.1C101 29.8 94.5 42.1 88.2 52.9C81.9 63.8 74 74.4 66.6 83.5C59.1 92.5 51 100.7 43.5 107.2C35.9 113.7 28.4 118.9 21.2 122.3C14 125.6 7.1 127.4 0 127.4C-7.1 127.4 -14 125.6 -21.2 122.3C-28.4 118.9 -35.9 113.7 -43.5 107.2C-51 100.7 -59.1 92.5 -66.6 83.5C-74 74.4 -81.9 63.8 -88.2 52.9C-94.5 42.1 -101 29.8 -104.2 18.1C-107.4 6.5 -108.1 -5.6 -107.3 -16.8C-106.5 -28 -103.6 -38.9 -99.6 -49C-95.7 -59.1 -90.1 -68.9 -83.6 -77.3C-77 -85.6 -69 -93.3 -60.3 -99.3C-51.6 -105.3 -41.6 -110.1 -31.6 -113.2C-21.5 -116.3 -10.5 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"eye\" data-eye=\"R\" data-rx=\"28\" data-ry=\"19\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"13.2\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M28 3C28 4.8 27.2 6.3 25.9 8.2C24.5 10 22.3 12.3 19.8 14C17.3 15.7 14 17.5 10.7 18.4C7.4 19.2 3.6 19.4 0 19C-3.6 18.6 -7.4 17.6 -10.7 16.1C-14 14.5 -17.3 12 -19.8 9.7C-22.3 7.5 -24.5 4.7 -25.9 2.6C-27.2 0.5 -28 -1.2 -28 -3C-28 -4.8 -27.2 -6.3 -25.9 -8.2C-24.5 -10 -22.3 -12.3 -19.8 -14C-17.3 -15.7 -14 -17.5 -10.7 -18.4C-7.4 -19.2 -3.6 -19.4 0 -19C3.6 -18.6 7.4 -17.6 10.7 -16.1C14 -14.5 17.3 -12 19.8 -9.7C22.3 -7.5 24.5 -4.7 25.9 -2.6C27.2 -0.5 28 1.2 28 3Z\"/></clipPath><path d=\"M28 3C28 4.8 27.2 6.3 25.9 8.2C24.5 10 22.3 12.3 19.8 14C17.3 15.7 14 17.5 10.7 18.4C7.4 19.2 3.6 19.4 0 19C-3.6 18.6 -7.4 17.6 -10.7 16.1C-14 14.5 -17.3 12 -19.8 9.7C-22.3 7.5 -24.5 4.7 -25.9 2.6C-27.2 0.5 -28 -1.2 -28 -3C-28 -4.8 -27.2 -6.3 -25.9 -8.2C-24.5 -10 -22.3 -12.3 -19.8 -14C-17.3 -15.7 -14 -17.5 -10.7 -18.4C-7.4 -19.2 -3.6 -19.4 0 -19C3.6 -18.6 7.4 -17.6 10.7 -16.1C14 -14.5 17.3 -12 19.8 -9.7C22.3 -7.5 24.5 -4.7 25.9 -2.6C27.2 -0.5 28 1.2 28 3Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"13.2\" fill=\"#2a2f3d\"/><circle cx=\"4\" cy=\"-4.8\" r=\"3.6\" fill=\"#fff\"/></g><path d=\"M28 3C28 4.8 27.2 6.3 25.9 8.2C24.5 10 22.3 12.3 19.8 14C17.3 15.7 14 17.5 10.7 18.4C7.4 19.2 3.6 19.4 0 19C-3.6 18.6 -7.4 17.6 -10.7 16.1C-14 14.5 -17.3 12 -19.8 9.7C-22.3 7.5 -24.5 4.7 -25.9 2.6C-27.2 0.5 -28 -1.2 -28 -3C-28 -4.8 -27.2 -6.3 -25.9 -8.2C-24.5 -10 -22.3 -12.3 -19.8 -14C-17.3 -15.7 -14 -17.5 -10.7 -18.4C-7.4 -19.2 -3.6 -19.4 0 -19C3.6 -18.6 7.4 -17.6 10.7 -16.1C14 -14.5 17.3 -12 19.8 -9.7C22.3 -7.5 24.5 -4.7 25.9 -2.6C27.2 -0.5 28 1.2 28 3Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M-18.4 -38.7C-22.9 -40.1 -36.4 -46.7 -45.4 -46.7C-54.4 -46.7 -67.9 -40.1 -72.4 -38.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#5c3b28\" stroke-width=\"5.5\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"28\" data-ry=\"19\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"13.2\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M28 -3C28 -1.2 27.2 0.5 25.9 2.6C24.5 4.7 22.3 7.5 19.8 9.7C17.3 12 14 14.5 10.7 16.1C7.4 17.6 3.6 18.6 0 19C-3.6 19.4 -7.4 19.2 -10.7 18.4C-14 17.5 -17.3 15.7 -19.8 14C-22.3 12.3 -24.5 10 -25.9 8.2C-27.2 6.3 -28 4.8 -28 3C-28 1.2 -27.2 -0.5 -25.9 -2.6C-24.5 -4.7 -22.3 -7.5 -19.8 -9.7C-17.3 -12 -14 -14.5 -10.7 -16.1C-7.4 -17.6 -3.6 -18.6 0 -19C3.6 -19.4 7.4 -19.2 10.7 -18.4C14 -17.5 17.3 -15.7 19.8 -14C22.3 -12.3 24.5 -10 25.9 -8.2C27.2 -6.3 28 -4.8 28 -3Z\"/></clipPath><path d=\"M28 -3C28 -1.2 27.2 0.5 25.9 2.6C24.5 4.7 22.3 7.5 19.8 9.7C17.3 12 14 14.5 10.7 16.1C7.4 17.6 3.6 18.6 0 19C-3.6 19.4 -7.4 19.2 -10.7 18.4C-14 17.5 -17.3 15.7 -19.8 14C-22.3 12.3 -24.5 10 -25.9 8.2C-27.2 6.3 -28 4.8 -28 3C-28 1.2 -27.2 -0.5 -25.9 -2.6C-24.5 -4.7 -22.3 -7.5 -19.8 -9.7C-17.3 -12 -14 -14.5 -10.7 -16.1C-7.4 -17.6 -3.6 -18.6 0 -19C3.6 -19.4 7.4 -19.2 10.7 -18.4C14 -17.5 17.3 -15.7 19.8 -14C22.3 -12.3 24.5 -10 25.9 -8.2C27.2 -6.3 28 -4.8 28 -3Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"13.2\" fill=\"#2a2f3d\"/><circle cx=\"4\" cy=\"-4.8\" r=\"3.6\" fill=\"#fff\"/></g><path d=\"M28 -3C28 -1.2 27.2 0.5 25.9 2.6C24.5 4.7 22.3 7.5 19.8 9.7C17.3 12 14 14.5 10.7 16.1C7.4 17.6 3.6 18.6 0 19C-3.6 19.4 -7.4 19.2 -10.7 18.4C-14 17.5 -17.3 15.7 -19.8 14C-22.3 12.3 -24.5 10 -25.9 8.2C-27.2 6.3 -28 4.8 -28 3C-28 1.2 -27.2 -0.5 -25.9 -2.6C-24.5 -4.7 -22.3 -7.5 -19.8 -9.7C-17.3 -12 -14 -14.5 -10.7 -16.1C-7.4 -17.6 -3.6 -18.6 0 -19C3.6 -19.4 7.4 -19.2 10.7 -18.4C14 -17.5 17.3 -15.7 19.8 -14C22.3 -12.3 24.5 -10 25.9 -8.2C27.2 -6.3 28 -4.8 28 -3Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M18.4 -38.7C22.9 -40.1 36.4 -46.7 45.4 -46.7C54.4 -46.7 67.9 -40.1 72.4 -38.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#5c3b28\" stroke-width=\"5.5\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-0.9 -8.1Q-6 5 -3.3 7.7Q0 11.3 3.3 7.7Q6 5 0.9 -8.1\" fill=\"#dcab85\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#b4525c\" stroke-width=\"5\" stroke-linecap=\"round\"/></g></g><path d=\"M-99.4 -46C-98.6 -48.5 -96.3 -56 -94.1 -60.7C-92 -65.5 -89.4 -70 -86.7 -74.4C-83.9 -78.8 -80.8 -83 -77.6 -87C-74.3 -91 -70.8 -94.8 -67 -98.3C-63.3 -101.8 -59.4 -105 -55.3 -108C-51.1 -110.9 -46.8 -113.5 -42.4 -115.8C-38 -118.1 -33.4 -120 -28.7 -121.5C-24.1 -123.1 -19.3 -124.3 -14.5 -125.1C-9.7 -125.9 -4.8 -126.3 0 -126.3C4.8 -126.3 9.7 -125.9 14.5 -125.1C19.3 -124.3 24.1 -123.1 28.7 -121.5C33.4 -120 38 -118.1 42.4 -115.8C46.8 -113.5 51.1 -110.9 55.3 -108C59.4 -105 63.3 -101.8 67 -98.3C70.8 -94.8 74.3 -91 77.6 -87C80.8 -83 83.9 -78.8 86.7 -74.4C89.4 -70 92 -65.5 94.1 -60.7C96.3 -56 98.6 -48.5 99.4 -46L100.3 -46.4C98.5 -49.4 92.9 -60.3 89.6 -64.5C86.3 -68.6 84 -68.9 80.4 -71.1C76.9 -73.3 72.7 -75.5 68.2 -77.7C63.8 -79.9 58.6 -82.6 53.9 -84.4C49.3 -86.1 44.8 -87.2 40.3 -88.1C35.9 -88.9 31.7 -88.9 27.3 -89.4C22.8 -89.8 18.2 -90.3 13.6 -90.7C9.1 -91.2 4.5 -92 0 -92C-4.5 -92 -9.1 -91.2 -13.6 -90.7C-18.2 -90.3 -22.8 -89.8 -27.3 -89.4C-31.7 -88.9 -35.9 -88.9 -40.3 -88.1C-44.8 -87.2 -49.3 -86.1 -53.9 -84.4C-58.6 -82.6 -63.8 -79.9 -68.2 -77.7C-72.7 -75.5 -76.9 -73.3 -80.4 -71.1C-84 -68.9 -86.3 -68.6 -89.6 -64.5C-92.9 -60.3 -98.5 -49.4 -100.3 -46.4Z\" data-part=\"hair-cap\" fill=\"#5c3b28\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-99.4 -46C-98.6 -48.5 -96.3 -56 -94.1 -60.7C-92 -65.5 -89.4 -70 -86.7 -74.4C-83.9 -78.8 -80.8 -83 -77.6 -87C-74.3 -91 -70.8 -94.8 -67 -98.3C-63.3 -101.8 -59.4 -105 -55.3 -108C-51.1 -110.9 -46.8 -113.5 -42.4 -115.8C-38 -118.1 -33.4 -120 -28.7 -121.5C-24.1 -123.1 -19.3 -124.3 -14.5 -125.1C-9.7 -125.9 -4.8 -126.3 0 -126.3C4.8 -126.3 9.7 -125.9 14.5 -125.1C19.3 -124.3 24.1 -123.1 28.7 -121.5C33.4 -120 38 -118.1 42.4 -115.8C46.8 -113.5 51.1 -110.9 55.3 -108C59.4 -105 63.3 -101.8 67 -98.3C70.8 -94.8 74.3 -91 77.6 -87C80.8 -83 83.9 -78.8 86.7 -74.4C89.4 -70 92 -65.5 94.1 -60.7C96.3 -56 98.6 -48.5 99.4 -46L100.3 -46.4C98.5 -49.4 92.9 -60.3 89.6 -64.5C86.3 -68.6 84 -68.9 80.4 -71.1C76.9 -73.3 72.7 -75.5 68.2 -77.7C63.8 -79.9 58.6 -82.6 53.9 -84.4C49.3 -86.1 44.8 -87.2 40.3 -88.1C35.9 -88.9 31.7 -88.9 27.3 -89.4C22.8 -89.8 18.2 -90.3 13.6 -90.7C9.1 -91.2 4.5 -92 0 -92C-4.5 -92 -9.1 -91.2 -13.6 -90.7C-18.2 -90.3 -22.8 -89.8 -27.3 -89.4C-31.7 -88.9 -35.9 -88.9 -40.3 -88.1C-44.8 -87.2 -49.3 -86.1 -53.9 -84.4C-58.6 -82.6 -63.8 -79.9 -68.2 -77.7C-72.7 -75.5 -76.9 -73.3 -80.4 -71.1C-84 -68.9 -86.3 -68.6 -89.6 -64.5C-92.9 -60.3 -98.5 -49.4 -100.3 -46.4Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-59.4 -96.8Q-10.8 -120.4 45.4 -100.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#765a4a\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g><g data-part=\"glasses\"><ellipse cx=\"-45.4\" cy=\"-4.7\" rx=\"34\" ry=\"33\" fill=\"#ffffff\" fill-opacity=\"0.16\" stroke=\"#7c5a44\" stroke-width=\"5\"/><ellipse cx=\"45.4\" cy=\"-4.7\" rx=\"34\" ry=\"33\" fill=\"#ffffff\" fill-opacity=\"0.16\" stroke=\"#7c5a44\" stroke-width=\"5\"/><path d=\"M-15.4 -8.7Q0 -18.7 15.4 -8.7\" fill=\"none\" stroke=\"#7c5a44\" stroke-width=\"5\"/></g></g></g></g></svg>"
+  },
+  {
+   "id": "poses-1",
+   "file": "poses-1.rspack",
+   "sha256": "cdfb55f223dd1a2abe37750271adb873c5adb0bd166e2ea535ecead7ea83f545",
+   "size": 12021,
+   "name": "Poses · Gestos e Ações 1",
+   "version": "1.0.0",
+   "description": "Trinta e cinco poses reutilizáveis para o rig humano padrão: gestos, emoções, ações, esporte e trabalho. Selecione um personagem e aplique.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Poses",
+   "collection": "Poses",
+   "volume": 1,
+   "tags": [
+    "pose"
+   ],
+   "dependencies": [],
+   "itemCount": 35,
+   "counts": {
+    "pose": 35
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-pose-continencia",
+     "name": "Continência",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-coracao",
+     "name": "Mão no coração",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-chamando",
+     "name": "Chamando com a mão",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-pare",
+     "name": "Mão em \"pare\"",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-soco-ar",
+     "name": "Punho para cima",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-ola-duplo",
+     "name": "Acenando com as duas mãos",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-bracos-abertos",
+     "name": "Braços abertos",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-abracando",
+     "name": "Abraçando",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-correndo",
+     "name": "Correndo",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-andando-rapido",
+     "name": "Andando depressa",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-pulando",
+     "name": "Pulando",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-chutando",
+     "name": "Chutando",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-dancando",
+     "name": "Dançando",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-guarda-boxe",
+     "name": "Guarda de boxe",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-soco",
+     "name": "Dando um soco",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-ajoelhado",
+     "name": "Ajoelhado",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-cansado",
+     "name": "Cansado",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-triste",
+     "name": "Triste",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-bravo",
+     "name": "Bravo, punhos cerrados",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-timido",
+     "name": "Tímido",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-orando",
+     "name": "Mãos juntas",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-bandeja",
+     "name": "Segurando bandeja",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-telefone",
+     "name": "Ao telefone",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-lendo",
+     "name": "Lendo",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-digitando",
+     "name": "Sentado digitando",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-dirigindo",
+     "name": "Dirigindo",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-sentado-relax",
+     "name": "Sentado relaxado",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-carregando",
+     "name": "Carregando uma caixa",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-apresentando",
+     "name": "Apresentando",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-encolhido",
+     "name": "Encolhido de medo",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-heroi",
+     "name": "Pose de herói",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-surpreso",
+     "name": "Surpreso, braços abertos",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-espreguicando",
+     "name": "Espreguiçando",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-cuidado",
+     "name": "Na ponta dos pés",
+     "kind": "pose",
+     "category": "Poses"
+    },
+    {
+     "id": "rs-pose-brindando",
+     "name": "Brindando",
+     "kind": "pose",
+     "category": "Poses"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -624.88 440 654.88\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(36.4 -171.6)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 80.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 80.6\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"28.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 80.6) rotate(0)\"><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"26.2\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 73)\"><g data-part=\"foot\"><path d=\"M-23.8 91L23.8 91Q25.8 77 14.4 63L-14.4 63Q-25.8 77 -23.8 91Z\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-23.8\" y=\"88\" width=\"47.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6 74l11.9 0M-6 80l11.9 0\" stroke=\"#faf9f6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-36.4 -171.6)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 80.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 80.6\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"28.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 80.6) rotate(0)\"><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"26.2\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 73)\"><g data-part=\"foot\"><path d=\"M-23.8 91L23.8 91Q25.8 77 14.4 63L-14.4 63Q-25.8 77 -23.8 91Z\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-23.8\" y=\"88\" width=\"47.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6 74l11.9 0M-6 80l11.9 0\" stroke=\"#faf9f6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g transform=\"translate(0 -171.6)\"><path d=\"M-57 -2Q-72.6 32.3 -79 66.5Q0 78.5 79 66.5Q72.6 32.3 57 -2Z\" data-part=\"skirt\" fill=\"#3d4a66\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-39.5 68.5L-17.1 6M39.5 68.5L17.1 6\" stroke=\"#23202b\" stroke-opacity=\".3\" stroke-width=\"2.4\" fill=\"none\"/></g><g data-part=\"torso-group\" transform=\"translate(0 -171.6) rotate(0)\"><g transform=\"translate(0 -265.3)\"><path d=\"M-79 -29.5C-112.1 -24.4 -111.9 -9.2 -119.4 0.9C-127 11 -124.7 21.1 -124.3 31.3C-123.8 41.4 -120.4 51.5 -116.7 61.7C-113 71.8 -111.2 86 -102 92C-92.7 98.1 -74.8 96.3 -61.2 97.9C-47.6 99.5 -34 100.9 -20.4 101.6C-6.8 102.2 6.8 102.2 20.4 101.6C34 100.9 47.6 99.5 61.2 97.9C74.8 96.3 92.7 98.1 102 92C111.2 86 113 71.8 116.7 61.7C120.4 51.5 123.8 41.4 124.3 31.3C124.7 21.1 127 11 119.4 0.9C111.9 -9.2 112.1 -24.4 79 -29.5C45.9 -34.6 -45.9 -34.6 -79 -29.5Z\" data-part=\"hair-back\" data-layer=\"behind-body\" fill=\"#3a2333\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><path d=\"M-34.4 -157.4C-48 -154.8 -59.3 -152 -62.6 -139.4C-66 -126.7 -59.5 -87.6 -58.6 -66.9C-57.6 -46.3 -71.9 -2.5 -55.8 8C-39.8 18.5 39.8 18.5 55.8 8C71.9 -2.5 57.6 -46.3 58.6 -66.9C59.5 -87.6 66 -126.7 62.6 -139.4C59.3 -152 48 -154.8 34.4 -157.4C20.9 -159.9 -20.9 -159.9 -34.4 -157.4Z\" data-part=\"torso\" fill=\"#e98f4e\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-149.4\" rx=\"26.3\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-57.5 -6Q0 4 57.5 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-26 -155.4Q0 -135.4 26 -155.4\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-55.8 -22L55.8 -22\" stroke=\"#af6b3b\" stroke-width=\"6\"/><path d=\"M0 -180.9L0 -151.4\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31.5\" stroke-linecap=\"round\"/><path d=\"M0 -180.9L0 -151.4\" fill=\"none\" stroke=\"#dfb998\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(61.4 -141.4) rotate(-7)\"><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.8\" stroke-linecap=\"round\"/><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#e98f4e\" stroke-width=\"24.8\" stroke-linecap=\"round\"/><g transform=\"translate(0 73) rotate(0)\"><path d=\"M0 0L0 67.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M0 0L0 67.2\" fill=\"none\" stroke=\"#e98f4e\" stroke-width=\"23\" stroke-linecap=\"round\"/><rect x=\"-14.3\" y=\"61.2\" width=\"28.5\" height=\"10\" rx=\"3\" fill=\"#ba723e\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 71.9q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 71.9q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"82\" rx=\"12.8\" ry=\"16.2\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 94.9v-9.4M2 96.2v-9.4\" stroke=\"#9d836b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -265.3) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#a98d74\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#a98d74\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10.1 -118 20.7 -116.3 30.4 -113.2C40.2 -110.1 49.9 -105.3 58.4 -99.3C66.9 -93.3 75 -85.6 81.6 -77.3C88.3 -68.9 94 -59.1 98.2 -49C102.5 -38.9 105.7 -27.8 106.9 -16.8C108.1 -5.8 107.9 5.8 105.7 16.8C103.5 27.8 99 38.9 93.9 49C88.7 59.1 82 68.9 75 77.3C68 85.6 60 93.3 51.9 99.3C43.8 105.3 35 110.1 26.4 113.2C17.7 116.3 8.8 118 0 118C-8.8 118 -17.7 116.3 -26.4 113.2C-35 110.1 -43.8 105.3 -51.9 99.3C-60 93.3 -68 85.6 -75 77.3C-82 68.9 -88.7 59.1 -93.9 49C-99 38.9 -103.5 27.8 -105.7 16.8C-107.9 5.8 -108.1 -5.8 -106.9 -16.8C-105.7 -27.8 -102.5 -38.9 -98.2 -49C-94 -59.1 -88.3 -68.9 -81.6 -77.3C-75 -85.6 -66.9 -93.3 -58.4 -99.3C-49.9 -105.3 -40.2 -110.1 -30.4 -113.2C-20.7 -116.3 -10.1 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><circle cx=\"-55.4\" cy=\"29.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"-45.4\" cy=\"34.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"-35.4\" cy=\"28.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"-40.4\" cy=\"23.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"-50.4\" cy=\"24.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"35.4\" cy=\"29.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"45.4\" cy=\"34.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"55.4\" cy=\"28.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"50.4\" cy=\"23.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"40.4\" cy=\"24.3\" r=\"1.7\" fill=\"#967d66\"/><g data-part=\"eye\" data-eye=\"R\" data-rx=\"28\" data-ry=\"32\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14.8\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\"/></clipPath><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14.8\" fill=\"#2a2f3d\"/><circle cx=\"4.4\" cy=\"-5.3\" r=\"4\" fill=\"#fff\"/></g><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-18.2 -23l-7 -7M-26.6 -9.6l-9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M-19.4 -51.7C-23.7 -52.4 -36.7 -55.7 -45.4 -55.7C-54 -55.7 -67 -52.4 -71.4 -51.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#3a2333\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"28\" data-ry=\"32\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14.8\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\"/></clipPath><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14.8\" fill=\"#2a2f3d\"/><circle cx=\"4.4\" cy=\"-5.3\" r=\"4\" fill=\"#fff\"/></g><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M18.2 -23l7 -7M26.6 -9.6l9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M19.4 -51.7C23.7 -52.4 36.7 -55.7 45.4 -55.7C54 -55.7 67 -52.4 71.4 -51.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#3a2333\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-0.9 -8.1Q-6 5 -3.3 7.7Q0 11.3 3.3 7.7Q6 5 0.9 -8.1\" fill=\"#e6bf9d\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#c4556a\" stroke-width=\"5\" stroke-linecap=\"round\"/></g></g><circle data-part=\"earring\" cx=\"-110.2\" cy=\"44.8\" r=\"7.5\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"2\"/><circle data-part=\"earring\" cx=\"110.2\" cy=\"44.8\" r=\"7.5\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"2\"/><path d=\"M-101.3 40.9C-103.3 36.9 -110.7 25.2 -113.3 16.9C-115.8 8.6 -116.4 -0.3 -116.5 -9C-116.7 -17.6 -116 -26.5 -114.2 -35.1C-112.5 -43.6 -109.8 -52.2 -106.2 -60.2C-102.6 -68.2 -98.1 -76.1 -92.8 -83.1C-87.4 -90.2 -81.2 -96.8 -74.4 -102.5C-67.6 -108.2 -59.9 -113.3 -52 -117.4C-44 -121.4 -35.4 -124.6 -26.7 -126.6C-18.1 -128.7 -8.9 -129.8 0 -129.8C8.9 -129.8 18.1 -128.7 26.7 -126.6C35.4 -124.6 44 -121.4 52 -117.4C59.9 -113.3 67.6 -108.2 74.4 -102.5C81.2 -96.8 87.4 -90.2 92.8 -83.1C98.1 -76.1 102.6 -68.2 106.2 -60.2C109.8 -52.2 112.5 -43.6 114.2 -35.1C116 -26.5 116.7 -17.6 116.5 -9C116.4 -0.3 115.8 8.6 113.3 16.9C110.7 25.2 103.3 36.9 101.3 40.9L102.2 41.3C102.8 37.5 106.3 29.9 105.7 18.5C105 7.1 102.1 -15.4 98.1 -27.2C94 -39.1 86.4 -47.4 81.2 -52.6C76 -57.8 72 -56.6 67 -58.5C62 -60.4 56.3 -62.7 51 -63.9C45.6 -65 40.3 -64.9 34.7 -65.4C29.2 -65.9 23.3 -66.4 17.5 -66.9C11.7 -67.4 5.8 -68.4 0 -68.4C-5.8 -68.4 -11.7 -67.4 -17.5 -66.9C-23.3 -66.4 -29.2 -65.9 -34.7 -65.4C-40.3 -64.9 -45.6 -65 -51 -63.9C-56.3 -62.7 -62 -60.4 -67 -58.5C-72 -56.6 -76 -57.8 -81.2 -52.6C-86.4 -47.4 -94 -39.1 -98.1 -27.2C-102.1 -15.4 -105 7.1 -105.7 18.5C-106.3 29.9 -102.8 37.5 -102.2 41.3Z\" data-part=\"hair-cap\" fill=\"#3a2333\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-101.3 40.9C-103.3 36.9 -110.7 25.2 -113.3 16.9C-115.8 8.6 -116.4 -0.3 -116.5 -9C-116.7 -17.6 -116 -26.5 -114.2 -35.1C-112.5 -43.6 -109.8 -52.2 -106.2 -60.2C-102.6 -68.2 -98.1 -76.1 -92.8 -83.1C-87.4 -90.2 -81.2 -96.8 -74.4 -102.5C-67.6 -108.2 -59.9 -113.3 -52 -117.4C-44 -121.4 -35.4 -124.6 -26.7 -126.6C-18.1 -128.7 -8.9 -129.8 0 -129.8C8.9 -129.8 18.1 -128.7 26.7 -126.6C35.4 -124.6 44 -121.4 52 -117.4C59.9 -113.3 67.6 -108.2 74.4 -102.5C81.2 -96.8 87.4 -90.2 92.8 -83.1C98.1 -76.1 102.6 -68.2 106.2 -60.2C109.8 -52.2 112.5 -43.6 114.2 -35.1C116 -26.5 116.7 -17.6 116.5 -9C116.4 -0.3 115.8 8.6 113.3 16.9C110.7 25.2 103.3 36.9 101.3 40.9L102.2 41.3C102.8 37.5 106.3 29.9 105.7 18.5C105 7.1 102.1 -15.4 98.1 -27.2C94 -39.1 86.4 -47.4 81.2 -52.6C76 -57.8 72 -56.6 67 -58.5C62 -60.4 56.3 -62.7 51 -63.9C45.6 -65 40.3 -64.9 34.7 -65.4C29.2 -65.9 23.3 -66.4 17.5 -66.9C11.7 -67.4 5.8 -68.4 0 -68.4C-5.8 -68.4 -11.7 -67.4 -17.5 -66.9C-23.3 -66.4 -29.2 -65.9 -34.7 -65.4C-40.3 -64.9 -45.6 -65 -51 -63.9C-56.3 -62.7 -62 -60.4 -67 -58.5C-72 -56.6 -76 -57.8 -81.2 -52.6C-86.4 -47.4 -94 -39.1 -98.1 -27.2C-102.1 -15.4 -105 7.1 -105.7 18.5C-106.3 29.9 -102.8 37.5 -102.2 41.3Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-59.4 -96.8Q-10.8 -120.4 45.4 -100.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#5a4654\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g></g><g data-part=\"arm-R\" data-depth=\"front\" transform=\"translate(-61.4 -141.4) rotate(107)\"><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.8\" stroke-linecap=\"round\"/><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#e98f4e\" stroke-width=\"24.8\" stroke-linecap=\"round\"/><g transform=\"translate(0 73) rotate(140)\"><path d=\"M0 0L0 67.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M0 0L0 67.2\" fill=\"none\" stroke=\"#e98f4e\" stroke-width=\"23\" stroke-linecap=\"round\"/><rect x=\"-14.3\" y=\"61.2\" width=\"28.5\" height=\"10\" rx=\"3\" fill=\"#ba723e\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 71.9q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 71.9q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"82\" rx=\"12.8\" ry=\"16.2\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 94.9v-9.4M2 96.2v-9.4\" stroke=\"#9d836b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g></g></g></svg>"
+  },
+  {
    "id": "vila-torta-assets-1",
    "file": "vila-torta-assets-1.rspack",
    "sha256": "dfa0b939c173242398a7884899476037ad940ea2481b040d0829c8d3819639ed",
