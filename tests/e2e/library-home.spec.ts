@@ -46,11 +46,14 @@ test('item individual: copiar, renomear, duplicar, favoritar e apagar sem projet
   await page.getByTestId('library-rename').click();
   await page.getByTestId('prompt-input').fill('Sofá da vovó');
   await page.getByTestId('prompt-ok').click();
+  // O popup continua aberto e já mostra o nome novo; favoritar e duplicar acontecem dentro dele.
+  await expect(page.getByTestId('library-name')).toHaveText('Sofá da vovó');
   await expect(item(page, 'Sofá da vovó')).toBeVisible();
-  await item(page, 'Sofá da vovó').click();
   await page.getByTestId('library-favorite').click();
   await expect(page.getByTestId('library-favorite')).toHaveAttribute('aria-pressed', 'true');
   await page.getByTestId('library-duplicate').click();
+  await page.keyboard.press('Escape');
+  await expect(page.getByTestId('library-detail')).toHaveCount(0);
   await expect(page.getByTestId('library-item')).toHaveCount(2);
 
   // O item salvo na Biblioteca principal está no Studio.

@@ -101,7 +101,7 @@ test.describe('catálogo · computador', () => {
     const copy = card(page, 'my-object', 'Sofá (cópia)');
     await expect(copy).toHaveCount(1);
     const key = await copy.getAttribute('data-key');
-    expect(key).toMatch(/^project:object:obj_/);
+    expect(key).toMatch(/^project:object:[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/); // ID novo = UUID v4
     const copyHtml = await copy.locator('svg').first().innerHTML();
     expect(copyHtml.toLowerCase()).toContain('#ff0000');
     const origHtml = await card(page, 'prop-card', 'Sofá').locator('svg').first().innerHTML();

@@ -13,7 +13,9 @@ import { createPiece } from '@/engine/world/pieces';
 import { animatedTemplate } from '@/features/catalog/animatedTemplates';
 import type { CatalogEntry } from '@/features/catalog/catalog';
 import { createAndOpen, openProjectById } from '@/features/projects/session';
-import { repo, StorageQuotaError, type LibraryKind, type LibraryRecord } from '@/storage/db';
+import { db, repo, StorageQuotaError, type LibraryKind, type LibraryRecord } from '@/storage/db';
+import { identityOf, planIdChange } from '@/features/library/changeId';
+import { builtinIds } from '@/features/packs/builtinIds';
 import { editEntry, reloadLibrary, useLibrary } from './catalogActions';
 import { libIdentity, newCustomObject, newScenery } from './creatorActions';
 import { usePacks } from './packActions';
@@ -190,4 +192,36 @@ export async function importLibraryJson(text: string): Promise<{ created: number
 /** Tamanho aproximado do item salvo (dados + imagens). */
 export function recordBytes(data: unknown, assetSizes = 0): number {
   try { return new Blob([JSON.stringify(data)]).size + assetSizes; } catch { return assetSizes; }
+}
+
+/**
+ * Alterar o ID de um item da minha biblioteca: valida (1–40, A-Z a-z 0-9 -, livre no catálogo), pede confirmação,
+ * atualiza as referências em outros itens da biblioteca e grava tudo de uma vez. Projetos .jrec não são tocados.
+ */
+export async function changeItemId(libId: string): Promise<boolean> {
+  const [records, packs] = await Promise.all([repo.listLibrary(), repo.listPacks()]);
+  const r = records.find((x) => x.id === libId);
+  if (!r) return false;
+  const raw = await promptDialog('Alterar ID', 'Novo ID (1 a 40 caracteres: letras sem acento, números e hífen)', identityOf(r));
+  if (raw === null || raw === identityOf(r)) return false;
+  const plan = planIdChange({ records, packs, builtin: builtinIds(), libId, newId: raw });
+  if (!plan.ok) { toast(plan.message, 'error'); return false; }
+  const ok = await confirmDialog({
+    title: 'Alterar ID do item',
+    message: `Mudar o ID de "${r.name}" de ${plan.oldId} para ${plan.newId}? ${plan.referencesUpdated ? `${plan.referencesUpdated} outro(s) item(ns) da biblioteca que usam este ID serão atualizados. ` : ''}Projetos já salvos guardam a própria cópia e continuam abrindo como estão.`,
+    confirmLabel: 'Alterar ID',
+  });
+  if (ok !== true) return false;
+  try {
+    await db.transaction('rw', db.library, async () => {
+      for (const id of plan.remove) await db.library.delete(id);
+      for (const rec of plan.put) await db.library.put(rec);
+    });
+  } catch (e) {
+    toast(storageError(e, 'Não foi possível alterar o ID'), 'error');
+    return false;
+  }
+  await reloadLibrary();
+  toast(`ID de "${r.name}" alterado para ${plan.newId}.`, 'success');
+  return true;
 }

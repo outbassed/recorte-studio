@@ -191,12 +191,23 @@ function CatalogCard({ e, project, list, variant, active, onDetails }: { e: Cata
 
 /* ------------------------------ detalhes ------------------------------ */
 const VIEWS: Array<{ id: ViewId; label: string }> = [{ id: 'front', label: 'Frente' }, { id: 'left', label: 'Esquerda' }, { id: 'right', label: 'Direita' }, { id: 'back', label: 'Costas' }];
+const DIAGONALS: Array<{ id: ViewId; label: string }> = [{ id: 'front-left', label: 'Diag. frontal esq.' }, { id: 'front-right', label: 'Diag. frontal dir.' }, { id: 'back-left', label: 'Diag. traseira esq.' }, { id: 'back-right', label: 'Diag. traseira dir.' }];
+
+/** As 4 vistas principais, com as 4 diagonais atrás de um botão (o personagem tem 8 vistas). */
+function CharacterViews({ e, project }: { e: CatalogEntry; project: Project }) {
+  const [diag, setDiag] = useState(false);
+  const list = diag ? [...VIEWS, ...DIAGONALS] : VIEWS;
+  return (
+    <>
+      <div className="cat-views" data-testid="catalog-views">{list.map((v) => <figure key={v.id} data-view={v.id}><EntryThumb e={e} project={project} size={84} view={v.id} full /><figcaption>{v.label}</figcaption></figure>)}</div>
+      <button type="button" className="btn btn-sm" data-testid="catalog-diagonals" aria-pressed={diag} onClick={() => setDiag(!diag)}>{diag ? 'Só as 4 vistas principais' : 'Ver as diagonais (8 vistas)'}</button>
+    </>
+  );
+}
 
 export function DetailPreview({ e, project }: { e: CatalogEntry; project: Project }) {
   if (e.broken) return <p className="lib-error" role="alert">Indisponível: {e.broken} Você pode apagar este registro.</p>;
-  if (e.kind === 'character') {
-    return <div className="cat-views" data-testid="catalog-views">{VIEWS.map((v) => <figure key={v.id}><EntryThumb e={e} project={project} size={84} view={v.id} full /><figcaption>{v.label}</figcaption></figure>)}</div>;
-  }
+  if (e.kind === 'character') return <CharacterViews e={e} project={project} />;
   if (e.ref.type === 'project-background') {
     const cb = project.customBackgrounds[e.ref.id];
     return cb ? <CustomBackgroundCard cb={cb} /> : null;
