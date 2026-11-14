@@ -11,7 +11,7 @@ import {
 } from '@/features/catalog/catalog';
 import { reloadLibrary, useLibrary } from '@/state/catalogActions';
 import { createInLibrary, importLibraryJson, storageError } from '@/state/libraryHomeActions';
-import { reloadPacks, usePacks } from '@/state/packActions';
+import { reloadPacks, useOfficial, usePacks } from '@/state/packActions';
 import { setPref, usePrefs } from '@/state/prefs';
 import { useProject } from '@/state/projectStore';
 import { closeOverlay, toast } from '@/state/uiStore';
@@ -19,7 +19,8 @@ import { IconButton, SearchBox } from '../controls/fields';
 import { ScrollStrip } from '../controls/ScrollStrip';
 import { EntryThumb } from '../panels/Catalog';
 import { ItemDetailPopup } from './ItemDetail';
-import { inspectPackFile, inspectDemoPack, PacksTab, type Inspected } from './PackPage';
+import { inspectPackFile, inspectDemoPack, inspectOfficialBytes, PacksTab, type Inspected } from './PackPage';
+import { OfficialCatalog } from './OfficialCatalog';
 
 const ORIGINS: CatalogFilter[] = ['all', 'builtin', 'official', 'packs', 'mine', 'favorites', 'recent', 'project'];
 export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
@@ -30,6 +31,7 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
   const loaded = useLibrary((s) => s.loaded);
   const libError = useLibrary((s) => s.error);
   const packs = usePacks((s) => s.packs);
+  const officialIndex = useOfficial((s) => s.index);
   const favorites = usePrefs((s) => s.catalogFavorites);
   const recents = usePrefs((s) => s.catalogRecents);
   const layout = usePrefs((s) => s.catalogLayout);
@@ -39,13 +41,14 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
   const [inspected, setInspected] = useState<Inspected | null>(null);
   const [busy, setBusy] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
+  const officialRef = useRef<HTMLDivElement>(null);
   useEffect(() => { void reloadLibrary(); void reloadPacks(); }, []);
   const favSet = useMemo(() => new Set(favorites), [favorites]);
   const entries = useMemo(() => buildCatalog({ project: base, library: records, favorites: favSet, packs }), [base, records, favSet, packs]);
   const list = useMemo(() => queryCatalog(entries, 'all', q, recents), [entries, q, recents]);
   const cats = useMemo(() => categoriesOf(entries, 'all'), [entries]);
   const subs = useMemo(() => (q.category ? subcategoriesOf(entries, q.category) : []), [entries, q.category]);
-  const kinds = useMemo(() => [...new Set(entries.map((e) => e.kind))] as CatalogKind[], [entries]);
+  const kinds = useMemo(() => [...new Set([...entries.map((e) => e.kind), ...(officialIndex?.packs ?? []).flatMap((p) => p.items.map((i) => i.kind))])] as CatalogKind[], [entries, officialIndex]);
   const hasPacks = entries.some((e) => e.origin === 'pack');
   const hasOfficial = entries.some((e) => e.origin === 'pack' && e.official);
   const themes = useMemo(() => (['series', 'holiday', 'event'] as CatalogTheme[]).filter((t) => entries.some((e) => themesOf(e).includes(t))), [entries]);
@@ -58,6 +61,8 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
   const set = (p: Partial<CatalogQuery>) => setQ((o) => ({ ...o, ...p }));
   const sel = detail ? entries.find((e) => e.key === detail) : undefined;
   const isList = layout === 'list';
+  const showOfficial = q.filter === 'all' || q.filter === 'official';
+  const scrollToOfficial = () => requestAnimationFrame(() => officialRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
 
   const onFile = async (f: File) => {
     if (/\.(rspack|zip)$/i.test(f.name)) {
@@ -100,7 +105,7 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
       </ScrollStrip>
       {busy && <p className="hint" role="status" data-testid="library-busy">{busy}</p>}
       {tab === 'packs' ? (
-        <PacksTab onBrowse={(b) => { setTab('items'); setInspected(null); set({ ...DEFAULT_QUERY, filter: b.filter ?? 'all', kind: b.kind ?? null, packId: b.packId ?? null }); }} inspected={inspected} setInspected={setInspected} onInspectDemo={async () => { setBusy('Montando o pacote de demonstração…'); try { setInspected(await inspectDemoPack()); } finally { setBusy(''); } }} />
+        <PacksTab onBrowse={(b) => { setTab('items'); setInspected(null); set({ ...DEFAULT_QUERY, filter: b.filter ?? 'all', kind: b.kind ?? null, packId: b.packId ?? null }); if (b.showOfficial) scrollToOfficial(); }} onBackToCatalog={() => { setTab('items'); scrollToOfficial(); }} inspected={inspected} setInspected={setInspected} onInspectDemo={async () => { setBusy('Montando o pacote de demonstração…'); try { setInspected(await inspectDemoPack()); } finally { setBusy(''); } }} />
       ) : (
         <>
           <div className="libh-filters">
@@ -156,10 +161,12 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
               </select>
               <IconButton label={isList ? 'Ver em grade' : 'Ver em lista'} testId="library-layout" onClick={() => setPref('catalogLayout', isList ? 'grid' : 'list')}>{isList ? <LayoutGrid size={16} /> : <List size={16} />}</IconButton>
               <span className="hint" data-testid="library-count">{list.length} item(ns)</span>
+              {showOfficial && <button type="button" className="btn btn-sm" data-testid="library-jump-official" onClick={scrollToOfficial}>Explorar pacotes oficiais ({officialIndex?.packs.length ?? '…'})</button>}
             </div>
           </div>
           {!loaded && <p className="hint" role="status">Carregando sua biblioteca…</p>}
           {libError && <p className="lib-error" role="alert">Não foi possível ler sua biblioteca neste navegador: {libError}. Os itens padrão continuam disponíveis.</p>}
+          <div className="off-group-head"><div><h3>Itens da Biblioteca</h3><small>Conteúdo padrão, seus itens e pacotes já instalados</small></div></div>
           <div className="libh-body">
             <div className={isList ? 'libh-list' : 'libh-grid'} data-testid="library-results">
               {list.slice(0, limit).map((e) => (
@@ -174,6 +181,15 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
             </div>
             {sel && <ItemDetailPopup e={sel} project={base} inEditor={inEditor} onClose={() => setDetail(null)} />}
           </div>
+          {showOfficial && (
+            <div ref={officialRef} className="libh-official" data-testid="library-official-section">
+              <header className="off-group-head"><div><h3>Catálogo oficial</h3><small>Conteúdos disponíveis para instalar, agrupados por coleções e volumes</small></div></header>
+              <OfficialCatalog query={q} onInspect={async (entry, bytes) => {
+                const r = await inspectOfficialBytes(entry, bytes);
+                if (r) { setInspected(r); setTab('packs'); }
+              }} />
+            </div>
+          )}
         </>
       )}
     </div>
