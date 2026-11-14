@@ -220,7 +220,7 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
                   </button>
               )}
               {shelf.length === 0 && <p className="empty" data-testid="library-empty">{q.text ? 'Nada encontrado com esse termo.' : q.filter === 'mine' ? 'Você ainda não salvou nada. Crie um item acima ou salve pelo Studio (detalhes → Salvar na biblioteca).' : q.filter === 'favorites' ? 'Nenhum favorito ainda.' : 'Nada aqui.'}</p>}
-              {limit < shelf.length && <div className="cat-more"><button type="button" className="btn btn-sm" onClick={() => setLimit((l) => l + 80)}>Mostrar mais ({shelf.length - limit})</button></div>
+              {limit < shelf.length && <div className="cat-more"><button type="button" className="btn btn-sm" onClick={() => setLimit((l) => l + 80)}>Mostrar mais ({shelf.length - limit})</button></div>}
             </div>
             {sel && <ItemDetailPopup e={sel} project={base} inEditor={inEditor} onClose={() => setDetail(null)} />}
           </div>
