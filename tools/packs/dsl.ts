@@ -40,7 +40,8 @@ const extent = (specs: Spec[]) => {
     x0 = Math.min(x0, (s.x ?? 0) - hw); x1 = Math.max(x1, (s.x ?? 0) + hw);
     y0 = Math.min(y0, (s.y ?? 0) - h / 2); y1 = Math.max(y1, (s.y ?? 0) + h / 2);
   }
-  return { w: Math.round(Math.max(x1 - x0, 40)), h: Math.round(Math.max(y1 - y0, 40)), cx: (x0 + x1) / 2 };
+  // O motor mede a caixa a partir do chão (y=0) e centrada em x=0: altura = chão até o topo; largura = 2 × maior alcance lateral.
+  return { w: Math.round(Math.max(2 * Math.max(Math.abs(x0), Math.abs(x1)), 40)), h: Math.round(Math.max(-y0, 40)), cx: (x0 + x1) / 2 };
 };
 
 export interface Frames { name?: string; ms?: number; mode?: 'loop' | 'once' | 'pingpong'; frames: Spec[][] }

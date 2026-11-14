@@ -3,6 +3,1212 @@
  "formatVersion": 1,
  "packs": [
   {
+   "id": "decoracao-1",
+   "file": "decoracao-1.rspack",
+   "sha256": "d9ad7f09975d3683bdc36c5fb8b4e09779a3653c43e8c57f3bbb4b13fa4d90fe",
+   "size": 14414,
+   "name": "Casa · Decoração 1",
+   "version": "1.0.0",
+   "description": "Quadros, espelho, vasos, cortina, tapete, vela, aquário, luzinhas e lareira.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Decoração",
+   "collection": "Casa",
+   "volume": 1,
+   "tags": [
+    "casa"
+   ],
+   "dependencies": [],
+   "itemCount": 19,
+   "counts": {
+    "object": 19
+   },
+   "animated": 2,
+   "items": [
+    {
+     "id": "rs-quadro-paisagem",
+     "name": "Quadro de paisagem",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Parede"
+    },
+    {
+     "id": "rs-quadro-retrato",
+     "name": "Quadro de retrato",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Parede"
+    },
+    {
+     "id": "rs-espelho",
+     "name": "Espelho de parede",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Parede"
+    },
+    {
+     "id": "rs-vaso-flor",
+     "name": "Vaso de flores",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-vaso-planta",
+     "name": "Vaso com planta",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-cortina",
+     "name": "Cortina",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Janela"
+    },
+    {
+     "id": "rs-tapete",
+     "name": "Tapete",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Chão"
+    },
+    {
+     "id": "rs-luminaria-parede",
+     "name": "Luminária de parede",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Parede"
+    },
+    {
+     "id": "rs-porta-retrato",
+     "name": "Porta-retrato",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-vela",
+     "name": "Vela acesa",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-aquario",
+     "name": "Aquário",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-globo-luz",
+     "name": "Luzes de varal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Festa"
+    },
+    {
+     "id": "rs-guirlanda-flores",
+     "name": "Guirlanda de flores",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Festa"
+    },
+    {
+     "id": "rs-lareira",
+     "name": "Lareira",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Sala"
+    },
+    {
+     "id": "rs-cofre",
+     "name": "Cofre",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Escritório"
+    },
+    {
+     "id": "rs-escultura-abstrata",
+     "name": "Escultura abstrata",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-mapa-mundi",
+     "name": "Mapa-múndi",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Parede"
+    },
+    {
+     "id": "rs-cabideiro-parede",
+     "name": "Cabideiro de parede",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Parede"
+    },
+    {
+     "id": "rs-estatueta-gato",
+     "name": "Gato da sorte",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Mesa"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-84.00000000000001 -146.5 168.00000000000003 168.00000000000003\"><g data-piece=\"p0\" transform=\"translate(0 -70)\"><rect x=\"-75\" y=\"-55\" width=\"150\" height=\"110\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -70)\"><rect x=\"-65\" y=\"-45\" width=\"130\" height=\"90\" rx=\"0\" fill=\"#bfe3f2\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-24 -64)\"><path d=\"M0 -22L30 22L-30 22Z\" fill=\"#6dad6f\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(24 -60)\"><path d=\"M0 -18L25 18L-25 18Z\" fill=\"#3f7a4a\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(34 -98)\"><ellipse cx=\"0\" cy=\"0\" rx=\"10\" ry=\"10\" fill=\"#f2c95c\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "eletrodomesticos-1",
+   "file": "eletrodomesticos-1.rspack",
+   "sha256": "2013aeb440423f8667d2e69d7bb48453ef8adc6ac2b931f4c4c57c730a43779d",
+   "size": 16845,
+   "name": "Casa · Eletrodomésticos 1",
+   "version": "1.0.0",
+   "description": "Geladeira, fogão, micro-ondas, máquina de lavar, ventiladores e mais; vários com animação (batendo, girando, fervendo).",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Eletrodomésticos",
+   "collection": "Casa",
+   "volume": 1,
+   "tags": [
+    "casa"
+   ],
+   "dependencies": [],
+   "itemCount": 20,
+   "counts": {
+    "object": 20
+   },
+   "animated": 7,
+   "items": [
+    {
+     "id": "rs-geladeira",
+     "name": "Geladeira",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-fogao",
+     "name": "Fogão",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-micro-ondas",
+     "name": "Micro-ondas",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-liquidificador",
+     "name": "Liquidificador",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-torradeira",
+     "name": "Torradeira",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-cafeteira",
+     "name": "Cafeteira",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-chaleira-eletrica",
+     "name": "Chaleira elétrica",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-maquina-lavar",
+     "name": "Máquina de lavar roupa",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Lavanderia"
+    },
+    {
+     "id": "rs-ferro-passar",
+     "name": "Ferro de passar",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Lavanderia"
+    },
+    {
+     "id": "rs-aspirador",
+     "name": "Aspirador de pó",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Lavanderia"
+    },
+    {
+     "id": "rs-ventilador-mesa",
+     "name": "Ventilador de mesa",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Ar e clima"
+    },
+    {
+     "id": "rs-ar-condicionado",
+     "name": "Ar-condicionado",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Ar e clima"
+    },
+    {
+     "id": "rs-aquecedor",
+     "name": "Aquecedor elétrico",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Ar e clima"
+    },
+    {
+     "id": "rs-televisao",
+     "name": "Televisão de tela plana",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Eletrônicos"
+    },
+    {
+     "id": "rs-radio-antigo",
+     "name": "Rádio antigo",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Eletrônicos"
+    },
+    {
+     "id": "rs-lustre",
+     "name": "Lustre",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Iluminação"
+    },
+    {
+     "id": "rs-abajur-chao",
+     "name": "Abajur de chão",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Iluminação"
+    },
+    {
+     "id": "rs-ventilador-teto",
+     "name": "Ventilador de teto",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Ar e clima"
+    },
+    {
+     "id": "rs-relogio-parede",
+     "name": "Relógio de parede",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Decoração"
+    },
+    {
+     "id": "rs-maquina-costura",
+     "name": "Máquina de costura",
+     "kind": "object",
+     "category": "Eletrodomésticos",
+     "subcategory": "Lavanderia"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-212.8 -402.8 425.6 425.6\"><g data-piece=\"p0\" transform=\"translate(0 -190)\"><rect x=\"-75\" y=\"-190\" width=\"150\" height=\"380\" rx=\"0\" fill=\"#cfd4da\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -130)\"><rect x=\"-75\" y=\"-2\" width=\"150\" height=\"4\" rx=\"0\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-56 -190)\"><rect x=\"-4\" y=\"-45\" width=\"8\" height=\"90\" rx=\"0\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-56 -90)\"><rect x=\"-4\" y=\"-25\" width=\"8\" height=\"50\" rx=\"0\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(0 -6)\"><ellipse cx=\"0\" cy=\"0\" rx=\"70\" ry=\"6\" fill=\"#4a5360\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "eletronicos-1",
+   "file": "eletronicos-1.rspack",
+   "sha256": "a829ab721d77beea4ed38b939f0af0239c1d8c02d655540918c7c1f5f3562c11",
+   "size": 10922,
+   "name": "Casa · Eletrônicos 1",
+   "version": "1.0.0",
+   "description": "Notebook, monitor, celular, tablet, fones, câmeras, videogame e impressora.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Eletrônicos",
+   "collection": "Casa",
+   "volume": 1,
+   "tags": [
+    "casa"
+   ],
+   "dependencies": [],
+   "itemCount": 16,
+   "counts": {
+    "object": 16
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-notebook",
+     "name": "Notebook",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Computadores"
+    },
+    {
+     "id": "rs-monitor",
+     "name": "Monitor de computador",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Computadores"
+    },
+    {
+     "id": "rs-teclado",
+     "name": "Teclado",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Computadores"
+    },
+    {
+     "id": "rs-mouse",
+     "name": "Mouse de computador",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Computadores"
+    },
+    {
+     "id": "rs-celular",
+     "name": "Celular",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Telefones"
+    },
+    {
+     "id": "rs-tablet",
+     "name": "Tablet",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Telefones"
+    },
+    {
+     "id": "rs-telefone-fixo",
+     "name": "Telefone fixo",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Telefones"
+    },
+    {
+     "id": "rs-fone-ouvido",
+     "name": "Fone de ouvido",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Áudio"
+    },
+    {
+     "id": "rs-caixa-som",
+     "name": "Caixa de som",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Áudio"
+    },
+    {
+     "id": "rs-microfone",
+     "name": "Microfone com pedestal",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Áudio"
+    },
+    {
+     "id": "rs-camera-foto",
+     "name": "Câmera fotográfica",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Imagem"
+    },
+    {
+     "id": "rs-filmadora",
+     "name": "Câmera de filmagem",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Imagem"
+    },
+    {
+     "id": "rs-controle-tv",
+     "name": "Controle remoto",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Imagem"
+    },
+    {
+     "id": "rs-console-jogos",
+     "name": "Console de videogame",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Jogos"
+    },
+    {
+     "id": "rs-controle-jogo",
+     "name": "Controle de videogame",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Jogos"
+    },
+    {
+     "id": "rs-impressora",
+     "name": "Impressora",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Escritório"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-112.00000000000001 -174.5 224.00000000000003 224.00000000000003\"><g data-piece=\"p0\" transform=\"translate(0 -70)\"><rect x=\"-85\" y=\"-55\" width=\"170\" height=\"110\" rx=\"8\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -72)\"><rect x=\"-77\" y=\"-46\" width=\"154\" height=\"92\" rx=\"0\" fill=\"#3d4a66\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -8)\"><rect x=\"-100\" y=\"-7\" width=\"200\" height=\"14\" rx=\"6\" fill=\"#cfd4da\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "moveis-1",
+   "file": "moveis-1.rspack",
+   "sha256": "ed44fe5f638f342e89579f06991189dfb6aa2728ee51b3a0b8779454df106a42",
+   "size": 23393,
+   "name": "Casa · Móveis 1",
+   "version": "1.0.0",
+   "description": "Cadeiras, mesas, sofás, camas, armários e estantes desenhados com peças editáveis.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Móveis",
+   "collection": "Casa",
+   "volume": 1,
+   "tags": [
+    "casa"
+   ],
+   "dependencies": [],
+   "itemCount": 33,
+   "counts": {
+    "object": 33
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-cadeira-madeira",
+     "name": "Cadeira de madeira",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Cadeiras"
+    },
+    {
+     "id": "rs-cadeira-escritorio",
+     "name": "Cadeira de escritório",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Cadeiras"
+    },
+    {
+     "id": "rs-banco-alto",
+     "name": "Banco alto de bar",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Cadeiras"
+    },
+    {
+     "id": "rs-banqueta",
+     "name": "Banqueta",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Cadeiras"
+    },
+    {
+     "id": "rs-poltrona",
+     "name": "Poltrona",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Sofás e poltronas"
+    },
+    {
+     "id": "rs-sofa-3-lugares",
+     "name": "Sofá de três lugares",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Sofás e poltronas"
+    },
+    {
+     "id": "rs-cadeira-balanco",
+     "name": "Cadeira de balanço",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Cadeiras"
+    },
+    {
+     "id": "rs-cadeira-praia",
+     "name": "Cadeira de praia",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Cadeiras"
+    },
+    {
+     "id": "rs-espreguicadeira",
+     "name": "Espreguiçadeira",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Cadeiras"
+    },
+    {
+     "id": "rs-mesa-jantar",
+     "name": "Mesa de jantar",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Mesas"
+    },
+    {
+     "id": "rs-mesa-redonda",
+     "name": "Mesa redonda",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Mesas"
+    },
+    {
+     "id": "rs-mesa-centro",
+     "name": "Mesa de centro",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Mesas"
+    },
+    {
+     "id": "rs-mesa-escritorio",
+     "name": "Mesa de escritório",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Mesas"
+    },
+    {
+     "id": "rs-mesa-piquenique",
+     "name": "Mesa de piquenique",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Mesas"
+    },
+    {
+     "id": "rs-cama-casal",
+     "name": "Cama de casal",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Camas"
+    },
+    {
+     "id": "rs-cama-solteiro",
+     "name": "Cama de solteiro",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Camas"
+    },
+    {
+     "id": "rs-beliche",
+     "name": "Beliche",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Camas"
+    },
+    {
+     "id": "rs-berco",
+     "name": "Berço",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Camas"
+    },
+    {
+     "id": "rs-guarda-roupa",
+     "name": "Guarda-roupa",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-comoda",
+     "name": "Cômoda",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-criado-mudo",
+     "name": "Criado-mudo",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-estante-livros",
+     "name": "Estante de livros",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-rack-tv",
+     "name": "Rack de TV",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-armario-cozinha",
+     "name": "Armário de cozinha",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-aparador",
+     "name": "Aparador",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-penteadeira",
+     "name": "Penteadeira com espelho",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-rede-dormir",
+     "name": "Rede de dormir",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Camas"
+    },
+    {
+     "id": "rs-prateleira",
+     "name": "Prateleira de parede",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-cabideiro",
+     "name": "Cabideiro de pé",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Armários"
+    },
+    {
+     "id": "rs-cadeira-bebe",
+     "name": "Cadeirão de bebê",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Cadeiras"
+    },
+    {
+     "id": "rs-pufe",
+     "name": "Pufe",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Sofás e poltronas"
+    },
+    {
+     "id": "rs-banco-jardim",
+     "name": "Banco de jardim",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Cadeiras"
+    },
+    {
+     "id": "rs-abajur-mesa",
+     "name": "Abajur de mesa",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Iluminação"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-114.80000000000001 -217.3 229.60000000000002 229.60000000000002\"><g data-piece=\"p0\" transform=\"translate(-34 -40)\"><rect x=\"-7\" y=\"-40\" width=\"14\" height=\"80\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(34 -40)\"><rect x=\"-7\" y=\"-40\" width=\"14\" height=\"80\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -90)\"><rect x=\"-46\" y=\"-7\" width=\"92\" height=\"14\" rx=\"0\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-40 -150)\"><rect x=\"-6\" y=\"-55\" width=\"12\" height=\"110\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(40 -150)\"><rect x=\"-6\" y=\"-55\" width=\"12\" height=\"110\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(0 -175)\"><rect x=\"-46\" y=\"-7\" width=\"92\" height=\"14\" rx=\"0\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(0 -140)\"><rect x=\"-40\" y=\"-5\" width=\"80\" height=\"10\" rx=\"0\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "utensilios-1",
+   "file": "utensilios-1.rspack",
+   "sha256": "f2de151a7528e6eed8a3645a1dac03d44586ae24ea1b1097c756efdc9a37e80c",
+   "size": 16917,
+   "name": "Casa · Utensílios 1",
+   "version": "1.0.0",
+   "description": "Panelas, pratos, copos, talheres, bule, tábua de corte e outros utensílios de cozinha e mesa.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Utensílios",
+   "collection": "Casa",
+   "volume": 1,
+   "tags": [
+    "casa"
+   ],
+   "dependencies": [],
+   "itemCount": 26,
+   "counts": {
+    "object": 26
+   },
+   "animated": 1,
+   "items": [
+    {
+     "id": "rs-panela-pressao",
+     "name": "Panela de pressão",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-frigideira",
+     "name": "Frigideira",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-cacarola",
+     "name": "Caçarola com tampa",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-bule",
+     "name": "Bule",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-xicara-pires",
+     "name": "Xícara com pires",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-caneca",
+     "name": "Caneca",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-copo-agua",
+     "name": "Copo d'água",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-taca",
+     "name": "Taça",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-garrafa-termica",
+     "name": "Garrafa térmica",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-jarra-suco",
+     "name": "Jarra de suco",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-garfo",
+     "name": "Garfo",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Talheres"
+    },
+    {
+     "id": "rs-faca",
+     "name": "Faca de mesa",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Talheres"
+    },
+    {
+     "id": "rs-colher",
+     "name": "Colher",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Talheres"
+    },
+    {
+     "id": "rs-faca-cozinha",
+     "name": "Faca de cozinha",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-tabua-corte",
+     "name": "Tábua de corte",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-rolo-macarrao",
+     "name": "Rolo de macarrão",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-colher-pau",
+     "name": "Colher de pau",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-concha",
+     "name": "Concha",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-peneira",
+     "name": "Peneira",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-balanca-cozinha",
+     "name": "Balança de cozinha",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    },
+    {
+     "id": "rs-tigela",
+     "name": "Tigela",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-prato-raso",
+     "name": "Prato raso",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-saleiro",
+     "name": "Saleiro",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-cesta-pao",
+     "name": "Cesta de pão",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-bandeja",
+     "name": "Bandeja",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Mesa"
+    },
+    {
+     "id": "rs-lixeira-cozinha",
+     "name": "Lixeira com pedal",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Cozinha"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-123.20000000000002 -233.20000000000002 246.40000000000003 246.40000000000003\"><g data-obj-clip=\"anim\" data-obj-frame=\"0\"><g data-piece=\"p0\" transform=\"translate(0 -50)\"><rect x=\"-65\" y=\"-45\" width=\"130\" height=\"90\" rx=\"12\" fill=\"#cfd4da\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -104)\"><rect x=\"-70\" y=\"-8\" width=\"140\" height=\"16\" rx=\"6\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-82 -64)\"><rect x=\"-18\" y=\"-6\" width=\"36\" height=\"12\" rx=\"5\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(82 -64)\"><rect x=\"-18\" y=\"-6\" width=\"36\" height=\"12\" rx=\"5\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(0 -122)\"><rect x=\"-10\" y=\"-9\" width=\"20\" height=\"18\" rx=\"0\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(0 -142)\"><ellipse cx=\"0\" cy=\"0\" rx=\"15\" ry=\"5\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(6 -160)\" opacity=\"0.8\"><ellipse cx=\"0\" cy=\"0\" rx=\"12\" ry=\"10\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></g></svg>"
+  },
+  {
+   "id": "alimentos-1",
+   "file": "alimentos-1.rspack",
+   "sha256": "7ff0ce93ff26f4b04d8e6c72a058acaf7272aa3633d33e3d409eb83cc91917d1",
+   "size": 23391,
+   "name": "Comida · Alimentos 1",
+   "version": "1.0.0",
+   "description": "Frutas, legumes, pratos prontos, pães, doces e bebidas.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Alimentos",
+   "collection": "Comida",
+   "volume": 1,
+   "tags": [
+    "comida"
+   ],
+   "dependencies": [],
+   "itemCount": 36,
+   "counts": {
+    "object": 36
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-maca",
+     "name": "Maçã",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Frutas"
+    },
+    {
+     "id": "rs-banana",
+     "name": "Banana",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Frutas"
+    },
+    {
+     "id": "rs-laranja",
+     "name": "Laranja",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Frutas"
+    },
+    {
+     "id": "rs-uva",
+     "name": "Cacho de uva",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Frutas"
+    },
+    {
+     "id": "rs-melancia",
+     "name": "Fatia de melancia",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Frutas"
+    },
+    {
+     "id": "rs-morango",
+     "name": "Morango",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Frutas"
+    },
+    {
+     "id": "rs-abacaxi",
+     "name": "Abacaxi",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Frutas"
+    },
+    {
+     "id": "rs-limao",
+     "name": "Limão",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Frutas"
+    },
+    {
+     "id": "rs-pera",
+     "name": "Pera",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Frutas"
+    },
+    {
+     "id": "rs-cenoura",
+     "name": "Cenoura",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Legumes"
+    },
+    {
+     "id": "rs-tomate",
+     "name": "Tomate",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Legumes"
+    },
+    {
+     "id": "rs-milho",
+     "name": "Espiga de milho",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Legumes"
+    },
+    {
+     "id": "rs-batata",
+     "name": "Batata",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Legumes"
+    },
+    {
+     "id": "rs-alface",
+     "name": "Alface",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Legumes"
+    },
+    {
+     "id": "rs-brocolis",
+     "name": "Brócolis",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Legumes"
+    },
+    {
+     "id": "rs-pizza",
+     "name": "Fatia de pizza",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Pratos"
+    },
+    {
+     "id": "rs-hamburguer",
+     "name": "Hambúrguer",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Pratos"
+    },
+    {
+     "id": "rs-sanduiche",
+     "name": "Sanduíche",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Pratos"
+    },
+    {
+     "id": "rs-espaguete",
+     "name": "Prato de espaguete",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Pratos"
+    },
+    {
+     "id": "rs-ovo-frito",
+     "name": "Ovo frito",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Pratos"
+    },
+    {
+     "id": "rs-pao-frances",
+     "name": "Pão francês",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Padaria"
+    },
+    {
+     "id": "rs-queijo",
+     "name": "Fatia de queijo",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Padaria"
+    },
+    {
+     "id": "rs-bolo",
+     "name": "Bolo com cobertura",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Doces"
+    },
+    {
+     "id": "rs-cupcake",
+     "name": "Cupcake",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Doces"
+    },
+    {
+     "id": "rs-donut",
+     "name": "Donut",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Doces"
+    },
+    {
+     "id": "rs-sorvete",
+     "name": "Sorvete de casquinha",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Doces"
+    },
+    {
+     "id": "rs-picole",
+     "name": "Picolé",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Doces"
+    },
+    {
+     "id": "rs-chocolate",
+     "name": "Barra de chocolate",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Doces"
+    },
+    {
+     "id": "rs-pirulito",
+     "name": "Pirulito",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Doces"
+    },
+    {
+     "id": "rs-brigadeiro",
+     "name": "Brigadeiro",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Doces"
+    },
+    {
+     "id": "rs-refri-lata",
+     "name": "Lata de refrigerante",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Bebidas"
+    },
+    {
+     "id": "rs-garrafa-agua",
+     "name": "Garrafa d'água",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Bebidas"
+    },
+    {
+     "id": "rs-suco-caixa",
+     "name": "Caixinha de suco",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Bebidas"
+    },
+    {
+     "id": "rs-cafe-copo",
+     "name": "Copo de café",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Bebidas"
+    },
+    {
+     "id": "rs-leite-caixa",
+     "name": "Caixa de leite",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Bebidas"
+    },
+    {
+     "id": "rs-milkshake",
+     "name": "Milkshake",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Bebidas"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-55.440000000000005 -104.94 110.88000000000001 110.88000000000001\"><g data-piece=\"p0\" transform=\"translate(0 -38)\"><ellipse cx=\"0\" cy=\"0\" rx=\"35\" ry=\"33\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(2 -80)\"><rect x=\"-3\" y=\"-9\" width=\"6\" height=\"18\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(14 -92) rotate(60)\"><path d=\"M0 -7L11 7L-11 7Z\" fill=\"#6dad6f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
    "id": "corpos-1",
    "file": "corpos-1.rspack",
    "sha256": "98b02b84e81b67849ccd828d248bd4895ae8ad1f8ebb10e1ba4179cf72420421",
@@ -154,6 +1360,703 @@
     }
    ],
    "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -638.4 440 668.4\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(27.7 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"21.7\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"20\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.2 77l12.4 0M-6.2 83l12.4 0\" stroke=\"#aeb2b7\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-27.7 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"21.7\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"20\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.2 77l12.4 0M-6.2 83l12.4 0\" stroke=\"#aeb2b7\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -178) rotate(0)\"><path d=\"M-45.3 -4Q0 6 45.3 -4L39.7 22L-39.7 22Z\" fill=\"#6b7684\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-24.2 -164C-33.8 -161.5 -41.2 -159.2 -44 -146C-46.8 -132.8 -44.2 -91.3 -44.3 -69.7C-44.3 -48.2 -56.8 -2.9 -44.4 8C-32 18.9 32 18.9 44.4 8C56.8 -2.9 44.3 -48.2 44.3 -69.7C44.2 -91.3 46.8 -132.8 44 -146C41.2 -159.2 33.8 -161.5 24.2 -164C14.7 -166.5 -14.7 -166.5 -24.2 -164Z\" data-part=\"torso\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-156\" rx=\"18.5\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-45.7 -6Q0 4 45.7 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-26 -162Q0 -142 26 -162\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"23.3\" stroke-linecap=\"round\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#bdc1c7\" stroke-width=\"16.1\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(43.1 -148) rotate(-7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"24.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"16.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#9aa3ad\" stroke-width=\"20.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"23\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"15.1\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#85898c\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-43.1 -148) rotate(7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"24.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"16.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#9aa3ad\" stroke-width=\"20.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"23\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"15.1\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#85898c\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -272.4) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#909397\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#909397\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10.1 -118 20.7 -116.3 30.4 -113.2C40.2 -110.1 49.9 -105.3 58.4 -99.3C66.9 -93.3 75 -85.6 81.6 -77.3C88.3 -68.9 94 -59.1 98.2 -49C102.5 -38.9 105.7 -27.8 106.9 -16.8C108.1 -5.8 107.9 5.8 105.7 16.8C103.5 27.8 99 38.9 93.9 49C88.7 59.1 82 68.9 75 77.3C68 85.6 60 93.3 51.9 99.3C43.8 105.3 35 110.1 26.4 113.2C17.7 116.3 8.8 118 0 118C-8.8 118 -17.7 116.3 -26.4 113.2C-35 110.1 -43.8 105.3 -51.9 99.3C-60 93.3 -68 85.6 -75 77.3C-82 68.9 -88.7 59.1 -93.9 49C-99 38.9 -103.5 27.8 -105.7 16.8C-107.9 5.8 -108.1 -5.8 -106.9 -16.8C-105.7 -27.8 -102.5 -38.9 -98.2 -49C-94 -59.1 -88.3 -68.9 -81.6 -77.3C-75 -85.6 -66.9 -93.3 -58.4 -99.3C-49.9 -105.3 -40.2 -110.1 -30.4 -113.2C-20.7 -116.3 -10.1 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"eye\" data-eye=\"R\" data-rx=\"25\" data-ry=\"27\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"12.7\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\"/></clipPath><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"12.7\" fill=\"#2a2f3d\"/><circle cx=\"3.8\" cy=\"-4.6\" r=\"3.4\" fill=\"#fff\"/></g><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M-20.4 -46.7C-24.5 -47.4 -37 -50.7 -45.4 -50.7C-53.7 -50.7 -66.2 -47.4 -70.4 -46.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"25\" data-ry=\"27\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"12.7\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\"/></clipPath><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"12.7\" fill=\"#2a2f3d\"/><circle cx=\"3.8\" cy=\"-4.6\" r=\"3.4\" fill=\"#fff\"/></g><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M20.4 -46.7C24.5 -47.4 37 -50.7 45.4 -50.7C53.7 -50.7 66.2 -47.4 70.4 -46.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-1.3 -12.6Q-9 7.7 -4.9 11.9Q0 17.5 5 11.9Q9 7.7 1.3 -12.6\" fill=\"#c3c8cd\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g></g></g></g></g></svg>"
+  },
+  {
+   "id": "brinquedos-1",
+   "file": "brinquedos-1.rspack",
+   "sha256": "683ca420f820702e122f16a4954d4fc440bebe0fa64c757a57b6c75a438c71a6",
+   "size": 10789,
+   "name": "Diversão · Brinquedos 1",
+   "version": "1.0.0",
+   "description": "Bolas de vários esportes, ursinho, carrinho, blocos, pipa, skate, patins, balão e ioiô.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Brinquedos",
+   "collection": "Diversão",
+   "volume": 1,
+   "tags": [
+    "diversão"
+   ],
+   "dependencies": [],
+   "itemCount": 15,
+   "counts": {
+    "object": 15
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-bola-futebol",
+     "name": "Bola de futebol",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Bolas"
+    },
+    {
+     "id": "rs-bola-basquete",
+     "name": "Bola de basquete",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Bolas"
+    },
+    {
+     "id": "rs-bola-voleibol",
+     "name": "Bola de vôlei",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Bolas"
+    },
+    {
+     "id": "rs-bola-tenis",
+     "name": "Bola de tênis",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Bolas"
+    },
+    {
+     "id": "rs-bola-praia",
+     "name": "Bola de praia",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Bolas"
+    },
+    {
+     "id": "rs-urso-pelucia",
+     "name": "Urso de pelúcia",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Bichos de pelúcia"
+    },
+    {
+     "id": "rs-carrinho-brinquedo",
+     "name": "Carrinho de brinquedo",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Veículos de brinquedo"
+    },
+    {
+     "id": "rs-bloco-letra",
+     "name": "Blocos de montar",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Jogos"
+    },
+    {
+     "id": "rs-quebra-cabeca",
+     "name": "Quebra-cabeça",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Jogos"
+    },
+    {
+     "id": "rs-pipa",
+     "name": "Pipa (papagaio)",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Brinquedos de rua"
+    },
+    {
+     "id": "rs-piao",
+     "name": "Pião",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Brinquedos de rua"
+    },
+    {
+     "id": "rs-patins",
+     "name": "Patins",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Brinquedos de rua"
+    },
+    {
+     "id": "rs-skate",
+     "name": "Skate",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Brinquedos de rua"
+    },
+    {
+     "id": "rs-balao-festa",
+     "name": "Balão de festa",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Festa"
+    },
+    {
+     "id": "rs-ioio",
+     "name": "Ioiô",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Brinquedos de rua"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-41.440000000000005 -77.44 82.88000000000001 82.88000000000001\"><g data-piece=\"p0\" transform=\"translate(0 -36)\"><ellipse cx=\"0\" cy=\"0\" rx=\"36\" ry=\"36\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -36)\"><polygon points=\"0,-13 12.4,-4 7.6,10.5 -7.6,10.5 -12.4,-4\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(30 -36)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(9.2 -64.6)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(-24.4 -53.5)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-24.1 -18.1)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(9.7 -7.6)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "escola-1",
+   "file": "escola-1.rspack",
+   "sha256": "01731025276bbd352db781bd3a33f47705da5d3b5bcea401dd747cbc3d9c63e9",
+   "size": 15006,
+   "name": "Escola · Material escolar e escritório 1",
+   "version": "1.0.0",
+   "description": "Lápis, caderno, mochila, régua, lousa, carteira, globo, troféu e material de escritório.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Escola e escritório",
+   "collection": "Escola",
+   "volume": 1,
+   "tags": [
+    "escola"
+   ],
+   "dependencies": [],
+   "itemCount": 22,
+   "counts": {
+    "object": 22
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-lapis",
+     "name": "Lápis",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-caneta",
+     "name": "Caneta esferográfica",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-borracha",
+     "name": "Borracha",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-caderno",
+     "name": "Caderno",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-livro",
+     "name": "Livro",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-pilha-livros",
+     "name": "Pilha de livros",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-mochila",
+     "name": "Mochila",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-regua",
+     "name": "Régua",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-tesoura",
+     "name": "Tesoura",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-estojo",
+     "name": "Estojo",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-apontador",
+     "name": "Apontador",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Material escolar"
+    },
+    {
+     "id": "rs-globo-terrestre",
+     "name": "Globo terrestre",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Sala de aula"
+    },
+    {
+     "id": "rs-lousa",
+     "name": "Lousa",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Sala de aula"
+    },
+    {
+     "id": "rs-carteira-escolar",
+     "name": "Carteira escolar",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Sala de aula"
+    },
+    {
+     "id": "rs-relogio-despertador",
+     "name": "Despertador",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Escritório"
+    },
+    {
+     "id": "rs-grampeador",
+     "name": "Grampeador",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Escritório"
+    },
+    {
+     "id": "rs-calculadora",
+     "name": "Calculadora",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Escritório"
+    },
+    {
+     "id": "rs-arquivo-pasta",
+     "name": "Pasta de arquivo",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Escritório"
+    },
+    {
+     "id": "rs-prancheta",
+     "name": "Prancheta",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Escritório"
+    },
+    {
+     "id": "rs-bandeira-brasil",
+     "name": "Bandeira do Brasil",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Sala de aula"
+    },
+    {
+     "id": "rs-trofeu",
+     "name": "Troféu",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Prêmios"
+    },
+    {
+     "id": "rs-medalha",
+     "name": "Medalha",
+     "kind": "object",
+     "category": "Escola e escritório",
+     "subcategory": "Prêmios"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-84.56 -160.06 169.12 169.12\"><g data-piece=\"p0\" transform=\"translate(0 -60)\"><rect x=\"-8\" y=\"-60\" width=\"16\" height=\"120\" rx=\"0\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -136)\"><path d=\"M0 -11L8 11L-8 11Z\" fill=\"#f1e3c4\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -146)\"><path d=\"M0 -5L4 5L-4 5Z\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(0 -4)\"><rect x=\"-8\" y=\"-7\" width=\"16\" height=\"14\" rx=\"0\" fill=\"#d27ba6\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "esportes-1",
+   "file": "esportes-1.rspack",
+   "sha256": "44c83e15b269c59939e90099ed38f6c7bb22583a84659ae5210667e22991cf1a",
+   "size": 11636,
+   "name": "Esportes · Equipamentos 1",
+   "version": "1.0.0",
+   "description": "Gol, cesta, rede de vôlei, raquete, halteres, luvas, chuteira, prancha de surfe e mais.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Esportes",
+   "collection": "Esportes",
+   "volume": 1,
+   "tags": [
+    "esportes"
+   ],
+   "dependencies": [],
+   "itemCount": 16,
+   "counts": {
+    "object": 16
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-trave-gol",
+     "name": "Gol de futebol",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Futebol"
+    },
+    {
+     "id": "rs-cesta-basquete",
+     "name": "Cesta de basquete",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Basquete"
+    },
+    {
+     "id": "rs-rede-volei",
+     "name": "Rede de vôlei",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Vôlei"
+    },
+    {
+     "id": "rs-raquete-tenis",
+     "name": "Raquete de tênis",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Tênis"
+    },
+    {
+     "id": "rs-halteres",
+     "name": "Halteres",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Academia"
+    },
+    {
+     "id": "rs-corda-pular",
+     "name": "Corda de pular",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Academia"
+    },
+    {
+     "id": "rs-tapete-yoga",
+     "name": "Tapete de yoga",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Academia"
+    },
+    {
+     "id": "rs-capacete-bike",
+     "name": "Capacete de bike",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Ciclismo"
+    },
+    {
+     "id": "rs-luva-boxe",
+     "name": "Luva de boxe",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Lutas"
+    },
+    {
+     "id": "rs-apito-esporte",
+     "name": "Apito",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Arbitragem"
+    },
+    {
+     "id": "rs-cartao-arbitro",
+     "name": "Cartões de árbitro",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Arbitragem"
+    },
+    {
+     "id": "rs-chuteira",
+     "name": "Chuteira",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Futebol"
+    },
+    {
+     "id": "rs-camisa-time",
+     "name": "Camisa de time",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Futebol"
+    },
+    {
+     "id": "rs-bandeirinha",
+     "name": "Bandeirinha de escanteio",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Futebol"
+    },
+    {
+     "id": "rs-piscina-boia",
+     "name": "Boia de piscina",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Praia e piscina"
+    },
+    {
+     "id": "rs-prancha-surf",
+     "name": "Prancha de surfe",
+     "kind": "object",
+     "category": "Esportes",
+     "subcategory": "Praia e piscina"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-127.68 -219.68 255.36 255.36\"><g data-piece=\"p0\" transform=\"translate(-110 -90)\"><rect x=\"-4\" y=\"-90\" width=\"8\" height=\"180\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(110 -90)\"><rect x=\"-4\" y=\"-90\" width=\"8\" height=\"180\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -180)\"><rect x=\"-114\" y=\"-4\" width=\"228\" height=\"8\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-80 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(-40 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(0 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(40 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(80 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(0 -40)\"><rect x=\"-110\" y=\"-1\" width=\"220\" height=\"2\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p9\" transform=\"translate(0 -90)\"><rect x=\"-110\" y=\"-1\" width=\"220\" height=\"2\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p10\" transform=\"translate(0 -140)\"><rect x=\"-110\" y=\"-1\" width=\"220\" height=\"2\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "instrumentos-1",
+   "file": "instrumentos-1.rspack",
+   "sha256": "f04e98023ea4d0c144b0fd4226e75b5c19e74df4e5f8427569da11ab0822c508",
+   "size": 10693,
+   "name": "Música · Instrumentos 1",
+   "version": "1.0.0",
+   "description": "Violão, guitarra, piano, bateria, pandeiro, trompete, saxofone, sanfona e mais.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Instrumentos musicais",
+   "collection": "Música",
+   "volume": 1,
+   "tags": [
+    "música"
+   ],
+   "dependencies": [],
+   "itemCount": 14,
+   "counts": {
+    "object": 14
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-violao",
+     "name": "Violão",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Cordas"
+    },
+    {
+     "id": "rs-guitarra-eletrica",
+     "name": "Guitarra elétrica",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Cordas"
+    },
+    {
+     "id": "rs-baixo",
+     "name": "Contrabaixo",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Cordas"
+    },
+    {
+     "id": "rs-violino",
+     "name": "Violino",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Cordas"
+    },
+    {
+     "id": "rs-piano",
+     "name": "Piano",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Teclas"
+    },
+    {
+     "id": "rs-teclado-musical",
+     "name": "Teclado musical",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Teclas"
+    },
+    {
+     "id": "rs-bateria",
+     "name": "Bateria",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Percussão"
+    },
+    {
+     "id": "rs-tambor",
+     "name": "Tambor",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Percussão"
+    },
+    {
+     "id": "rs-pandeiro",
+     "name": "Pandeiro",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Percussão"
+    },
+    {
+     "id": "rs-trompete",
+     "name": "Trompete",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Sopro"
+    },
+    {
+     "id": "rs-flauta",
+     "name": "Flauta",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Sopro"
+    },
+    {
+     "id": "rs-saxofone",
+     "name": "Saxofone",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Sopro"
+    },
+    {
+     "id": "rs-sanfona",
+     "name": "Sanfona",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Teclas"
+    },
+    {
+     "id": "rs-maraca",
+     "name": "Maracas",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Percussão"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-157.92000000000002 -298.92 315.84000000000003 315.84000000000003\"><g data-piece=\"p0\" transform=\"translate(0 -50)\"><ellipse cx=\"0\" cy=\"0\" rx=\"50\" ry=\"45\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -118)\"><ellipse cx=\"0\" cy=\"0\" rx=\"35\" ry=\"35\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -82)\"><ellipse cx=\"0\" cy=\"0\" rx=\"14\" ry=\"14\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(0 -190)\"><rect x=\"-8\" y=\"-65\" width=\"16\" height=\"130\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(0 -262)\"><rect x=\"-13\" y=\"-20\" width=\"26\" height=\"40\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-4 -130)\"><rect x=\"-0.7\" y=\"-100\" width=\"1.5\" height=\"200\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(0 -130)\"><rect x=\"-0.7\" y=\"-100\" width=\"1.5\" height=\"200\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(4 -130)\"><rect x=\"-0.7\" y=\"-100\" width=\"1.5\" height=\"200\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "plantas-1",
+   "file": "plantas-1.rspack",
+   "sha256": "f6a06c7c94454680fb780f203b15ccb1c2ccaa2f3c20f48ca3fc7dd353b98ca6",
+   "size": 10428,
+   "name": "Natureza · Plantas 1",
+   "version": "1.0.0",
+   "description": "Árvores, arbustos, flores, cacto, coqueiro, cogumelo e pedras.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Plantas",
+   "collection": "Natureza",
+   "volume": 1,
+   "tags": [
+    "natureza"
+   ],
+   "dependencies": [],
+   "itemCount": 14,
+   "counts": {
+    "object": 14
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-arvore-frondosa",
+     "name": "Árvore frondosa",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Árvores"
+    },
+    {
+     "id": "rs-arvore-pinheiro",
+     "name": "Pinheiro",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Árvores"
+    },
+    {
+     "id": "rs-arvore-frutifera",
+     "name": "Árvore frutífera",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Árvores"
+    },
+    {
+     "id": "rs-palmeira-coqueiro",
+     "name": "Coqueiro",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Árvores"
+    },
+    {
+     "id": "rs-arbusto",
+     "name": "Arbusto",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Jardim"
+    },
+    {
+     "id": "rs-cacto",
+     "name": "Cacto",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Deserto"
+    },
+    {
+     "id": "rs-girassol",
+     "name": "Girassol",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Flores"
+    },
+    {
+     "id": "rs-rosa",
+     "name": "Rosa",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Flores"
+    },
+    {
+     "id": "rs-margarida",
+     "name": "Margarida",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Flores"
+    },
+    {
+     "id": "rs-tulipa",
+     "name": "Tulipa",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Flores"
+    },
+    {
+     "id": "rs-trigo-feixe",
+     "name": "Feixe de trigo",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Campo"
+    },
+    {
+     "id": "rs-toco-tronco",
+     "name": "Tronco cortado",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Floresta"
+    },
+    {
+     "id": "rs-cogumelo",
+     "name": "Cogumelo",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Floresta"
+    },
+    {
+     "id": "rs-pedra-grande",
+     "name": "Pedra grande",
+     "kind": "object",
+     "category": "Plantas",
+     "subcategory": "Floresta"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-159.60000000000002 -302.1 319.20000000000005 319.20000000000005\"><g data-piece=\"p0\" transform=\"translate(0 -80)\"><rect x=\"-20\" y=\"-80\" width=\"40\" height=\"160\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -210)\"><ellipse cx=\"0\" cy=\"0\" rx=\"95\" ry=\"75\" fill=\"#6dad6f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-50 -190)\"><ellipse cx=\"0\" cy=\"0\" rx=\"55\" ry=\"50\" fill=\"#3f7a4a\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(54 -196)\"><ellipse cx=\"0\" cy=\"0\" rx=\"50\" ry=\"45\" fill=\"#7cc48a\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
   },
   {
    "id": "figurantes-1",
@@ -1524,6 +3427,158 @@
     }
    ],
    "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -624.88 440 654.88\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(36.4 -171.6)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 80.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 80.6\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"28.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 80.6) rotate(0)\"><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"26.2\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 73)\"><g data-part=\"foot\"><path d=\"M-23.8 91L23.8 91Q25.8 77 14.4 63L-14.4 63Q-25.8 77 -23.8 91Z\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-23.8\" y=\"88\" width=\"47.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6 74l11.9 0M-6 80l11.9 0\" stroke=\"#faf9f6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-36.4 -171.6)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 80.6\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 80.6\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"28.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 80.6) rotate(0)\"><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"26.2\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 73)\"><g data-part=\"foot\"><path d=\"M-23.8 91L23.8 91Q25.8 77 14.4 63L-14.4 63Q-25.8 77 -23.8 91Z\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-23.8\" y=\"88\" width=\"47.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6 74l11.9 0M-6 80l11.9 0\" stroke=\"#faf9f6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g transform=\"translate(0 -171.6)\"><path d=\"M-57 -2Q-72.6 32.3 -79 66.5Q0 78.5 79 66.5Q72.6 32.3 57 -2Z\" data-part=\"skirt\" fill=\"#3d4a66\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-39.5 68.5L-17.1 6M39.5 68.5L17.1 6\" stroke=\"#23202b\" stroke-opacity=\".3\" stroke-width=\"2.4\" fill=\"none\"/></g><g data-part=\"torso-group\" transform=\"translate(0 -171.6) rotate(0)\"><g transform=\"translate(0 -265.3)\"><path d=\"M-79 -29.5C-112.1 -24.4 -111.9 -9.2 -119.4 0.9C-127 11 -124.7 21.1 -124.3 31.3C-123.8 41.4 -120.4 51.5 -116.7 61.7C-113 71.8 -111.2 86 -102 92C-92.7 98.1 -74.8 96.3 -61.2 97.9C-47.6 99.5 -34 100.9 -20.4 101.6C-6.8 102.2 6.8 102.2 20.4 101.6C34 100.9 47.6 99.5 61.2 97.9C74.8 96.3 92.7 98.1 102 92C111.2 86 113 71.8 116.7 61.7C120.4 51.5 123.8 41.4 124.3 31.3C124.7 21.1 127 11 119.4 0.9C111.9 -9.2 112.1 -24.4 79 -29.5C45.9 -34.6 -45.9 -34.6 -79 -29.5Z\" data-part=\"hair-back\" data-layer=\"behind-body\" fill=\"#3a2333\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><path d=\"M-34.4 -157.4C-48 -154.8 -59.3 -152 -62.6 -139.4C-66 -126.7 -59.5 -87.6 -58.6 -66.9C-57.6 -46.3 -71.9 -2.5 -55.8 8C-39.8 18.5 39.8 18.5 55.8 8C71.9 -2.5 57.6 -46.3 58.6 -66.9C59.5 -87.6 66 -126.7 62.6 -139.4C59.3 -152 48 -154.8 34.4 -157.4C20.9 -159.9 -20.9 -159.9 -34.4 -157.4Z\" data-part=\"torso\" fill=\"#e98f4e\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-149.4\" rx=\"26.3\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-57.5 -6Q0 4 57.5 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-26 -155.4Q0 -135.4 26 -155.4\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-55.8 -22L55.8 -22\" stroke=\"#af6b3b\" stroke-width=\"6\"/><path d=\"M0 -180.9L0 -151.4\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31.5\" stroke-linecap=\"round\"/><path d=\"M0 -180.9L0 -151.4\" fill=\"none\" stroke=\"#dfb998\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(61.4 -141.4) rotate(-7)\"><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.8\" stroke-linecap=\"round\"/><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#e98f4e\" stroke-width=\"24.8\" stroke-linecap=\"round\"/><g transform=\"translate(0 73) rotate(0)\"><path d=\"M0 0L0 67.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M0 0L0 67.2\" fill=\"none\" stroke=\"#e98f4e\" stroke-width=\"23\" stroke-linecap=\"round\"/><rect x=\"-14.3\" y=\"61.2\" width=\"28.5\" height=\"10\" rx=\"3\" fill=\"#ba723e\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 71.9q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 71.9q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"82\" rx=\"12.8\" ry=\"16.2\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 94.9v-9.4M2 96.2v-9.4\" stroke=\"#9d836b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -265.3) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#a98d74\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#a98d74\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10.1 -118 20.7 -116.3 30.4 -113.2C40.2 -110.1 49.9 -105.3 58.4 -99.3C66.9 -93.3 75 -85.6 81.6 -77.3C88.3 -68.9 94 -59.1 98.2 -49C102.5 -38.9 105.7 -27.8 106.9 -16.8C108.1 -5.8 107.9 5.8 105.7 16.8C103.5 27.8 99 38.9 93.9 49C88.7 59.1 82 68.9 75 77.3C68 85.6 60 93.3 51.9 99.3C43.8 105.3 35 110.1 26.4 113.2C17.7 116.3 8.8 118 0 118C-8.8 118 -17.7 116.3 -26.4 113.2C-35 110.1 -43.8 105.3 -51.9 99.3C-60 93.3 -68 85.6 -75 77.3C-82 68.9 -88.7 59.1 -93.9 49C-99 38.9 -103.5 27.8 -105.7 16.8C-107.9 5.8 -108.1 -5.8 -106.9 -16.8C-105.7 -27.8 -102.5 -38.9 -98.2 -49C-94 -59.1 -88.3 -68.9 -81.6 -77.3C-75 -85.6 -66.9 -93.3 -58.4 -99.3C-49.9 -105.3 -40.2 -110.1 -30.4 -113.2C-20.7 -116.3 -10.1 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><circle cx=\"-55.4\" cy=\"29.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"-45.4\" cy=\"34.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"-35.4\" cy=\"28.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"-40.4\" cy=\"23.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"-50.4\" cy=\"24.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"35.4\" cy=\"29.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"45.4\" cy=\"34.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"55.4\" cy=\"28.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"50.4\" cy=\"23.3\" r=\"1.7\" fill=\"#967d66\"/><circle cx=\"40.4\" cy=\"24.3\" r=\"1.7\" fill=\"#967d66\"/><g data-part=\"eye\" data-eye=\"R\" data-rx=\"28\" data-ry=\"32\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14.8\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\"/></clipPath><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14.8\" fill=\"#2a2f3d\"/><circle cx=\"4.4\" cy=\"-5.3\" r=\"4\" fill=\"#fff\"/></g><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-18.2 -23l-7 -7M-26.6 -9.6l-9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M-19.4 -51.7C-23.7 -52.4 -36.7 -55.7 -45.4 -55.7C-54 -55.7 -67 -52.4 -71.4 -51.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#3a2333\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"28\" data-ry=\"32\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"14.8\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\"/></clipPath><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"14.8\" fill=\"#2a2f3d\"/><circle cx=\"4.4\" cy=\"-5.3\" r=\"4\" fill=\"#fff\"/></g><path d=\"M28 0C28 4.1 27.2 8.5 25.9 12.2C24.5 16 22.3 19.7 19.8 22.6C17.3 25.5 14 28 10.7 29.6C7.4 31.1 3.6 32 0 32C-3.6 32 -7.4 31.1 -10.7 29.6C-14 28 -17.3 25.5 -19.8 22.6C-22.3 19.7 -24.5 16 -25.9 12.2C-27.2 8.5 -28 4.1 -28 0C-28 -4.1 -27.2 -8.5 -25.9 -12.2C-24.5 -16 -22.3 -19.7 -19.8 -22.6C-17.3 -25.5 -14 -28 -10.7 -29.6C-7.4 -31.1 -3.6 -32 0 -32C3.6 -32 7.4 -31.1 10.7 -29.6C14 -28 17.3 -25.5 19.8 -22.6C22.3 -19.7 24.5 -16 25.9 -12.2C27.2 -8.5 28 -4.1 28 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M18.2 -23l7 -7M26.6 -9.6l9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M19.4 -51.7C23.7 -52.4 36.7 -55.7 45.4 -55.7C54 -55.7 67 -52.4 71.4 -51.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#3a2333\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-0.9 -8.1Q-6 5 -3.3 7.7Q0 11.3 3.3 7.7Q6 5 0.9 -8.1\" fill=\"#e6bf9d\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#c4556a\" stroke-width=\"5\" stroke-linecap=\"round\"/></g></g><circle data-part=\"earring\" cx=\"-110.2\" cy=\"44.8\" r=\"7.5\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"2\"/><circle data-part=\"earring\" cx=\"110.2\" cy=\"44.8\" r=\"7.5\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"2\"/><path d=\"M-101.3 40.9C-103.3 36.9 -110.7 25.2 -113.3 16.9C-115.8 8.6 -116.4 -0.3 -116.5 -9C-116.7 -17.6 -116 -26.5 -114.2 -35.1C-112.5 -43.6 -109.8 -52.2 -106.2 -60.2C-102.6 -68.2 -98.1 -76.1 -92.8 -83.1C-87.4 -90.2 -81.2 -96.8 -74.4 -102.5C-67.6 -108.2 -59.9 -113.3 -52 -117.4C-44 -121.4 -35.4 -124.6 -26.7 -126.6C-18.1 -128.7 -8.9 -129.8 0 -129.8C8.9 -129.8 18.1 -128.7 26.7 -126.6C35.4 -124.6 44 -121.4 52 -117.4C59.9 -113.3 67.6 -108.2 74.4 -102.5C81.2 -96.8 87.4 -90.2 92.8 -83.1C98.1 -76.1 102.6 -68.2 106.2 -60.2C109.8 -52.2 112.5 -43.6 114.2 -35.1C116 -26.5 116.7 -17.6 116.5 -9C116.4 -0.3 115.8 8.6 113.3 16.9C110.7 25.2 103.3 36.9 101.3 40.9L102.2 41.3C102.8 37.5 106.3 29.9 105.7 18.5C105 7.1 102.1 -15.4 98.1 -27.2C94 -39.1 86.4 -47.4 81.2 -52.6C76 -57.8 72 -56.6 67 -58.5C62 -60.4 56.3 -62.7 51 -63.9C45.6 -65 40.3 -64.9 34.7 -65.4C29.2 -65.9 23.3 -66.4 17.5 -66.9C11.7 -67.4 5.8 -68.4 0 -68.4C-5.8 -68.4 -11.7 -67.4 -17.5 -66.9C-23.3 -66.4 -29.2 -65.9 -34.7 -65.4C-40.3 -64.9 -45.6 -65 -51 -63.9C-56.3 -62.7 -62 -60.4 -67 -58.5C-72 -56.6 -76 -57.8 -81.2 -52.6C-86.4 -47.4 -94 -39.1 -98.1 -27.2C-102.1 -15.4 -105 7.1 -105.7 18.5C-106.3 29.9 -102.8 37.5 -102.2 41.3Z\" data-part=\"hair-cap\" fill=\"#3a2333\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-101.3 40.9C-103.3 36.9 -110.7 25.2 -113.3 16.9C-115.8 8.6 -116.4 -0.3 -116.5 -9C-116.7 -17.6 -116 -26.5 -114.2 -35.1C-112.5 -43.6 -109.8 -52.2 -106.2 -60.2C-102.6 -68.2 -98.1 -76.1 -92.8 -83.1C-87.4 -90.2 -81.2 -96.8 -74.4 -102.5C-67.6 -108.2 -59.9 -113.3 -52 -117.4C-44 -121.4 -35.4 -124.6 -26.7 -126.6C-18.1 -128.7 -8.9 -129.8 0 -129.8C8.9 -129.8 18.1 -128.7 26.7 -126.6C35.4 -124.6 44 -121.4 52 -117.4C59.9 -113.3 67.6 -108.2 74.4 -102.5C81.2 -96.8 87.4 -90.2 92.8 -83.1C98.1 -76.1 102.6 -68.2 106.2 -60.2C109.8 -52.2 112.5 -43.6 114.2 -35.1C116 -26.5 116.7 -17.6 116.5 -9C116.4 -0.3 115.8 8.6 113.3 16.9C110.7 25.2 103.3 36.9 101.3 40.9L102.2 41.3C102.8 37.5 106.3 29.9 105.7 18.5C105 7.1 102.1 -15.4 98.1 -27.2C94 -39.1 86.4 -47.4 81.2 -52.6C76 -57.8 72 -56.6 67 -58.5C62 -60.4 56.3 -62.7 51 -63.9C45.6 -65 40.3 -64.9 34.7 -65.4C29.2 -65.9 23.3 -66.4 17.5 -66.9C11.7 -67.4 5.8 -68.4 0 -68.4C-5.8 -68.4 -11.7 -67.4 -17.5 -66.9C-23.3 -66.4 -29.2 -65.9 -34.7 -65.4C-40.3 -64.9 -45.6 -65 -51 -63.9C-56.3 -62.7 -62 -60.4 -67 -58.5C-72 -56.6 -76 -57.8 -81.2 -52.6C-86.4 -47.4 -94 -39.1 -98.1 -27.2C-102.1 -15.4 -105 7.1 -105.7 18.5C-106.3 29.9 -102.8 37.5 -102.2 41.3Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-59.4 -96.8Q-10.8 -120.4 45.4 -100.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#5a4654\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g></g><g data-part=\"arm-R\" data-depth=\"front\" transform=\"translate(-61.4 -141.4) rotate(107)\"><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.8\" stroke-linecap=\"round\"/><path d=\"M0 0L0 73\" fill=\"none\" stroke=\"#e98f4e\" stroke-width=\"24.8\" stroke-linecap=\"round\"/><g transform=\"translate(0 73) rotate(140)\"><path d=\"M0 0L0 67.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M0 0L0 67.2\" fill=\"none\" stroke=\"#e98f4e\" stroke-width=\"23\" stroke-linecap=\"round\"/><rect x=\"-14.3\" y=\"61.2\" width=\"28.5\" height=\"10\" rx=\"3\" fill=\"#ba723e\" stroke=\"#23202b\" stroke-width=\"2.4\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 71.9q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 71.9q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#f2c9a5\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"82\" rx=\"12.8\" ry=\"16.2\" fill=\"#f2c9a5\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 94.9v-9.4M2 96.2v-9.4\" stroke=\"#9d836b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g></g></g></svg>"
+  },
+  {
+   "id": "ferramentas-1",
+   "file": "ferramentas-1.rspack",
+   "sha256": "a9d325c9f036b7b2e047df4cb482593b673a973f3829a6eb323c7cadaa8477c3",
+   "size": 12130,
+   "name": "Trabalho · Ferramentas 1",
+   "version": "1.0.0",
+   "description": "Martelo, serrote, furadeira, escada, pá, balde, vassoura, cone e capacete de obra.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Ferramentas",
+   "collection": "Trabalho",
+   "volume": 1,
+   "tags": [
+    "trabalho"
+   ],
+   "dependencies": [],
+   "itemCount": 18,
+   "counts": {
+    "object": 18
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-martelo",
+     "name": "Martelo",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Manuais"
+    },
+    {
+     "id": "rs-chave-fenda",
+     "name": "Chave de fenda",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Manuais"
+    },
+    {
+     "id": "rs-chave-inglesa",
+     "name": "Chave inglesa",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Manuais"
+    },
+    {
+     "id": "rs-alicate",
+     "name": "Alicate",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Manuais"
+    },
+    {
+     "id": "rs-serrote",
+     "name": "Serrote",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Manuais"
+    },
+    {
+     "id": "rs-furadeira",
+     "name": "Furadeira",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Elétricas"
+    },
+    {
+     "id": "rs-serra-eletrica",
+     "name": "Serra circular",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Elétricas"
+    },
+    {
+     "id": "rs-trena",
+     "name": "Trena",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Manuais"
+    },
+    {
+     "id": "rs-nivel",
+     "name": "Nível de bolha",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Manuais"
+    },
+    {
+     "id": "rs-pa",
+     "name": "Pá",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Jardim"
+    },
+    {
+     "id": "rs-enxada",
+     "name": "Enxada",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Jardim"
+    },
+    {
+     "id": "rs-regador",
+     "name": "Regador",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Jardim"
+    },
+    {
+     "id": "rs-carrinho-mao",
+     "name": "Carrinho de mão",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Jardim"
+    },
+    {
+     "id": "rs-escada",
+     "name": "Escada",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Manuais"
+    },
+    {
+     "id": "rs-balde",
+     "name": "Balde",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Limpeza"
+    },
+    {
+     "id": "rs-vassoura",
+     "name": "Vassoura",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Limpeza"
+    },
+    {
+     "id": "rs-cone-obra",
+     "name": "Cone de sinalização",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Segurança"
+    },
+    {
+     "id": "rs-capacete-obra",
+     "name": "Capacete de obra",
+     "kind": "object",
+     "category": "Ferramentas",
+     "subcategory": "Segurança"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-68.32000000000001 -129.32 136.64000000000001 136.64000000000001\"><g data-piece=\"p0\" transform=\"translate(0 -50)\"><rect x=\"-7\" y=\"-50\" width=\"14\" height=\"100\" rx=\"6\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -108)\"><rect x=\"-35\" y=\"-14\" width=\"70\" height=\"28\" rx=\"5\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-34 -106)\"><rect x=\"-8\" y=\"-7\" width=\"16\" height=\"14\" rx=\"0\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></svg>"
   },
   {
    "id": "vila-torta-assets-1",
