@@ -45,8 +45,11 @@ export function OfficialCatalog({ onInspect, query }: { onInspect: (entry: Offic
       const tag = query.theme === 'series' ? 'série' : query.theme === 'holiday' ? 'feriado' : 'evento';
       if (!p.tags.includes(tag) && !(query.theme === 'event' && p.category === 'Festas')) return false;
     }
-    return (!query && category ? p.category === category : true)
-      && matchesSearch(query ? query.text : text, p.name, p.description, p.category, p.collection, p.tags, p.items.map((i) => i.name), p.id);
+    if (!query && category && p.category !== category) return false;
+    const term = query ? query.text : text;
+    const exactId = term.match(/^(?:id:|#)(.+)$/i)?.[1];
+    if (exactId) return p.id === exactId || p.items.some((i) => i.id === exactId);
+    return matchesSearch(term, p.name, p.description, p.category, p.collection, p.tags, p.items.flatMap((i) => [i.name, i.id]), p.id);
   }), [all, text, category, query]);
   const groups = useMemo(() => groupByCollection(shown), [shown]);
 
