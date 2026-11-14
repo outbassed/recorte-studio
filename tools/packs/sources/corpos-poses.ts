@@ -13,7 +13,7 @@ const body = (id: string, name: string, sub: string, desc: string, b: Record<str
 
 const corpos = () => [
   body('magro', 'Corpo magro', 'Biotipos', 'Corpo esguio, ombros estreitos. Aplique roupas, cabelos e cores.', { age: 'adult', build: 0.7, shoulders: 0.85 }, ['magro']),
-  body('medio', 'Corpo médio', 'Biotipos', 'Proporção média, ponto de partida para a maioria dos personagens.', { age: 'adult', build: 1 }, ['médio']),
+  body('medio', 'Corpo médio', 'Biotipos', 'Proporção média: é também o corpo adulto padrão e o ponto de partida para a maioria dos personagens.', { age: 'adult', build: 1 }, ['médio', 'adulto']),
   body('robusto', 'Corpo robusto', 'Biotipos', 'Mais largo e encorpado, com um pouco de barriga.', { age: 'adult', build: 1.25, belly: 0.4 }, ['robusto']),
   body('musculoso', 'Corpo musculoso', 'Biotipos', 'Ombros largos e braços longos, cintura mais fina.', { age: 'adult', build: 1.15, shoulders: 1.4, armLength: 1.1 }, ['musculoso', 'forte']),
   body('corpulento', 'Corpo corpulento', 'Biotipos', 'Bem largo, com barriga pronunciada.', { age: 'adult', build: 1.5, belly: 1.0, shoulders: 1.1 }, ['corpulento', 'gordo']),
@@ -22,7 +22,6 @@ const corpos = () => [
   body('baixo-largo', 'Corpo baixo e largo', 'Biotipos', 'Baixo e encorpado, pernas curtas.', { age: 'adult', height: 0.82, build: 1.3, legLength: 0.85 }, ['baixo']),
   body('infantil', 'Corpo infantil', 'Idades', 'Proporção de criança: cabeça grande, corpo pequeno.', { age: 'child', height: 1, build: 0.9 }, ['criança']),
   body('adolescente', 'Corpo adolescente', 'Idades', 'Proporção de adolescente, mais alto e esguio.', { age: 'teen', height: 1.08, build: 0.92 }, ['adolescente']),
-  body('adulto', 'Corpo adulto', 'Idades', 'Proporção de adulto padrão.', { age: 'adult', height: 1, build: 1 }, ['adulto']),
   body('idoso', 'Corpo idoso', 'Idades', 'Mais baixo e curvado, com a barriga um pouco maior.', { age: 'elder', height: 0.92, build: 1.05, belly: 0.3 }, ['idoso']),
   body('cabecudo', 'Corpo cabeçudo', 'Proporções', 'Cabeça muito maior que o corpo (estilo cartum).', { age: 'adult', height: 0.85, build: 0.9, headWidth: 1.45, headHeight: 1.4 }, ['cabeçudo', 'cartum']),
   body('caricatural', 'Corpo caricatural', 'Proporções', 'Cabeça pequena, corpo e braços enormes.', { age: 'adult', build: 1.4, shoulders: 1.5, armLength: 1.25, headWidth: 0.8, headHeight: 0.85 }, ['caricatura']),
@@ -72,6 +71,6 @@ const POSES = () => [
 
 const META = { author: AUTHOR, license: LICENSE_ORIGINAL, dependencies: [] as Array<{ id: string; version: string }> };
 export const BODY_POSE_SOURCES: Array<() => Promise<PackSource>> = [
-  async () => ({ meta: { ...META, id: 'corpos-1', name: 'Corpos · Base 1', version: '1.0.0', category: 'Corpos', collection: 'Corpos', volume: 1, tags: ['corpo', 'base'], description: 'Dezoito corpos-base com biotipos, idades e proporções (magro, robusto, musculoso, infantil, idoso, cabeçudo, chibi…). Vêm com roupa neutra cinza: aplique roupas, cabelos e cores no Criador.' }, items: corpos() }),
+  async () => ({ meta: { ...META, id: 'corpos-1', name: 'Corpos · Base 1', version: '1.0.0', category: 'Corpos', collection: 'Corpos', volume: 1, tags: ['corpo', 'base'], description: 'Dezessete corpos-base com biotipos, idades e proporções (magro, robusto, musculoso, infantil, idoso, cabeçudo, chibi…). Vêm com roupa neutra cinza: aplique roupas, cabelos e cores no Criador.' }, items: corpos() }),
   async () => ({ meta: { ...META, id: 'poses-1', name: 'Poses · Gestos e Ações 1', version: '1.0.0', category: 'Poses', collection: 'Poses', volume: 1, tags: ['pose'], description: 'Trinta e cinco poses reutilizáveis para o rig humano padrão: gestos, emoções, ações, esporte e trabalho. Selecione um personagem e aplique.' }, items: POSES() }),
 ];

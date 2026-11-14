@@ -3,6 +3,850 @@
  "formatVersion": 1,
  "packs": [
   {
+   "id": "acessorios-1",
+   "file": "acessorios-1.rspack",
+   "sha256": "31faece0517051df239dc84bff03b9a020c17226116cf13eec11f8da1b5fc07a",
+   "size": 16059,
+   "name": "Acessórios · Volume 1",
+   "version": "1.0.0",
+   "description": "Óculos, bonés, chapéus, bolsas, mochilas, relógio, joias e adereços de fantasia (coroa, tiara, varinha, capa, asas).",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Acessórios",
+   "collection": "Acessórios",
+   "volume": 1,
+   "tags": [
+    "acessório"
+   ],
+   "dependencies": [],
+   "itemCount": 22,
+   "counts": {
+    "object": 22
+   },
+   "animated": 1,
+   "items": [
+    {
+     "id": "rs-acess-oculos-redondos",
+     "name": "Óculos redondos",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Óculos"
+    },
+    {
+     "id": "rs-acess-oculos-sol",
+     "name": "Óculos de sol",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Óculos"
+    },
+    {
+     "id": "rs-acess-oculos-quadrados",
+     "name": "Óculos quadrados",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Óculos"
+    },
+    {
+     "id": "rs-acess-bone",
+     "name": "Boné",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Chapéus"
+    },
+    {
+     "id": "rs-acess-chapeu-panama",
+     "name": "Chapéu panamá",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Chapéus"
+    },
+    {
+     "id": "rs-acess-cartola",
+     "name": "Cartola",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Chapéus"
+    },
+    {
+     "id": "rs-acess-gorro-la",
+     "name": "Gorro de lã",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Chapéus"
+    },
+    {
+     "id": "rs-acess-chapeu-pirata",
+     "name": "Chapéu de pirata",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Chapéus"
+    },
+    {
+     "id": "rs-acess-mochila-escolar",
+     "name": "Mochila",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Bolsas"
+    },
+    {
+     "id": "rs-acess-bolsa-mao",
+     "name": "Bolsa de mão",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Bolsas"
+    },
+    {
+     "id": "rs-acess-bolsa-ombro",
+     "name": "Bolsa de ombro",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Bolsas"
+    },
+    {
+     "id": "rs-acess-maleta",
+     "name": "Maleta executiva",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Bolsas"
+    },
+    {
+     "id": "rs-acess-relogio-pulso",
+     "name": "Relógio de pulso",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Joias"
+    },
+    {
+     "id": "rs-acess-colar-perolas",
+     "name": "Colar de pérolas",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Joias"
+    },
+    {
+     "id": "rs-acess-anel",
+     "name": "Anel de brilhante",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Joias"
+    },
+    {
+     "id": "rs-acess-brincos",
+     "name": "Brincos",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Joias"
+    },
+    {
+     "id": "rs-acess-coroa",
+     "name": "Coroa",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-acess-tiara",
+     "name": "Tiara",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-acess-varinha",
+     "name": "Varinha mágica",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-acess-espada",
+     "name": "Espada de cavaleiro",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-acess-capa",
+     "name": "Capa de herói",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Fantasia"
+    },
+    {
+     "id": "rs-acess-asas-anjo",
+     "name": "Asas de fada",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Fantasia"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-96.32000000000001 -119.32000000000001 192.64000000000001 192.64000000000001\"><g data-piece=\"p0\" transform=\"translate(-34 -20)\" opacity=\"0.5\"><ellipse cx=\"0\" cy=\"0\" rx=\"26\" ry=\"26\" fill=\"#bfe3f2\" stroke=\"#4a5360\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(34 -20)\" opacity=\"0.5\"><ellipse cx=\"0\" cy=\"0\" rx=\"26\" ry=\"26\" fill=\"#bfe3f2\" stroke=\"#4a5360\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -24)\"><rect x=\"-9\" y=\"-2.5\" width=\"18\" height=\"5\" rx=\"0\" fill=\"#4a5360\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-73 -27) rotate(-167)\"><path d=\"M-13.3 0L13.3 0\" fill=\"none\" stroke=\"#4a5360\" stroke-width=\"4\" stroke-linecap=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(73 -27) rotate(-13)\"><path d=\"M-13.3 0L13.3 0\" fill=\"none\" stroke=\"#4a5360\" stroke-width=\"4\" stroke-linecap=\"round\"/></g></svg>"
+  },
+  {
+   "id": "animais-1",
+   "file": "animais-1.rspack",
+   "sha256": "e0e857cc44a9db70a3a775e6f77c21a8b80db37903a133e5a429a4c841f63c8e",
+   "size": 31070,
+   "name": "Animais 1",
+   "version": "1.0.0",
+   "description": "Cães, gatos, bichos de fazenda, aves, animais da selva, da floresta, do mar e insetos (alguns animados).",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Animais",
+   "collection": "Animais",
+   "volume": 1,
+   "tags": [
+    "animais"
+   ],
+   "dependencies": [],
+   "itemCount": 37,
+   "counts": {
+    "object": 37
+   },
+   "animated": 3,
+   "items": [
+    {
+     "id": "rs-cachorro-caramelo",
+     "name": "Cachorro caramelo",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Cães e gatos"
+    },
+    {
+     "id": "rs-cachorro-preto",
+     "name": "Cachorro preto",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Cães e gatos"
+    },
+    {
+     "id": "rs-cachorro-pintado",
+     "name": "Cachorro pintado",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Cães e gatos"
+    },
+    {
+     "id": "rs-filhote-cachorro",
+     "name": "Filhote de cachorro",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Cães e gatos"
+    },
+    {
+     "id": "rs-gato-cinza",
+     "name": "Gato cinza",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Cães e gatos"
+    },
+    {
+     "id": "rs-gato-laranja",
+     "name": "Gato laranja",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Cães e gatos"
+    },
+    {
+     "id": "rs-cavalo",
+     "name": "Cavalo",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Fazenda"
+    },
+    {
+     "id": "rs-vaca",
+     "name": "Vaca",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Fazenda"
+    },
+    {
+     "id": "rs-porco",
+     "name": "Porco",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Fazenda"
+    },
+    {
+     "id": "rs-ovelha",
+     "name": "Ovelha",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Fazenda"
+    },
+    {
+     "id": "rs-cabra",
+     "name": "Cabra",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Fazenda"
+    },
+    {
+     "id": "rs-burro",
+     "name": "Burro",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Fazenda"
+    },
+    {
+     "id": "rs-galinha",
+     "name": "Galinha",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Aves"
+    },
+    {
+     "id": "rs-pato",
+     "name": "Pato",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Aves"
+    },
+    {
+     "id": "rs-papagaio",
+     "name": "Papagaio",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Aves"
+    },
+    {
+     "id": "rs-tucano",
+     "name": "Tucano",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Aves"
+    },
+    {
+     "id": "rs-coruja",
+     "name": "Coruja",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Aves"
+    },
+    {
+     "id": "rs-pomba",
+     "name": "Pomba",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Aves"
+    },
+    {
+     "id": "rs-coelho",
+     "name": "Coelho",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Pequenos"
+    },
+    {
+     "id": "rs-sapo",
+     "name": "Sapo",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Pequenos"
+    },
+    {
+     "id": "rs-tartaruga",
+     "name": "Tartaruga",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Pequenos"
+    },
+    {
+     "id": "rs-peixe",
+     "name": "Peixe",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Mar"
+    },
+    {
+     "id": "rs-golfinho",
+     "name": "Golfinho",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Mar"
+    },
+    {
+     "id": "rs-elefante",
+     "name": "Elefante",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Selva"
+    },
+    {
+     "id": "rs-girafa",
+     "name": "Girafa",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Selva"
+    },
+    {
+     "id": "rs-leao",
+     "name": "Leão",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Selva"
+    },
+    {
+     "id": "rs-macaco",
+     "name": "Macaco",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Selva"
+    },
+    {
+     "id": "rs-urso-pardo",
+     "name": "Urso pardo",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Floresta"
+    },
+    {
+     "id": "rs-lobo",
+     "name": "Lobo",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Floresta"
+    },
+    {
+     "id": "rs-raposa",
+     "name": "Raposa",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Floresta"
+    },
+    {
+     "id": "rs-pinguim",
+     "name": "Pinguim",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Polar"
+    },
+    {
+     "id": "rs-cobra",
+     "name": "Cobra",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Répteis"
+    },
+    {
+     "id": "rs-jacare",
+     "name": "Jacaré",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Répteis"
+    },
+    {
+     "id": "rs-camelo",
+     "name": "Camelo",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Deserto"
+    },
+    {
+     "id": "rs-borboleta",
+     "name": "Borboleta",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Insetos"
+    },
+    {
+     "id": "rs-abelha",
+     "name": "Abelha",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Insetos"
+    },
+    {
+     "id": "rs-joaninha",
+     "name": "Joaninha",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Insetos"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-113.12 -180.62 226.24 226.24\"><g data-piece=\"p0\" transform=\"translate(-46.8 -25)\"><rect x=\"-7\" y=\"-25\" width=\"14\" height=\"50\" rx=\"6\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(-33.8 -25)\"><rect x=\"-7\" y=\"-25\" width=\"14\" height=\"50\" rx=\"6\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(33.8 -25)\"><rect x=\"-7\" y=\"-25\" width=\"14\" height=\"50\" rx=\"6\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(46.8 -25)\"><rect x=\"-7\" y=\"-25\" width=\"14\" height=\"50\" rx=\"6\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(0 -79)\"><ellipse cx=\"0\" cy=\"0\" rx=\"65\" ry=\"35\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(0 -71)\"><ellipse cx=\"0\" cy=\"0\" rx=\"39\" ry=\"14\" fill=\"#e0b97a\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(65 -109.5)\"><ellipse cx=\"0\" cy=\"0\" rx=\"28\" ry=\"25.2\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(80.6 -101.8)\"><ellipse cx=\"0\" cy=\"0\" rx=\"16.1\" ry=\"11.9\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(85.8 -106)\"><ellipse cx=\"0\" cy=\"0\" rx=\"4\" ry=\"3.5\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p9\" transform=\"translate(67.6 -116.5)\"><ellipse cx=\"0\" cy=\"0\" rx=\"4.5\" ry=\"4.5\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p10\" transform=\"translate(54.6 -113) rotate(10)\"><ellipse cx=\"0\" cy=\"0\" rx=\"8\" ry=\"18\" fill=\"#5b3a24\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p11\" transform=\"translate(-83 -107.7) rotate(-154.1)\"><path d=\"M-20 0L20 0\" fill=\"none\" stroke=\"#c58a45\" stroke-width=\"8\" stroke-linecap=\"round\"/></g></svg>"
+  },
+  {
+   "id": "aniversario-1",
+   "file": "aniversario-1.rspack",
+   "sha256": "82cab53561f88b29c7d7181963dae3f5669b3f99569f92c0b36e0956bb80b841",
+   "size": 11524,
+   "name": "Aniversário · Volume 1",
+   "version": "1.0.0",
+   "description": "Bolos com velas, balões, faixa de parabéns, piñata, docinhos, mesa de festa e personagens de aniversário.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Aniversário",
+   "volume": 1,
+   "tags": [
+    "evento",
+    "aniversário",
+    "festa"
+   ],
+   "dependencies": [],
+   "itemCount": 13,
+   "counts": {
+    "object": 11,
+    "character": 2
+   },
+   "animated": 3,
+   "items": [
+    {
+     "id": "rs-aniv-bolo-velas",
+     "name": "Bolo de aniversário com velas",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-bolo-numero",
+     "name": "Bolo em camadas",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-baloes",
+     "name": "Balões coloridos",
+     "kind": "object",
+     "category": "Festa",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-faixa",
+     "name": "Faixa \"Parabéns\"",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-pinata",
+     "name": "Piñata",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-docinhos",
+     "name": "Bandeja de docinhos",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-apito-festa",
+     "name": "Corneta de festa",
+     "kind": "object",
+     "category": "Festa",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-vela-numero",
+     "name": "Vela em número",
+     "kind": "object",
+     "category": "Festa",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-mesa-festa",
+     "name": "Mesa de festa",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-presente-embrulho",
+     "name": "Caixa de presente com laço",
+     "kind": "object",
+     "category": "Presentes",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-cadeira-festa",
+     "name": "Cadeirinha de festa",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-aniversariante",
+     "name": "Aniversariante de chapéu",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Aniversário"
+    },
+    {
+     "id": "rs-aniv-palhaco",
+     "name": "Palhaço de festa",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Aniversário"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-76.16000000000001 -137.66000000000003 152.32000000000002 152.32000000000002\"><g data-obj-clip=\"anim\" data-obj-frame=\"0\"><g data-piece=\"p0\" transform=\"translate(0 -24)\"><rect x=\"-65\" y=\"-24\" width=\"130\" height=\"48\" rx=\"8\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -62)\"><rect x=\"-68\" y=\"-10\" width=\"136\" height=\"20\" rx=\"10\" fill=\"#d27ba6\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-40 -58)\"><ellipse cx=\"0\" cy=\"0\" rx=\"10\" ry=\"12\" fill=\"#d27ba6\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-8 -58)\"><ellipse cx=\"0\" cy=\"0\" rx=\"10\" ry=\"12\" fill=\"#d27ba6\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(24 -58)\"><ellipse cx=\"0\" cy=\"0\" rx=\"10\" ry=\"12\" fill=\"#d27ba6\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-30 -90)\"><rect x=\"-4\" y=\"-13\" width=\"8\" height=\"26\" rx=\"0\" fill=\"#5b8dbe\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(-31 -112)\"><ellipse cx=\"0\" cy=\"0\" rx=\"4\" ry=\"7\" fill=\"#e98f4e\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(0 -90)\"><rect x=\"-4\" y=\"-13\" width=\"8\" height=\"26\" rx=\"0\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(-1 -114)\"><ellipse cx=\"0\" cy=\"0\" rx=\"4\" ry=\"9\" fill=\"#e98f4e\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p9\" transform=\"translate(30 -90)\"><rect x=\"-4\" y=\"-13\" width=\"8\" height=\"26\" rx=\"0\" fill=\"#6dad6f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p10\" transform=\"translate(29 -112)\"><ellipse cx=\"0\" cy=\"0\" rx=\"4\" ry=\"7\" fill=\"#e98f4e\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></g></svg>"
+  },
+  {
+   "id": "ano-novo-1",
+   "file": "ano-novo-1.rspack",
+   "sha256": "35c93db2c2e4e8b378d196b0c52964cc2adf38025fb08c52107866e1f6e74490",
+   "size": 11662,
+   "name": "Ano-Novo · Volume 1",
+   "version": "1.0.0",
+   "description": "Fogos de artifício animados, relógio da contagem regressiva, taças, champanhe, chapéus de festa, faixa e ceia da sorte.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Ano-Novo",
+   "volume": 1,
+   "tags": [
+    "feriado",
+    "ano-novo",
+    "réveillon"
+   ],
+   "dependencies": [],
+   "itemCount": 10,
+   "counts": {
+    "object": 10
+   },
+   "animated": 4,
+   "items": [
+    {
+     "id": "rs-ano-novo-fogos",
+     "name": "Fogos de artifício dourados",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Ano-Novo"
+    },
+    {
+     "id": "rs-ano-novo-fogos-coloridos",
+     "name": "Fogos de artifício coloridos",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Ano-Novo"
+    },
+    {
+     "id": "rs-ano-novo-relogio",
+     "name": "Relógio da contagem regressiva",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Ano-Novo"
+    },
+    {
+     "id": "rs-ano-novo-taca",
+     "name": "Taça de espumante",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Ano-Novo"
+    },
+    {
+     "id": "rs-ano-novo-chapeu-festa",
+     "name": "Chapéu de festa",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Ano-Novo"
+    },
+    {
+     "id": "rs-ano-novo-placa",
+     "name": "Faixa \"Feliz Ano Novo\"",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Ano-Novo"
+    },
+    {
+     "id": "rs-ano-novo-lentilha",
+     "name": "Prato de lentilha",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Ano-Novo"
+    },
+    {
+     "id": "rs-ano-novo-champanhe",
+     "name": "Estouro de champanhe",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Ano-Novo"
+    },
+    {
+     "id": "rs-ano-novo-buzina",
+     "name": "Língua de sogra",
+     "kind": "object",
+     "category": "Festa",
+     "subcategory": "Ano-Novo"
+    },
+    {
+     "id": "rs-ano-novo-serpentina",
+     "name": "Serpentina",
+     "kind": "object",
+     "category": "Festa",
+     "subcategory": "Ano-Novo"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-154.56 -292.56 309.12 309.12\"><g data-obj-clip=\"anim\" data-obj-frame=\"0\"><g data-piece=\"p0\" transform=\"translate(0 -20) rotate(-90)\"><path d=\"M-20 0L20 0\" fill=\"none\" stroke=\"#f2c95c\" stroke-width=\"4\" stroke-linecap=\"round\"/></g></g></svg>"
+  },
+  {
+   "id": "carnaval-1",
+   "file": "carnaval-1.rspack",
+   "sha256": "9d12921d6f008ef212aa3b80794defbedebf98300085b050e4955196c3f9e8c1",
+   "size": 15499,
+   "name": "Carnaval · Volume 1",
+   "version": "1.0.0",
+   "description": "Máscaras, instrumentos de bateria, trio elétrico, carro alegórico, estandarte, cocar e os personagens do desfile e do bloco.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Carnaval",
+   "volume": 1,
+   "tags": [
+    "feriado",
+    "carnaval"
+   ],
+   "dependencies": [],
+   "itemCount": 19,
+   "counts": {
+    "object": 13,
+    "character": 6
+   },
+   "animated": 2,
+   "items": [
+    {
+     "id": "rs-carnaval-mascara-veneziana",
+     "name": "Máscara de carnaval",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-mascara-penas",
+     "name": "Máscara com penas",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-pierrot-chapeu",
+     "name": "Chapéu de Pierrô",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-serpentina",
+     "name": "Serpentinas",
+     "kind": "object",
+     "category": "Festa",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-surdo",
+     "name": "Surdo de bateria",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-cuica",
+     "name": "Cuíca",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-tamborim",
+     "name": "Tamborim",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-trio-eletrico",
+     "name": "Trio elétrico",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-estandarte",
+     "name": "Estandarte de bloco",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-cocar-plumas",
+     "name": "Cocar de plumas",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-confete-saco",
+     "name": "Pote de confete",
+     "kind": "object",
+     "category": "Festa",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-carro-aleg",
+     "name": "Carro alegórico",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-lantejoula-chapeu",
+     "name": "Chapéu de malandro",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-pierro",
+     "name": "Pierrô",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-colombina",
+     "name": "Colombina",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-passista",
+     "name": "Passista de escola de samba",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-mestre-sala",
+     "name": "Mestre-sala",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-folia",
+     "name": "Folião de bloco",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Carnaval"
+    },
+    {
+     "id": "rs-carnaval-sambista-bateria",
+     "name": "Ritmista da bateria",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Carnaval"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-123.20000000000002 -170.20000000000002 246.40000000000003 246.40000000000003\"><g data-piece=\"p0\" transform=\"translate(0 -50)\"><ellipse cx=\"0\" cy=\"0\" rx=\"65\" ry=\"32\" fill=\"#8e6fc1\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(-28 -56)\"><ellipse cx=\"0\" cy=\"0\" rx=\"17\" ry=\"11\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(28 -56)\"><ellipse cx=\"0\" cy=\"0\" rx=\"17\" ry=\"11\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-28 -56)\"><ellipse cx=\"0\" cy=\"0\" rx=\"10\" ry=\"6\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(28 -56)\"><ellipse cx=\"0\" cy=\"0\" rx=\"10\" ry=\"6\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-60 -86)\"><polygon points=\"0,-8 2.1,-2.9 7.6,-2.5 3.4,1.1 4.7,6.5 0,3.6 -4.7,6.5 -3.4,1.1 -7.6,-2.5 -2.1,-2.9\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(0 -86)\"><polygon points=\"0,-8 2.1,-2.9 7.6,-2.5 3.4,1.1 4.7,6.5 0,3.6 -4.7,6.5 -3.4,1.1 -7.6,-2.5 -2.1,-2.9\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(60 -86)\"><polygon points=\"0,-8 2.1,-2.9 7.6,-2.5 3.4,1.1 4.7,6.5 0,3.6 -4.7,6.5 -3.4,1.1 -7.6,-2.5 -2.1,-2.9\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(85 -70) rotate(-21.8)\"><path d=\"M-26.9 0L26.9 0\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linecap=\"round\"/></g></svg>"
+  },
+  {
    "id": "decoracao-1",
    "file": "decoracao-1.rspack",
    "sha256": "d9ad7f09975d3683bdc36c5fb8b4e09779a3653c43e8c57f3bbb4b13fa4d90fe",
@@ -931,6 +1775,368 @@
    "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-123.20000000000002 -233.20000000000002 246.40000000000003 246.40000000000003\"><g data-obj-clip=\"anim\" data-obj-frame=\"0\"><g data-piece=\"p0\" transform=\"translate(0 -50)\"><rect x=\"-65\" y=\"-45\" width=\"130\" height=\"90\" rx=\"12\" fill=\"#cfd4da\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -104)\"><rect x=\"-70\" y=\"-8\" width=\"140\" height=\"16\" rx=\"6\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-82 -64)\"><rect x=\"-18\" y=\"-6\" width=\"36\" height=\"12\" rx=\"5\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(82 -64)\"><rect x=\"-18\" y=\"-6\" width=\"36\" height=\"12\" rx=\"5\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(0 -122)\"><rect x=\"-10\" y=\"-9\" width=\"20\" height=\"18\" rx=\"0\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(0 -142)\"><ellipse cx=\"0\" cy=\"0\" rx=\"15\" ry=\"5\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(6 -160)\" opacity=\"0.8\"><ellipse cx=\"0\" cy=\"0\" rx=\"12\" ry=\"10\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></g></svg>"
   },
   {
+   "id": "casamento-1",
+   "file": "casamento-1.rspack",
+   "sha256": "dfb98c6b41d9e61baced33c5639b0ade85e677b79905f17e6153a986fb48fbe0",
+   "size": 12429,
+   "name": "Casamento · Volume 1",
+   "version": "1.0.0",
+   "description": "Bolo, arco de flores, buquê, alianças, cadeiras, carro dos noivos e os personagens da cerimônia (noivos, damas, padrinhos).",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Casamento",
+   "volume": 1,
+   "tags": [
+    "evento",
+    "casamento"
+   ],
+   "dependencies": [],
+   "itemCount": 16,
+   "counts": {
+    "object": 10,
+    "character": 6
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-casamento-bolo",
+     "name": "Bolo de casamento",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-arco-flores",
+     "name": "Arco de flores",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-buque",
+     "name": "Buquê de noiva",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-aliancas",
+     "name": "Alianças",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-cadeira-cerim",
+     "name": "Cadeira de cerimônia",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-carro-noivos",
+     "name": "Carro dos noivos",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-vestido",
+     "name": "Vestido de noiva em manequim",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-convite",
+     "name": "Convite de casamento",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-mesa-doces",
+     "name": "Mesa de doces de casamento",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-vela-lanterna",
+     "name": "Lanterna de cerimônia",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-noiva",
+     "name": "Noiva",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-noivo",
+     "name": "Noivo",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-dama",
+     "name": "Dama de honra",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-padrinho",
+     "name": "Padrinho",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-madrinha",
+     "name": "Madrinha",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Casamento"
+    },
+    {
+     "id": "rs-casamento-celebrante",
+     "name": "Celebrante da cerimônia",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Casamento"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-96.88000000000001 -183.38 193.76000000000002 193.76000000000002\"><g data-piece=\"p0\" transform=\"translate(0 -24)\"><rect x=\"-75\" y=\"-22\" width=\"150\" height=\"44\" rx=\"8\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -66)\"><rect x=\"-55\" y=\"-20\" width=\"110\" height=\"40\" rx=\"8\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -100)\"><rect x=\"-35\" y=\"-17\" width=\"70\" height=\"34\" rx=\"8\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-60 -46)\"><ellipse cx=\"0\" cy=\"0\" rx=\"6\" ry=\"6\" fill=\"#d27ba6\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(-30 -46)\"><ellipse cx=\"0\" cy=\"0\" rx=\"6\" ry=\"6\" fill=\"#d27ba6\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(0 -46)\"><ellipse cx=\"0\" cy=\"0\" rx=\"6\" ry=\"6\" fill=\"#d27ba6\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(30 -46)\"><ellipse cx=\"0\" cy=\"0\" rx=\"6\" ry=\"6\" fill=\"#d27ba6\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(60 -46)\"><ellipse cx=\"0\" cy=\"0\" rx=\"6\" ry=\"6\" fill=\"#d27ba6\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(0 -148)\"><ellipse cx=\"0\" cy=\"0\" rx=\"11\" ry=\"13\" fill=\"#3d4a66\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p9\" transform=\"translate(0 -166)\"><ellipse cx=\"0\" cy=\"0\" rx=\"7\" ry=\"7\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "urbano-1",
+   "file": "urbano-1.rspack",
+   "sha256": "3fad46171b7356ea7276441413d7b73ecb29da0d6c841e08385aed51a2b3ab30",
+   "size": 20510,
+   "name": "Cidade · Mobiliário urbano 1",
+   "version": "1.0.0",
+   "description": "Postes, semáforo (animado), placas, ponto de ônibus, hidrante, fonte, bancas, barracas, muros, portões e cercas.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Urbano",
+   "collection": "Cidade",
+   "volume": 1,
+   "tags": [
+    "cidade"
+   ],
+   "dependencies": [],
+   "itemCount": 28,
+   "counts": {
+    "object": 28
+   },
+   "animated": 2,
+   "items": [
+    {
+     "id": "rs-poste-luz",
+     "name": "Poste de luz",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Iluminação pública"
+    },
+    {
+     "id": "rs-semaforo",
+     "name": "Semáforo",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Trânsito"
+    },
+    {
+     "id": "rs-placa-pare",
+     "name": "Placa de pare",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Trânsito"
+    },
+    {
+     "id": "rs-placa-rua",
+     "name": "Placa de nome de rua",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Trânsito"
+    },
+    {
+     "id": "rs-placa-obras",
+     "name": "Placa de obras",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Trânsito"
+    },
+    {
+     "id": "rs-ponto-onibus",
+     "name": "Ponto de ônibus",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Transporte"
+    },
+    {
+     "id": "rs-lixeira-rua",
+     "name": "Lixeira de rua",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Mobiliário"
+    },
+    {
+     "id": "rs-hidrante",
+     "name": "Hidrante",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Mobiliário"
+    },
+    {
+     "id": "rs-caixa-correio",
+     "name": "Caixa de correio",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Mobiliário"
+    },
+    {
+     "id": "rs-orelhao",
+     "name": "Orelhão (telefone público)",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Mobiliário"
+    },
+    {
+     "id": "rs-fonte-praca",
+     "name": "Fonte de praça",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Praça"
+    },
+    {
+     "id": "rs-banca-jornal",
+     "name": "Banca de jornal",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Comércio"
+    },
+    {
+     "id": "rs-carrinho-pipoca",
+     "name": "Carrinho de pipoca",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Comércio"
+    },
+    {
+     "id": "rs-barraca-feira",
+     "name": "Barraca de feira",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Comércio"
+    },
+    {
+     "id": "rs-grade-cerca",
+     "name": "Cerca de madeira",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Cercas e muros"
+    },
+    {
+     "id": "rs-muro-tijolo",
+     "name": "Muro de tijolos",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Cercas e muros"
+    },
+    {
+     "id": "rs-portao",
+     "name": "Portão de ferro",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Cercas e muros"
+    },
+    {
+     "id": "rs-lombada",
+     "name": "Lombada",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Trânsito"
+    },
+    {
+     "id": "rs-faixa-pedestre",
+     "name": "Faixa de pedestres",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Trânsito"
+    },
+    {
+     "id": "rs-barreira",
+     "name": "Barreira de trânsito",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Trânsito"
+    },
+    {
+     "id": "rs-parquimetro",
+     "name": "Parquímetro",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Mobiliário"
+    },
+    {
+     "id": "rs-outdoor",
+     "name": "Outdoor",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Comércio"
+    },
+    {
+     "id": "rs-relogio-rua",
+     "name": "Relógio de rua",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Praça"
+    },
+    {
+     "id": "rs-estatua-pedestal",
+     "name": "Estátua em pedestal",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Praça"
+    },
+    {
+     "id": "rs-gazebo-coreto",
+     "name": "Quiosque de praça",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Praça"
+    },
+    {
+     "id": "rs-bicicletario",
+     "name": "Bicicletário",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Mobiliário"
+    },
+    {
+     "id": "rs-canteiro-flores",
+     "name": "Canteiro de flores",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Praça"
+    },
+    {
+     "id": "rs-escada-rolante-placa",
+     "name": "Placa de saída",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Trânsito"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-180.88000000000002 -342.38 361.76000000000005 361.76000000000005\"><g data-piece=\"p0\" transform=\"translate(0 -160)\"><rect x=\"-6\" y=\"-160\" width=\"12\" height=\"320\" rx=\"0\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(36 -318)\"><rect x=\"-40\" y=\"-5\" width=\"80\" height=\"10\" rx=\"0\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(70 -306)\"><ellipse cx=\"0\" cy=\"0\" rx=\"22\" ry=\"8\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(0 -8)\"><ellipse cx=\"0\" cy=\"0\" rx=\"20\" ry=\"7\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
    "id": "alimentos-1",
    "file": "alimentos-1.rspack",
    "sha256": "7ff0ce93ff26f4b04d8e6c72a058acaf7272aa3633d33e3d409eb83cc91917d1",
@@ -1211,11 +2417,11 @@
   {
    "id": "corpos-1",
    "file": "corpos-1.rspack",
-   "sha256": "98b02b84e81b67849ccd828d248bd4895ae8ad1f8ebb10e1ba4179cf72420421",
-   "size": 12747,
+   "sha256": "7f490861edb708099d10bc2c496536dbda4c302ae65ba57b52eb89ff6ac8220a",
+   "size": 12133,
    "name": "Corpos · Base 1",
    "version": "1.0.0",
-   "description": "Dezoito corpos-base com biotipos, idades e proporções (magro, robusto, musculoso, infantil, idoso, cabeçudo, chibi…). Vêm com roupa neutra cinza: aplique roupas, cabelos e cores no Criador.",
+   "description": "Dezessete corpos-base com biotipos, idades e proporções (magro, robusto, musculoso, infantil, idoso, cabeçudo, chibi…). Vêm com roupa neutra cinza: aplique roupas, cabelos e cores no Criador.",
    "author": "Recorte Studio",
    "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
    "category": "Corpos",
@@ -1226,9 +2432,9 @@
     "base"
    ],
    "dependencies": [],
-   "itemCount": 18,
+   "itemCount": 17,
    "counts": {
-    "character": 18
+    "character": 17
    },
    "animated": 0,
    "items": [
@@ -1303,13 +2509,6 @@
      "subcategory": "Idades"
     },
     {
-     "id": "rs-corpo-adulto",
-     "name": "Corpo adulto",
-     "kind": "character",
-     "category": "Personagens",
-     "subcategory": "Idades"
-    },
-    {
      "id": "rs-corpo-idoso",
      "name": "Corpo idoso",
      "kind": "character",
@@ -1360,6 +2559,195 @@
     }
    ],
    "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -638.4 440 668.4\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(27.7 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"21.7\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"20\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.2 77l12.4 0M-6.2 83l12.4 0\" stroke=\"#aeb2b7\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-27.7 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"21.7\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 2L0 68.9\" fill=\"none\" stroke=\"#6b7684\" stroke-width=\"24.3\" stroke-linecap=\"round\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"20\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.2 77l12.4 0M-6.2 83l12.4 0\" stroke=\"#aeb2b7\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -178) rotate(0)\"><path d=\"M-45.3 -4Q0 6 45.3 -4L39.7 22L-39.7 22Z\" fill=\"#6b7684\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-24.2 -164C-33.8 -161.5 -41.2 -159.2 -44 -146C-46.8 -132.8 -44.2 -91.3 -44.3 -69.7C-44.3 -48.2 -56.8 -2.9 -44.4 8C-32 18.9 32 18.9 44.4 8C56.8 -2.9 44.3 -48.2 44.3 -69.7C44.2 -91.3 46.8 -132.8 44 -146C41.2 -159.2 33.8 -161.5 24.2 -164C14.7 -166.5 -14.7 -166.5 -24.2 -164Z\" data-part=\"torso\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-156\" rx=\"18.5\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-45.7 -6Q0 4 45.7 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-26 -162Q0 -142 26 -162\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"23.3\" stroke-linecap=\"round\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#bdc1c7\" stroke-width=\"16.1\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(43.1 -148) rotate(-7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"24.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"16.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#9aa3ad\" stroke-width=\"20.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"23\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"15.1\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#85898c\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-43.1 -148) rotate(7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"24.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"16.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"28.7\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#9aa3ad\" stroke-width=\"20.7\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"23\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"15.1\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#cdd2d8\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#85898c\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -272.4) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#909397\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#909397\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10.1 -118 20.7 -116.3 30.4 -113.2C40.2 -110.1 49.9 -105.3 58.4 -99.3C66.9 -93.3 75 -85.6 81.6 -77.3C88.3 -68.9 94 -59.1 98.2 -49C102.5 -38.9 105.7 -27.8 106.9 -16.8C108.1 -5.8 107.9 5.8 105.7 16.8C103.5 27.8 99 38.9 93.9 49C88.7 59.1 82 68.9 75 77.3C68 85.6 60 93.3 51.9 99.3C43.8 105.3 35 110.1 26.4 113.2C17.7 116.3 8.8 118 0 118C-8.8 118 -17.7 116.3 -26.4 113.2C-35 110.1 -43.8 105.3 -51.9 99.3C-60 93.3 -68 85.6 -75 77.3C-82 68.9 -88.7 59.1 -93.9 49C-99 38.9 -103.5 27.8 -105.7 16.8C-107.9 5.8 -108.1 -5.8 -106.9 -16.8C-105.7 -27.8 -102.5 -38.9 -98.2 -49C-94 -59.1 -88.3 -68.9 -81.6 -77.3C-75 -85.6 -66.9 -93.3 -58.4 -99.3C-49.9 -105.3 -40.2 -110.1 -30.4 -113.2C-20.7 -116.3 -10.1 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#cdd2d8\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"eye\" data-eye=\"R\" data-rx=\"25\" data-ry=\"27\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"12.7\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\"/></clipPath><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"12.7\" fill=\"#2a2f3d\"/><circle cx=\"3.8\" cy=\"-4.6\" r=\"3.4\" fill=\"#fff\"/></g><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M-20.4 -46.7C-24.5 -47.4 -37 -50.7 -45.4 -50.7C-53.7 -50.7 -66.2 -47.4 -70.4 -46.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"25\" data-ry=\"27\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"12.7\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\"/></clipPath><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"12.7\" fill=\"#2a2f3d\"/><circle cx=\"3.8\" cy=\"-4.6\" r=\"3.4\" fill=\"#fff\"/></g><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/></g><path d=\"M20.4 -46.7C24.5 -47.4 37 -50.7 45.4 -50.7C53.7 -50.7 66.2 -47.4 70.4 -46.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-1.3 -12.6Q-9 7.7 -4.9 11.9Q0 17.5 5 11.9Q9 7.7 1.3 -12.6\" fill=\"#c3c8cd\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g></g></g></g></g></svg>"
+  },
+  {
+   "id": "datas-comemorativas-1",
+   "file": "datas-comemorativas-1.rspack",
+   "sha256": "83291b47c81d47e93cc0c6c847ad063f60130be4d12ca1213cab7f1e271fdc97",
+   "size": 18610,
+   "name": "Datas Comemorativas · Volume 1",
+   "version": "1.0.0",
+   "description": "Dia das Mães, dos Pais, dos Namorados e das Crianças, Sete de Setembro, show e futebol: cartões, flores, brinquedos de parquinho, bandeiras e palco.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Datas Comemorativas",
+   "volume": 1,
+   "tags": [
+    "evento",
+    "feriado",
+    "datas comemorativas"
+   ],
+   "dependencies": [],
+   "itemCount": 23,
+   "counts": {
+    "object": 23
+   },
+   "animated": 5,
+   "items": [
+    {
+     "id": "rs-maes-buque-rosas",
+     "name": "Buquê de rosas",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Dia das Mães"
+    },
+    {
+     "id": "rs-maes-cartao",
+     "name": "Cartão de Dia das Mães",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Dia das Mães"
+    },
+    {
+     "id": "rs-maes-bombons",
+     "name": "Caixa de bombons em coração",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Dia das Mães"
+    },
+    {
+     "id": "rs-pais-gravata-presente",
+     "name": "Gravata de presente",
+     "kind": "object",
+     "category": "Presentes",
+     "subcategory": "Dia dos Pais"
+    },
+    {
+     "id": "rs-pais-caneca",
+     "name": "Caneca \"Melhor Pai do Mundo\"",
+     "kind": "object",
+     "category": "Utensílios",
+     "subcategory": "Dia dos Pais"
+    },
+    {
+     "id": "rs-namorados-coracao",
+     "name": "Coração",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Dia dos Namorados"
+    },
+    {
+     "id": "rs-namorados-rosa-vermelha",
+     "name": "Rosa vermelha",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Dia dos Namorados"
+    },
+    {
+     "id": "rs-namorados-cartao-amor",
+     "name": "Carta de amor",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Dia dos Namorados"
+    },
+    {
+     "id": "rs-namorados-ursinho-coracao",
+     "name": "Ursinho com coração",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Dia dos Namorados"
+    },
+    {
+     "id": "rs-criancas-pirulito-gigante",
+     "name": "Pirulito gigante",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Dia das Crianças"
+    },
+    {
+     "id": "rs-criancas-balao-estrela",
+     "name": "Balão de estrela",
+     "kind": "object",
+     "category": "Festa",
+     "subcategory": "Dia das Crianças"
+    },
+    {
+     "id": "rs-criancas-carrossel",
+     "name": "Carrossel",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Dia das Crianças"
+    },
+    {
+     "id": "rs-criancas-escorregador",
+     "name": "Escorregador",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Dia das Crianças"
+    },
+    {
+     "id": "rs-criancas-gangorra",
+     "name": "Gangorra",
+     "kind": "object",
+     "category": "Brinquedos",
+     "subcategory": "Dia das Crianças"
+    },
+    {
+     "id": "rs-independencia-bandeirinhas-br",
+     "name": "Bandeirinhas verde e amarelo",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Independência"
+    },
+    {
+     "id": "rs-independencia-fita-nacional",
+     "name": "Fita verde e amarela",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Independência"
+    },
+    {
+     "id": "rs-independencia-desfile-tambor",
+     "name": "Tambor do desfile cívico",
+     "kind": "object",
+     "category": "Instrumentos musicais",
+     "subcategory": "Independência"
+    },
+    {
+     "id": "rs-independencia-bandeira-mastro",
+     "name": "Bandeira do Brasil no mastro",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Independência"
+    },
+    {
+     "id": "rs-show-holofote",
+     "name": "Holofote de palco",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Show"
+    },
+    {
+     "id": "rs-show-palco",
+     "name": "Palco de show",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Show"
+    },
+    {
+     "id": "rs-show-ingresso",
+     "name": "Ingresso de show",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Show"
+    },
+    {
+     "id": "rs-futebol-faixa-torcida",
+     "name": "Bandeira de torcida",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Futebol"
+    },
+    {
+     "id": "rs-futebol-apito-bandeira",
+     "name": "Taça de campeão",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Futebol"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-80.64000000000001 -152.64000000000001 161.28000000000003 161.28000000000003\"><g data-piece=\"p0\" transform=\"translate(0 -60)\"><rect x=\"-3\" y=\"-50\" width=\"6\" height=\"100\" rx=\"0\" fill=\"#6dad6f\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -70) rotate(180)\" opacity=\"0.9\"><path d=\"M0 -55L33 55L-33 55Z\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-22 -116)\"><ellipse cx=\"0\" cy=\"0\" rx=\"16\" ry=\"16\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(0 -128)\"><ellipse cx=\"0\" cy=\"0\" rx=\"16\" ry=\"16\" fill=\"#d27ba6\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(22 -116)\"><ellipse cx=\"0\" cy=\"0\" rx=\"16\" ry=\"16\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-10 -104)\"><ellipse cx=\"0\" cy=\"0\" rx=\"16\" ry=\"16\" fill=\"#d27ba6\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(12 -106)\"><ellipse cx=\"0\" cy=\"0\" rx=\"16\" ry=\"16\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(0 -56)\"><rect x=\"-22\" y=\"-4\" width=\"44\" height=\"8\" rx=\"0\" fill=\"#d27ba6\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
   },
   {
    "id": "brinquedos-1",
@@ -1491,6 +2879,130 @@
     }
    ],
    "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-41.440000000000005 -77.44 82.88000000000001 82.88000000000001\"><g data-piece=\"p0\" transform=\"translate(0 -36)\"><ellipse cx=\"0\" cy=\"0\" rx=\"36\" ry=\"36\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -36)\"><polygon points=\"0,-13 12.4,-4 7.6,10.5 -7.6,10.5 -12.4,-4\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(30 -36)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(9.2 -64.6)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(-24.4 -53.5)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-24.1 -18.1)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(9.7 -7.6)\"><polygon points=\"0,-7 6.7,-2.2 4.1,5.7 -4.1,5.7 -6.7,-2.2\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "efeitos-1",
+   "file": "efeitos-1.rspack",
+   "sha256": "fb66f6f6fd1b203b02bea31f78ec64966e209934547d763322a6b7fe2f5242f7",
+   "size": 16620,
+   "name": "Efeitos animados 1",
+   "version": "1.0.0",
+   "description": "Chuva, neve, fumaça, confete, fogos de artifício, faíscas, ondas, vento, poeira, relâmpago, estrelas, bolhas e corações.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Efeitos",
+   "collection": "Efeitos",
+   "volume": 1,
+   "tags": [
+    "efeitos"
+   ],
+   "dependencies": [],
+   "itemCount": 14,
+   "counts": {
+    "object": 14
+   },
+   "animated": 14,
+   "items": [
+    {
+     "id": "rs-efeito-chuva",
+     "name": "Chuva",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Clima"
+    },
+    {
+     "id": "rs-efeito-neve",
+     "name": "Neve",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Clima"
+    },
+    {
+     "id": "rs-efeito-fumaca",
+     "name": "Fumaça",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Clima"
+    },
+    {
+     "id": "rs-efeito-confete",
+     "name": "Confete",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Festa"
+    },
+    {
+     "id": "rs-efeito-fogos-estrela",
+     "name": "Fogos de artifício",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Festa"
+    },
+    {
+     "id": "rs-efeito-faiscas",
+     "name": "Faíscas",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Fogo"
+    },
+    {
+     "id": "rs-efeito-respingo",
+     "name": "Respingo d'água",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Água"
+    },
+    {
+     "id": "rs-efeito-onda",
+     "name": "Ondas",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Água"
+    },
+    {
+     "id": "rs-efeito-vento-folhas",
+     "name": "Folhas ao vento",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Clima"
+    },
+    {
+     "id": "rs-efeito-poeira",
+     "name": "Nuvem de poeira",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Ação"
+    },
+    {
+     "id": "rs-efeito-relampago",
+     "name": "Relâmpago",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Clima"
+    },
+    {
+     "id": "rs-efeito-estrelas",
+     "name": "Estrelas brilhando",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Céu"
+    },
+    {
+     "id": "rs-efeito-bolhas",
+     "name": "Bolhas de sabão",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Ar"
+    },
+    {
+     "id": "rs-efeito-coracoes",
+     "name": "Corações subindo",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Ar"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-150.08 -235.08 300.16 300.16\"><g data-obj-clip=\"anim\" data-obj-frame=\"0\"><g data-piece=\"p0\" transform=\"translate(-124 -155) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(-98 -125) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-72 -95) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-46 -155) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(-20 -125) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(6 -95) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(32 -155) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(58 -125) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(84 -95) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p9\" transform=\"translate(110 -155) rotate(104.9)\"><path d=\"M-15.5 0L15.5 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g></g></svg>"
   },
   {
    "id": "escola-1",
@@ -1811,6 +3323,392 @@
    "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-127.68 -219.68 255.36 255.36\"><g data-piece=\"p0\" transform=\"translate(-110 -90)\"><rect x=\"-4\" y=\"-90\" width=\"8\" height=\"180\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(110 -90)\"><rect x=\"-4\" y=\"-90\" width=\"8\" height=\"180\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -180)\"><rect x=\"-114\" y=\"-4\" width=\"228\" height=\"8\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-80 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(-40 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(0 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(40 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(80 -90)\"><rect x=\"-1\" y=\"-88\" width=\"2\" height=\"176\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(0 -40)\"><rect x=\"-110\" y=\"-1\" width=\"220\" height=\"2\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p9\" transform=\"translate(0 -90)\"><rect x=\"-110\" y=\"-1\" width=\"220\" height=\"2\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p10\" transform=\"translate(0 -140)\"><rect x=\"-110\" y=\"-1\" width=\"220\" height=\"2\" rx=\"0\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
   },
   {
+   "id": "festa-junina-1",
+   "file": "festa-junina-1.rspack",
+   "sha256": "011a47efdef7669f91e55f123685f041a321e34b45c271506e07193731701684",
+   "size": 16879,
+   "name": "Festa Junina · Volume 1",
+   "version": "1.0.0",
+   "description": "Bandeirinhas, fogueira, barraca de prendas, balão, comidas típicas, sanfona e os personagens da quadrilha caipira.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Festa Junina",
+   "volume": 1,
+   "tags": [
+    "feriado",
+    "festa junina",
+    "são joão"
+   ],
+   "dependencies": [],
+   "itemCount": 19,
+   "counts": {
+    "object": 14,
+    "character": 5
+   },
+   "animated": 5,
+   "items": [
+    {
+     "id": "rs-junina-bandeirinhas",
+     "name": "Bandeirinhas de São João",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-fogueira",
+     "name": "Fogueira junina",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-barraca-prendas",
+     "name": "Barraca de prendas",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-pau-sebo",
+     "name": "Pau de sebo",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-balao",
+     "name": "Balão junino",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-milho-cozido",
+     "name": "Milho cozido",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-pamonha",
+     "name": "Pamonha",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-pipoca",
+     "name": "Saco de pipoca",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-pacoca",
+     "name": "Paçoca",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-quentao",
+     "name": "Caneca de quentão",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-chapeu-palha",
+     "name": "Chapéu de palha",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-casinha-sitio",
+     "name": "Casinha de sítio",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-cartaz-arraia",
+     "name": "Placa \"Arraiá\"",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-sanfona-festa",
+     "name": "Fogos de São João",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-caipira",
+     "name": "Caipira do arraiá",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-caipira-moca",
+     "name": "Caipira de tranças",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-noivo-roca",
+     "name": "Noivo da quadrilha",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-noiva-roca",
+     "name": "Noiva da quadrilha",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Festa Junina"
+    },
+    {
+     "id": "rs-junina-sanfoneiro",
+     "name": "Sanfoneiro",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Festa Junina"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-168.00000000000003 -199.00000000000003 336.00000000000006 336.00000000000006\"><g data-obj-clip=\"anim\" data-obj-frame=\"0\"><g data-piece=\"p0\" transform=\"translate(0 -60)\"><path d=\"M-150 0L150 0\" fill=\"none\" stroke=\"#4a5360\" stroke-width=\"2\" stroke-linecap=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(-135 -46) rotate(180)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-103.3 -46) rotate(189.6)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-73.2 -46) rotate(185.2)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#5b8dbe\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(-44.7 -46) rotate(173.1)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#6dad6f\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-16.5 -46) rotate(171.2)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#d27ba6\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(13.1 -46) rotate(182.2)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(44.4 -46) rotate(190)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(76.3 -46) rotate(183.2)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#5b8dbe\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p9\" transform=\"translate(107 -46) rotate(171.7)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#6dad6f\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p10\" transform=\"translate(135.8 -46) rotate(172.4)\"><path d=\"M0 -16L11 16L-11 16Z\" fill=\"#d27ba6\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g></g></svg>"
+  },
+  {
+   "id": "formatura-1",
+   "file": "formatura-1.rspack",
+   "sha256": "5a46cce314c97d8ac48b45eda1e50d1d7e461ee1fa46494f3a787468bdc2b4a3",
+   "size": 6362,
+   "name": "Formatura · Volume 1",
+   "version": "1.0.0",
+   "description": "Capelo, diploma, beca, faixa de formandos, capelos para o alto (animado) e dois formandos.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Formatura",
+   "volume": 1,
+   "tags": [
+    "evento",
+    "formatura"
+   ],
+   "dependencies": [],
+   "itemCount": 8,
+   "counts": {
+    "object": 6,
+    "character": 2
+   },
+   "animated": 1,
+   "items": [
+    {
+     "id": "rs-formatura-capelo",
+     "name": "Capelo de formatura",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Formatura"
+    },
+    {
+     "id": "rs-formatura-diploma",
+     "name": "Diploma",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Formatura"
+    },
+    {
+     "id": "rs-formatura-beca",
+     "name": "Beca de formatura",
+     "kind": "object",
+     "category": "Roupas",
+     "subcategory": "Formatura"
+    },
+    {
+     "id": "rs-formatura-faixa",
+     "name": "Faixa de formandos",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Formatura"
+    },
+    {
+     "id": "rs-formatura-toga-jogada",
+     "name": "Capelos para o alto",
+     "kind": "object",
+     "category": "Efeitos",
+     "subcategory": "Formatura"
+    },
+    {
+     "id": "rs-formatura-pergaminho-fita",
+     "name": "Pergaminho com fita",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Formatura"
+    },
+    {
+     "id": "rs-formatura-formando",
+     "name": "Formando",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Formatura"
+    },
+    {
+     "id": "rs-formatura-formanda",
+     "name": "Formanda",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Formatura"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-72.80000000000001 -105.30000000000001 145.60000000000002 145.60000000000002\"><g data-piece=\"p0\" transform=\"translate(0 -30)\"><rect x=\"-40\" y=\"-20\" width=\"80\" height=\"40\" rx=\"6\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -60)\"><rect x=\"-65\" y=\"-5\" width=\"130\" height=\"10\" rx=\"2\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(28 -50) rotate(19.7)\"><path d=\"M-29.7 0L29.7 0\" fill=\"none\" stroke=\"#f2c95c\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(56 -36)\"><ellipse cx=\"0\" cy=\"0\" rx=\"5\" ry=\"12\" fill=\"#f2c95c\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "halloween-1",
+   "file": "halloween-1.rspack",
+   "sha256": "eff4dc6d119dc04489ca73fb1fd3dae438b54aa6fd7629dd4d8ce25235de0487",
+   "size": 14447,
+   "name": "Halloween · Volume 1",
+   "version": "1.0.0",
+   "description": "Abóbora, fantasma, morcego, esqueleto, caldeirão, casa assombrada, lápide, teia, aranha, corvo e gato preto.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Halloween",
+   "volume": 1,
+   "tags": [
+    "feriado",
+    "halloween",
+    "terror"
+   ],
+   "dependencies": [],
+   "itemCount": 16,
+   "counts": {
+    "object": 16
+   },
+   "animated": 5,
+   "items": [
+    {
+     "id": "rs-halloween-abobora",
+     "name": "Abóbora de Halloween",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-fantasma",
+     "name": "Fantasma",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-morcego",
+     "name": "Morcego",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-esqueleto",
+     "name": "Esqueleto",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-caveira",
+     "name": "Caveira",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-caldeirao",
+     "name": "Caldeirão de bruxa",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-vassoura",
+     "name": "Vassoura de bruxa",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-teia",
+     "name": "Teia de aranha",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-aranha",
+     "name": "Aranha",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-casa-assombrada",
+     "name": "Casa assombrada",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-lapide",
+     "name": "Lápide",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-doces-balde",
+     "name": "Balde de doces",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-lua",
+     "name": "Lua cheia",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-corvo",
+     "name": "Corvo",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-gato-preto",
+     "name": "Gato preto",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Halloween"
+    },
+    {
+     "id": "rs-halloween-chapeu-bruxa",
+     "name": "Chapéu de bruxa",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Halloween"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-67.2 -119.7 134.4 134.4\"><g data-obj-clip=\"anim\" data-obj-frame=\"0\"><g data-piece=\"p0\" transform=\"translate(0 -44)\"><ellipse cx=\"0\" cy=\"0\" rx=\"55\" ry=\"42\" fill=\"#e98f4e\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -94)\"><rect x=\"-7\" y=\"-11\" width=\"14\" height=\"22\" rx=\"0\" fill=\"#6dad6f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-24 -54)\"><path d=\"M0 -11L10 11L-10 11Z\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(24 -54)\"><path d=\"M0 -11L10 11L-10 11Z\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(0 -38) rotate(180)\"><path d=\"M0 -7L7 7L-7 7Z\" fill=\"#23202b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(0 -22)\"><rect x=\"-28\" y=\"-6\" width=\"56\" height=\"12\" rx=\"0\" fill=\"#23202b\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(-18 -24)\"><rect x=\"-4\" y=\"-6\" width=\"8\" height=\"12\" rx=\"0\" fill=\"#e98f4e\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(0 -24)\"><rect x=\"-4\" y=\"-6\" width=\"8\" height=\"12\" rx=\"0\" fill=\"#e98f4e\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(18 -24)\"><rect x=\"-4\" y=\"-6\" width=\"8\" height=\"12\" rx=\"0\" fill=\"#e98f4e\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></g></svg>"
+  },
+  {
    "id": "instrumentos-1",
    "file": "instrumentos-1.rspack",
    "sha256": "f04e98023ea4d0c144b0fd4226e75b5c19e74df4e5f8427569da11ab0822c508",
@@ -1935,6 +3833,412 @@
    "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-157.92000000000002 -298.92 315.84000000000003 315.84000000000003\"><g data-piece=\"p0\" transform=\"translate(0 -50)\"><ellipse cx=\"0\" cy=\"0\" rx=\"50\" ry=\"45\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -118)\"><ellipse cx=\"0\" cy=\"0\" rx=\"35\" ry=\"35\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -82)\"><ellipse cx=\"0\" cy=\"0\" rx=\"14\" ry=\"14\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(0 -190)\"><rect x=\"-8\" y=\"-65\" width=\"16\" height=\"130\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(0 -262)\"><rect x=\"-13\" y=\"-20\" width=\"26\" height=\"40\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-4 -130)\"><rect x=\"-0.7\" y=\"-100\" width=\"1.5\" height=\"200\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(0 -130)\"><rect x=\"-0.7\" y=\"-100\" width=\"1.5\" height=\"200\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(4 -130)\"><rect x=\"-0.7\" y=\"-100\" width=\"1.5\" height=\"200\" rx=\"0\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
   },
   {
+   "id": "natal-1",
+   "file": "natal-1.rspack",
+   "sha256": "22c4c3020f1d879f856e2f4642d362cd9a264db1086caa564ccb828adf18a840",
+   "size": 29732,
+   "name": "Natal · Volume 1",
+   "version": "1.0.0",
+   "description": "Árvores, presentes, enfeites, boneco de neve, doces, trenó, rena, lareira e os personagens do Natal (Papai Noel, Mamãe Noel, duendes).",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Natal",
+   "volume": 1,
+   "tags": [
+    "feriado",
+    "natal"
+   ],
+   "dependencies": [],
+   "itemCount": 37,
+   "counts": {
+    "object": 31,
+    "character": 6
+   },
+   "animated": 5,
+   "items": [
+    {
+     "id": "rs-natal-arvore",
+     "name": "Árvore de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-arvore-pequena",
+     "name": "Árvore de Natal de mesa",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-arvore-nevada",
+     "name": "Pinheiro nevado",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-presente-grande",
+     "name": "Presente grande",
+     "kind": "object",
+     "category": "Presentes",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-presente-medio",
+     "name": "Presente médio",
+     "kind": "object",
+     "category": "Presentes",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-presente-pequeno",
+     "name": "Presente pequeno",
+     "kind": "object",
+     "category": "Presentes",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-pilha-presentes",
+     "name": "Pilha de presentes",
+     "kind": "object",
+     "category": "Presentes",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-saco-presentes",
+     "name": "Saco de presentes",
+     "kind": "object",
+     "category": "Presentes",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-meia",
+     "name": "Meia de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-guirlanda",
+     "name": "Guirlanda de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-pisca-pisca",
+     "name": "Pisca-pisca",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-estrela",
+     "name": "Estrela de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-boneco-neve",
+     "name": "Boneco de neve",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-bengala-doce",
+     "name": "Bengala doce",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-biscoito-gengibre",
+     "name": "Biscoito de gengibre",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-casa-biscoito",
+     "name": "Casinha de biscoito",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-sino",
+     "name": "Sino de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-vela",
+     "name": "Vela de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-bola-vermelha",
+     "name": "Bola de Natal vermelha",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-bola-azul",
+     "name": "Bola de Natal azul",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-anjo",
+     "name": "Anjo de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-presepio",
+     "name": "Presépio",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-renas",
+     "name": "Rena",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-treno",
+     "name": "Trenó do Papai Noel",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-chamine",
+     "name": "Chaminé com Papai Noel",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-ceia-peru",
+     "name": "Peru de Natal",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-panetone",
+     "name": "Panetone",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-gorro",
+     "name": "Gorro de Papai Noel",
+     "kind": "object",
+     "category": "Acessórios",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-floco",
+     "name": "Floco de neve decorativo",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-carta",
+     "name": "Carta para o Papai Noel",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-lareira-meias",
+     "name": "Lareira de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-papai-noel",
+     "name": "Papai Noel",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-mamae-noel",
+     "name": "Mamãe Noel",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-duende",
+     "name": "Duende ajudante",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-duende-chefe",
+     "name": "Duende-chefe",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-papai-noel-praia",
+     "name": "Papai Noel de bermuda",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Natal"
+    },
+    {
+     "id": "rs-natal-mamae-noel-verao",
+     "name": "Mamãe Noel de verão",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Natal"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-147.84 -279.84000000000003 295.68 295.68\"><g data-obj-clip=\"anim\" data-obj-frame=\"0\"><g data-piece=\"p0\" transform=\"translate(0 -12)\"><rect x=\"-17\" y=\"-12\" width=\"34\" height=\"24\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -70)\"><path d=\"M0 -48L85 48L-85 48Z\" fill=\"#2f7a4a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -130)\"><path d=\"M0 -45L70 45L-70 45Z\" fill=\"#3a8a58\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(0 -188)\"><path d=\"M0 -40L54 40L-54 40Z\" fill=\"#2f7a4a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(0 -244)\"><polygon points=\"0,-20 5.3,-7.3 19,-6.2 8.6,2.8 11.8,16.2 0,9 -11.8,16.2 -8.6,2.8 -19,-6.2 -5.3,-7.3\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-40 -50)\"><ellipse cx=\"0\" cy=\"0\" rx=\"7\" ry=\"7\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(30 -70)\"><ellipse cx=\"0\" cy=\"0\" rx=\"7\" ry=\"7\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(-20 -110)\"><ellipse cx=\"0\" cy=\"0\" rx=\"7\" ry=\"7\" fill=\"#5b8dbe\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(34 -130)\"><ellipse cx=\"0\" cy=\"0\" rx=\"7\" ry=\"7\" fill=\"#d27ba6\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p9\" transform=\"translate(-8 -160)\"><ellipse cx=\"0\" cy=\"0\" rx=\"7\" ry=\"7\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p10\" transform=\"translate(14 -190)\"><ellipse cx=\"0\" cy=\"0\" rx=\"7\" ry=\"7\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p11\" transform=\"translate(-26 -62)\"><ellipse cx=\"0\" cy=\"0\" rx=\"7\" ry=\"7\" fill=\"#5b8dbe\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g><g data-piece=\"p12\" transform=\"translate(8 -100)\"><ellipse cx=\"0\" cy=\"0\" rx=\"7\" ry=\"7\" fill=\"#d27ba6\" stroke=\"#23202b\" stroke-width=\"2\" stroke-linejoin=\"round\"/></g></g></svg>"
+  },
+  {
+   "id": "natal-2",
+   "file": "natal-2.rspack",
+   "sha256": "9f99739c1fd06dea558ee799af012430f5cc9a6550932aa80f75b9d1e999b9a9",
+   "size": 10382,
+   "name": "Natal · Volume 2 (Natal brasileiro)",
+   "version": "1.0.0",
+   "description": "Ceia brasileira (rabanada, tender, salpicão, panetone), casa com luzes, mesa de ceia, árvore tropical e cartões.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Natal",
+   "volume": 2,
+   "tags": [
+    "feriado",
+    "natal",
+    "brasil"
+   ],
+   "dependencies": [],
+   "itemCount": 13,
+   "counts": {
+    "object": 13
+   },
+   "animated": 1,
+   "items": [
+    {
+     "id": "rs-natal-br-rabanada",
+     "name": "Rabanada",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-tender",
+     "name": "Tender de Natal",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-salpicao",
+     "name": "Salpicão",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-farofa",
+     "name": "Farofa natalina",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-espumante",
+     "name": "Garrafa de espumante",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-cartao",
+     "name": "Cartão de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-fachada",
+     "name": "Casa com luzes de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-ceia-mesa",
+     "name": "Mesa de ceia",
+     "kind": "object",
+     "category": "Móveis",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-arvore-brasil",
+     "name": "Árvore de Natal tropical",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-chinelo-presente",
+     "name": "Presente com laço de fita",
+     "kind": "object",
+     "category": "Presentes",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-ponche",
+     "name": "Ponche de frutas",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-velas-mesa",
+     "name": "Castiçal de Natal",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Natal brasileiro"
+    },
+    {
+     "id": "rs-natal-br-biscoito-estrela",
+     "name": "Biscoitos de estrela",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Natal brasileiro"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-67.2 -93.7 134.4 134.4\"><g data-piece=\"p0\" transform=\"translate(0 -20)\"><rect x=\"-60\" y=\"-15\" width=\"120\" height=\"30\" rx=\"10\" fill=\"#e0b97a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -40)\"><rect x=\"-50\" y=\"-13\" width=\"100\" height=\"26\" rx=\"10\" fill=\"#d8a050\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -44)\" opacity=\"0.8\"><ellipse cx=\"0\" cy=\"0\" rx=\"30\" ry=\"6\" fill=\"#f4f1ea\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
    "id": "plantas-1",
    "file": "plantas-1.rspack",
    "sha256": "f6a06c7c94454680fb780f203b15ccb1c2ccaa2f3c20f48ca3fc7dd353b98ca6",
@@ -2057,6 +4361,124 @@
     }
    ],
    "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-159.60000000000002 -302.1 319.20000000000005 319.20000000000005\"><g data-piece=\"p0\" transform=\"translate(0 -80)\"><rect x=\"-20\" y=\"-80\" width=\"40\" height=\"160\" rx=\"0\" fill=\"#8a5a3c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -210)\"><ellipse cx=\"0\" cy=\"0\" rx=\"95\" ry=\"75\" fill=\"#6dad6f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-50 -190)\"><ellipse cx=\"0\" cy=\"0\" rx=\"55\" ry=\"50\" fill=\"#3f7a4a\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(54 -196)\"><ellipse cx=\"0\" cy=\"0\" rx=\"50\" ry=\"45\" fill=\"#7cc48a\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "pascoa-1",
+   "file": "pascoa-1.rspack",
+   "sha256": "c832498d6a6d951e60549eb534dbb65441460bba15cb8a1983a016bc06017e8c",
+   "size": 10443,
+   "name": "Páscoa · Volume 1",
+   "version": "1.0.0",
+   "description": "Coelhinho, ovos de Páscoa e de chocolate, cestas, pintinho, cenoura, colomba, bombons e flores de primavera.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Festas",
+   "collection": "Páscoa",
+   "volume": 1,
+   "tags": [
+    "feriado",
+    "páscoa"
+   ],
+   "dependencies": [],
+   "itemCount": 13,
+   "counts": {
+    "object": 13
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "rs-pascoa-ovo-listrado",
+     "name": "Ovo de Páscoa listrado",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-ovo-pontos",
+     "name": "Ovo de Páscoa de bolinhas",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-ovo-chocolate",
+     "name": "Ovo de chocolate",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-cesta",
+     "name": "Cesta de ovos",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-coelhinho",
+     "name": "Coelhinho da Páscoa",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-pintinho",
+     "name": "Pintinho",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-cenoura",
+     "name": "Cenoura gigante",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-colomba",
+     "name": "Colomba pascal",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-barra-chocolate",
+     "name": "Barra de chocolate gigante",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-ovo-quebrado",
+     "name": "Ovo de Páscoa partido",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-bombons",
+     "name": "Caixa de bombons",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-grama-cesta",
+     "name": "Ninho de Páscoa",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Páscoa"
+    },
+    {
+     "id": "rs-pascoa-flores",
+     "name": "Flores de primavera",
+     "kind": "object",
+     "category": "Decoração",
+     "subcategory": "Páscoa"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-44.800000000000004 -84.80000000000001 89.60000000000001 89.60000000000001\"><g data-piece=\"p0\" transform=\"translate(0 -40)\"><ellipse cx=\"0\" cy=\"0\" rx=\"32\" ry=\"40\" fill=\"#d27ba6\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -40)\"><rect x=\"-32\" y=\"-5\" width=\"64\" height=\"10\" rx=\"0\" fill=\"#f2c95c\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(0 -62)\"><rect x=\"-30\" y=\"-4\" width=\"60\" height=\"8\" rx=\"0\" fill=\"#5b8dbe\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(0 -18)\"><rect x=\"-25\" y=\"-4\" width=\"50\" height=\"8\" rx=\"0\" fill=\"#6dad6f\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
   },
   {
    "id": "figurantes-1",
@@ -3579,6 +6001,179 @@
     }
    ],
    "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-68.32000000000001 -129.32 136.64000000000001 136.64000000000001\"><g data-piece=\"p0\" transform=\"translate(0 -50)\"><rect x=\"-7\" y=\"-50\" width=\"14\" height=\"100\" rx=\"6\" fill=\"#c58a45\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(0 -108)\"><rect x=\"-35\" y=\"-14\" width=\"70\" height=\"28\" rx=\"5\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-34 -106)\"><rect x=\"-8\" y=\"-7\" width=\"16\" height=\"14\" rx=\"0\" fill=\"#4a5360\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "veiculos-1",
+   "file": "veiculos-1.rspack",
+   "sha256": "75a3f61c1970aea02c9f83bcc34efe9d6ea1b1f510b6707ac2037f2e3d66e02e",
+   "size": 17429,
+   "name": "Veículos 1",
+   "version": "1.0.0",
+   "description": "Carros, ônibus, caminhões, ambulância (com sirene), viatura, bombeiros, moto, bicicleta, barcos, avião, helicóptero e trem.",
+   "author": "Recorte Studio",
+   "license": "CC0 1.0 — conteúdo original do Recorte Studio (domínio público; use, altere e distribua livremente)",
+   "category": "Veículos",
+   "collection": "Veículos",
+   "volume": 1,
+   "tags": [
+    "veículos"
+   ],
+   "dependencies": [],
+   "itemCount": 21,
+   "counts": {
+    "object": 21
+   },
+   "animated": 2,
+   "items": [
+    {
+     "id": "rs-carro-sedan",
+     "name": "Carro sedã",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carros"
+    },
+    {
+     "id": "rs-carro-hatch",
+     "name": "Carro compacto",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carros"
+    },
+    {
+     "id": "rs-carro-esportivo",
+     "name": "Carro esportivo",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carros"
+    },
+    {
+     "id": "rs-picape",
+     "name": "Picape",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carros"
+    },
+    {
+     "id": "rs-van",
+     "name": "Van",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carros"
+    },
+    {
+     "id": "rs-taxi",
+     "name": "Táxi",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carros"
+    },
+    {
+     "id": "rs-onibus-urbano",
+     "name": "Ônibus urbano",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Ônibus e caminhões"
+    },
+    {
+     "id": "rs-onibus-escolar",
+     "name": "Ônibus escolar",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Ônibus e caminhões"
+    },
+    {
+     "id": "rs-caminhao-bau",
+     "name": "Caminhão baú",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Ônibus e caminhões"
+    },
+    {
+     "id": "rs-caminhao-cacamba",
+     "name": "Caminhão caçamba",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Ônibus e caminhões"
+    },
+    {
+     "id": "rs-ambulancia",
+     "name": "Ambulância",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Emergência"
+    },
+    {
+     "id": "rs-viatura",
+     "name": "Viatura de polícia",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Emergência"
+    },
+    {
+     "id": "rs-carro-bombeiros",
+     "name": "Caminhão de bombeiros",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Emergência"
+    },
+    {
+     "id": "rs-moto",
+     "name": "Moto",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Duas rodas"
+    },
+    {
+     "id": "rs-bicicleta",
+     "name": "Bicicleta",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Duas rodas"
+    },
+    {
+     "id": "rs-patinete",
+     "name": "Patinete",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Duas rodas"
+    },
+    {
+     "id": "rs-barco-vela",
+     "name": "Barco a vela",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Barcos e aeronaves"
+    },
+    {
+     "id": "rs-barco-motor",
+     "name": "Barco a motor",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Barcos e aeronaves"
+    },
+    {
+     "id": "rs-aviao",
+     "name": "Avião",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Barcos e aeronaves"
+    },
+    {
+     "id": "rs-helicoptero",
+     "name": "Helicóptero",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Barcos e aeronaves"
+    },
+    {
+     "id": "rs-trem",
+     "name": "Locomotiva",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Trens"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-128.8 -185.8 257.6 257.6\"><g data-piece=\"p0\" transform=\"translate(0 -50)\"><rect x=\"-110\" y=\"-25\" width=\"220\" height=\"50\" rx=\"16\" fill=\"#5b8dbe\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p1\" transform=\"translate(-10 -92)\"><rect x=\"-60\" y=\"-22\" width=\"120\" height=\"44\" rx=\"20\" fill=\"#5b8dbe\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p2\" transform=\"translate(-10 -94)\"><rect x=\"-50\" y=\"-16\" width=\"100\" height=\"32\" rx=\"0\" fill=\"#bfe3f2\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p3\" transform=\"translate(-10 -95) rotate(-90)\"><path d=\"M-15 0L15 0\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"p4\" transform=\"translate(108 -54)\"><rect x=\"-7\" y=\"-9\" width=\"14\" height=\"18\" rx=\"0\" fill=\"#f2c95c\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p5\" transform=\"translate(-108 -54)\"><rect x=\"-6\" y=\"-9\" width=\"12\" height=\"18\" rx=\"0\" fill=\"#d65f5f\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p6\" transform=\"translate(-66 -22)\"><ellipse cx=\"0\" cy=\"0\" rx=\"22\" ry=\"22\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p7\" transform=\"translate(-66 -22)\"><ellipse cx=\"0\" cy=\"0\" rx=\"11\" ry=\"11\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"p8\" transform=\"translate(66 -22)\"><ellipse cx=\"0\" cy=\"0\" rx=\"22\" ry=\"22\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"p9\" transform=\"translate(66 -22)\"><ellipse cx=\"0\" cy=\"0\" rx=\"11\" ry=\"11\" fill=\"#cfd4da\" stroke=\"none\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g></svg>"
   },
   {
    "id": "vila-torta-assets-1",

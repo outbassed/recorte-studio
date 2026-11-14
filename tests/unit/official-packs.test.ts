@@ -11,6 +11,7 @@ import { fetchOfficialIndex, fetchOfficialPack, groupByCollection, installOrder,
 import { db, repo } from '@/storage/db';
 import { exportPackBytes, installCollection, installOfficial, installPackBytes, loadOfficialIndex, reloadPacks, removePack, useOfficial, usePacks } from '@/state/packActions';
 import { buildOfficial } from '../../tools/packs/lib';
+import { itemSvg } from '../../tools/packs/preview';
 import { SOURCES } from '../../tools/packs/sources';
 
 const DIR = resolve('public/packs');
@@ -71,6 +72,43 @@ describe('catálogo oficial: arquivos e índice', () => {
       expect(built.entry.sha256, `${built.entry.id} está desatualizado: rode npm run packs:build`).toBe(published!.sha256);
     }
     expect(index.packs.length).toBe(SOURCES.length);
+  });
+
+  it('nenhum item é duplicata disfarçada de outro (mesmo desenho com ID ou nome diferente)', async () => {
+    const seen = new Map<string, string>();
+    const dups: string[] = [];
+    for (const e of index.packs) {
+      const r = await readPack(file(e.file));
+      if (!r.ok) throw new Error(r.reason);
+      for (const it of r.pack.items) {
+        // Desenho sem a identidade: ID, nome e IDs internos das peças não contam.
+        const raw = JSON.stringify(it.data, (k, v) => (k === 'id' || k === 'name' || k === 'createdAt' || k === 'updatedAt' ? undefined : v));
+        const key = `${it.kind}|${raw}`;
+        const other = seen.get(key);
+        if (other) dups.push(`"${it.name}" (${e.id}) = ${other}`);
+        else seen.set(key, `"${it.name}" (${e.id})`);
+      }
+    }
+    expect(dups).toEqual([]);
+  });
+
+  it('todo item é desenhável pelo renderizador do app, sem erro e sem NaN; objetos têm peças; animados têm quadros', async () => {
+    let drawn = 0;
+    for (const e of index.packs) {
+      const r = await readPack(file(e.file));
+      if (!r.ok) throw new Error(r.reason);
+      for (const it of r.pack.items) {
+        const svg = itemSvg({ id: it.id, kind: it.kind, name: it.name, data: it.data }, { size: 100 });
+        expect(svg.length, `${e.id}/${it.id} desenho vazio`).toBeGreaterThan(200);
+        expect(svg, `${e.id}/${it.id} tem NaN`).not.toMatch(/NaN|undefined|Infinity/);
+        if (it.kind === 'object') {
+          expect(it.data.object.pieces.length, `${e.id}/${it.id} sem peças`).toBeGreaterThan(0);
+          for (const c of it.data.object.clips) expect(c.frames.length, `${e.id}/${it.id} animação sem quadros`).toBeGreaterThan(1);
+        }
+        drawn++;
+      }
+    }
+    expect(drawn).toBe(index.packs.reduce((s, p) => s + p.itemCount, 0));
   });
 
   it('dependências do índice existem no próprio índice', () => {
