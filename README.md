@@ -48,6 +48,12 @@ npm run typecheck
 npm run shots
 ```
 
+Para regenerar os pacotes oficiais (`public/packs/`) depois de mudar `tools/packs/sources/`:
+
+```bash
+npm run packs:build
+```
+
 Para refazer as capturas do manual (public/manual) e as marcações medidas:
 
 ```bash
@@ -105,7 +111,8 @@ src/engine/render      plano de quadro único para preview e exportação; monta
 src/state              documento + histórico (patches), transporte, interface
 src/storage            IndexedDB (Dexie)
 src/migrations         0.3/0.4 → 1.0
-src/features           ai, audio, export, library, projects, templates
+src/features           ai, audio, export, library, packs, projects, templates
+tools/packs            gerador dos pacotes oficiais (DSL, fontes, conferência visual)
 src/components         UI React (controles, palco, timeline, painéis, diálogos)
 ```
 
@@ -123,6 +130,10 @@ Decisões que sustentam o resto:
 - **Manual:** dentro do app (Manual na tela inicial, F1 ou os ícones ? do editor); funciona offline
 - [docs/ACEITACAO.md](docs/ACEITACAO.md): checklist com PASSOU, PARCIAL ou NÃO IMPLEMENTADO
 - [docs/TESTES.md](docs/TESTES.md): comandos, números e ambiente
+- [docs/RELATORIO-BIBLIOTECA.md](docs/RELATORIO-BIBLIOTECA.md): relatório da expansão da Biblioteca (o que foi feito, contagens reais, testes, pendências)
+- [docs/BIBLIOTECA-IDS.md](docs/BIBLIOTECA-IDS.md): IDs únicos, validação, alterar ID e conflitos de importação
+- [docs/PACOTES-OFICIAIS.md](docs/PACOTES-OFICIAIS.md): catálogo oficial, coleções, volumes e como gerar pacotes
+- [docs/VILA-TORTA.md](docs/VILA-TORTA.md): o que entrou e o que depende de aprovação
 - [docs/CATALOGO.md](docs/CATALOGO.md): catálogo unificado, biblioteca, animação por quadros e vínculo pai/filho (arquitetura, compatibilidade e estado de cada critério)
 - [docs/AUDITORIA-0.4.md](docs/AUDITORIA-0.4.md): inventário do legado
 - [docs/MIGRACAO.md](docs/MIGRACAO.md): como os dados antigos são convertidos

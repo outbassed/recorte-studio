@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createProject } from '@/engine/model/factory';
 import { CharacterDefinitionSchema, CustomObjectSchema } from '@/engine/model/schema';
 import { createPiece } from '@/engine/world/pieces';
-import { buildCatalog, DEFAULT_QUERY, entryMatches, isAnimated, queryCatalog, themesOf, type CatalogEntry, type CatalogQuery } from '@/features/catalog/catalog';
+import { buildCatalog, DEFAULT_QUERY, entryMatches, isAnimated, queryCatalog, subcategoriesOf, themesOf, type CatalogEntry, type CatalogQuery } from '@/features/catalog/catalog';
 import { buildPack, readPack, type BuildItem } from '@/features/packs/format';
 import type { LibraryRecord, PackRecord } from '@/storage/db';
 
@@ -85,6 +85,14 @@ describe('Busca e filtros da Biblioteca', () => {
     const e = buildCatalog({ project, library: [], favorites: new Set(), packs: [pk] }).filter((x) => x.origin === 'pack');
     expect(e.map((x) => [x.kind, x.view, x.id]).sort()).toEqual([['character', 'cast', 'ana-1'], ['pose', 'cast', 'pose-a']]);
     expect(e.find((x) => x.kind === 'pose')!.pose).toMatchObject({ handL: 'fist' });
+  });
+
+  it('subcategorias: filtro e contagem por categoria', async () => {
+    const pk = await installed('misc-1', 'Misc', [objItem('zz-a', 'Zz Alfa', false, { category: 'Zcat', subcategory: 'Sub um' }), objItem('zz-b', 'Zz Beta', false, { category: 'Zcat', subcategory: 'Sub dois' }), objItem('zz-c', 'Zz Gama', false, { category: 'Zcat', subcategory: 'Sub um' })]);
+    const all = buildCatalog({ project, library: [], favorites: new Set(), packs: [pk] });
+    expect(subcategoriesOf(all, 'Zcat')).toEqual([{ id: 'Sub dois', count: 1 }, { id: 'Sub um', count: 2 }]);
+    expect(queryCatalog(all, 'all', { ...DEFAULT_QUERY, category: 'Zcat', subcategory: 'Sub um' }).map((e) => e.name).sort()).toEqual(['Zz Alfa', 'Zz Gama']);
+    expect(subcategoriesOf(all, 'Inexistente')).toEqual([]);
   });
 
   it('entryMatches e funções auxiliares', async () => {

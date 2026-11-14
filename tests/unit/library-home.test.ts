@@ -4,6 +4,7 @@ import { createProject } from '@/engine/model/factory';
 import { buildCatalog, DEFAULT_QUERY, queryCatalog, categoriesOf } from '@/features/catalog/catalog';
 import { buildPack, readPack } from '@/features/packs/format';
 import { buildDemoPack } from '@/features/packs/demo';
+import { isUuidV4 } from '@/features/library/itemIds';
 import { copyToMyLibrary, deleteRecord, duplicateRecord, importLibraryJson, storageError } from '@/state/libraryHomeActions';
 import { reloadLibrary, useLibrary } from '@/state/catalogActions';
 import { useProjectStore } from '@/state/projectStore';
@@ -50,6 +51,15 @@ describe('itens individuais sem projeto aberto', () => {
     expect(useLibrary.getState().records).toHaveLength(2);
     const ids = useLibrary.getState().records.map((r) => (r.data as { object: { id: string } }).object.id);
     expect(new Set(ids).size).toBe(2);
+    // a cópia recebe UUID v4 novo; o original mantém a identidade dele e o nome é preservado + "(cópia)"
+    const recs = useLibrary.getState().records;
+    const orig = recs.find((r) => r.id === libId)!;
+    const copy = recs.find((r) => r.id !== libId)!;
+    expect(isUuidV4(copy.id)).toBe(true);
+    expect(isUuidV4((copy.data as { object: { id: string } }).object.id)).toBe(true);
+    expect(isUuidV4((orig.data as { object: { id: string } }).object.id)).toBe(true); // o original também veio de uma cópia (UUID v4)
+    expect((copy.data as { object: { id: string } }).object.id).not.toBe((orig.data as { object: { id: string } }).object.id);
+    expect(copy.name).toBe(`${orig.name} (cópia)`);
     expect(await deleteRecord(libId)).toBe(true);
     expect(useLibrary.getState().records).toHaveLength(1);
   });

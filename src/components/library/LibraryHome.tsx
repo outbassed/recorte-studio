@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, FileUp, LayoutGrid, Library, List, Package, Plus, Star } from 'lucide-react';
 import { createProject } from '@/engine/model/factory';
 import {
-  buildCatalog, categoriesOf, DEFAULT_QUERY, FILTER_LABELS, KIND_LABELS, ORIGIN_LABELS, queryCatalog, SORT_LABELS, themesOf, THEME_LABELS,
+  buildCatalog, categoriesOf, subcategoriesOf, DEFAULT_QUERY, FILTER_LABELS, KIND_LABELS, ORIGIN_LABELS, queryCatalog, SORT_LABELS, themesOf, THEME_LABELS,
   type CatalogFilter, type CatalogKind, type CatalogQuery, type CatalogSort, type CatalogTheme,
 } from '@/features/catalog/catalog';
 import { reloadLibrary, useLibrary } from '@/state/catalogActions';
@@ -44,6 +44,7 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
   const entries = useMemo(() => buildCatalog({ project: base, library: records, favorites: favSet, packs }), [base, records, favSet, packs]);
   const list = useMemo(() => queryCatalog(entries, 'all', q, recents), [entries, q, recents]);
   const cats = useMemo(() => categoriesOf(entries, 'all'), [entries]);
+  const subs = useMemo(() => (q.category ? subcategoriesOf(entries, q.category) : []), [entries, q.category]);
   const kinds = useMemo(() => [...new Set(entries.map((e) => e.kind))] as CatalogKind[], [entries]);
   const hasPacks = entries.some((e) => e.origin === 'pack');
   const hasOfficial = entries.some((e) => e.origin === 'pack' && e.official);
@@ -140,10 +141,16 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
               </div>
             </details>
             <div className="cat-row2">
-              <select className="cat-select" aria-label="Categoria" data-testid="library-category" value={q.category ?? ''} onChange={(ev) => set({ category: ev.target.value || null })}>
+              <select className="cat-select" aria-label="Categoria" data-testid="library-category" value={q.category ?? ''} onChange={(ev) => set({ category: ev.target.value || null, subcategory: null })}>
                 <option value="">Todas as categorias</option>
                 {cats.map((c) => <option key={c.id} value={c.id}>{c.id} ({c.count})</option>)}
               </select>
+              {subs.length > 0 && (
+                <select className="cat-select" aria-label="Subcategoria" data-testid="library-subcategory" value={q.subcategory ?? ''} onChange={(ev) => set({ subcategory: ev.target.value || null })}>
+                  <option value="">Todas as subcategorias</option>
+                  {subs.map((c) => <option key={c.id} value={c.id}>{c.id} ({c.count})</option>)}
+                </select>
+              )}
               <select className="cat-select" aria-label="Ordenar" data-testid="library-sort" value={q.sort} onChange={(ev) => set({ sort: ev.target.value as CatalogSort })}>
                 {(Object.keys(SORT_LABELS) as CatalogSort[]).map((s) => <option key={s} value={s}>{SORT_LABELS[s]}</option>)}
               </select>

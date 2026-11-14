@@ -86,6 +86,7 @@ function PackPage({ manifest, items, size, assets, inspected, onBack, onBrowse }
             <dt>Conteúdo</dt><dd data-testid="pack-counts">{counts.object} objeto(s), {counts.background} cenário(s){counts.character ? `, ${counts.character} personagem(ns)` : ''}{counts.pose ? `, ${counts.pose} pose(s)` : ''}{counts.animated ? `, ${counts.animated} animado(s)` : ''}</dd>
             {manifest.collection && <><dt>Coleção</dt><dd data-testid="pack-collection">{manifest.collection}{manifest.volume ? ` · volume ${manifest.volume}` : ''}</dd></>}
             <dt>ID do pacote</dt><dd><code>{manifest.id}</code></dd>
+            <dt>Compatibilidade</dt><dd data-testid="pack-compat">Recorte Studio 1.2 ou mais novo · formato .rspack v1</dd>
             <dt>Origem</dt><dd data-testid="pack-source">{(installed?.source ?? inspected?.source) === 'official' ? 'Oficial do Recorte Studio' : 'Importado de arquivo'}</dd>
             <dt>Estado</dt><dd data-testid="pack-state">{!installed ? 'Não instalado' : installed.enabled ? 'Instalado e ativo' : 'Instalado e desativado'}</dd>
           </dl>

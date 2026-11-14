@@ -331,8 +331,9 @@ export interface CatalogQuery {
   animated?: boolean;
   collection?: string | null;
   packId?: string | null;
+  subcategory?: string | null;
 }
-export const DEFAULT_QUERY: CatalogQuery = { text: '', filter: 'all', category: null, sort: 'default', kind: null, theme: null, animated: false, collection: null, packId: null };
+export const DEFAULT_QUERY: CatalogQuery = { text: '', filter: 'all', category: null, sort: 'default', kind: null, theme: null, animated: false, collection: null, packId: null, subcategory: null };
 /** Nomes dos tipos de item (Biblioteca principal e Toolbox). */
 export const KIND_LABELS: Record<CatalogKind, string> = { character: 'Personagens', pose: 'Poses', sequence: 'Sequências', prop: 'Objetos prontos', object: 'Objetos montados', background: 'Cenários', scene: 'Cenas-molde' };
 export type CatalogScope = CatalogView | 'all';
@@ -373,6 +374,7 @@ export function queryCatalog(entries: CatalogEntry[], view: CatalogScope, q: Cat
   let list = view === 'all' ? [...entries] : entries.filter((e) => e.view === view);
   if (q.kind) list = list.filter((e) => e.kind === q.kind);
   if (q.category) list = list.filter((e) => e.category === q.category);
+  if (q.subcategory) list = list.filter((e) => e.subcategory === q.subcategory);
   if (q.theme) list = list.filter((e) => themesOf(e).includes(q.theme!));
   if (q.animated) list = list.filter(isAnimated);
   if (q.collection) list = list.filter((e) => e.collection === q.collection);
@@ -396,6 +398,13 @@ export function queryCatalog(entries: CatalogEntry[], view: CatalogScope, q: Cat
   if (q.sort === 'updated') return exactFirst(list.sort((a, b) => b.updatedAt - a.updatedAt || byName(a, b)));
   if (q.sort === 'favorites') return exactFirst(list.sort((a, b) => Number(b.favorite) - Number(a.favorite) || ORIGIN_RANK[a.origin] - ORIGIN_RANK[b.origin]));
   return exactFirst(list.sort((a, b) => ORIGIN_RANK[a.origin] - ORIGIN_RANK[b.origin]));
+}
+
+/** Subcategorias de uma categoria, com contagem (só o que existe nos itens visíveis). */
+export function subcategoriesOf(entries: CatalogEntry[], category: string | null): Array<{ id: string; count: number }> {
+  const m = new Map<string, number>();
+  for (const e of entries) if (!e.shadowed && e.subcategory && (!category || e.category === category)) m.set(e.subcategory, (m.get(e.subcategory) ?? 0) + 1);
+  return [...m.entries()].map(([id, count]) => ({ id, count })).sort((a, b) => a.id.localeCompare(b.id, 'pt-BR'));
 }
 
 /** Categorias de uma visão, na ordem em que aparecem, com contagem. */

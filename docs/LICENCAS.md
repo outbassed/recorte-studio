@@ -33,3 +33,8 @@ O nome "Bar do Zé" e a "Cantina" nos cenários são fictícios.
 
 - Textos em balões usam fontes do sistema (Trebuchet MS, com alternativas). Elas não são distribuídas, por isso o desenho do texto pode variar entre sistemas operacionais.
 - Codecs de vídeo e áudio são os do navegador. O uso de H.264 e AAC segue a licença do navegador.
+
+## Pacotes oficiais da Biblioteca
+
+- **Conteúdo original do Recorte Studio** (780 itens: personagens, corpos, poses, objetos e cenários em `public/packs/`, gerados por `tools/packs/`): **CC0 1.0** (domínio público). Criado do zero com formas geométricas e parâmetros do próprio motor; sem imagens, fontes ou marcas de terceiros. Personagens são fictícios e não retratam pessoas reais.
+- **Vila Torta** (95 itens extraídos dos episódios): obra original do autor; **licença de redistribuição pendente de definição pelo autor** (ver `docs/VILA-TORTA.md`).

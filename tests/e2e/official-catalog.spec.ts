@@ -53,7 +53,9 @@ test('catálogo oficial: ver conteúdo antes, instalar um volume, instalar a col
   await expect(card(page, 'vila-torta-assets-2')).toBeVisible();
   await page.getByTestId('official-search').fill('');
   await page.getByTestId('official-category').selectOption('Veículos');
-  await expect(page.getByTestId('official-pack')).toHaveCount(1);
+  await expect(page.getByTestId('official-pack')).toHaveCount(2); // veiculos-1 (novo) e vila-torta-veiculos-1
+  await expect(card(page, 'veiculos-1')).toBeVisible();
+  await expect(card(page, 'vila-torta-veiculos-1')).toBeVisible();
   await page.getByTestId('official-category').selectOption('');
 
   // Ver o conteúdo ANTES de instalar: baixa, confere e mostra; nada é gravado.
