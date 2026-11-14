@@ -1,0 +1,860 @@
+{
+ "format": "recorte-studio-pack-index",
+ "formatVersion": 1,
+ "packs": [
+  {
+   "id": "vila-torta-assets-1",
+   "file": "vila-torta-assets-1.rspack",
+   "sha256": "dfa0b939c173242398a7884899476037ad940ea2481b040d0829c8d3819639ed",
+   "size": 23907,
+   "name": "Vila Torta · Assets 1 (campanha, debate e gráfica)",
+   "version": "1.0.0",
+   "description": "Bandeiras (animadas), cartazes, panfletos, púlpitos, urna, cabine, TV do debate, máquina de impressão e sinalização de rua do T1E1.",
+   "author": "Vila Torta",
+   "license": "Vila Torta — obra original do autor do Recorte Studio. Uso nos seus projetos; licença de redistribuição pendente de definição do autor.",
+   "category": "Objetos",
+   "collection": "Vila Torta",
+   "volume": 1,
+   "tags": [
+    "vila torta",
+    "série"
+   ],
+   "dependencies": [],
+   "itemCount": 26,
+   "counts": {
+    "object": 26
+   },
+   "animated": 4,
+   "items": [
+    {
+     "id": "obj_bandeira_g",
+     "name": "Bandeira GAIVOTA",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Bandeiras"
+    },
+    {
+     "id": "obj_bandeira_p",
+     "name": "Bandeira PINOTE",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Bandeiras"
+    },
+    {
+     "id": "obj_cartaz_g",
+     "name": "Cartaz do Gaivota",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Cartazes"
+    },
+    {
+     "id": "obj_cartaz_p",
+     "name": "Cartaz do Pinote",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Cartazes"
+    },
+    {
+     "id": "obj_poster_g",
+     "name": "Cartaz da gráfica (Gaivota)",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Cartazes"
+    },
+    {
+     "id": "obj_poster_p",
+     "name": "Cartaz da gráfica (Pinote)",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Cartazes"
+    },
+    {
+     "id": "obj_panfleto_g",
+     "name": "Panfleto do Gaivota",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Panfletos"
+    },
+    {
+     "id": "obj_panfleto_p",
+     "name": "Panfleto do Pinote",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Panfletos"
+    },
+    {
+     "id": "obj_cartaz_rua",
+     "name": "Cartaz: cadê a rua asfaltada?",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Cartazes"
+    },
+    {
+     "id": "obj_palanque",
+     "name": "Palanque da vitória",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Palanques e púlpitos"
+    },
+    {
+     "id": "obj_pulpito_g",
+     "name": "Púlpito do Gaivota",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Palanques e púlpitos"
+    },
+    {
+     "id": "obj_pulpito_p",
+     "name": "Púlpito do Pinote",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Palanques e púlpitos"
+    },
+    {
+     "id": "obj_pulpito_vitoria",
+     "name": "Púlpito do palanque",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Palanques e púlpitos"
+    },
+    {
+     "id": "obj_painel_debate",
+     "name": "Painel do debate",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Debate"
+    },
+    {
+     "id": "obj_bancada",
+     "name": "Bancada do apresentador",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Debate"
+    },
+    {
+     "id": "obj_urna",
+     "name": "Urna eletrônica",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Votação"
+    },
+    {
+     "id": "obj_cabine",
+     "name": "Cabine de votação",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Votação"
+    },
+    {
+     "id": "obj_placa_secao",
+     "name": "Placa: local de votação",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Votação"
+    },
+    {
+     "id": "obj_tv",
+     "name": "Televisão (tela vazia)",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Televisões"
+    },
+    {
+     "id": "obj_tv_debate",
+     "name": "Tela de TV: debate",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Televisões"
+    },
+    {
+     "id": "obj_impressora",
+     "name": "Máquina de impressão",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Gráfica"
+    },
+    {
+     "id": "obj_pilha_papel",
+     "name": "Pilha de papel",
+     "kind": "object",
+     "category": "Cenografia",
+     "subcategory": "Gráfica"
+    },
+    {
+     "id": "obj_letreiro_grafica",
+     "name": "Letreiro da gráfica",
+     "kind": "object",
+     "category": "Cenografia",
+     "subcategory": "Gráfica"
+    },
+    {
+     "id": "obj_buraco",
+     "name": "Buraco no asfalto",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Rua"
+    },
+    {
+     "id": "obj_placa_buraco",
+     "name": "Placa: atenção, buraco",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Placas"
+    },
+    {
+     "id": "obj_placa_praca",
+     "name": "Placa: em breve, nova praça",
+     "kind": "object",
+     "category": "Urbano",
+     "subcategory": "Placas"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-280 -530 560 560\"><g data-obj-clip=\"acenar\" data-obj-frame=\"0\"><g data-piece=\"pc_bqbumua8xo\" transform=\"translate(0 -250)\"><rect x=\"-5\" y=\"-250\" width=\"10\" height=\"500\" rx=\"0\" fill=\"#8c6a4f\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_94u767hqzl\" transform=\"translate(100 -468) rotate(-3.2)\"><rect x=\"-95\" y=\"-60\" width=\"190\" height=\"120\" rx=\"0\" fill=\"#e98f4e\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_2t6uwqa6h3\" transform=\"translate(100 -468) rotate(-3.2)\"><text text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"'Trebuchet MS','Segoe UI',Arial,sans-serif\" font-size=\"34\" font-weight=\"900\" fill=\"#fff7e6\" stroke=\"#23202b\" stroke-width=\"4\" paint-order=\"stroke\" stroke-linejoin=\"round\"><tspan x=\"0\" y=\"0\">GAIVOTA</tspan></text></g></g></svg>"
+  },
+  {
+   "id": "vila-torta-cenarios-1",
+   "file": "vila-torta-cenarios-1.rspack",
+   "sha256": "8b52c598a73a314b904171934130df75762642db16190b1f98137ca82dabad54",
+   "size": 11840,
+   "name": "Vila Torta · Cenários 1",
+   "version": "1.0.0",
+   "description": "Os seis cenários dos episódios: pátio escolar, os dois camarins, a gráfica, o comitê do Pinote e os bastidores do palco.",
+   "author": "Vila Torta",
+   "license": "Vila Torta — obra original do autor do Recorte Studio. Uso nos seus projetos; licença de redistribuição pendente de definição do autor.",
+   "category": "Cenários",
+   "collection": "Vila Torta",
+   "volume": 1,
+   "tags": [
+    "vila torta",
+    "série"
+   ],
+   "dependencies": [],
+   "itemCount": 6,
+   "counts": {
+    "background": 6
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "cbg_5gnbh26acx",
+     "name": "Pátio escolar",
+     "kind": "background",
+     "category": "Cenários",
+     "subcategory": "Vila Torta"
+    },
+    {
+     "id": "cbg_xi6mukvsgy",
+     "name": "Camarim do Gaivota",
+     "kind": "background",
+     "category": "Cenários",
+     "subcategory": "Vila Torta"
+    },
+    {
+     "id": "cbg_z2yvskc5rr",
+     "name": "Camarim do Pinote",
+     "kind": "background",
+     "category": "Cenários",
+     "subcategory": "Vila Torta"
+    },
+    {
+     "id": "cbg_q1jou3wb7m",
+     "name": "Gráfica",
+     "kind": "background",
+     "category": "Cenários",
+     "subcategory": "Vila Torta"
+    },
+    {
+     "id": "cbg_0i63qsb1kc",
+     "name": "Comitê do Pinote",
+     "kind": "background",
+     "category": "Cenários",
+     "subcategory": "Vila Torta"
+    },
+    {
+     "id": "cbg_ydv8btpufi",
+     "name": "Bastidores do palco",
+     "kind": "background",
+     "category": "Cenários",
+     "subcategory": "Vila Torta"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"113\" viewBox=\"-960 -540 1920 1080\"><g data-custom-bg=\"cbg_5gnbh26acx\" data-time=\"day\" data-composition=\"1\"><rect x=\"-1104\" y=\"-621\" width=\"2208\" height=\"1242\" fill=\"#a8d4e8\"/><g data-piece=\"pc_bsvvci5ewp\" transform=\"translate(0 -245)\"><rect x=\"-1104\" y=\"-395\" width=\"2208\" height=\"790\" rx=\"0\" fill=\"#efe3b8\" stroke=\"#23202b\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_zvipbl8o73\" transform=\"translate(0 105)\"><rect x=\"-1104\" y=\"-45\" width=\"2208\" height=\"90\" rx=\"0\" fill=\"#d8c48a\" stroke=\"#23202b\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_oqrlzmaobi\" transform=\"translate(-900 -250)\"><rect x=\"-65\" y=\"-75\" width=\"130\" height=\"150\" rx=\"0\" fill=\"#a8d4e8\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_mr4y0pi5ix\" transform=\"translate(-900 -250) rotate(90)\"><path d=\"M-75 0L75 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_lke4ci68mm\" transform=\"translate(-900 -250)\"><path d=\"M-65 0L65 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_he8bql9a00\" transform=\"translate(-640 -250)\"><rect x=\"-65\" y=\"-75\" width=\"130\" height=\"150\" rx=\"0\" fill=\"#a8d4e8\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_b9y0nsgobp\" transform=\"translate(-640 -250) rotate(90)\"><path d=\"M-75 0L75 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_1ueum2rn35\" transform=\"translate(-640 -250)\"><path d=\"M-65 0L65 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_nc6gunqrb4\" transform=\"translate(-380 -250)\"><rect x=\"-65\" y=\"-75\" width=\"130\" height=\"150\" rx=\"0\" fill=\"#a8d4e8\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_7bpjz5mn6k\" transform=\"translate(-380 -250) rotate(90)\"><path d=\"M-75 0L75 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_x136ij36ld\" transform=\"translate(-380 -250)\"><path d=\"M-65 0L65 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_s2jfr2i44k\" transform=\"translate(-120 -250)\"><rect x=\"-65\" y=\"-75\" width=\"130\" height=\"150\" rx=\"0\" fill=\"#a8d4e8\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_hawwzt45o4\" transform=\"translate(-120 -250) rotate(90)\"><path d=\"M-75 0L75 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_o0vmyvzrp3\" transform=\"translate(-120 -250)\"><path d=\"M-65 0L65 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_a8hvxnr955\" transform=\"translate(140 -250)\"><rect x=\"-65\" y=\"-75\" width=\"130\" height=\"150\" rx=\"0\" fill=\"#a8d4e8\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_g8pmglabpd\" transform=\"translate(140 -250) rotate(90)\"><path d=\"M-75 0L75 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_ocarnx3wiq\" transform=\"translate(140 -250)\"><path d=\"M-65 0L65 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_n3o7zl19aa\" transform=\"translate(400 -250)\"><rect x=\"-65\" y=\"-75\" width=\"130\" height=\"150\" rx=\"0\" fill=\"#a8d4e8\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_g0qkofq205\" transform=\"translate(400 -250) rotate(90)\"><path d=\"M-75 0L75 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_1wyo4qal9h\" transform=\"translate(400 -250)\"><path d=\"M-65 0L65 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_kryr8ywvgr\" transform=\"translate(660 -250)\"><rect x=\"-65\" y=\"-75\" width=\"130\" height=\"150\" rx=\"0\" fill=\"#a8d4e8\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_rzj1sjydim\" transform=\"translate(660 -250) rotate(90)\"><path d=\"M-75 0L75 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_kmbp07q5ov\" transform=\"translate(660 -250)\"><path d=\"M-65 0L65 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_dwl5d67e01\" transform=\"translate(920 -250)\"><rect x=\"-65\" y=\"-75\" width=\"130\" height=\"150\" rx=\"0\" fill=\"#a8d4e8\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_tv1fc7iyvl\" transform=\"translate(920 -250) rotate(90)\"><path d=\"M-75 0L75 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_2pto37twz0\" transform=\"translate(920 -250)\"><path d=\"M-65 0L65 0\" fill=\"none\" stroke=\"#efe3b8\" stroke-width=\"8\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_466l9auzml\" transform=\"translate(0 -170)\"><rect x=\"-110\" y=\"-165\" width=\"220\" height=\"330\" rx=\"0\" fill=\"#8c6a4f\" stroke=\"#23202b\" stroke-width=\"6\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_5ytba6a7fu\" transform=\"translate(-52 -170)\"><rect x=\"-45\" y=\"-150\" width=\"90\" height=\"300\" rx=\"0\" fill=\"#a6764e\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_f1am2mzux6\" transform=\"translate(52 -170)\"><rect x=\"-45\" y=\"-150\" width=\"90\" height=\"300\" rx=\"0\" fill=\"#a6764e\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_ugsjgqdlek\" transform=\"translate(0 -420)\"><rect x=\"-380\" y=\"-37\" width=\"760\" height=\"74\" rx=\"8\" fill=\"#3b6fb6\" stroke=\"#23202b\" stroke-width=\"6\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_sjelj6i1sn\" transform=\"translate(0 -420)\"><text text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"'Trebuchet MS','Segoe UI',Arial,sans-serif\" font-size=\"44\" font-weight=\"900\" fill=\"#fff7e6\"><tspan x=\"0\" y=\"0\">ESCOLA MUNICIPAL VILA TORTA</tspan></text></g><g data-piece=\"pc_wuwy9lbn2b\" transform=\"translate(0 425)\"><rect x=\"-1104\" y=\"-275\" width=\"2208\" height=\"550\" rx=\"0\" fill=\"#cdc6b8\" stroke=\"#23202b\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_ivpgrk2an1\" transform=\"translate(0 150)\" opacity=\"0.6\"><path d=\"M-1104 0L1104 0\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_uhvgx699zo\" transform=\"translate(0 164)\" opacity=\"0.5\"><path d=\"M-1104 0L1104 0\" fill=\"none\" stroke=\"#a9a293\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_fd8uvqgnml\" transform=\"translate(0 206)\" opacity=\"0.5\"><path d=\"M-1104 0L1104 0\" fill=\"none\" stroke=\"#a9a293\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_2dqdkhevzi\" transform=\"translate(0 276)\" opacity=\"0.5\"><path d=\"M-1104 0L1104 0\" fill=\"none\" stroke=\"#a9a293\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_inz8au3ix4\" transform=\"translate(0 374)\" opacity=\"0.5\"><path d=\"M-1104 0L1104 0\" fill=\"none\" stroke=\"#a9a293\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_ek3y17xzdi\" transform=\"translate(0 500)\" opacity=\"0.5\"><path d=\"M-1104 0L1104 0\" fill=\"none\" stroke=\"#a9a293\" stroke-width=\"3\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_xbiihu8969\" transform=\"translate(0 330)\" opacity=\"0.8\"><rect x=\"-750\" y=\"-7\" width=\"1500\" height=\"14\" rx=\"0\" fill=\"#fff7e6\" stroke=\"#23202b\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_3g02z5tu56\" transform=\"translate(0 330)\" opacity=\"0.8\"><ellipse cx=\"0\" cy=\"0\" rx=\"110\" ry=\"30\" fill=\"none\" stroke=\"#fff7e6\" stroke-width=\"6\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_crxwdwkeq9\" transform=\"translate(-960 -30)\"><rect x=\"-17\" y=\"-120\" width=\"34\" height=\"240\" rx=\"0\" fill=\"#7c5a44\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_0h9rij0i43\" transform=\"translate(-960 -230)\"><ellipse cx=\"0\" cy=\"0\" rx=\"150\" ry=\"120\" fill=\"#5f9c6c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_acr31varyn\" transform=\"translate(960 -30)\"><rect x=\"-17\" y=\"-120\" width=\"34\" height=\"240\" rx=\"0\" fill=\"#7c5a44\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_7hjqt6hoia\" transform=\"translate(960 -230)\"><ellipse cx=\"0\" cy=\"0\" rx=\"150\" ry=\"120\" fill=\"#5f9c6c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_9eugq7xje7\" transform=\"translate(-640 150)\"><rect x=\"-120\" y=\"-13\" width=\"240\" height=\"26\" rx=\"0\" fill=\"#a6764e\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_yr2tcpnko8\" transform=\"translate(-640 195)\"><rect x=\"-10\" y=\"-20\" width=\"20\" height=\"40\" rx=\"0\" fill=\"#3d4a4a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_qls7ojk67t\" transform=\"translate(-540 195)\"><rect x=\"-10\" y=\"-20\" width=\"20\" height=\"40\" rx=\"0\" fill=\"#3d4a4a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_evziymjgj5\" transform=\"translate(700 130)\"><rect x=\"-7\" y=\"-165\" width=\"14\" height=\"330\" rx=\"0\" fill=\"#6b7580\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_tktuh505zz\" transform=\"translate(700 -40)\"><rect x=\"-60\" y=\"-40\" width=\"120\" height=\"80\" rx=\"0\" fill=\"#fff7e6\" stroke=\"#23202b\" stroke-width=\"5\" stroke-linejoin=\"round\"/></g></g></svg>"
+  },
+  {
+   "id": "vila-torta-personagens-1",
+   "file": "vila-torta-personagens-1.rspack",
+   "sha256": "5d81924bc06c9bd6b7da3a176b851155796bba2831f1cfeff0e160ac661c237f",
+   "size": 10580,
+   "name": "Vila Torta · Personagens 1 (protagonistas e política)",
+   "version": "1.0.0",
+   "description": "Os cinco protagonistas e os dois políticos de Vila Torta, com o desenho e as fichas originais dos episódios T1E1 e T1E2.",
+   "author": "Vila Torta",
+   "license": "Vila Torta — obra original do autor do Recorte Studio. Uso nos seus projetos; licença de redistribuição pendente de definição do autor.",
+   "category": "Personagens",
+   "collection": "Vila Torta",
+   "volume": 1,
+   "tags": [
+    "vila torta",
+    "série"
+   ],
+   "dependencies": [],
+   "itemCount": 7,
+   "counts": {
+    "character": 7
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "vt-rafa",
+     "name": "Rafael",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Protagonistas"
+    },
+    {
+     "id": "char_nanob6ccx9",
+     "name": "Beatriz",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Protagonistas"
+    },
+    {
+     "id": "vt-caique",
+     "name": "Caíque",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Protagonistas"
+    },
+    {
+     "id": "vt-samuca",
+     "name": "Samuca",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Protagonistas"
+    },
+    {
+     "id": "char_22g90u3upp",
+     "name": "Larissa",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Protagonistas"
+    },
+    {
+     "id": "char_o0wjzz1rvi",
+     "name": "Senhor Gaivota",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Política"
+    },
+    {
+     "id": "char_4hyrsp6py6",
+     "name": "Doutor Pinote",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Política"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -604.33564 440 634.33564\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(30.3 -184.3)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 87.3\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"34.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 87.3\" fill=\"none\" stroke=\"#324451\" stroke-width=\"27.2\" stroke-linecap=\"round\"/><path d=\"M7.6 4L7.6 87.3\" stroke=\"#748089\" stroke-width=\"2\" stroke-dasharray=\"5 4\" fill=\"none\"/><g transform=\"translate(0 87.3) rotate(0)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#324451\" stroke-width=\"25.1\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 79)\"><g data-part=\"foot\"><path d=\"M-24.9 97L24.9 97Q26.9 83 15 69L-15 69Q-26.9 83 -24.9 97Z\" fill=\"#eee7d1\" stroke=\"#393b35\" stroke-width=\"3.2\" stroke-linejoin=\"round\"/><rect x=\"-24.9\" y=\"94\" width=\"49.8\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#393b35\" stroke-width=\"2.5\"/><path d=\"M-6.2 80l12.4 0M-6.2 86l12.4 0\" stroke=\"#f7f4ea\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-30.3 -184.3)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 87.3\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"34.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 87.3\" fill=\"none\" stroke=\"#324451\" stroke-width=\"27.2\" stroke-linecap=\"round\"/><path d=\"M7.6 4L7.6 87.3\" stroke=\"#748089\" stroke-width=\"2\" stroke-dasharray=\"5 4\" fill=\"none\"/><g transform=\"translate(0 87.3) rotate(0)\"><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"32.3\" stroke-linecap=\"round\"/><path d=\"M0 0L0 79\" fill=\"none\" stroke=\"#324451\" stroke-width=\"25.1\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 79)\"><g data-part=\"foot\"><path d=\"M-24.9 97L24.9 97Q26.9 83 15 69L-15 69Q-26.9 83 -24.9 97Z\" fill=\"#eee7d1\" stroke=\"#393b35\" stroke-width=\"3.2\" stroke-linejoin=\"round\"/><rect x=\"-24.9\" y=\"94\" width=\"49.8\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#393b35\" stroke-width=\"2.5\"/><path d=\"M-6.2 80l12.4 0M-6.2 86l12.4 0\" stroke=\"#f7f4ea\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -184.3) rotate(0)\"><path d=\"M-50.2 -4Q0 6 50.2 -4L45.3 22L-45.3 22Z\" fill=\"#324451\" stroke=\"#393b35\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><path d=\"M-32.2 -160.7C-45 -158.2 -55.7 -155.7 -58.6 -142.7C-61.5 -129.8 -54.3 -89.5 -53 -68.4C-51.6 -47.2 -63.5 -2.7 -49.2 8C-34.9 18.7 34.9 18.7 49.2 8C63.5 -2.7 51.6 -47.2 53 -68.4C54.3 -89.5 61.5 -129.8 58.6 -142.7C55.7 -155.7 45 -158.2 32.2 -160.7C19.5 -163.3 -19.5 -163.3 -32.2 -160.7Z\" data-part=\"torso\" fill=\"#407f81\" stroke=\"#393b35\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-152.7\" rx=\"24.6\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-50.7 -6Q0 4 50.7 -6\" stroke=\"#393b35\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-26 -158.7Q0 -138.7 26 -158.7\" stroke=\"#393b35\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0 -184.5L0 -154.7\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"29.2\" stroke-linecap=\"round\"/><path d=\"M0 -184.5L0 -154.7\" fill=\"none\" stroke=\"#ddb593\" stroke-width=\"22.7\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(57.4 -144.7) rotate(-7)\"><path d=\"M0 0L0 74.5\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"27.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 74.5\" fill=\"none\" stroke=\"#f0c5a0\" stroke-width=\"20.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 38.7\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"33.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 38.7\" fill=\"none\" stroke=\"#407f81\" stroke-width=\"25.9\" stroke-linecap=\"round\"/><g transform=\"translate(0 74.5) rotate(0)\"><path d=\"M0 0L0 68.6\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"26.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 68.6\" fill=\"none\" stroke=\"#f0c5a0\" stroke-width=\"18.9\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.2 73.2q-11.8 2.6 -10.5 13.7\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"12.7\" stroke-linecap=\"round\"/><path d=\"M-9.2 73.2q-11.8 2.6 -10.5 13.7\" fill=\"none\" stroke=\"#f0c5a0\" stroke-width=\"6.5\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"83.1\" rx=\"12.4\" ry=\"15.7\" fill=\"#f0c5a0\" stroke=\"#393b35\" stroke-width=\"3.1\" stroke-linejoin=\"round\"/><path d=\"M-3.9 95.5v-9.2M2 96.8v-9.2\" stroke=\"#9c8068\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-57.4 -144.7) rotate(7)\"><path d=\"M0 0L0 74.5\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"27.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 74.5\" fill=\"none\" stroke=\"#f0c5a0\" stroke-width=\"20.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 38.7\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"33.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 38.7\" fill=\"none\" stroke=\"#407f81\" stroke-width=\"25.9\" stroke-linecap=\"round\"/><g transform=\"translate(0 74.5) rotate(0)\"><path d=\"M0 0L0 68.6\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"26.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 68.6\" fill=\"none\" stroke=\"#f0c5a0\" stroke-width=\"18.9\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.2 73.2q11.8 2.6 10.5 13.7\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"12.7\" stroke-linecap=\"round\"/><path d=\"M9.2 73.2q11.8 2.6 10.5 13.7\" fill=\"none\" stroke=\"#f0c5a0\" stroke-width=\"6.5\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"83.1\" rx=\"12.4\" ry=\"15.7\" fill=\"#f0c5a0\" stroke=\"#393b35\" stroke-width=\"3.1\" stroke-linejoin=\"round\"/><path d=\"M-3.9 95.5v-9.2M2 96.8v-9.2\" stroke=\"#9c8068\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -252.5) rotate(0 0 78)\"><g data-part=\"ears\"><path d=\"M-81.8 -19.2Q-106.5 -16.5 -100.8 7.8Q-98.9 34.8 -81.8 32.1Z\" fill=\"#f0c5a0\" stroke=\"#393b35\" stroke-width=\"3.1\" stroke-linejoin=\"round\"/><path d=\"M-86.5 -3Q-96 -0.3 -90.3 15.9\" fill=\"none\" stroke=\"#a88a70\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M81.8 -19.2Q106.5 -16.5 100.8 7.8Q98.9 34.8 81.8 32.1Z\" fill=\"#f0c5a0\" stroke=\"#393b35\" stroke-width=\"3.1\" stroke-linejoin=\"round\"/><path d=\"M86.5 -3Q96 -0.3 90.3 15.9\" fill=\"none\" stroke=\"#a88a70\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -97.5C8 -97.5 16.3 -96.2 24 -93.6C31.7 -91 39.3 -87 46 -82C52.8 -77.1 59.1 -70.8 64.4 -63.9C69.6 -56.9 74.1 -48.8 77.5 -40.5C80.8 -32.2 83.2 -22.8 84.3 -13.9C85.4 -5 85.4 4.4 84.3 13C83.2 21.7 80.8 30.3 77.5 38.1C74.1 45.9 69.6 53.5 64.4 60C59.1 66.5 52.8 72.5 46 77.1C39.3 81.8 31.7 85.5 24 88C16.3 90.4 8 91.7 0 91.7C-8 91.7 -16.3 90.4 -24 88C-31.7 85.5 -39.3 81.8 -46 77.1C-52.8 72.5 -59.1 66.5 -64.4 60C-69.6 53.5 -74.1 45.9 -77.5 38.1C-80.8 30.3 -83.2 21.7 -84.3 13C-85.4 4.4 -85.4 -5 -84.3 -13.9C-83.2 -22.8 -80.8 -32.2 -77.5 -40.5C-74.1 -48.8 -69.6 -56.9 -64.4 -63.9C-59.1 -70.8 -52.8 -77.1 -46 -82C-39.3 -87 -31.7 -91 -24 -93.6C-16.3 -96.2 -8 -97.5 0 -97.5Z\" data-part=\"head-shape\" fill=\"#f0c5a0\" stroke=\"#393b35\" stroke-width=\"3.8\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"eye\" data-eye=\"R\" data-rx=\"21.8\" data-ry=\"23.5\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"11.3\" transform=\"translate(-35.8 -3.9)\"><clipPath id=\"pv-eyeR\"><path d=\"M21.8 0C21.8 3 21.2 6.2 20.1 9C19 11.8 17.3 14.5 15.4 16.6C13.4 18.7 10.9 20.6 8.3 21.7C5.8 22.8 2.8 23.5 0 23.5C-2.8 23.5 -5.8 22.8 -8.3 21.7C-10.9 20.6 -13.4 18.7 -15.4 16.6C-17.3 14.5 -19 11.8 -20.1 9C-21.2 6.2 -21.7 3 -21.7 0C-21.7 -3 -21.2 -6.2 -20.1 -9C-19 -11.8 -17.3 -14.5 -15.4 -16.6C-13.4 -18.7 -10.9 -20.6 -8.3 -21.7C-5.8 -22.8 -2.8 -23.5 0 -23.5C2.8 -23.5 5.8 -22.8 8.3 -21.7C10.9 -20.6 13.4 -18.7 15.4 -16.6C17.3 -14.5 19 -11.8 20.1 -9C21.2 -6.2 21.8 -3 21.8 0Z\"/></clipPath><path d=\"M21.8 0C21.8 3 21.2 6.2 20.1 9C19 11.8 17.3 14.5 15.4 16.6C13.4 18.7 10.9 20.6 8.3 21.7C5.8 22.8 2.8 23.5 0 23.5C-2.8 23.5 -5.8 22.8 -8.3 21.7C-10.9 20.6 -13.4 18.7 -15.4 16.6C-17.3 14.5 -19 11.8 -20.1 9C-21.2 6.2 -21.7 3 -21.7 0C-21.7 -3 -21.2 -6.2 -20.1 -9C-19 -11.8 -17.3 -14.5 -15.4 -16.6C-13.4 -18.7 -10.9 -20.6 -8.3 -21.7C-5.8 -22.8 -2.8 -23.5 0 -23.5C2.8 -23.5 5.8 -22.8 8.3 -21.7C10.9 -20.6 13.4 -18.7 15.4 -16.6C17.3 -14.5 19 -11.8 20.1 -9C21.2 -6.2 21.8 -3 21.8 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"11.3\" fill=\"#293a37\"/><circle cx=\"3.4\" cy=\"-4.1\" r=\"3.1\" fill=\"#fff\"/></g><path d=\"M21.8 0C21.8 3 21.2 6.2 20.1 9C19 11.8 17.3 14.5 15.4 16.6C13.4 18.7 10.9 20.6 8.3 21.7C5.8 22.8 2.8 23.5 0 23.5C-2.8 23.5 -5.8 22.8 -8.3 21.7C-10.9 20.6 -13.4 18.7 -15.4 16.6C-17.3 14.5 -19 11.8 -20.1 9C-21.2 6.2 -21.7 3 -21.7 0C-21.7 -3 -21.2 -6.2 -20.1 -9C-19 -11.8 -17.3 -14.5 -15.4 -16.6C-13.4 -18.7 -10.9 -20.6 -8.3 -21.7C-5.8 -22.8 -2.8 -23.5 0 -23.5C2.8 -23.5 5.8 -22.8 8.3 -21.7C10.9 -20.6 13.4 -18.7 15.4 -16.6C17.3 -14.5 19 -11.8 20.1 -9C21.2 -6.2 21.8 -3 21.8 0Z\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"2.5\"/></g><path d=\"M-12.3 -42.4C-16.2 -42.5 -27.9 -42.8 -35.8 -42.8C-43.6 -42.8 -55.3 -42.5 -59.3 -42.4\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6.5\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"21.8\" data-ry=\"23.5\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"11.3\" transform=\"translate(35.8 -3.9)\"><clipPath id=\"pv-eyeL\"><path d=\"M21.8 0C21.8 3 21.2 6.2 20.1 9C19 11.8 17.3 14.5 15.4 16.6C13.4 18.7 10.9 20.6 8.3 21.7C5.8 22.8 2.8 23.5 0 23.5C-2.8 23.5 -5.8 22.8 -8.3 21.7C-10.9 20.6 -13.4 18.7 -15.4 16.6C-17.3 14.5 -19 11.8 -20.1 9C-21.2 6.2 -21.7 3 -21.7 0C-21.7 -3 -21.2 -6.2 -20.1 -9C-19 -11.8 -17.3 -14.5 -15.4 -16.6C-13.4 -18.7 -10.9 -20.6 -8.3 -21.7C-5.8 -22.8 -2.8 -23.5 0 -23.5C2.8 -23.5 5.8 -22.8 8.3 -21.7C10.9 -20.6 13.4 -18.7 15.4 -16.6C17.3 -14.5 19 -11.8 20.1 -9C21.2 -6.2 21.8 -3 21.8 0Z\"/></clipPath><path d=\"M21.8 0C21.8 3 21.2 6.2 20.1 9C19 11.8 17.3 14.5 15.4 16.6C13.4 18.7 10.9 20.6 8.3 21.7C5.8 22.8 2.8 23.5 0 23.5C-2.8 23.5 -5.8 22.8 -8.3 21.7C-10.9 20.6 -13.4 18.7 -15.4 16.6C-17.3 14.5 -19 11.8 -20.1 9C-21.2 6.2 -21.7 3 -21.7 0C-21.7 -3 -21.2 -6.2 -20.1 -9C-19 -11.8 -17.3 -14.5 -15.4 -16.6C-13.4 -18.7 -10.9 -20.6 -8.3 -21.7C-5.8 -22.8 -2.8 -23.5 0 -23.5C2.8 -23.5 5.8 -22.8 8.3 -21.7C10.9 -20.6 13.4 -18.7 15.4 -16.6C17.3 -14.5 19 -11.8 20.1 -9C21.2 -6.2 21.8 -3 21.8 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"11.3\" fill=\"#293a37\"/><circle cx=\"3.4\" cy=\"-4.1\" r=\"3.1\" fill=\"#fff\"/></g><path d=\"M21.8 0C21.8 3 21.2 6.2 20.1 9C19 11.8 17.3 14.5 15.4 16.6C13.4 18.7 10.9 20.6 8.3 21.7C5.8 22.8 2.8 23.5 0 23.5C-2.8 23.5 -5.8 22.8 -8.3 21.7C-10.9 20.6 -13.4 18.7 -15.4 16.6C-17.3 14.5 -19 11.8 -20.1 9C-21.2 6.2 -21.7 3 -21.7 0C-21.7 -3 -21.2 -6.2 -20.1 -9C-19 -11.8 -17.3 -14.5 -15.4 -16.6C-13.4 -18.7 -10.9 -20.6 -8.3 -21.7C-5.8 -22.8 -2.8 -23.5 0 -23.5C2.8 -23.5 5.8 -22.8 8.3 -21.7C10.9 -20.6 13.4 -18.7 15.4 -16.6C17.3 -14.5 19 -11.8 20.1 -9C21.2 -6.2 21.8 -3 21.8 0Z\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"2.5\"/></g><path d=\"M12.3 -42.4C16.2 -42.5 27.9 -42.8 35.8 -42.8C43.6 -42.8 55.3 -42.5 59.3 -42.4\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6.5\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 21.5)\"><path d=\"M-1.3 -12.6Q-9 7.7 -4.9 11.9Q0 17.5 5 11.9Q9 7.7 1.3 -12.6\" fill=\"#e4bb98\" fill-opacity=\".55\" stroke=\"#393b35\" stroke-width=\"2.7\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 54.6)\"><path d=\"M-24 -1Q0 1.3 24 -1\" fill=\"none\" stroke=\"#393b35\" stroke-width=\"3.2\" stroke-linecap=\"round\"/></g></g><path d=\"M-81.8 -27.1C-81.7 -28.3 -81.8 -32.2 -81.2 -34.6C-80.7 -37 -79.1 -39 -78.3 -41.4C-77.6 -43.8 -77.8 -46.7 -76.8 -48.9C-75.8 -51.2 -73.5 -52.6 -72.4 -54.9C-71.3 -57.1 -71.4 -60.3 -70.2 -62.3C-68.9 -64.4 -66.1 -65.2 -64.7 -67.3C-63.3 -69.3 -63.2 -72.7 -61.7 -74.5C-60.1 -76.3 -57 -76.5 -55.3 -78.2C-53.6 -80 -53.3 -83.5 -51.5 -85.1C-49.7 -86.6 -46.5 -86 -44.6 -87.5C-42.7 -88.9 -41.9 -92.5 -39.9 -93.7C-38 -94.9 -34.8 -93.6 -32.7 -94.6C-30.6 -95.7 -29.4 -99.3 -27.3 -100.1C-25.1 -101 -22.2 -98.9 -20 -99.6C-17.7 -100.2 -16 -103.7 -13.8 -104.1C-11.6 -104.5 -9 -101.9 -6.7 -102.1C-4.4 -102.3 -2.2 -105.4 0 -105.4C2.2 -105.4 4.4 -102.3 6.7 -102.1C9 -101.9 11.6 -104.5 13.8 -104.1C16 -103.7 17.7 -100.2 20 -99.6C22.2 -98.9 25.1 -101 27.3 -100.1C29.4 -99.3 30.6 -95.7 32.7 -94.6C34.8 -93.6 38 -94.9 39.9 -93.7C41.9 -92.5 42.7 -88.9 44.6 -87.5C46.5 -86 49.7 -86.6 51.5 -85.1C53.3 -83.5 53.6 -80 55.3 -78.2C57 -76.5 60.1 -76.3 61.7 -74.5C63.2 -72.7 63.3 -69.3 64.7 -67.3C66.1 -65.2 68.9 -64.4 70.2 -62.3C71.4 -60.3 71.3 -57.1 72.4 -54.9C73.5 -52.6 75.8 -51.2 76.8 -48.9C77.8 -46.7 77.6 -43.8 78.3 -41.4C79.1 -39 80.7 -37 81.2 -34.6C81.8 -32.2 81.7 -28.3 81.8 -27.1L82.6 -27.3C81.7 -29.4 79.6 -35.5 77.1 -39.6C74.5 -43.7 70.5 -49 67.3 -51.9C64.1 -54.8 61.3 -55.6 58.1 -56.9C54.9 -58.2 51.6 -58.9 48 -59.8C44.5 -60.7 40.5 -61.9 36.7 -62.5C32.9 -63 29.1 -62.9 25.1 -63.1C21.1 -63.3 16.9 -63.5 12.7 -63.7C8.5 -63.9 4.2 -64.4 0 -64.4C-4.2 -64.4 -8.5 -63.9 -12.7 -63.7C-16.9 -63.5 -21.1 -63.3 -25.1 -63.1C-29.1 -62.9 -32.9 -63 -36.7 -62.5C-40.5 -61.9 -44.5 -60.7 -48 -59.8C-51.6 -58.9 -54.9 -58.2 -58.1 -56.9C-61.3 -55.6 -64.1 -54.8 -67.3 -51.9C-70.5 -49 -74.5 -43.7 -77.1 -39.6C-79.6 -35.5 -81.7 -29.4 -82.6 -27.3Z\" data-part=\"hair-cap\" fill=\"#202a2a\" stroke=\"#393b35\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-81.8 -27.1C-81.7 -28.3 -81.8 -32.2 -81.2 -34.6C-80.7 -37 -79.1 -39 -78.3 -41.4C-77.6 -43.8 -77.8 -46.7 -76.8 -48.9C-75.8 -51.2 -73.5 -52.6 -72.4 -54.9C-71.3 -57.1 -71.4 -60.3 -70.2 -62.3C-68.9 -64.4 -66.1 -65.2 -64.7 -67.3C-63.3 -69.3 -63.2 -72.7 -61.7 -74.5C-60.1 -76.3 -57 -76.5 -55.3 -78.2C-53.6 -80 -53.3 -83.5 -51.5 -85.1C-49.7 -86.6 -46.5 -86 -44.6 -87.5C-42.7 -88.9 -41.9 -92.5 -39.9 -93.7C-38 -94.9 -34.8 -93.6 -32.7 -94.6C-30.6 -95.7 -29.4 -99.3 -27.3 -100.1C-25.1 -101 -22.2 -98.9 -20 -99.6C-17.7 -100.2 -16 -103.7 -13.8 -104.1C-11.6 -104.5 -9 -101.9 -6.7 -102.1C-4.4 -102.3 -2.2 -105.4 0 -105.4C2.2 -105.4 4.4 -102.3 6.7 -102.1C9 -101.9 11.6 -104.5 13.8 -104.1C16 -103.7 17.7 -100.2 20 -99.6C22.2 -98.9 25.1 -101 27.3 -100.1C29.4 -99.3 30.6 -95.7 32.7 -94.6C34.8 -93.6 38 -94.9 39.9 -93.7C41.9 -92.5 42.7 -88.9 44.6 -87.5C46.5 -86 49.7 -86.6 51.5 -85.1C53.3 -83.5 53.6 -80 55.3 -78.2C57 -76.5 60.1 -76.3 61.7 -74.5C63.2 -72.7 63.3 -69.3 64.7 -67.3C66.1 -65.2 68.9 -64.4 70.2 -62.3C71.4 -60.3 71.3 -57.1 72.4 -54.9C73.5 -52.6 75.8 -51.2 76.8 -48.9C77.8 -46.7 77.6 -43.8 78.3 -41.4C79.1 -39 80.7 -37 81.2 -34.6C81.8 -32.2 81.7 -28.3 81.8 -27.1L82.6 -27.3C81.7 -29.4 79.6 -35.5 77.1 -39.6C74.5 -43.7 70.5 -49 67.3 -51.9C64.1 -54.8 61.3 -55.6 58.1 -56.9C54.9 -58.2 51.6 -58.9 48 -59.8C44.5 -60.7 40.5 -61.9 36.7 -62.5C32.9 -63 29.1 -62.9 25.1 -63.1C21.1 -63.3 16.9 -63.5 12.7 -63.7C8.5 -63.9 4.2 -64.4 0 -64.4C-4.2 -64.4 -8.5 -63.9 -12.7 -63.7C-16.9 -63.5 -21.1 -63.3 -25.1 -63.1C-29.1 -62.9 -32.9 -63 -36.7 -62.5C-40.5 -61.9 -44.5 -60.7 -48 -59.8C-51.6 -58.9 -54.9 -58.2 -58.1 -56.9C-61.3 -55.6 -64.1 -54.8 -67.3 -51.9C-70.5 -49 -74.5 -43.7 -77.1 -39.6C-79.6 -35.5 -81.7 -29.4 -82.6 -27.3Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-46.8 -80Q-8.5 -99.5 35.8 -82.9\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#444c4c\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/><path d=\"M-40.6 -112.2Q-54.2 -78 -58.5 -43.9M-13.4 -112.2Q-17.9 -78 -19.3 -43.9M22 -112.2Q29.3 -78 31.7 -43.9M43.7 -112.2Q58.3 -78 62.9 -43.9\" data-part=\"hair-highlight\" fill=\"none\" stroke=\"#3c4440\" stroke-width=\"8\" stroke-linecap=\"round\"/></g></g></g></g></svg>"
+  },
+  {
+   "id": "vila-torta-veiculos-1",
+   "file": "vila-torta-veiculos-1.rspack",
+   "sha256": "e90c14f6bc1cefc9a3f17f2661dd7c73ce8a4d4f0a4bd45c142aa18d761838e8",
+   "size": 6902,
+   "name": "Vila Torta · Veículos 1",
+   "version": "1.0.0",
+   "description": "O carro, o carro preto, a viatura e o caminhão da prefeitura, com as rodas e molas da suspensão como peças separadas.",
+   "author": "Vila Torta",
+   "license": "Vila Torta — obra original do autor do Recorte Studio. Uso nos seus projetos; licença de redistribuição pendente de definição do autor.",
+   "category": "Veículos",
+   "collection": "Vila Torta",
+   "volume": 1,
+   "tags": [
+    "vila torta",
+    "série"
+   ],
+   "dependencies": [],
+   "itemCount": 6,
+   "counts": {
+    "object": 6
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "obj_carro_corpo",
+     "name": "Carro (carroceria)",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carros"
+    },
+    {
+     "id": "obj_carro_preto",
+     "name": "Carro preto (fuga)",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Carros"
+    },
+    {
+     "id": "obj_viatura_corpo",
+     "name": "Viatura (carroceria)",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Viaturas"
+    },
+    {
+     "id": "obj_caminhao",
+     "name": "Caminhão da prefeitura",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Caminhões"
+    },
+    {
+     "id": "obj_roda",
+     "name": "Roda",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Peças"
+    },
+    {
+     "id": "obj_mola",
+     "name": "Mola da suspensão",
+     "kind": "object",
+     "category": "Veículos",
+     "subcategory": "Peças"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-403.20000000000005 -533.2 806.4000000000001 806.4000000000001\"><g data-piece=\"pc_zd7hxhetru\" transform=\"translate(-210 -92)\"><ellipse cx=\"0\" cy=\"0\" rx=\"75\" ry=\"52\" fill=\"#1b1a22\" stroke=\"#23202b\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_8sib67z7ra\" transform=\"translate(210 -92)\"><ellipse cx=\"0\" cy=\"0\" rx=\"75\" ry=\"52\" fill=\"#1b1a22\" stroke=\"#23202b\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_fcko3n488l\" transform=\"translate(0 -112)\"><rect x=\"-350\" y=\"-50\" width=\"700\" height=\"100\" rx=\"30\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_8culu1zkli\" transform=\"translate(235 -150)\"><rect x=\"-115\" y=\"-29\" width=\"230\" height=\"58\" rx=\"24\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_a8qfh7h92d\" transform=\"translate(-35 -205)\"><rect x=\"-185\" y=\"-59\" width=\"370\" height=\"118\" rx=\"44\" fill=\"#d65f5f\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_0zi8f0npya\" transform=\"translate(-35 -208)\"><rect x=\"-158\" y=\"-39\" width=\"316\" height=\"78\" rx=\"28\" fill=\"#a8d4e8\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_88wcysevr6\" transform=\"translate(-35 -208) rotate(90)\"><path d=\"M-39 0L39 0\" fill=\"none\" stroke=\"#d65f5f\" stroke-width=\"12\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_pxvx4rczwl\" transform=\"translate(0 -120) rotate(90)\"><path d=\"M-37 0L37 0\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linecap=\"round\"/></g><g data-piece=\"pc_a5fx9xa679\" transform=\"translate(34 -140)\"><rect x=\"-20\" y=\"-4.5\" width=\"40\" height=\"9\" rx=\"4\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_d5dma383az\" transform=\"translate(338 -126)\"><ellipse cx=\"0\" cy=\"0\" rx=\"16\" ry=\"21\" fill=\"#f6dc9a\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_cmssvlktth\" transform=\"translate(-344 -128)\"><rect x=\"-10\" y=\"-22\" width=\"20\" height=\"44\" rx=\"5\" fill=\"#d63b3b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_cunsc02jb4\" transform=\"translate(-352 -72)\"><rect x=\"-11\" y=\"-17\" width=\"22\" height=\"34\" rx=\"6\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_xs9mlev4y6\" transform=\"translate(352 -72)\"><rect x=\"-11\" y=\"-17\" width=\"22\" height=\"34\" rx=\"6\" fill=\"#9aa3ad\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g></svg>"
+  },
+  {
+   "id": "vila-torta-assets-2",
+   "file": "vila-torta-assets-2.rspack",
+   "sha256": "2efedccd20cfedd7464e1c6cb7839ca90f32ca582267a96dbff81788658622e9",
+   "size": 19283,
+   "name": "Vila Torta · Assets 2 (o show e o fiscal)",
+   "version": "1.0.0",
+   "description": "Palco, caixa de som e cachorro animados, barracas, coreto, ingresso, crachá e bloco de multas do T1E2, mais itens pessoais dos protagonistas.",
+   "author": "Vila Torta",
+   "license": "Vila Torta — obra original do autor do Recorte Studio. Uso nos seus projetos; licença de redistribuição pendente de definição do autor.",
+   "category": "Objetos",
+   "collection": "Vila Torta",
+   "volume": 2,
+   "tags": [
+    "vila torta",
+    "série"
+   ],
+   "dependencies": [],
+   "itemCount": 21,
+   "counts": {
+    "object": 21
+   },
+   "animated": 2,
+   "items": [
+    {
+     "id": "obj_cartaz_show",
+     "name": "Cartaz do show: Lon Ruan",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Cartazes"
+    },
+    {
+     "id": "obj_faixa_show",
+     "name": "Faixa: Lon Ruan",
+     "kind": "object",
+     "category": "Política e campanha",
+     "subcategory": "Cartazes"
+    },
+    {
+     "id": "obj_ingresso",
+     "name": "Ingresso R$ 100",
+     "kind": "object",
+     "category": "Objetos pessoais",
+     "subcategory": "Show"
+    },
+    {
+     "id": "obj_palco",
+     "name": "Palco do show (telão e treliças)",
+     "kind": "object",
+     "category": "Cenografia",
+     "subcategory": "Palcos"
+    },
+    {
+     "id": "obj_bastidor_cortina",
+     "name": "Cortina de bastidor",
+     "kind": "object",
+     "category": "Cenografia",
+     "subcategory": "Palcos"
+    },
+    {
+     "id": "obj_caixa_som",
+     "name": "Caixa de som (torre)",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Som"
+    },
+    {
+     "id": "obj_celular",
+     "name": "Celular de Lon Ruan",
+     "kind": "object",
+     "category": "Eletrônicos",
+     "subcategory": "Celulares"
+    },
+    {
+     "id": "obj_barraca_cafe",
+     "name": "Barraca de café",
+     "kind": "object",
+     "category": "Cenografia",
+     "subcategory": "Barracas"
+    },
+    {
+     "id": "obj_barraca_hotdog",
+     "name": "Barraca de cachorro-quente",
+     "kind": "object",
+     "category": "Cenografia",
+     "subcategory": "Barracas"
+    },
+    {
+     "id": "obj_carrinho_vendedor",
+     "name": "Carrinho do vendedor",
+     "kind": "object",
+     "category": "Cenografia",
+     "subcategory": "Barracas"
+    },
+    {
+     "id": "obj_coreto",
+     "name": "Coreto da praça",
+     "kind": "object",
+     "category": "Cenografia",
+     "subcategory": "Praça"
+    },
+    {
+     "id": "obj_salgado",
+     "name": "Salgado",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Lanches"
+    },
+    {
+     "id": "obj_cachorro_quente",
+     "name": "Cachorro-quente",
+     "kind": "object",
+     "category": "Alimentos",
+     "subcategory": "Lanches"
+    },
+    {
+     "id": "obj_cachorro",
+     "name": "Cachorro",
+     "kind": "object",
+     "category": "Animais",
+     "subcategory": "Cães"
+    },
+    {
+     "id": "obj_garrafa",
+     "name": "Garrafa térmica de Samuca",
+     "kind": "object",
+     "category": "Objetos pessoais",
+     "subcategory": "Garrafas"
+    },
+    {
+     "id": "obj_bola_volei",
+     "name": "Bola de vôlei da Larissa",
+     "kind": "object",
+     "category": "Objetos pessoais",
+     "subcategory": "Esportes"
+    },
+    {
+     "id": "obj_fita_metrica",
+     "name": "Fita métrica",
+     "kind": "object",
+     "category": "Objetos pessoais",
+     "subcategory": "Fiscal da rua"
+    },
+    {
+     "id": "obj_multa",
+     "name": "Bloco de multas",
+     "kind": "object",
+     "category": "Objetos pessoais",
+     "subcategory": "Fiscal da rua"
+    },
+    {
+     "id": "obj_cracha",
+     "name": "Crachá do fiscal",
+     "kind": "object",
+     "category": "Objetos pessoais",
+     "subcategory": "Fiscal da rua"
+    },
+    {
+     "id": "obj_apito",
+     "name": "Apito",
+     "kind": "object",
+     "category": "Objetos pessoais",
+     "subcategory": "Fiscal da rua"
+    },
+    {
+     "id": "obj_copos",
+     "name": "Copos e lixo do evento",
+     "kind": "object",
+     "category": "Objetos pessoais",
+     "subcategory": "Lixo e restos"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"200\" viewBox=\"-403.20000000000005 -763.2 806.4000000000001 806.4000000000001\"><g data-piece=\"pc_ikjiegexfq\" transform=\"translate(0 -360)\"><rect x=\"-240\" y=\"-340\" width=\"480\" height=\"680\" rx=\"14\" fill=\"#14081f\" stroke=\"#23202b\" stroke-width=\"8\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_7y2k2wxz09\" transform=\"translate(0 -360)\" opacity=\"0.6\"><rect x=\"-220\" y=\"-320\" width=\"440\" height=\"640\" rx=\"10\" fill=\"#7b2fbf\" stroke=\"#23202b\" stroke-width=\"0\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_cf5fa33c9o\" transform=\"translate(0 -620)\"><text text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"'Trebuchet MS','Segoe UI',Arial,sans-serif\" font-size=\"52\" font-weight=\"900\" fill=\"#f2c95c\"><tspan x=\"0\" y=\"0\">HOJE À NOITE!</tspan></text></g><g data-piece=\"pc_okgdqje2s0\" transform=\"translate(0 -440)\"><ellipse cx=\"0\" cy=\"0\" rx=\"95\" ry=\"100\" fill=\"#b97f55\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_in8y7v8n8w\" transform=\"translate(0 -535)\"><rect x=\"-95\" y=\"-20\" width=\"190\" height=\"40\" rx=\"18\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_062hn8tfde\" transform=\"translate(0 -440)\"><rect x=\"-100\" y=\"-22\" width=\"200\" height=\"44\" rx=\"14\" fill=\"#111\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_vuwf574jcp\" transform=\"translate(0 -300)\"><rect x=\"-125\" y=\"-55\" width=\"250\" height=\"110\" rx=\"28\" fill=\"#c2185b\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_avnt1lw9h6\" transform=\"translate(0 -345)\"><ellipse cx=\"0\" cy=\"0\" rx=\"60\" ry=\"11\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_h7lmu5yz0q\" transform=\"translate(0 -222)\"><text text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"'Trebuchet MS','Segoe UI',Arial,sans-serif\" font-size=\"84\" font-weight=\"900\" fill=\"#fff7e6\" stroke=\"#23202b\" stroke-width=\"8\" paint-order=\"stroke\" stroke-linejoin=\"round\"><tspan x=\"0\" y=\"0\">LON RUAN</tspan></text></g><g data-piece=\"pc_nxhkjafxo0\" transform=\"translate(0 -150)\"><text text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"'Trebuchet MS','Segoe UI',Arial,sans-serif\" font-size=\"60\" font-weight=\"900\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"6\" paint-order=\"stroke\" stroke-linejoin=\"round\"><tspan x=\"0\" y=\"0\">AO VIVO</tspan></text></g><g data-piece=\"pc_peg62cue6a\" transform=\"translate(0 -90)\"><text text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"'Trebuchet MS','Segoe UI',Arial,sans-serif\" font-size=\"40\" font-weight=\"900\" fill=\"#fff7e6\"><tspan x=\"0\" y=\"0\">PRAÇA DO CORETO</tspan></text></g><g data-piece=\"pc_ocqj88ewa4\" transform=\"translate(0 -40)\"><rect x=\"-190\" y=\"-31\" width=\"380\" height=\"62\" rx=\"8\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><g data-piece=\"pc_mwfb2oedya\" transform=\"translate(0 -40)\"><text text-anchor=\"middle\" dominant-baseline=\"central\" font-family=\"'Trebuchet MS','Segoe UI',Arial,sans-serif\" font-size=\"38\" font-weight=\"900\" fill=\"#23202b\"><tspan x=\"0\" y=\"0\">INGRESSOS: R$ 100</tspan></text></g></svg>"
+  },
+  {
+   "id": "vila-torta-personagens-2",
+   "file": "vila-torta-personagens-2.rspack",
+   "sha256": "8420fa0446ea8ec499f97ef31b5cce126ec7aea50252fe10e573547cdf0c8941",
+   "size": 13170,
+   "name": "Vila Torta · Personagens 2 (secundários)",
+   "version": "1.0.0",
+   "description": "Secundários com nome e função nos episódios: moradores, assessores, o apresentador, o cantor Lon Ruan e o Seu Norberto (o Fiscal da Rua).",
+   "author": "Vila Torta",
+   "license": "Vila Torta — obra original do autor do Recorte Studio. Uso nos seus projetos; licença de redistribuição pendente de definição do autor.",
+   "category": "Personagens",
+   "collection": "Vila Torta",
+   "volume": 2,
+   "tags": [
+    "vila torta",
+    "série"
+   ],
+   "dependencies": [],
+   "itemCount": 17,
+   "counts": {
+    "character": 17
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "char_pvz30tnf48",
+     "name": "Dona Marta",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_25lfalpvf5",
+     "name": "Seu Agenor",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_dimq5sb2w0",
+     "name": "Motorista",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_gy1odz846n",
+     "name": "Assessor do Gaivota",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_r08d3t4unh",
+     "name": "Assessora do Pinote",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_frajvv8bzu",
+     "name": "Apresentador",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_aara8lo83v",
+     "name": "Dono da gráfica",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_rijt1gf0it",
+     "name": "Funcionário da prefeitura A",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_rudj9o5821",
+     "name": "Funcionário da prefeitura B",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_257xo78v7t",
+     "name": "Vendedor ambulante",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_3cww98uxr3",
+     "name": "Lon Ruan",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_t31hmw9u7o",
+     "name": "Seu Norberto",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_m3oo5oique",
+     "name": "Dona Zefa",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_ata27n5js2",
+     "name": "Rapaz da bicicleta",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_99a9brkese",
+     "name": "Dono do cachorro",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_5pj21f2bpc",
+     "name": "Produtor do show",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    },
+    {
+     "id": "char_kq6vapyhbd",
+     "name": "Repórter local",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Secundários"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -589.39 440 619.39\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><defs><pattern id=\"pv-pat\" width=\"44\" height=\"44\" patternUnits=\"userSpaceOnUse\"><rect width=\"44\" height=\"44\" fill=\"#d27ba6\"/><ellipse cx=\"16.4\" cy=\"12\" rx=\"4\" ry=\"4\" fill=\"#fff7e6\"/><ellipse cx=\"12.7\" cy=\"17.1\" rx=\"4\" ry=\"4\" fill=\"#fff7e6\"/><ellipse cx=\"6.6\" cy=\"15.2\" rx=\"4\" ry=\"4\" fill=\"#fff7e6\"/><ellipse cx=\"6.6\" cy=\"8.8\" rx=\"4\" ry=\"4\" fill=\"#fff7e6\"/><ellipse cx=\"12.7\" cy=\"6.9\" rx=\"4\" ry=\"4\" fill=\"#fff7e6\"/><circle cx=\"11\" cy=\"12\" r=\"3\" fill=\"#bdbcbf\"/><ellipse cx=\"38.4\" cy=\"34\" rx=\"4\" ry=\"4\" fill=\"#ccc6b8\"/><ellipse cx=\"34.7\" cy=\"39.1\" rx=\"4\" ry=\"4\" fill=\"#ccc6b8\"/><ellipse cx=\"28.6\" cy=\"37.2\" rx=\"4\" ry=\"4\" fill=\"#ccc6b8\"/><ellipse cx=\"28.6\" cy=\"30.8\" rx=\"4\" ry=\"4\" fill=\"#ccc6b8\"/><ellipse cx=\"34.7\" cy=\"28.9\" rx=\"4\" ry=\"4\" fill=\"#ccc6b8\"/><circle cx=\"33\" cy=\"34\" r=\"3\" fill=\"#bdbcbf\"/></pattern></defs><g data-part=\"leg-L\" transform=\"translate(42.1 -154.8)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 71.8\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"43.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 71.8\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"35.2\" stroke-linecap=\"round\"/><g transform=\"translate(0 71.8) rotate(0)\"><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"40.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"32.4\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 65)\"><g data-part=\"foot\"><ellipse cx=\"0\" cy=\"77\" rx=\"21\" ry=\"8\" fill=\"#c98f6a\" stroke=\"#23202b\" stroke-width=\"3.2\"/><rect x=\"-22\" y=\"81\" width=\"44.1\" height=\"6\" rx=\"3\" fill=\"#7c5a44\" stroke=\"#23202b\" stroke-width=\"2.4\"/><path d=\"M-8.4 79l8.4 -9l8.4 9\" fill=\"none\" stroke=\"#7c5a44\" stroke-width=\"4\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-42.1 -154.8)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 71.8\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"43.2\" stroke-linecap=\"round\"/><path d=\"M0 0L0 71.8\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"35.2\" stroke-linecap=\"round\"/><g transform=\"translate(0 71.8) rotate(0)\"><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"40.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"32.4\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 65)\"><g data-part=\"foot\"><ellipse cx=\"0\" cy=\"77\" rx=\"21\" ry=\"8\" fill=\"#c98f6a\" stroke=\"#23202b\" stroke-width=\"3.2\"/><rect x=\"-22\" y=\"81\" width=\"44.1\" height=\"6\" rx=\"3\" fill=\"#7c5a44\" stroke=\"#23202b\" stroke-width=\"2.4\"/><path d=\"M-8.4 79l8.4 -9l8.4 9\" fill=\"none\" stroke=\"#7c5a44\" stroke-width=\"4\"/></g></g></g></g></g><g transform=\"translate(0 -154.8)\"><path d=\"M-65.5 -6Q-91.5 38.9 -99.5 83.8Q0 95.8 99.5 83.8Q91.5 38.9 65.5 -6Z\" data-part=\"skirt\" fill=\"url(#pv-pat)\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-49.7 85.8L-19.6 2M49.7 85.8L19.6 2\" stroke=\"#23202b\" stroke-opacity=\".3\" stroke-width=\"2.4\" fill=\"none\"/></g><g data-part=\"torso-group\" transform=\"translate(0 -154.8) rotate(0)\"><path d=\"M-44 -139.9C-61.4 -137.4 -75.7 -133.2 -80 -121.9C-84.3 -110.7 -76.9 -77.8 -74.7 -59.6C-72.5 -41.4 -83.7 -1.5 -64.2 8C-44.8 17.5 44.8 17.5 64.2 8C83.7 -1.5 72.5 -41.4 74.7 -59.6C76.9 -77.8 84.3 -110.7 80 -121.9C75.7 -133.2 61.4 -137.4 44 -139.9C26.6 -142.5 -26.6 -142.5 -44 -139.9Z\" data-part=\"torso\" fill=\"url(#pv-pat)\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-131.9\" rx=\"33.6\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-26 -137.9Q0 -111.9 26 -137.9\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-74.7 -59.6Q0 -48.3 74.7 -59.6\" stroke=\"#935674\" stroke-width=\"4\" fill=\"none\"/><path d=\"M-24 -135.9Q0 -97.9 24 -135.9\" fill=\"none\" stroke=\"#f2c95c\" stroke-width=\"3.5\"/><circle cx=\"0\" cy=\"-113.9\" r=\"6\" fill=\"#f2c95c\" stroke=\"#23202b\" stroke-width=\"2\"/><path d=\"M0 -162.2L0 -133.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"44.8\" stroke-linecap=\"round\"/><path d=\"M0 -162.2L0 -133.9\" fill=\"none\" stroke=\"#b98462\" stroke-width=\"37.6\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(78.4 -123.9) rotate(-7)\"><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"26.1\" stroke-linecap=\"round\"/><g transform=\"translate(0 65) rotate(0)\"><path d=\"M0 0L0 59.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 59.9\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"24.4\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.3 64.5q-12 2.7 -10.6 14\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.4\" stroke-linecap=\"round\"/><path d=\"M-9.3 64.5q-12 2.7 -10.6 14\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"6.6\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"74.5\" rx=\"12.6\" ry=\"16\" fill=\"#c98f6a\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 87.1v-9.3M2 88.4v-9.3\" stroke=\"#835d45\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-78.4 -123.9) rotate(7)\"><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"34.1\" stroke-linecap=\"round\"/><path d=\"M0 0L0 65\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"26.1\" stroke-linecap=\"round\"/><g transform=\"translate(0 65) rotate(0)\"><path d=\"M0 0L0 59.9\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"32.4\" stroke-linecap=\"round\"/><path d=\"M0 0L0 59.9\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"24.4\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.3 64.5q12 2.7 10.6 14\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.4\" stroke-linecap=\"round\"/><path d=\"M9.3 64.5q12 2.7 10.6 14\" fill=\"none\" stroke=\"#c98f6a\" stroke-width=\"6.6\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"74.5\" rx=\"12.6\" ry=\"16\" fill=\"#c98f6a\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 87.1v-9.3M2 88.4v-9.3\" stroke=\"#835d45\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -246.6) rotate(0 0 94.4)\"><g data-part=\"hair-blob\" data-depth=\"behind\"><circle cx=\"0\" cy=\"-112.1\" r=\"40\" fill=\"#8a8680\" stroke=\"#23202b\" stroke-width=\"4\"/><path d=\"M-22 -120.1Q0 -144.9 22 -120.1\" fill=\"none\" stroke=\"#686560\" stroke-width=\"2.5\"/></g><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#c98f6a\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#8d644a\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#c98f6a\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#8d644a\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10.1 -118 20.7 -116.3 30.4 -113.2C40.2 -110.1 49.9 -105.3 58.4 -99.3C66.9 -93.3 75 -85.6 81.6 -77.3C88.3 -68.9 94 -59.1 98.2 -49C102.5 -38.9 105.5 -27.6 106.9 -16.8C108.3 -6 108.3 5.3 106.9 15.8C105.5 26.3 102.5 36.6 98.2 46.1C94 55.6 88.3 64.8 81.6 72.6C75 80.5 66.9 87.7 58.4 93.3C49.9 98.9 40.2 103.5 30.4 106.4C20.7 109.4 10.1 110.9 0 110.9C-10.1 110.9 -20.7 109.4 -30.4 106.4C-40.2 103.5 -49.9 98.9 -58.4 93.3C-66.9 87.7 -75 80.5 -81.6 72.6C-88.3 64.8 -94 55.6 -98.2 46.1C-102.5 36.6 -105.5 26.3 -106.9 15.8C-108.3 5.3 -108.3 -6 -106.9 -16.8C-105.5 -27.6 -102.5 -38.9 -98.2 -49C-94 -59.1 -88.3 -68.9 -81.6 -77.3C-75 -85.6 -66.9 -93.3 -58.4 -99.3C-49.9 -105.3 -40.2 -110.1 -30.4 -113.2C-20.7 -116.3 -10.1 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#c98f6a\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><ellipse data-part=\"cheek\" cx=\"-45.4\" cy=\"37.3\" rx=\"20\" ry=\"11\" fill=\"#ad7b5b\" fill-opacity=\"0.5\"/><ellipse data-part=\"cheek\" cx=\"45.4\" cy=\"37.3\" rx=\"20\" ry=\"11\" fill=\"#ad7b5b\" fill-opacity=\"0.5\"/><path d=\"M-34 -49.6Q0 -55.5 34 -49.6M-24 -40.1Q0 -44.8 24 -40.1\" fill=\"none\" stroke=\"#896148\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M-67.4 -8.7l-8 -3M-67.4 -0.7l-8 3\" fill=\"none\" stroke=\"#896148\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M67.4 -8.7l8 -3M67.4 -0.7l8 3\" fill=\"none\" stroke=\"#896148\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><path d=\"M-32 49.6q-5 12 2 24M32 49.6q5 12 -2 24\" fill=\"none\" stroke=\"#896148\" stroke-width=\"2.2\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"R\" data-rx=\"16\" data-ry=\"18\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"10.2\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\"/></clipPath><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"10.2\" fill=\"#2a2f3d\"/><circle cx=\"3.1\" cy=\"-3.7\" r=\"2.8\" fill=\"#fff\"/></g><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-10.4 -13l-7 -7M-15.2 -5.4l-9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M-19.4 -37.7C-23.7 -38.4 -36.7 -41.7 -45.4 -41.7C-54 -41.7 -67 -38.4 -71.4 -37.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#8a8680\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"16\" data-ry=\"18\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"10.2\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\"/></clipPath><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"10.2\" fill=\"#2a2f3d\"/><circle cx=\"3.1\" cy=\"-3.7\" r=\"2.8\" fill=\"#fff\"/></g><path d=\"M16 0C16 2.3 15.6 4.8 14.8 6.9C14 9 12.8 11.1 11.3 12.7C9.9 14.4 8 15.8 6.1 16.6C4.2 17.5 2 18 0 18C-2 18 -4.2 17.5 -6.1 16.6C-8 15.8 -9.9 14.4 -11.3 12.7C-12.8 11.1 -14 9 -14.8 6.9C-15.6 4.8 -16 2.3 -16 0C-16 -2.3 -15.6 -4.8 -14.8 -6.9C-14 -9 -12.8 -11.1 -11.3 -12.7C-9.9 -14.4 -8 -15.8 -6.1 -16.6C-4.2 -17.5 -2 -18 0 -18C2 -18 4.2 -17.5 6.1 -16.6C8 -15.8 9.9 -14.4 11.3 -12.7C12.8 -11.1 14 -9 14.8 -6.9C15.6 -4.8 16 -2.3 16 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M10.4 -13l7 -7M15.2 -5.4l9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M19.4 -37.7C23.7 -38.4 36.7 -41.7 45.4 -41.7C54 -41.7 67 -38.4 71.4 -37.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#8a8680\" stroke-width=\"3.6\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-2.5 -23.4Q-17 14.3 -9.4 22.1Q0 32.5 9.4 22.1Q17 14.3 2.6 -23.4\" fill=\"#bf8865\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-17.3 -1Q0 1.3 17.3 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g></g><path d=\"M-99.4 -46C-98.6 -48.5 -96.3 -56 -94.1 -60.7C-92 -65.5 -89.4 -70 -86.7 -74.4C-83.9 -78.8 -80.8 -83 -77.6 -87C-74.3 -91 -70.8 -94.8 -67 -98.3C-63.3 -101.8 -59.4 -105 -55.3 -108C-51.1 -110.9 -46.8 -113.5 -42.4 -115.8C-38 -118.1 -33.4 -120 -28.7 -121.5C-24.1 -123.1 -19.3 -124.3 -14.5 -125.1C-9.7 -125.9 -4.8 -126.3 0 -126.3C4.8 -126.3 9.7 -125.9 14.5 -125.1C19.3 -124.3 24.1 -123.1 28.7 -121.5C33.4 -120 38 -118.1 42.4 -115.8C46.8 -113.5 51.1 -110.9 55.3 -108C59.4 -105 63.3 -101.8 67 -98.3C70.8 -94.8 74.3 -91 77.6 -87C80.8 -83 83.9 -78.8 86.7 -74.4C89.4 -70 92 -65.5 94.1 -60.7C96.3 -56 98.6 -48.5 99.4 -46L100.3 -46.4C98.5 -49.4 92.9 -60.3 89.6 -64.5C86.3 -68.6 84 -68.9 80.4 -71.1C76.9 -73.3 72.7 -75.5 68.2 -77.7C63.8 -79.9 58.6 -82.6 53.9 -84.4C49.3 -86.1 44.8 -87.2 40.3 -88.1C35.9 -88.9 31.7 -88.9 27.3 -89.4C22.8 -89.8 18.2 -90.3 13.6 -90.7C9.1 -91.2 4.5 -92 0 -92C-4.5 -92 -9.1 -91.2 -13.6 -90.7C-18.2 -90.3 -22.8 -89.8 -27.3 -89.4C-31.7 -88.9 -35.9 -88.9 -40.3 -88.1C-44.8 -87.2 -49.3 -86.1 -53.9 -84.4C-58.6 -82.6 -63.8 -79.9 -68.2 -77.7C-72.7 -75.5 -76.9 -73.3 -80.4 -71.1C-84 -68.9 -86.3 -68.6 -89.6 -64.5C-92.9 -60.3 -98.5 -49.4 -100.3 -46.4Z\" data-part=\"hair-cap\" fill=\"#8a8680\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-99.4 -46C-98.6 -48.5 -96.3 -56 -94.1 -60.7C-92 -65.5 -89.4 -70 -86.7 -74.4C-83.9 -78.8 -80.8 -83 -77.6 -87C-74.3 -91 -70.8 -94.8 -67 -98.3C-63.3 -101.8 -59.4 -105 -55.3 -108C-51.1 -110.9 -46.8 -113.5 -42.4 -115.8C-38 -118.1 -33.4 -120 -28.7 -121.5C-24.1 -123.1 -19.3 -124.3 -14.5 -125.1C-9.7 -125.9 -4.8 -126.3 0 -126.3C4.8 -126.3 9.7 -125.9 14.5 -125.1C19.3 -124.3 24.1 -123.1 28.7 -121.5C33.4 -120 38 -118.1 42.4 -115.8C46.8 -113.5 51.1 -110.9 55.3 -108C59.4 -105 63.3 -101.8 67 -98.3C70.8 -94.8 74.3 -91 77.6 -87C80.8 -83 83.9 -78.8 86.7 -74.4C89.4 -70 92 -65.5 94.1 -60.7C96.3 -56 98.6 -48.5 99.4 -46L100.3 -46.4C98.5 -49.4 92.9 -60.3 89.6 -64.5C86.3 -68.6 84 -68.9 80.4 -71.1C76.9 -73.3 72.7 -75.5 68.2 -77.7C63.8 -79.9 58.6 -82.6 53.9 -84.4C49.3 -86.1 44.8 -87.2 40.3 -88.1C35.9 -88.9 31.7 -88.9 27.3 -89.4C22.8 -89.8 18.2 -90.3 13.6 -90.7C9.1 -91.2 4.5 -92 0 -92C-4.5 -92 -9.1 -91.2 -13.6 -90.7C-18.2 -90.3 -22.8 -89.8 -27.3 -89.4C-31.7 -88.9 -35.9 -88.9 -40.3 -88.1C-44.8 -87.2 -49.3 -86.1 -53.9 -84.4C-58.6 -82.6 -63.8 -79.9 -68.2 -77.7C-72.7 -75.5 -76.9 -73.3 -80.4 -71.1C-84 -68.9 -86.3 -68.6 -89.6 -64.5C-92.9 -60.3 -98.5 -49.4 -100.3 -46.4Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-59.4 -96.8Q-10.8 -120.4 45.4 -100.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#9d9994\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g><g data-part=\"glasses\"><ellipse cx=\"-45.4\" cy=\"-4.7\" rx=\"34\" ry=\"33\" fill=\"#ffffff\" fill-opacity=\"0.16\" stroke=\"#7c5a44\" stroke-width=\"5\"/><ellipse cx=\"45.4\" cy=\"-4.7\" rx=\"34\" ry=\"33\" fill=\"#ffffff\" fill-opacity=\"0.16\" stroke=\"#7c5a44\" stroke-width=\"5\"/><path d=\"M-15.4 -8.7Q0 -18.7 15.4 -8.7\" fill=\"none\" stroke=\"#7c5a44\" stroke-width=\"5\"/></g></g></g></g></svg>"
+  },
+  {
+   "id": "vila-torta-personagens-3",
+   "file": "vila-torta-personagens-3.rspack",
+   "sha256": "5d9c4b3c711e08a55a0b6895ad6382982f58ec7402614cf18bfd54f24c914860",
+   "size": 8981,
+   "name": "Vila Torta · Personagens 3 (figurantes)",
+   "version": "1.0.0",
+   "description": "Eleitores, seguranças, policiais e as silhuetas dos grupos que aparecem de longe nos episódios.",
+   "author": "Vila Torta",
+   "license": "Vila Torta — obra original do autor do Recorte Studio. Uso nos seus projetos; licença de redistribuição pendente de definição do autor.",
+   "category": "Personagens",
+   "collection": "Vila Torta",
+   "volume": 3,
+   "tags": [
+    "vila torta",
+    "série"
+   ],
+   "dependencies": [],
+   "itemCount": 12,
+   "counts": {
+    "character": 12
+   },
+   "animated": 0,
+   "items": [
+    {
+     "id": "char_m0masz773y",
+     "name": "Eleitora 1",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_ktar3zgs2z",
+     "name": "Eleitor 2",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_dmk9yjjfv8",
+     "name": "Eleitora 3",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_lrzas1boj4",
+     "name": "Eleitor 4",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_g5i6f9q5tf",
+     "name": "Eleitora 5",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_bnv3f4bhkg",
+     "name": "Eleitor 6",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_b2kziwxf29",
+     "name": "Segurança A",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_9gt3dajoen",
+     "name": "Segurança B",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_73ctv0sk6r",
+     "name": "Policial A",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_f6mu4xofpd",
+     "name": "Policial B",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_ir5tiaza8x",
+     "name": "Integrante do grupo vermelho",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    },
+    {
+     "id": "char_nznc8otsni",
+     "name": "Integrante do grupo cinza",
+     "kind": "character",
+     "category": "Personagens",
+     "subcategory": "Figurantes"
+    }
+   ],
+   "coverSvg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"200\" height=\"300\" viewBox=\"-220 -638.4 440 668.4\"><g data-part=\"root\" data-body-view=\"front\" data-head-view=\"front\" transform=\"translate(0 0)\"><g data-part=\"leg-L\" transform=\"translate(39.6 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"39\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M8.7 4L8.7 84\" stroke=\"#7b8497\" stroke-width=\"2\" stroke-dasharray=\"5 4\" fill=\"none\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"28.5\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.2 77l12.4 0M-6.2 83l12.4 0\" stroke=\"#a0a1a6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"leg-R\" transform=\"translate(-39.6 -178)\"><g transform=\"rotate(0)\"><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"39\" stroke-linecap=\"round\"/><path d=\"M0 0L0 84\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M8.7 4L8.7 84\" stroke=\"#7b8497\" stroke-width=\"2\" stroke-dasharray=\"5 4\" fill=\"none\"/><g transform=\"translate(0 84) rotate(0)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"36.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#3d4a66\" stroke-width=\"28.5\" stroke-linecap=\"round\"/><g transform=\"rotate(0 0 76)\"><g data-part=\"foot\"><path d=\"M-24.8 94L24.8 94Q26.8 80 15 66L-15 66Q-26.8 80 -24.8 94Z\" fill=\"#2b2d3a\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linejoin=\"round\"/><rect x=\"-24.8\" y=\"91\" width=\"49.6\" height=\"6\" rx=\"3\" fill=\"#f2efe6\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-6.2 77l12.4 0M-6.2 83l12.4 0\" stroke=\"#a0a1a6\" stroke-width=\"3\" fill=\"none\"/></g></g></g></g></g><g data-part=\"torso-group\" transform=\"translate(0 -178) rotate(0)\"><g transform=\"translate(0 -272.4)\"><path d=\"M-85.7 -29.5C-122.9 -23.8 -129.5 -6.9 -137.3 4.4C-145 15.7 -132.7 27 -132.2 38.3C-131.6 49.7 -131.9 61 -133.7 72.3C-135.5 83.6 -143.7 94.9 -142.8 106.2C-141.9 117.5 -132.1 128.8 -128.4 140.1C-124.8 151.4 -121.1 162.7 -120.9 174C-120.7 185.4 -128.8 196.7 -127.1 208C-125.4 219.3 -117.4 235.7 -110.6 241.9C-103.7 248.1 -94.2 244.2 -86 245.3C-77.8 246.4 -69.6 247.5 -61.4 248.3C-53.2 249.2 -45.1 250 -36.9 250.6C-28.7 251.1 -20.5 251.6 -12.3 251.7C-4.1 251.9 4.1 251.9 12.3 251.7C20.5 251.6 28.7 251.1 36.9 250.6C45.1 250 53.2 249.2 61.4 248.3C69.6 247.5 77.8 246.4 86 245.3C94.2 244.2 103.7 248.1 110.6 241.9C117.4 235.7 125.4 219.3 127.1 208C128.8 196.7 120.7 185.4 120.9 174C121.1 162.7 124.8 151.4 128.4 140.1C132.1 128.8 141.9 117.5 142.8 106.2C143.7 94.9 135.5 83.6 133.7 72.3C131.9 61 131.6 49.7 132.2 38.3C132.7 27 145 15.7 137.3 4.4C129.5 -6.9 122.9 -23.8 85.7 -29.5C48.5 -35.2 -48.5 -35.2 -85.7 -29.5Z\" data-part=\"hair-back\" data-layer=\"behind-body\" fill=\"#5c3b28\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/></g><path d=\"M-61.2 -4Q0 6 61.2 -4L56.7 22L-56.6 22Z\" fill=\"#3d4a66\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><path d=\"M-40.7 -164C-56.8 -161.5 -70.5 -159.2 -74 -146C-77.5 -132.8 -67.6 -91.3 -65.6 -69.7C-63.6 -48.2 -77.6 -2.9 -60 8C-42.4 18.9 42.4 18.9 60 8C77.6 -2.9 63.6 -48.2 65.6 -69.7C67.6 -91.3 77.5 -132.8 74 -146C70.5 -159.2 56.8 -161.5 40.7 -164C24.6 -166.5 -24.6 -166.5 -40.7 -164Z\" data-part=\"torso\" fill=\"#5b8dbe\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><ellipse cx=\"0\" cy=\"-156\" rx=\"31.1\" ry=\"9\" fill=\"#000\" fill-opacity=\".14\"/><path d=\"M-61.8 -6Q0 4 61.8 -6\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M-26 -162Q0 -142 26 -162\" stroke=\"#23202b\" stroke-width=\"2.8\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"35.9\" stroke-linecap=\"round\"/><path d=\"M0 -188L0 -158\" fill=\"none\" stroke=\"#d5a681\" stroke-width=\"28.7\" stroke-linecap=\"round\"/><g data-part=\"arm-L\" data-depth=\"behind\" transform=\"translate(72.5 -148) rotate(-7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"23\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"37.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"29.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"21.5\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M-9.4 74.7q-12.1 2.7 -10.8 14.2\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#97755b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"arm-R\" data-depth=\"behind\" transform=\"translate(-72.5 -148) rotate(7)\"><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"31\" stroke-linecap=\"round\"/><path d=\"M0 0L0 76\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"23\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"37.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 39.5\" fill=\"none\" stroke=\"#5b8dbe\" stroke-width=\"29.5\" stroke-linecap=\"round\"/><g transform=\"translate(0 76) rotate(0)\"><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"29.5\" stroke-linecap=\"round\"/><path d=\"M0 0L0 70\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"21.5\" stroke-linecap=\"round\"/><g data-part=\"hand\" data-kind=\"open\"><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"13.6\" stroke-linecap=\"round\"/><path d=\"M9.5 74.7q12.2 2.7 10.8 14.2\" fill=\"none\" stroke=\"#e8b48c\" stroke-width=\"6.8\" stroke-linecap=\"round\"/><ellipse cx=\"0\" cy=\"84.8\" rx=\"12.8\" ry=\"16.2\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-4 97.7v-9.4M2 99v-9.4\" stroke=\"#97755b\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/></g></g></g><g data-part=\"head\" data-view=\"front\" transform=\"translate(0 -272.4) rotate(0 0 94.4)\"><g data-part=\"ears\"><path d=\"M-103.7 -17.6Q-128.4 -14.9 -122.7 9.4Q-120.8 36.4 -103.7 33.7Z\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M-108.4 -1.4Q-117.9 1.3 -112.2 17.5\" fill=\"none\" stroke=\"#a27e62\" stroke-width=\"2.4\" stroke-linecap=\"round\"/><path d=\"M103.7 -17.6Q128.4 -14.9 122.7 9.4Q120.8 36.4 103.7 33.7Z\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"3.4\" stroke-linejoin=\"round\"/><path d=\"M108.4 -1.4Q117.9 1.3 112.2 17.5\" fill=\"none\" stroke=\"#a27e62\" stroke-width=\"2.4\" stroke-linecap=\"round\"/></g><path d=\"M0 -118C10.1 -118 20.7 -116.3 30.4 -113.2C40.2 -110.1 49.9 -105.3 58.4 -99.3C66.9 -93.3 75 -85.6 81.6 -77.3C88.3 -68.9 94 -59.1 98.2 -49C102.5 -38.9 105.5 -27.6 106.9 -16.8C108.3 -6 108.3 5.3 106.9 15.8C105.5 26.3 102.5 36.6 98.2 46.1C94 55.6 88.3 64.8 81.6 72.6C75 80.5 66.9 87.7 58.4 93.3C49.9 98.9 40.2 103.5 30.4 106.4C20.7 109.4 10.1 110.9 0 110.9C-10.1 110.9 -20.7 109.4 -30.4 106.4C-40.2 103.5 -49.9 98.9 -58.4 93.3C-66.9 87.7 -75 80.5 -81.6 72.6C-88.3 64.8 -94 55.6 -98.2 46.1C-102.5 36.6 -105.5 26.3 -106.9 15.8C-108.3 5.3 -108.3 -6 -106.9 -16.8C-105.5 -27.6 -102.5 -38.9 -98.2 -49C-94 -59.1 -88.3 -68.9 -81.6 -77.3C-75 -85.6 -66.9 -93.3 -58.4 -99.3C-49.9 -105.3 -40.2 -110.1 -30.4 -113.2C-20.7 -116.3 -10.1 -118 0 -118Z\" data-part=\"head-shape\" fill=\"#e8b48c\" stroke=\"#23202b\" stroke-width=\"4.2\" stroke-linejoin=\"round\"/><g data-part=\"face\"><g data-part=\"eye\" data-eye=\"R\" data-rx=\"25\" data-ry=\"27\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"12.7\" transform=\"translate(-45.4 -4.7)\"><clipPath id=\"pv-eyeR\"><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\"/></clipPath><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeR)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"12.7\" fill=\"#2a2f3d\"/><circle cx=\"3.8\" cy=\"-4.6\" r=\"3.4\" fill=\"#fff\"/></g><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M-16.2 -19.4l-7 -7M-23.7 -8.1l-9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M-20.4 -46.7C-24.5 -47.4 -37 -50.7 -45.4 -50.7C-53.7 -50.7 -66.2 -47.4 -70.4 -46.7\" data-part=\"brow\" data-brow=\"R\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"eye\" data-eye=\"L\" data-rx=\"25\" data-ry=\"27\" data-closed=\"0\" data-pupil-x=\"0\" data-pupil-y=\"0\" data-pupil-r=\"12.7\" transform=\"translate(45.4 -4.7)\"><clipPath id=\"pv-eyeL\"><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\"/></clipPath><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"#fffdf7\"/><g clip-path=\"url(#pv-eyeL)\"><circle data-pupil=\"1\" cx=\"0\" cy=\"0\" r=\"12.7\" fill=\"#2a2f3d\"/><circle cx=\"3.8\" cy=\"-4.6\" r=\"3.4\" fill=\"#fff\"/></g><path d=\"M25 0C25 3.4 24.3 7.2 23.1 10.3C21.9 13.5 19.9 16.7 17.7 19.1C15.4 21.5 12.5 23.6 9.6 24.9C6.6 26.3 3.2 27 0 27C-3.2 27 -6.6 26.3 -9.6 24.9C-12.5 23.6 -15.4 21.5 -17.7 19.1C-19.9 16.7 -21.9 13.5 -23.1 10.3C-24.3 7.2 -25 3.4 -25 0C-25 -3.4 -24.3 -7.2 -23.1 -10.3C-21.9 -13.5 -19.9 -16.7 -17.7 -19.1C-15.4 -21.5 -12.5 -23.6 -9.6 -24.9C-6.6 -26.3 -3.2 -27 0 -27C3.2 -27 6.6 -26.3 9.6 -24.9C12.5 -23.6 15.4 -21.5 17.7 -19.1C19.9 -16.7 21.9 -13.5 23.1 -10.3C24.3 -7.2 25 -3.4 25 0Z\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\"/><path d=\"M16.3 -19.4l7 -7M23.8 -8.1l9 -5\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"2.8\" stroke-linecap=\"round\"/></g><path d=\"M20.4 -46.7C24.5 -47.4 37 -50.7 45.4 -50.7C53.7 -50.7 66.2 -47.4 70.4 -46.7\" data-part=\"brow\" data-brow=\"L\" fill=\"none\" stroke=\"#3a2b28\" stroke-width=\"6\" stroke-linecap=\"round\"/><g data-part=\"nose\" data-tip-x=\"0\" data-base-x=\"0\" data-facing=\"0\" transform=\"translate(0 26)\"><path d=\"M-1.3 -12.6Q-9 7.7 -4.9 11.9Q0 17.5 5 11.9Q9 7.7 1.3 -12.6\" fill=\"#dcab85\" fill-opacity=\".55\" stroke=\"#23202b\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/></g><g data-part=\"mouth\" data-shape=\"neutral\" data-open=\"0\" transform=\"translate(0 66.1)\"><path d=\"M-31.2 -1Q0 1.3 31.2 -1\" fill=\"none\" stroke=\"#23202b\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></g></g><path d=\"M-84.6 73.3C-89.5 67.1 -107.7 50 -113.6 36.2C-119.5 22.4 -120.7 5.5 -119.8 -9.5C-118.9 -24.5 -113.6 -39.3 -108.1 -53.8C-102.5 -68.2 -96.2 -83.5 -86.4 -96.2C-76.6 -108.9 -63.7 -123.4 -49.3 -129.8C-34.9 -136.1 -15.7 -136.3 0 -134.5C15.7 -132.7 30.7 -125.4 45.1 -119.1C59.5 -112.7 74.7 -106.5 86.4 -96.2C98.1 -85.9 109.7 -71.7 115.2 -57.2C120.8 -42.8 120.7 -24.9 119.8 -9.5C118.9 5.9 115.7 21.3 109.8 35.1C104 48.9 88.8 66.9 84.6 73.3L85.2 73.8C87.4 69.1 96.1 61.3 98.5 46C100.9 30.6 102.5 -1.7 99.6 -18.2C96.7 -34.7 86.6 -46 81.1 -52.8C75.6 -59.7 71.8 -57.2 66.7 -59.2C61.6 -61.3 55.9 -63.8 50.5 -65.1C45.1 -66.4 39.9 -66.4 34.4 -67C28.8 -67.6 23 -68.3 17.3 -68.9C11.5 -69.5 5.8 -70.8 0 -70.8C-5.8 -70.8 -11.5 -69.5 -17.3 -68.9C-23 -68.3 -28.8 -67.6 -34.4 -67C-39.9 -66.4 -45.1 -66.4 -50.5 -65.1C-55.9 -63.8 -61.6 -61.3 -66.7 -59.2C-71.8 -57.2 -75.6 -59.7 -81.1 -52.8C-86.6 -46 -96.7 -34.7 -99.6 -18.2C-102.5 -1.7 -100.9 30.6 -98.5 46C-96.1 61.3 -87.4 69.1 -85.2 73.8Z\" data-part=\"hair-cap\" fill=\"#5c3b28\" stroke=\"#23202b\" stroke-width=\"4\" stroke-linejoin=\"round\"/><clipPath id=\"pv-hairclip\"><path d=\"M-84.6 73.3C-89.5 67.1 -107.7 50 -113.6 36.2C-119.5 22.4 -120.7 5.5 -119.8 -9.5C-118.9 -24.5 -113.6 -39.3 -108.1 -53.8C-102.5 -68.2 -96.2 -83.5 -86.4 -96.2C-76.6 -108.9 -63.7 -123.4 -49.3 -129.8C-34.9 -136.1 -15.7 -136.3 0 -134.5C15.7 -132.7 30.7 -125.4 45.1 -119.1C59.5 -112.7 74.7 -106.5 86.4 -96.2C98.1 -85.9 109.7 -71.7 115.2 -57.2C120.8 -42.8 120.7 -24.9 119.8 -9.5C118.9 5.9 115.7 21.3 109.8 35.1C104 48.9 88.8 66.9 84.6 73.3L85.2 73.8C87.4 69.1 96.1 61.3 98.5 46C100.9 30.6 102.5 -1.7 99.6 -18.2C96.7 -34.7 86.6 -46 81.1 -52.8C75.6 -59.7 71.8 -57.2 66.7 -59.2C61.6 -61.3 55.9 -63.8 50.5 -65.1C45.1 -66.4 39.9 -66.4 34.4 -67C28.8 -67.6 23 -68.3 17.3 -68.9C11.5 -69.5 5.8 -70.8 0 -70.8C-5.8 -70.8 -11.5 -69.5 -17.3 -68.9C-23 -68.3 -28.8 -67.6 -34.4 -67C-39.9 -66.4 -45.1 -66.4 -50.5 -65.1C-55.9 -63.8 -61.6 -61.3 -66.7 -59.2C-71.8 -57.2 -75.6 -59.7 -81.1 -52.8C-86.6 -46 -96.7 -34.7 -99.6 -18.2C-102.5 -1.7 -100.9 30.6 -98.5 46C-96.1 61.3 -87.4 69.1 -85.2 73.8Z\"/></clipPath><g clip-path=\"url(#pv-hairclip)\"><path d=\"M-59.4 -96.8Q-10.8 -120.4 45.4 -100.3\" data-part=\"hair-shine\" fill=\"none\" stroke=\"#765a4a\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-opacity=\".55\"/></g></g></g></g></svg>"
+  }
+ ]
+}

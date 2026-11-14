@@ -949,3 +949,22 @@ button.libh-card:hover { background: var(--bg-3); border-color: var(--line-2); }
 .libh-more { border: 1px solid var(--line); border-radius: 10px; background: var(--bg-2); }
 .libh-more > summary { cursor: pointer; padding: 6px 10px; color: var(--text-2); font-weight: 600; list-style-position: inside; }
 .libh-more-body { display: grid; gap: 8px; padding: 6px 10px 10px; }
+
+/* ------------------------------ Catálogo oficial de pacotes ------------------------------ */
+.off { display: grid; gap: 14px; }
+.off-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.off-tools .hint { margin-left: auto; }
+.off-group { display: grid; gap: 8px; }
+.off-group-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+.off-group-head h3 { font-size: calc(16px * var(--ui-scale, 1)); }
+.off-group-head small { color: var(--text-3); }
+.off-card { align-content: start; }
+.off-card .libh-thumb { min-height: 120px; }
+.off-card.is-done { border-color: color-mix(in srgb, var(--ok, #6dad6f) 55%, var(--line)); }
+.off-counts { color: var(--text-2); font-size: calc(11px * var(--ui-scale, 1)); max-width: 100%; overflow-wrap: anywhere; }
+.off-state { font-size: calc(11px * var(--ui-scale, 1)); font-weight: 650; }
+.off-state.is-installed { color: var(--ok, #6dad6f); }
+.off-state.is-update { color: var(--warn, #e0b04c); }
+.off-state.is-disabled { color: var(--text-3); }
+.off-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.linklike { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }

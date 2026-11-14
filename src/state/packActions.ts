@@ -8,6 +8,7 @@ import { buildPack, compareVersions, PACK_EXT, readPack, type PackManifest, type
 import { buildDemoPack } from '@/features/packs/demo';
 import { analyzeImport, planImport, separatePackId, type ImportAnalysis, type PackSource, type PlanResult, type Resolutions } from '@/features/packs/conflicts';
 import { builtinIds } from '@/features/packs/builtinIds';
+import { fetchOfficialIndex, fetchOfficialPack, installOrder, officialStatus, type OfficialEntry, type OfficialIndex } from '@/features/packs/official';
 import { registerAssetBlob } from '@/features/library/assets';
 import { sha256Hex } from '@/features/library/media';
 import { db, repo, StorageQuotaError, type PackRecord } from '@/storage/db';
@@ -234,4 +235,58 @@ export async function exportPack(id: string): Promise<void> {
   a.download = out.name;
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+
+/* ------------------------------ catálogo oficial ------------------------------ */
+interface OfficialState { index: OfficialIndex | null; loading: boolean; error: string | null }
+export const useOfficial = create<OfficialState>(() => ({ index: null, loading: false, error: null }));
+
+export async function loadOfficialIndex(force = false): Promise<void> {
+  const st = useOfficial.getState();
+  if (st.loading || (st.index && !force)) return;
+  useOfficial.setState({ loading: true, error: null });
+  try {
+    useOfficial.setState({ index: await fetchOfficialIndex(), loading: false });
+  } catch (e) {
+    useOfficial.setState({ loading: false, error: e instanceof Error ? e.message : 'erro desconhecido' });
+  }
+}
+
+/** Baixa (verificado pelo sha256 do índice) o pacote oficial, sem instalar: para ver o conteúdo antes. */
+export async function downloadOfficial(entry: OfficialEntry): Promise<Uint8Array | null> {
+  try {
+    return await fetchOfficialPack(entry);
+  } catch (e) {
+    toast(`Não foi possível baixar "${entry.name}": ${e instanceof Error ? e.message : 'erro'}.`, 'error');
+    return null;
+  }
+}
+
+/** Instala um pacote oficial (e antes as dependências oficiais que faltarem). Conflitos de ID passam pelo mesmo diálogo. */
+export async function installOfficial(entry: OfficialEntry, all: readonly OfficialEntry[] = useOfficial.getState().index?.packs ?? []): Promise<InstallResult> {
+  const installed = await repo.listPacks();
+  for (const dep of installOrder([entry], all).filter((p) => p.id !== entry.id)) {
+    if (installed.some((p) => p.id === dep.id && compareVersions(p.version, dep.version) >= 0)) continue;
+    const r = await installOfficial(dep, all);
+    if (!r.ok) return { ok: false, reason: `Dependência "${dep.name}": ${r.reason}`, cancelled: r.cancelled };
+  }
+  const bytes = await downloadOfficial(entry);
+  if (!bytes) return { ok: false, reason: 'Falha ao baixar o pacote.', cancelled: true };
+  return installInteractive(bytes, { source: 'official' });
+}
+
+/** Instala todos os volumes de uma coleção que ainda faltam (ou têm atualização). */
+export async function installCollection(entries: readonly OfficialEntry[], all: readonly OfficialEntry[] = useOfficial.getState().index?.packs ?? []): Promise<{ installed: number; failed: string[]; cancelled: boolean }> {
+  const have = await repo.listPacks();
+  const todo = installOrder(entries, all).filter((p) => officialStatus(p, have) === 'available' || officialStatus(p, have) === 'update');
+  let installed = 0;
+  const failed: string[] = [];
+  for (const p of todo) {
+    const r = await installOfficial(p, all);
+    if (r.ok) installed++;
+    else if (r.cancelled) return { installed, failed, cancelled: true };
+    else failed.push(`${p.name}: ${r.reason}`);
+  }
+  await reloadPacks();
+  return { installed, failed, cancelled: false };
 }

@@ -97,7 +97,7 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
       </ScrollStrip>
       {busy && <p className="hint" role="status" data-testid="library-busy">{busy}</p>}
       {tab === 'packs' ? (
-        <PacksTab inspected={inspected} setInspected={setInspected} onInspectDemo={async () => { setBusy('Montando o pacote de demonstração…'); try { setInspected(await inspectDemoPack()); } finally { setBusy(''); } }} />
+        <PacksTab onBrowse={(b) => { setTab('items'); setInspected(null); set({ ...DEFAULT_QUERY, filter: b.filter ?? 'all', kind: b.kind ?? null, packId: b.packId ?? null }); }} inspected={inspected} setInspected={setInspected} onInspectDemo={async () => { setBusy('Montando o pacote de demonstração…'); try { setInspected(await inspectDemoPack()); } finally { setBusy(''); } }} />
       ) : (
         <>
           <div className="libh-filters">

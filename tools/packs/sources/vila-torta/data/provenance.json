@@ -1,0 +1,233 @@
+{
+ "nota": "Itens extraídos sem alteração dos episódios de Vila Torta. Os episódios não foram modificados.",
+ "repositorio": "outbassed/recorte-studio",
+ "ramo": "claude/vila-torta-t1e1-producao-a3k6yr",
+ "commit": "6d88e88",
+ "episodios": [
+  {
+   "sigla": "T1E1",
+   "arquivo": "producoes/vila-torta/entrega/Vila-Torta-T1E1-Politicos-de-Estimacao.jrec",
+   "sha256Jrec": "4ad8c2f0aa879087574b69779b50cc28fd7c972e9550f13100be764290a5aa3b",
+   "sha256ProjectJson": "6bab32854f104840f387578f778367cd94a3ac68dca7faaead09a467fb3ef095",
+   "titulo": "Vila Torta · T1E1 · Políticos de Estimação"
+  },
+  {
+   "sigla": "T1E2",
+   "arquivo": "producoes/vila-torta/t2/entrega/Vila-Torta-T1E2-O-Show-e-o-Fiscal.jrec",
+   "sha256Jrec": "d792a31c22deaab5aafe03e61dce9b2d4d3779e1a1628063384ada6d66113669",
+   "sha256ProjectJson": "66fc00c529494b549b76e2ce400998040a094d0cb9a6ea4f720d059937983021",
+   "titulo": "Vila Torta · T1E2 · O Show e o Fiscal"
+  }
+ ],
+ "contagens": {
+  "personagens": 36,
+  "objetos": 53,
+  "cenarios": 6
+ },
+ "aliasesDeId": {
+  "char_tioydvr4vi": "char_m0masz773y",
+  "char_oqdo55rqcz": "char_ktar3zgs2z",
+  "char_rs24hxfrzd": "char_dmk9yjjfv8",
+  "char_n5sr34g5i5": "char_lrzas1boj4",
+  "char_e1rbi4u1db": "char_g5i6f9q5tf",
+  "char_q5v8os7anr": "char_bnv3f4bhkg",
+  "char_3k4ii082c7": "char_257xo78v7t",
+  "char_kv9k6tfuou": "char_frajvv8bzu",
+  "cbg_7pr1k3ago5": "cbg_5gnbh26acx",
+  "cbg_hxquc72h73": "cbg_xi6mukvsgy",
+  "cbg_bv3i0rk855": "cbg_z2yvskc5rr",
+  "cbg_6jp24qs98n": "cbg_q1jou3wb7m",
+  "cbg_o3fxncgjbd": "cbg_0i63qsb1kc"
+ },
+ "objetosPorEpisodio": {
+  "obj_roda": [
+   "T1E1",
+   "T1E2"
+  ],
+  "obj_carro_corpo": [
+   "T1E1"
+  ],
+  "obj_mola": [
+   "T1E1",
+   "T1E2"
+  ],
+  "obj_buraco": [
+   "T1E1"
+  ],
+  "obj_caminhao": [
+   "T1E1"
+  ],
+  "obj_placa_buraco": [
+   "T1E1"
+  ],
+  "obj_tv": [
+   "T1E1",
+   "T1E2"
+  ],
+  "obj_pulpito_g": [
+   "T1E1"
+  ],
+  "obj_pulpito_p": [
+   "T1E1"
+  ],
+  "obj_bancada": [
+   "T1E1"
+  ],
+  "obj_painel_debate": [
+   "T1E1"
+  ],
+  "obj_cartaz_g": [
+   "T1E1"
+  ],
+  "obj_cartaz_p": [
+   "T1E1"
+  ],
+  "obj_bandeira_g": [
+   "T1E1"
+  ],
+  "obj_bandeira_p": [
+   "T1E1"
+  ],
+  "obj_panfleto_g": [
+   "T1E1"
+  ],
+  "obj_panfleto_p": [
+   "T1E1"
+  ],
+  "obj_garrafa": [
+   "T1E1",
+   "T1E2"
+  ],
+  "obj_bola_volei": [
+   "T1E1"
+  ],
+  "obj_coreto": [
+   "T1E1",
+   "T1E2"
+  ],
+  "obj_placa_praca": [
+   "T1E1"
+  ],
+  "obj_barraca_cafe": [
+   "T1E1"
+  ],
+  "obj_carrinho_vendedor": [
+   "T1E1"
+  ],
+  "obj_palanque": [
+   "T1E1"
+  ],
+  "obj_pulpito_vitoria": [
+   "T1E1"
+  ],
+  "obj_impressora": [
+   "T1E1"
+  ],
+  "obj_poster_g": [
+   "T1E1"
+  ],
+  "obj_poster_p": [
+   "T1E1"
+  ],
+  "obj_letreiro_grafica": [
+   "T1E1"
+  ],
+  "obj_pilha_papel": [
+   "T1E1"
+  ],
+  "obj_cabine": [
+   "T1E1"
+  ],
+  "obj_urna": [
+   "T1E1"
+  ],
+  "obj_placa_secao": [
+   "T1E1"
+  ],
+  "obj_cartaz_rua": [
+   "T1E1"
+  ],
+  "obj_tv_debate": [
+   "T1E1"
+  ],
+  "obj_cartaz_show": [
+   "T1E2"
+  ],
+  "obj_faixa_show": [
+   "T1E2"
+  ],
+  "obj_ingresso": [
+   "T1E2"
+  ],
+  "obj_salgado": [
+   "T1E2"
+  ],
+  "obj_fita_metrica": [
+   "T1E2"
+  ],
+  "obj_multa": [
+   "T1E2"
+  ],
+  "obj_cracha": [
+   "T1E2"
+  ],
+  "obj_cachorro": [
+   "T1E2"
+  ],
+  "obj_apito": [
+   "T1E2"
+  ],
+  "obj_palco": [
+   "T1E2"
+  ],
+  "obj_barraca_hotdog": [
+   "T1E2"
+  ],
+  "obj_caixa_som": [
+   "T1E2"
+  ],
+  "obj_cachorro_quente": [
+   "T1E2"
+  ],
+  "obj_bastidor_cortina": [
+   "T1E2"
+  ],
+  "obj_celular": [
+   "T1E2"
+  ],
+  "obj_carro_preto": [
+   "T1E2"
+  ],
+  "obj_copos": [
+   "T1E2"
+  ],
+  "obj_viatura_corpo": [
+   "T1E2"
+  ]
+ },
+ "cenariosPorEpisodio": {
+  "cbg_5gnbh26acx": [
+   "T1E1",
+   "T1E2"
+  ],
+  "cbg_xi6mukvsgy": [
+   "T1E1",
+   "T1E2"
+  ],
+  "cbg_z2yvskc5rr": [
+   "T1E1",
+   "T1E2"
+  ],
+  "cbg_q1jou3wb7m": [
+   "T1E1",
+   "T1E2"
+  ],
+  "cbg_0i63qsb1kc": [
+   "T1E1",
+   "T1E2"
+  ],
+  "cbg_ydv8btpufi": [
+   "T1E2"
+  ]
+ }
+}

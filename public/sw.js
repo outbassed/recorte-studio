@@ -76,6 +76,23 @@ self.addEventListener('fetch', (event) => {
   }
 
   const path = url.pathname.slice(APP_ROOT.pathname.length);
+
+  // Catálogo oficial de pacotes (packs/index.json e packs/*.rspack): rede primeiro, para o índice nunca ficar velho
+  // quando há conexão; sem conexão, usa a última cópia guardada. O app confere o sha256 de cada pacote de qualquer forma.
+  if (path.startsWith('packs/')) {
+    event.respondWith((async () => {
+      const cache = await caches.open(CACHE_NAME);
+      try {
+        const response = await fetch(request);
+        if (response.ok) await cache.put(request, response.clone());
+        return response;
+      } catch {
+        return (await cache.match(request)) || Response.error();
+      }
+    })());
+    return;
+  }
+
   const isAppAsset = path.startsWith('assets/') || path.startsWith('vendor/')
     || /^(?:manifest\.webmanifest|favicon\.svg|icon-(?:192|512)\.png)$/.test(path);
   if (!isAppAsset) return; // Não guardar respostas de APIs e serviços externos.

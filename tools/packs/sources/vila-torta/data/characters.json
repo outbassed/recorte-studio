@@ -1,0 +1,2242 @@
+[
+ {
+  "id": "char_nanob6ccx9",
+  "name": "Beatriz",
+  "skin": "#e8b48c",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "teen",
+   "height": 1,
+   "build": 1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "round",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#1e3c3c",
+   "brows": "soft",
+   "browColor": "#000000",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": true,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "medium",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "dress",
+   "topColor": "#3d4a66",
+   "topPattern": "dots",
+   "topPatternColor": "#ffffff",
+   "bottom": "shorts",
+   "bottomColor": "#2b2d3a",
+   "shoes": "sandals",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [
+   {
+    "id": "earrings",
+    "color": "#fff700"
+   },
+   {
+    "id": "necklace",
+    "color": "#d4ff00"
+   }
+  ],
+  "notes": "**Nome completo:** Beatriz Nogueira  \n**Apelido:** Bia  \n**Idade:** aproximadamente 12 anos  \n**Time:** Corinthians, por tradição familiar.\n\n**Aparência:** Menina baixinha, pele clara, cabelos pretos, lisos e compridos. Olhos expressivos, brincos amarelos e vestido azul-escuro de bolinhas brancas.\n\n**Personalidade:** Organizada, inteligente, impaciente e explosiva. Não tolera idiotices e costuma falar o que pensa, inclusive com palavrões. Apesar do temperamento forte, é carinhosa, leal e se preocupa muito com os amigos. Não tem paciência para acompanhar futebol, mas se considera corinthiana.\n\n**Relacionamentos:** Irmã mais nova de Rafael e melhor amiga de Larissa. Caíque flerta constantemente com ela, provocando sua irritação. Bia sente algo por ele, mas nega veementemente, mesmo quando fica vermelha.\n\n**Detalhes importantes:** Não passa o tempo inteiro gritando. Possui momentos tranquilos, humor próprio e atitudes carinhosas. Desconhece que Samuca gosta de Larissa e não admite seus próprios sentimentos por Caíque.",
+  "favorite": false
+ },
+ {
+  "id": "vt-rafa",
+  "name": "Rafael",
+  "skin": "#f0c5a0",
+  "outlineColor": "#393b35",
+  "outlineWidth": 3.6,
+  "body": {
+   "age": "teen",
+   "height": 1.14,
+   "build": 0.9,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1.06,
+   "headWidth": 0.83,
+   "headHeight": 0.87,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "round",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 0.87,
+   "eyeSpacing": 1,
+   "eyeColor": "#293a37",
+   "brows": "straight",
+   "browColor": "#3a2b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "crew",
+   "color": "#202a2a",
+   "highlight": "#3c4440"
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#407f81",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "jeans",
+   "bottomColor": "#324451",
+   "shoes": "sneakers",
+   "shoeColor": "#eee7d1"
+  },
+  "accessories": [],
+  "notes": "**Nome completo:** Rafael Nogueira\n**Apelido:** Rafa\n**Idade:** aproximadamente 13 anos\n**Time:** Corinthians\n\n**Aparência:** Garoto de pele clara, relativamente alto, com cabelo preto curto e camiseta verde-azulada, calça escura e tênis claros. Possui olhos grandes, expressão tranquila e aparência considerada bonita por várias garotas.\n\n**Personalidade:** Calmo, sensato, paciente, observador e respeitado pelos colegas. Costuma pensar antes de agir, mas também gosta de brincar e participar das conversas. É frequentemente a voz da razão quando seus amigos fazem alguma besteira.\n\n**Relacionamentos:** Irmão mais velho de Beatriz e melhor amigo de Caíque. Não gosta das investidas românticas de Caíque na irmã. É amigo próximo de Samuca e costuma defendê-lo quando outros garotos o intimidam.\n\n**Segredos:** Sabe que Samuca gosta de Larissa e mantém essa informação em segredo.\n\n**Detalhes:** Não deve agir como adulto ou valentão. É um adolescente tranquilo que sabe se divertir, rir e provocar os amigos de maneira saudável.",
+  "favorite": false
+ },
+ {
+  "id": "vt-caique",
+  "name": "Caíque",
+  "skin": "#bc8058",
+  "outlineColor": "#393b35",
+  "outlineWidth": 3.6,
+  "body": {
+   "age": "teen",
+   "height": 1.02,
+   "build": 0.94,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 0.92,
+   "headHeight": 0.83,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "square",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 0.91,
+   "eyeSpacing": 1,
+   "eyeColor": "#362b22",
+   "brows": "thick",
+   "browColor": "#3a2b28",
+   "nose": "wide",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "curly",
+   "color": "#292924",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#d56a45",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "shorts",
+   "bottomColor": "#4a5e56",
+   "shoes": "sneakers",
+   "shoeColor": "#e8c582"
+  },
+  "accessories": [],
+  "notes": "**Nome completo:** Caíque Barbosa\n**Idade:** aproximadamente 12 anos\n**Time:** Vasco da Gama\n\n**Aparência:** Garoto de pele marrom, cabelos pretos curtos e bagunçados, olhos castanhos grandes e expressão descontraída. Usa camiseta laranja, bermuda verde-escura e tênis claros.\n\n**Personalidade:** Brincalhão, debochado, provocador, impulsivo, desbocado e competitivo. Adora sarcasmo, piadas pesadas e irritar os amigos. É confiante e às vezes age antes de pensar, acabando envolvido em confusões.\n\n**Relacionamentos:** Melhor amigo de Rafael. Vive flertando descaradamente com Bia e se divertindo com as respostas irritadas dela. É amigo de Samuca e sabe que ele gosta de Larissa, segredo que guarda junto com Rafael.\n\n**Futebol:** Vascaíno assumido. Gosta de provocar Larissa e Samuca por serem flamenguistas. Também faz piadas com o Corinthians de Rafael e Bia. É o único vascaíno do grupo principal.\n\n**Detalhes:** Apesar de irritante, é leal aos amigos e sabe reconhecer situações sérias. Pode provocar Samuca, mas não pratica bullying contra ele nem revela seu segredo romântico. Também precisa receber provocações e enfrentar consequências por suas besteiras.\n\n**Importante:** Sua personalidade não deve ser reduzida a xingamentos e piadas. Caíque também possui sentimentos, momentos de sinceridade e atitudes de amizade verdadeira.",
+  "favorite": false
+ },
+ {
+  "id": "vt-samuca",
+  "name": "Samuca",
+  "skin": "#d9ab76",
+  "outlineColor": "#393b35",
+  "outlineWidth": 3.6,
+  "body": {
+   "age": "teen",
+   "height": 0.95,
+   "build": 1.1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 0.94,
+   "headWidth": 0.94,
+   "headHeight": 0.88,
+   "belly": 0.3
+  },
+  "face": {
+   "headShape": "round",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1.02,
+   "eyeSpacing": 1,
+   "eyeColor": "#5d482c",
+   "brows": "soft",
+   "browColor": "#3a2b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": true,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "messy",
+   "color": "#5b3d27",
+   "highlight": "#8b603b"
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#dbba56",
+   "topPattern": "stripes",
+   "topPatternColor": "#e9d18a",
+   "bottom": "shorts",
+   "bottomColor": "#536c76",
+   "shoes": "sneakers",
+   "shoeColor": "#efe5cc"
+  },
+  "accessories": [],
+  "notes": "**Nome completo:** Samuel Oliveira\n**Apelido:** Samuca\n**Idade:** aproximadamente 12 anos\n**Time:** Flamengo, por influência de Larissa.\n\n**Aparência:** Garoto de pele clara, cabelos castanhos espetados, grandes olhos castanhos e pequenas sardas no rosto. Usa camiseta amarela com listras horizontais, bermuda e tênis claros.\n\n**Personalidade:** Extremamente tagarela, curioso, distraído, espontâneo, gentil e um pouco ingênuo em situações sociais. Possui déficit de atenção e costuma mudar de assunto inesperadamente. É tímido com desconhecidos e garotas, mas muito comunicativo perto dos amigos.\n\n**Gostos:** Adora café, comida e curiosidades. Pode comer coisas absurdas, como pedras, em situações cartunescas. Seus interesses são variados e às vezes surpreendentes.\n\n**Relacionamentos:** Amigo dos outros quatro protagonistas. Gosta secretamente de Larissa, mas somente Rafael e Caíque sabem disso. Larissa e Bia desconhecem seus sentimentos. Também pode achar outras garotas bonitas, embora considere Larissa especial.\n\n**Futebol:** Passou a se declarar flamenguista principalmente porque Larissa torce pelo Flamengo. Não entende praticamente nada de futebol e não revela o verdadeiro motivo de sua escolha.\n\n**REGRA ABSOLUTA:** Samuca nunca fala palavrões, mesmo quando está assustado, irritado ou confuso.\n\n**Detalhes:** Não é burro e não deve ser tratado como tal. Seu humor surge naturalmente da distração, espontaneidade e comentários inesperados. Nenhum protagonista pratica bullying contra ele. Não deve falar exclusivamente sobre café ou Larissa.",
+  "favorite": false
+ },
+ {
+  "id": "char_22g90u3upp",
+  "name": "Larissa",
+  "skin": "#9a6443",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "teen",
+   "height": 1,
+   "build": 1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "round",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#000000",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": true,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "wavy",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#d65f5f",
+   "topPattern": "stripes",
+   "topPatternColor": "#2b2d3a",
+   "bottom": "skirt",
+   "bottomColor": "#2b2d3a",
+   "shoes": "sneakers",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [
+   {
+    "id": "earrings",
+    "color": "#ffffff"
+   }
+  ],
+  "notes": "**Nome completo:** Larissa Almeida\n**Apelido:** Lari\n**Idade:** aproximadamente 12 anos\n**Time:** Flamengo\n\n**Aparência:** Menina de pele marrom-escura, cabelos pretos longos e volumosos, olhos grandes e brincos claros. Usa blusa listrada em vermelho e preto, saia escura e tênis pretos. As cores rubro-negras refletem sua torcida pelo Flamengo.\n\n**Personalidade:** Sociável, divertida, esportiva, amigável e espontânea. Gosta de sair, conversar, praticar esportes e aproveitar o tempo com seus amigos. Tem opiniões próprias, sabe responder a provocações e possui bastante personalidade.\n\n**Relacionamentos:** Melhor amiga de Bia, com quem possui grande intimidade. Costuma ajudá-la a se acalmar quando está irritada. É amiga de Rafael, Caíque e Samuca.\n\n**Romance:** Não sabe que Samuca gosta secretamente dela. Tem interesse por outro garoto, aproximadamente um ano mais velho.\n\n**Futebol:** Flamenguista assumida. Gosta do Flamengo e frequentemente troca provocações futebolísticas com Caíque, que é vascaíno.\n\n**Detalhes:** Não deve existir apenas como interesse romântico de Samuca ou para acalmar Bia. Precisa participar ativamente das histórias, com suas próprias vontades, opiniões e iniciativas.",
+  "favorite": false
+ },
+ {
+  "id": "char_o0wjzz1rvi",
+  "name": "Senhor Gaivota",
+  "skin": "#e8b48c",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "elder",
+   "height": 1.04,
+   "build": 1.44,
+   "shoulders": 1,
+   "torsoLength": 1.03,
+   "armLength": 1.01,
+   "legLength": 0.91,
+   "headWidth": 1.05,
+   "headHeight": 1,
+   "belly": 1.4
+  },
+  "face": {
+   "headShape": "wide",
+   "ears": "pointy",
+   "eyes": "sleepy",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#3a2b28",
+   "nose": "upturned",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": true,
+   "lashes": false,
+   "mustache": "thin",
+   "beard": "goatee",
+   "facialHairColor": "#e6e6e6"
+  },
+  "hair": {
+   "style": "short",
+   "color": "#f4f1ea",
+   "highlight": "#7a7a7a"
+  },
+  "outfit": {
+   "top": "blazer",
+   "topColor": "#e98f4e",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#3c2d20",
+   "shoes": "dress",
+   "shoeColor": "#f4f1ea"
+  },
+  "accessories": [
+   {
+    "id": "sunglasses",
+    "color": "#000000"
+   },
+   {
+    "id": "tie",
+    "color": "#ffffff"
+   },
+   {
+    "id": "tophat",
+    "color": "#e98f4e"
+   },
+   {
+    "id": "watch",
+    "color": "#e1ff00"
+   }
+  ],
+  "notes": "**Nome completo:** Eulis Lavado Gaivota Cassilda\n**Nome público:** Senhor Gaivota\n**Cargo:** Prefeito de Vila Torta\n**Situação política:** Reeleito\n\n**Aparência:** Homem adulto de pele clara, com cartola laranja de aba larga, óculos escuros redondos, bigode fino e cavanhaque branco pontudo. Usa paletó laranja, gravata branca, calça escura e sapatos claros. Sua aparência extravagante funciona como marca registrada.\n\n**Personalidade:** Carismático, oportunista, teatral, esperto e habilidoso com discursos. Gosta de se apresentar como representante do povo e utiliza frases emocionantes para conquistar eleitores. Evita responder diretamente a perguntas difíceis.\n\n**Histórico:** Já era prefeito de Vila Torta e venceu a eleição para mais um mandato com 50,8% dos votos, derrotando Doutor Pinote.\n\n**Política:** Promete melhorias na saúde, educação, segurança e infraestrutura, mesmo quando os problemas já existiam durante sua própria administração. Frequentemente prefere atacar a oposição a explicar suas soluções.\n\n**Relacionamentos:** Rival político de Doutor Pinote. Possui apoiadores extremamente fiéis, como Dona Marta.\n\n**Detalhes:** É um personagem fictício de sátira política brasileira. Não deve ser apresentado como herói ou salvador da cidade. Sua aparência excêntrica e seu discurso populista contrastam com os problemas reais de Vila Torta.\n\n**Marca visual:** Cartola laranja, óculos escuros e cavanhaque branco.",
+  "favorite": false
+ },
+ {
+  "id": "char_4hyrsp6py6",
+  "name": "Doutor Pinote",
+  "skin": "#e8b48c",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.14,
+   "build": 1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "long",
+   "ears": "big",
+   "eyes": "wide",
+   "eyeSize": 0.91,
+   "eyeSpacing": 0.99,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#3a2b28",
+   "nose": "hook",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "thick",
+   "beard": "chinstrap",
+   "facialHairColor": "#8a5a33"
+  },
+  "hair": {
+   "style": "crew",
+   "color": "#8a5a33",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "jacket",
+   "topColor": "#3d4a66",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#2b2d3a",
+   "shoes": "sneakers",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [
+   {
+    "id": "watch",
+    "color": "#ffea00"
+   },
+   {
+    "id": "tie",
+    "color": "#5c5c5c"
+   }
+  ],
+  "notes": "**Nome completo:** Eduardo Moisés Pinote\n**Nome público:** Doutor Pinote\n**Cargo:** Político de oposição\n**Situação política:** Candidato derrotado à prefeitura\n\n**Aparência:** Homem adulto de pele clara a morena-clara, com cabelo castanho curto, barba castanha bem marcada e bigode. Possui olhos grandes e expressão séria. Usa terno azul-escuro, camisa clara, gravata escura e sapatos pretos.\n\n**Personalidade:** Ambicioso, convencido, combativo, oportunista e provocador. Gosta de discursos grandiosos sobre mudança, renovação e esperança. Demonstra irritação quando precisa explicar suas propostas em detalhes.\n\n**Histórico:** Disputou a prefeitura de Vila Torta contra Senhor Gaivota e perdeu com 49,2% dos votos. Após a derrota, já demonstra interesse em preparar uma nova campanha.\n\n**Política:** Utiliza os problemas da administração atual como principais argumentos eleitorais, mas frequentemente não apresenta soluções concretas. Sua estratégia costuma se resumir a criticar o prefeito e prometer mudanças.\n\n**Relacionamentos:** Principal adversário político de Senhor Gaivota. Possui eleitores extremamente fiéis, como Seu Agenor.\n\n**Detalhes:** É um personagem fictício de sátira política brasileira. Não deve ser retratado como o único candidato capaz de resolver os problemas da cidade. Assim como Gaivota, representa o oportunismo político e a disputa por poder.\n\n**Marca visual:** Barba castanha, cabelo curto e terno azul-escuro, contrastando com o visual extravagante de Gaivota.",
+  "favorite": false
+ },
+ {
+  "id": "char_pvz30tnf48",
+  "name": "Dona Marta",
+  "skin": "#c98f6a",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "elder",
+   "height": 0.9,
+   "build": 1.15,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0.4
+  },
+  "face": {
+   "headShape": "round",
+   "ears": "round",
+   "eyes": "small",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thin",
+   "browColor": "#8a8680",
+   "nose": "bulb",
+   "noseSize": 1,
+   "mouth": "small",
+   "lipColor": "#b4525c",
+   "cheeks": true,
+   "freckles": false,
+   "wrinkles": true,
+   "lashes": true,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "bun",
+   "color": "#8a8680",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "dress",
+   "topColor": "#d27ba6",
+   "topPattern": "floral",
+   "topPatternColor": "#fff7e6",
+   "bottom": "pants",
+   "bottomColor": "#3d4a66",
+   "shoes": "sandals",
+   "shoeColor": "#7c5a44"
+  },
+  "accessories": [
+   {
+    "id": "glasses",
+    "color": "#7c5a44"
+   },
+   {
+    "id": "necklace",
+    "color": "#f2c95c"
+   }
+  ],
+  "notes": "Eleitora fiel do Gaivota (laranja). Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_25lfalpvf5",
+  "name": "Seu Agenor",
+  "skin": "#a8714e",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "elder",
+   "height": 0.98,
+   "build": 0.95,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "long",
+   "ears": "round",
+   "eyes": "sleepy",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "bushy",
+   "browColor": "#cfcdc8",
+   "nose": "hook",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": true,
+   "lashes": false,
+   "mustache": "thick",
+   "beard": "none",
+   "facialHairColor": "#cfcdc8"
+  },
+  "hair": {
+   "style": "baldtop",
+   "color": "#cfcdc8",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "shirt",
+   "topColor": "#6a97d4",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#4a4f66",
+   "shoes": "dress",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [
+   {
+    "id": "cap",
+    "color": "#3b6fb6"
+   }
+  ],
+  "notes": "Apoiador do Pinote (azul). Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_dimq5sb2w0",
+  "name": "Motorista",
+  "skin": "#d49a6e",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.04,
+   "build": 1.1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "square",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thick",
+   "browColor": "#3a2b28",
+   "nose": "round",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "stubble",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "short",
+   "color": "#3a2b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "polo",
+   "topColor": "#5b8dbe",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "jeans",
+   "bottomColor": "#3d5a86",
+   "shoes": "sneakers",
+   "shoeColor": "#f4f1ea"
+  },
+  "accessories": [],
+  "notes": "Dono do carro que quebra a suspensão. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_gy1odz846n",
+  "name": "Assessor do Gaivota",
+  "skin": "#e8b48c",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.08,
+   "build": 0.8,
+   "shoulders": 0.9,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "long",
+   "ears": "round",
+   "eyes": "oval",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thin",
+   "browColor": "#3a2b28",
+   "nose": "pointy",
+   "noseSize": 1,
+   "mouth": "thin",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "sidepart",
+   "color": "#3a2b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "shirt",
+   "topColor": "#fff7e6",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#2b2d3a",
+   "shoes": "dress",
+   "shoeColor": "#1c1d26"
+  },
+  "accessories": [
+   {
+    "id": "squareglasses",
+    "color": "#2b2d3a"
+   },
+   {
+    "id": "tie",
+    "color": "#e98f4e"
+   }
+  ],
+  "notes": "Assessor cansado do Gaivota. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_r08d3t4unh",
+  "name": "Assessora do Pinote",
+  "skin": "#b97f55",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.02,
+   "build": 0.92,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "heart",
+   "ears": "round",
+   "eyes": "almond",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "arched",
+   "browColor": "#17141a",
+   "nose": "small",
+   "noseSize": 1,
+   "mouth": "lips",
+   "lipColor": "#8a2c3f",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": true,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "ponytail",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "blazer",
+   "topColor": "#8e6fc1",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#2b2d3a",
+   "shoes": "heels",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [
+   {
+    "id": "earrings",
+    "color": "#f2c95c"
+   }
+  ],
+  "notes": "Assessora sensata do Pinote. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_frajvv8bzu",
+  "name": "Apresentador",
+  "skin": "#d9ab76",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.05,
+   "build": 1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "oval",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "arched",
+   "browColor": "#2b2d3a",
+   "nose": "long",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "sidepart",
+   "color": "#2b2d3a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "blazer",
+   "topColor": "#4a4f66",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#23232d",
+   "shoes": "dress",
+   "shoeColor": "#1c1d26"
+  },
+  "accessories": [
+   {
+    "id": "tie",
+    "color": "#e0b04c"
+   }
+  ],
+  "notes": "Mediador do debate. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_aara8lo83v",
+  "name": "Dono da gráfica",
+  "skin": "#e8b48c",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 0.98,
+   "build": 1.2,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0.5
+  },
+  "face": {
+   "headShape": "wide",
+   "ears": "round",
+   "eyes": "small",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "bushy",
+   "browColor": "#3a2b28",
+   "nose": "bulb",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "handlebar",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "baldtop",
+   "color": "#3a2b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "apron",
+   "topColor": "#58a56d",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#3d4a66",
+   "shoes": "boots",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [],
+  "notes": "Empresário sem lado. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_rijt1gf0it",
+  "name": "Funcionário da prefeitura A",
+  "skin": "#9a6443",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.06,
+   "build": 1.1,
+   "shoulders": 1.1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "square",
+   "ears": "round",
+   "eyes": "sleepy",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thick",
+   "browColor": "#17141a",
+   "nose": "wide",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "crew",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#e98f4e",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#3d4a66",
+   "shoes": "boots",
+   "shoeColor": "#5b3a24"
+  },
+  "accessories": [
+   {
+    "id": "cap",
+    "color": "#e98f4e"
+   }
+  ],
+  "notes": "Equipe da prefeitura. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_rudj9o5821",
+  "name": "Funcionário da prefeitura B",
+  "skin": "#f0c5a0",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 0.96,
+   "build": 0.85,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "pear",
+   "ears": "round",
+   "eyes": "wide",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#5c3b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "small",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "messy",
+   "color": "#5c3b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#e98f4e",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#3d4a66",
+   "shoes": "boots",
+   "shoeColor": "#5b3a24"
+  },
+  "accessories": [
+   {
+    "id": "cap",
+    "color": "#e98f4e"
+   }
+  ],
+  "notes": "Equipe da prefeitura. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_257xo78v7t",
+  "name": "Vendedor ambulante",
+  "skin": "#b97f55",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1,
+   "build": 0.95,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "oval",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "arched",
+   "browColor": "#17141a",
+   "nose": "round",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "pencil",
+   "beard": "none",
+   "facialHairColor": "#17141a"
+  },
+  "hair": {
+   "style": "curly",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tank",
+   "topColor": "#f2c95c",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "shorts",
+   "bottomColor": "#7c5a44",
+   "shoes": "sandals",
+   "shoeColor": "#5b3a24"
+  },
+  "accessories": [
+   {
+    "id": "necklace",
+    "color": "#cfcdc8"
+   }
+  ],
+  "notes": "Vende para os dois lados. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_m0masz773y",
+  "name": "Eleitora 1",
+  "skin": "#e8b48c",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1,
+   "build": 1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "round",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#3a2b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": true,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "wavy",
+   "color": "#5c3b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#5b8dbe",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "jeans",
+   "bottomColor": "#3d4a66",
+   "shoes": "sneakers",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [],
+  "notes": "Figurante original (multidão).",
+  "favorite": false
+ },
+ {
+  "id": "char_ktar3zgs2z",
+  "name": "Eleitor 2",
+  "skin": "#7a4a30",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1,
+   "build": 1.15,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "square",
+   "ears": "round",
+   "eyes": "small",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#3a2b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "full",
+   "facialHairColor": "#17141a"
+  },
+  "hair": {
+   "style": "crew",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#5b8dbe",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#3d4a66",
+   "shoes": "sneakers",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [],
+  "notes": "Figurante original (multidão).",
+  "favorite": false
+ },
+ {
+  "id": "char_dmk9yjjfv8",
+  "name": "Eleitora 3",
+  "skin": "#d49a6e",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 0.95,
+   "build": 1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "heart",
+   "ears": "round",
+   "eyes": "almond",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#3a2b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "lips",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": true,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "ponytail",
+   "color": "#b5502f",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tank",
+   "topColor": "#5b8dbe",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "shorts",
+   "bottomColor": "#3d4a66",
+   "shoes": "sandals",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [],
+  "notes": "Figurante original (multidão).",
+  "favorite": false
+ },
+ {
+  "id": "char_lrzas1boj4",
+  "name": "Eleitor 4",
+  "skin": "#fbe0c8",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "elder",
+   "height": 1,
+   "build": 1.2,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0.6
+  },
+  "face": {
+   "headShape": "wide",
+   "ears": "round",
+   "eyes": "sleepy",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#3a2b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": true,
+   "lashes": false,
+   "mustache": "walrus",
+   "beard": "none",
+   "facialHairColor": "#e6e3dc"
+  },
+  "hair": {
+   "style": "baldtop",
+   "color": "#e6e3dc",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "polo",
+   "topColor": "#5b8dbe",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#3d4a66",
+   "shoes": "dress",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [],
+  "notes": "Figurante original (multidão).",
+  "favorite": false
+ },
+ {
+  "id": "char_g5i6f9q5tf",
+  "name": "Eleitora 5",
+  "skin": "#5a3524",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.02,
+   "build": 1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "oval",
+   "ears": "round",
+   "eyes": "big",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#3a2b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "full",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": true,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "afro",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "sweater",
+   "topColor": "#5b8dbe",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "jeans",
+   "bottomColor": "#3d4a66",
+   "shoes": "sneakers",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [],
+  "notes": "Figurante original (multidão).",
+  "favorite": false
+ },
+ {
+  "id": "char_bnv3f4bhkg",
+  "name": "Eleitor 6",
+  "skin": "#b97f55",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.08,
+   "build": 0.85,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "long",
+   "ears": "round",
+   "eyes": "oval",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#3a2b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "thin",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "thin",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "sidepart",
+   "color": "#3a2b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "shirt",
+   "topColor": "#5b8dbe",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#3d4a66",
+   "shoes": "dress",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [],
+  "notes": "Figurante original (multidão).",
+  "favorite": false
+ },
+ {
+  "id": "char_3cww98uxr3",
+  "name": "Lon Ruan",
+  "skin": "#b97f55",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.06,
+   "build": 0.92,
+   "shoulders": 1.05,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "diamond",
+   "ears": "round",
+   "eyes": "almond",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "arched",
+   "browColor": "#2a1a10",
+   "nose": "flat",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "chin",
+   "facialHairColor": "#2a1a10"
+  },
+  "hair": {
+   "style": "curly",
+   "color": "#f2e07a",
+   "highlight": "#fff7c0"
+  },
+  "outfit": {
+   "top": "jacket",
+   "topColor": "#c2185b",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "jeans",
+   "bottomColor": "#1c1c2e",
+   "shoes": "sneakers",
+   "shoeColor": "#f2c95c"
+  },
+  "accessories": [
+   {
+    "id": "sunglasses",
+    "color": "#111111"
+   },
+   {
+    "id": "necklace",
+    "color": "#f2c95c"
+   },
+   {
+    "id": "watch",
+    "color": "#f2c95c"
+   }
+  ],
+  "notes": "Cantor fictício de funk/trap (original; não representa nenhum artista real). Carismático e provocador no palco.",
+  "favorite": false
+ },
+ {
+  "id": "char_t31hmw9u7o",
+  "name": "Seu Norberto",
+  "skin": "#e8b48c",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "elder",
+   "height": 0.97,
+   "build": 1.05,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0.6
+  },
+  "face": {
+   "headShape": "long",
+   "ears": "round",
+   "eyes": "small",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "bushy",
+   "browColor": "#cfcdc8",
+   "nose": "hook",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": true,
+   "lashes": false,
+   "mustache": "handlebar",
+   "beard": "none",
+   "facialHairColor": "#cfcdc8"
+  },
+  "hair": {
+   "style": "baldtop",
+   "color": "#cfcdc8",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "apron",
+   "topColor": "#d4ff00",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#b8a27a",
+   "shoes": "dress",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [
+   {
+    "id": "glasses",
+    "color": "#2b2d3a"
+   },
+   {
+    "id": "cap",
+    "color": "#d4ff00"
+   },
+   {
+    "id": "watch",
+    "color": "#9aa3ad"
+   },
+   {
+    "id": "necklace",
+    "color": "#8a6a1d"
+   }
+  ],
+  "notes": "Aposentado que se autoproclama Fiscal da Rua (sem cargo nem autorização). Colete improvisado, crachá feito por ele, prancheta, apito, bloco de multas e fita métrica.",
+  "favorite": false
+ },
+ {
+  "id": "char_m3oo5oique",
+  "name": "Dona Zefa",
+  "skin": "#a8714e",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "elder",
+   "height": 0.88,
+   "build": 1.15,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0.5
+  },
+  "face": {
+   "headShape": "round",
+   "ears": "round",
+   "eyes": "small",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thin",
+   "browColor": "#cfcdc8",
+   "nose": "bulb",
+   "noseSize": 1,
+   "mouth": "small",
+   "lipColor": "#b4525c",
+   "cheeks": true,
+   "freckles": false,
+   "wrinkles": true,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "bun",
+   "color": "#e6e3dc",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "dress",
+   "topColor": "#58a59a",
+   "topPattern": "floral",
+   "topPatternColor": "#fff7e6",
+   "bottom": "pants",
+   "bottomColor": "#3d4a66",
+   "shoes": "sandals",
+   "shoeColor": "#7c5a44"
+  },
+  "accessories": [
+   {
+    "id": "glasses",
+    "color": "#7c5a44"
+   }
+  ],
+  "notes": "Moradora multada pelo fiscal (cadeira na calçada). Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_ata27n5js2",
+  "name": "Rapaz da bicicleta",
+  "skin": "#7a4a30",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "teen",
+   "height": 1.08,
+   "build": 0.9,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "oval",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thick",
+   "browColor": "#17141a",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "afro",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "hoodie",
+   "topColor": "#3b6fb6",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "jeans",
+   "bottomColor": "#2b2d3a",
+   "shoes": "sneakers",
+   "shoeColor": "#f4f1ea"
+  },
+  "accessories": [],
+  "notes": "Vizinho perseguido pelo fiscal. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_99a9brkese",
+  "name": "Dono do cachorro",
+  "skin": "#f0c5a0",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1,
+   "build": 1.1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "square",
+   "ears": "round",
+   "eyes": "sleepy",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#5c3b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "thin",
+   "beard": "none",
+   "facialHairColor": "#5c3b28"
+  },
+  "hair": {
+   "style": "short",
+   "color": "#5c3b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#6dad6f",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "shorts",
+   "bottomColor": "#7c5a44",
+   "shoes": "sandals",
+   "shoeColor": "#5b3a24"
+  },
+  "accessories": [],
+  "notes": "Vizinho multado por causa do cachorro. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_5pj21f2bpc",
+  "name": "Produtor do show",
+  "skin": "#d49a6e",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.02,
+   "build": 0.95,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "oval",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "arched",
+   "browColor": "#2a1a10",
+   "nose": "small",
+   "noseSize": 1,
+   "mouth": "wide",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "stubble",
+   "facialHairColor": "#2a1a10"
+  },
+  "hair": {
+   "style": "crew",
+   "color": "#2a1a10",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "polo",
+   "topColor": "#14081f",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#14081f",
+   "shoes": "sneakers",
+   "shoeColor": "#f4f1ea"
+  },
+  "accessories": [
+   {
+    "id": "cap",
+    "color": "#7b2fbf"
+   },
+   {
+    "id": "watch",
+    "color": "#f2c95c"
+   }
+  ],
+  "notes": "Produtor do show. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_b2kziwxf29",
+  "name": "Segurança A",
+  "skin": "#5a3524",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.14,
+   "build": 1.35,
+   "shoulders": 1.25,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "square",
+   "ears": "round",
+   "eyes": "small",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thick",
+   "browColor": "#17141a",
+   "nose": "wide",
+   "noseSize": 1,
+   "mouth": "thin",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "crew",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#14141c",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#14141c",
+   "shoes": "boots",
+   "shoeColor": "#17141a"
+  },
+  "accessories": [
+   {
+    "id": "sunglasses",
+    "color": "#111111"
+   }
+  ],
+  "notes": "Segurança do evento. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_9gt3dajoen",
+  "name": "Segurança B",
+  "skin": "#d49a6e",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.06,
+   "build": 1.2,
+   "shoulders": 1.15,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "wide",
+   "ears": "round",
+   "eyes": "sleepy",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "bushy",
+   "browColor": "#3a2b28",
+   "nose": "round",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "full",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "short",
+   "color": "#3a2b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "tshirt",
+   "topColor": "#14141c",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#14141c",
+   "shoes": "boots",
+   "shoeColor": "#17141a"
+  },
+  "accessories": [],
+  "notes": "Segurança do evento. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_73ctv0sk6r",
+  "name": "Policial A",
+  "skin": "#b97f55",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.06,
+   "build": 1.1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "square",
+   "ears": "round",
+   "eyes": "round",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thick",
+   "browColor": "#17141a",
+   "nose": "round",
+   "noseSize": 1,
+   "mouth": "simple",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "thick",
+   "beard": "none",
+   "facialHairColor": "#17141a"
+  },
+  "hair": {
+   "style": "crew",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "police",
+   "topColor": "#3a5a8a",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#21222c",
+   "shoes": "boots",
+   "shoeColor": "#17141a"
+  },
+  "accessories": [
+   {
+    "id": "cap",
+    "color": "#21222c"
+   }
+  ],
+  "notes": "Policial da delegacia. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_f6mu4xofpd",
+  "name": "Policial B",
+  "skin": "#f0c5a0",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 0.98,
+   "build": 0.9,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "pear",
+   "ears": "round",
+   "eyes": "wide",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "soft",
+   "browColor": "#5c3b28",
+   "nose": "button",
+   "noseSize": 1,
+   "mouth": "small",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "sidepart",
+   "color": "#5c3b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "police",
+   "topColor": "#3a5a8a",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#21222c",
+   "shoes": "boots",
+   "shoeColor": "#17141a"
+  },
+  "accessories": [],
+  "notes": "Policial da delegacia. Secundário original.",
+  "favorite": false
+ },
+ {
+  "id": "char_ir5tiaza8x",
+  "name": "Integrante do grupo vermelho",
+  "skin": "#9a6443",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1.04,
+   "build": 1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "long",
+   "ears": "round",
+   "eyes": "small",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thick",
+   "browColor": "#17141a",
+   "nose": "flat",
+   "noseSize": 1,
+   "mouth": "thin",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "short",
+   "color": "#17141a",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "hoodie",
+   "topColor": "#8a1f2a",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#17141a",
+   "shoes": "sneakers",
+   "shoeColor": "#17141a"
+  },
+  "accessories": [
+   {
+    "id": "beanie",
+    "color": "#8a1f2a"
+   }
+  ],
+  "notes": "Silhueta de grupo criminoso fictício (aliado do Zé Lorrota). Só aparece de longe, sem armas à mostra.",
+  "favorite": false
+ },
+ {
+  "id": "char_nznc8otsni",
+  "name": "Integrante do grupo cinza",
+  "skin": "#e8b48c",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1,
+   "build": 1.1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "square",
+   "ears": "round",
+   "eyes": "small",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "thick",
+   "browColor": "#3a2b28",
+   "nose": "round",
+   "noseSize": 1,
+   "mouth": "thin",
+   "lipColor": "#b4525c",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": false,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "crew",
+   "color": "#3a2b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "hoodie",
+   "topColor": "#4a4f66",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#17141a",
+   "shoes": "sneakers",
+   "shoeColor": "#17141a"
+  },
+  "accessories": [
+   {
+    "id": "cap",
+    "color": "#4a4f66"
+   }
+  ],
+  "notes": "Silhueta de grupo criminoso fictício (rival do Zé Lorrota). Só aparece de longe.",
+  "favorite": false
+ },
+ {
+  "id": "char_kq6vapyhbd",
+  "name": "Repórter local",
+  "skin": "#f0c5a0",
+  "outlineColor": "#23202b",
+  "outlineWidth": 4,
+  "body": {
+   "age": "adult",
+   "height": 1,
+   "build": 1,
+   "shoulders": 1,
+   "torsoLength": 1,
+   "armLength": 1,
+   "legLength": 1,
+   "headWidth": 1,
+   "headHeight": 1,
+   "belly": 0
+  },
+  "face": {
+   "headShape": "heart",
+   "ears": "round",
+   "eyes": "big",
+   "eyeSize": 1,
+   "eyeSpacing": 1,
+   "eyeColor": "#2a2f3d",
+   "brows": "arched",
+   "browColor": "#5c3b28",
+   "nose": "small",
+   "noseSize": 1,
+   "mouth": "lips",
+   "lipColor": "#c4556a",
+   "cheeks": false,
+   "freckles": false,
+   "wrinkles": false,
+   "lashes": true,
+   "mustache": "none",
+   "beard": "none",
+   "facialHairColor": "#3a2b28"
+  },
+  "hair": {
+   "style": "bob",
+   "color": "#5c3b28",
+   "highlight": ""
+  },
+  "outfit": {
+   "top": "blazer",
+   "topColor": "#c2185b",
+   "topPattern": "none",
+   "topPatternColor": "#ffffff",
+   "bottom": "pants",
+   "bottomColor": "#2b2d3a",
+   "shoes": "heels",
+   "shoeColor": "#2b2d3a"
+  },
+  "accessories": [],
+  "notes": "Repórter local. Secundário original.",
+  "favorite": false
+ }
+]
