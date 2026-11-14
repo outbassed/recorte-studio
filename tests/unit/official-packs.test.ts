@@ -9,7 +9,7 @@ import { builtinIds } from '@/features/packs/builtinIds';
 import { buildPack, innerIdOf, readPack } from '@/features/packs/format';
 import { fetchOfficialIndex, fetchOfficialPack, groupByCollection, installOrder, officialStatus, OfficialIndexSchema, type OfficialEntry } from '@/features/packs/official';
 import { db, repo } from '@/storage/db';
-import { exportPackBytes, installCollection, installOfficial, installPackBytes, loadOfficialIndex, reloadPacks, removePack, useOfficial, usePacks } from '@/state/packActions';
+import { exportPackBytes, installCollection, installOfficial, installOfficialItem, installPackBytes, loadOfficialIndex, reloadPacks, removePack, useOfficial, usePacks } from '@/state/packActions';
 import { buildOfficial } from '../../tools/packs/lib';
 import { itemSvg } from '../../tools/packs/preview';
 import { SOURCES } from '../../tools/packs/sources';
@@ -117,6 +117,29 @@ describe('catálogo oficial: arquivos e índice', () => {
   });
 });
 
+describe('arquivos de assets avulsos para a Biblioteca loja', () => {
+  it('cada item tem um .rspack exclusivo com SHA-256, miniatura e exatamente um item', async () => {
+    const files = new Set<string>();
+    for (const p of index.packs) for (const it of p.items) {
+      expect(it.single, p.id + '/' + it.id).toBeDefined();
+      expect(it.thumbSvg, p.id + '/' + it.id + ' sem miniatura').toMatch(/^<svg/);
+      if (!it.single) continue;
+      expect(files.has(it.single.file)).toBe(false);
+      files.add(it.single.file);
+      const bytes = file(it.single.file);
+      expect(bytes.length).toBe(it.single.size);
+      expect(sha(bytes)).toBe(it.single.sha256);
+      const read = await readPack(bytes);
+      expect(read.ok, it.id).toBe(true);
+      if (!read.ok) continue;
+      expect(read.pack.items).toHaveLength(1);
+      expect(read.pack.items[0]?.id).toBe(it.id);
+      expect(read.pack.manifest.license).toBe(p.license);
+    }
+    expect(files.size).toBe(875);
+  });
+});
+
 describe('Vila Torta: fidelidade e limites do que é oficial', () => {
   const all = async () => {
     const out: Array<{ pack: string; item: Awaited<ReturnType<typeof readPack>> extends infer R ? (R extends { ok: true; pack: infer P } ? P extends { items: Array<infer I> } ? I : never : never) : never }> = [];
@@ -173,6 +196,7 @@ describe('instalação oficial: ciclo completo com arquivos reais', () => {
     served.clear();
     serve('index.json', new TextEncoder().encode(readFileSync(resolve(DIR, 'index.json'), 'utf8')));
     for (const p of index.packs) serve(p.file, file(p.file));
+    for (const p of index.packs) for (const item of p.items) if (item.single) serve(item.single.file, file(item.single.file));
     vi.stubGlobal('fetch', vi.fn(async (url: string) => {
       const name = String(url).split('/packs/')[1]!;
       const b = served.get(name);
@@ -187,6 +211,23 @@ describe('instalação oficial: ciclo completo com arquivos reais', () => {
   });
   afterEach(() => vi.unstubAllGlobals());
   const entry = (id: string) => useOfficial.getState().index!.packs.find((p) => p.id === id)!;
+
+  it('baixa um único asset sem instalar o kit, preservando ID e permitindo instalar volume depois', async () => {
+    const origin = entry('acessorios-1');
+    const first = origin.items[0]!;
+    const one = await installOfficialItem(origin, first.id);
+    expect(one.ok).toBe(true);
+    let installed = await repo.listPacks();
+    expect(installed).toHaveLength(1);
+    expect(installed[0]?.id.startsWith('rs-item-')).toBe(true);
+    expect(installed[0]?.items.map((i) => i.id)).toEqual([first.id]);
+    const full = await installOfficial(origin);
+    expect(full.ok).toBe(true);
+    installed = await repo.listPacks();
+    expect(installed).toHaveLength(2);
+    expect(installed.find((p) => p.id === origin.id)?.items).toHaveLength(origin.items.length - 1);
+    expect(installed.flatMap((p) => p.items)).toHaveLength(origin.items.length);
+  });
 
   it('carrega o índice pela rede (validado) e rejeita índice inválido', async () => {
     expect(useOfficial.getState().index?.packs.length).toBe(index.packs.length);
