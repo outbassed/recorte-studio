@@ -5,7 +5,7 @@ O catálogo de pacotes oficiais do Recorte Studio: como funciona, como é gerado
 ## Arquitetura
 
 - Cada pacote oficial é um arquivo **`.rspack` real** em `public/packs/`, mais `public/packs/index.json`. O app é publicado como **um único script** (para abrir por `file://`), então os pacotes **não** entram no JavaScript: são baixados **só quando o usuário vê o conteúdo ou instala**. Nada carrega de uma vez.
-- `index.json` lista todos os pacotes (ID, versão, coleção, volume, categoria, autor, licença, sha256, tamanho, contagens, lista de itens e uma capa SVG pequena). É o que a aba **Pacotes → Catálogo oficial** mostra sem baixar nada.
+- `index.json` lista todos os pacotes (ID, versão, coleção, volume, categoria, autor, licença, sha256, tamanho, contagens, lista de itens e uma capa SVG pequena). É o que a seção **Biblioteca → Itens → Catálogo oficial** mostra sem baixar nada. A mesma busca da aba Itens encontra nomes, IDs e conteúdos disponíveis para instalar.
 - Todo arquivo baixado é conferido pelo **tamanho e pelo sha256 do índice** antes de ser lido; depois passa pelo mesmo leitor seguro de qualquer `.rspack` (caminhos, limites, hashes, SVG, integridade). Instalado, o pacote vive no IndexedDB e **funciona offline**.
 - Service worker: `packs/` é **rede primeiro** (o índice nunca fica velho com conexão) com a última cópia como reserva offline. O nome do cache considera os pacotes.
 - Abrir por `file://` (duplo clique): o catálogo oficial não carrega (o navegador bloqueia `fetch` local); importar um `.rspack` pelo botão continua funcionando.
@@ -14,13 +14,19 @@ O catálogo de pacotes oficiais do Recorte Studio: como funciona, como é gerado
 
 | Tipo | Como é | Pode |
 | --- | --- | --- |
-| Conteúdo essencial | itens padrão que vêm no código (elenco, objetos e cenários padrão); aparece em **Pacotes → Instalados** | sempre ativo; não remove; editar cria cópia |
+| Conteúdo essencial | itens padrão que vêm no código (elenco, objetos e cenários padrão); aparece na aba **Itens** e na gestão de **Pacotes** | sempre ativo; não remove; editar cria cópia |
 | Oficial opcional | instalado pelo catálogo (`source: 'official'`) | instalar, ativar, desativar, remover, atualizar |
 | Importado | arquivo do usuário (`source: 'imported'`) | idem, com autoria e licença próprias |
 
 ## Formato (retrocompatível)
 
 `formatVersion` continua 1. Novidades opcionais no manifesto: `collection`, `volume`, `tags`; por item: `category`, `subcategory`, `tags`, `description`; tipos de item `character` (definição do Criador de Personagens) e `pose` (rig + mãos), além de `object` e `background`. Pacotes antigos continuam lendo.
+
+## Navegação unificada
+
+A aba **Itens** reúne duas seções na mesma tela: os itens padrão/pessoais/instalados e o catálogo oficial agrupado por coleções. A busca principal também filtra os pacotes oficiais ainda não instalados. O atalho **Explorar pacotes oficiais** leva à seção correspondente. Ao visualizar um pacote, o aplicativo preserva a inspeção e devolve o usuário à seção Itens ao retornar.
+
+A aba **Pacotes** fica responsável por gerenciar os pacotes instalados e importar arquivos `.rspack` próprios; não existe mais uma segunda aba de catálogo oficial dentro de Pacotes.
 
 ## Coleções e volumes
 
