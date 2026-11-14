@@ -28,7 +28,19 @@ export const OfficialEntrySchema = z.object({
   itemCount: z.number().int().min(1).max(LIMITS.entries),
   counts: z.partialRecord(z.enum(PACK_ITEM_KINDS), z.number().int().min(0)).default({}),
   animated: z.number().int().min(0).default(0),
-  items: z.array(z.object({ id: z.string().max(100), name: z.string().max(80), kind: z.enum(PACK_ITEM_KINDS), category: z.string().max(40).optional(), subcategory: z.string().max(40).optional() })).max(LIMITS.entries),
+  items: z.array(z.object({
+    id: z.string().max(100), name: z.string().max(80), kind: z.enum(PACK_ITEM_KINDS),
+    category: z.string().max(40).optional(), subcategory: z.string().max(40).optional(),
+    animated: z.boolean().optional(),
+    /** Miniatura individual gerada pelo renderizador do app, sem baixar o volume. */
+    thumbSvg: z.string().max(24_000).optional(),
+    /** Arquivo individual verificável: baixar só este item, não o kit. */
+    single: z.object({
+      file: z.string().regex(/^items\/[a-f0-9]{40}\.rspack$/),
+      sha256: z.string().regex(/^[0-9a-f]{64}$/),
+      size: z.number().int().min(1).max(LIMITS.zip),
+    }).optional(),
+  })).max(LIMITS.entries),
   /** Capa já desenhada (SVG pequeno gerado no build, mostrado numa <img>: nunca executa nada). */
   coverSvg: z.string().max(24_000).optional(),
 });

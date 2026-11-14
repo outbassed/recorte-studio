@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Check, Download, Eye, Package, RefreshCw } from 'lucide-react';
 import { groupByCollection, officialStatus, type OfficialEntry } from '@/features/packs/official';
 import { matchesSearch } from '@/features/library/search';
+import type { CatalogQuery } from '@/features/catalog/catalog';
 import { downloadOfficial, installCollection, installOfficial, loadOfficialIndex, reportInstall, usePacks, useOfficial } from '@/state/packActions';
 import { toast } from '@/state/uiStore';
 import { SearchBox } from '../controls/fields';
@@ -23,7 +24,7 @@ export function Cover({ svg, size = 96 }: { svg?: string; size?: number }) {
   return <img src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`} alt="" width={size} height={size} loading="lazy" draggable={false} style={{ objectFit: 'contain' }} />;
 }
 
-export function OfficialCatalog({ onInspect }: { onInspect: (entry: OfficialEntry, bytes: Uint8Array) => Promise<void> }) {
+export function OfficialCatalog({ onInspect, query }: { onInspect: (entry: OfficialEntry, bytes: Uint8Array) => Promise<void>; query?: CatalogQuery }) {
   const { index, loading, error } = useOfficial();
   const installed = usePacks((s) => s.packs);
   const [text, setText] = useState('');
@@ -32,7 +33,24 @@ export function OfficialCatalog({ onInspect }: { onInspect: (entry: OfficialEntr
   useEffect(() => { void loadOfficialIndex(); }, []);
   const all = useMemo(() => index?.packs ?? [], [index]);
   const categories = useMemo(() => [...new Set(all.map((p) => p.category))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [all]);
-  const shown = useMemo(() => all.filter((p) => (!category || p.category === category) && matchesSearch(text, p.name, p.description, p.category, p.collection, p.tags, p.items.map((i) => i.name), p.id)), [all, text, category]);
+  // Quando integrado à aba Itens, compartilha a busca e os filtros da Biblioteca.
+  // Os metadados dos pacotes são consultáveis antes de qualquer instalação.
+  const shown = useMemo(() => all.filter((p) => {
+    if (query?.kind && !p.items.some((i) => i.kind === query.kind)) return false;
+    if (query?.category && !p.items.some((i) => i.category === query.category)) return false;
+    if (query?.subcategory && !p.items.some((i) => i.subcategory === query.subcategory)) return false;
+    if (query?.collection && p.collection !== query.collection) return false;
+    if (query?.animated && !p.animated) return false;
+    if (query?.theme) {
+      const tag = query.theme === 'series' ? 'série' : query.theme === 'holiday' ? 'feriado' : 'evento';
+      if (!p.tags.includes(tag) && !(query.theme === 'event' && p.category === 'Festas')) return false;
+    }
+    if (!query && category && p.category !== category) return false;
+    const term = query ? query.text : text;
+    const exactId = term.match(/^(?:id:|#)(.+)$/i)?.[1];
+    if (exactId) return p.id === exactId || p.items.some((i) => i.id === exactId);
+    return matchesSearch(term, p.name, p.description, p.category, p.collection, p.tags, p.items.flatMap((i) => [i.name, i.id]), p.id);
+  }), [all, text, category, query]);
   const groups = useMemo(() => groupByCollection(shown), [shown]);
 
   const run = async (key: string, fn: () => Promise<void>) => { setBusy(key); try { await fn(); } finally { setBusy(''); } };
@@ -58,11 +76,13 @@ export function OfficialCatalog({ onInspect }: { onInspect: (entry: OfficialEntr
       {index && (
         <>
           <div className="off-tools">
-            <SearchBox value={text} onChange={setText} placeholder="Buscar pacote, coleção ou item" testId="official-search" />
-            <select className="cat-select" aria-label="Categoria do pacote" data-testid="official-category" value={category} onChange={(e) => setCategory(e.target.value)}>
-              <option value="">Todas as categorias</option>
-              {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-            </select>
+            {!query && <>
+              <SearchBox value={text} onChange={setText} placeholder="Buscar pacote, coleção ou item" testId="official-search" />
+              <select className="cat-select" aria-label="Categoria do pacote" data-testid="official-category" value={category} onChange={(e) => setCategory(e.target.value)}>
+                <option value="">Todas as categorias</option>
+                {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </>}
             <span className="hint" data-testid="official-count">{shown.length} pacote(s) · {shown.reduce((s, p) => s + p.itemCount, 0)} item(ns)</span>
           </div>
           {groups.length === 0 && <p className="empty">Nenhum pacote com esse filtro.</p>}

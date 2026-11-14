@@ -879,6 +879,7 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
 .libh-filters { display: grid; gap: 8px; }
 .libh-filters .cat-row2 .hint { margin-left: auto; }
 .libh-body { display: grid; gap: 14px; align-items: start; }
+.libh-official { display: grid; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); scroll-margin-top: 18px; }
 .libh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
 .libh-grid.is-packs { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
 .libh-list { display: grid; gap: 4px; }
@@ -890,6 +891,14 @@ button.libh-card:hover { background: var(--bg-3); border-color: var(--line-2); }
 .libh-thumb { display: grid; place-items: center; width: 100%; min-height: 104px; border-radius: 8px; background: var(--bg-3); overflow: hidden; }
 .libh-thumb .bg-thumb { width: 100%; height: auto; }
 .libh-thumb .obj-thumb { width: auto; height: auto; background: none; }
+/* Vitrine única: itens oficiais ainda não baixados aparecem como produtos individuais. */
+.marketplace-card { position: relative; border-style: dashed; }
+.marketplace-card:hover { border-style: solid; }
+.marketplace-thumb { display: block; max-width: 100%; width: 100%; max-height: 110px; height: auto; object-fit: contain; }
+.libd-preview .marketplace-thumb.is-large { width: min(100%, 260px); max-height: 300px; margin: auto; }
+.marketplace-download { display: inline-flex; gap: 5px; align-items: center; justify-content: center; color: var(--accent); font-size: calc(12px * var(--ui-scale, 1)); font-weight: 650; }
+.libh-list .marketplace-card .marketplace-download { grid-column: 2; }
+
 .libh-name { display: inline-flex; gap: 4px; align-items: center; max-width: 100%; font-weight: 600; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .libh-sub { color: var(--text-3); font-size: calc(11px * var(--ui-scale, 1)); max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .libh-list .libh-card { grid-template-columns: 56px 1fr; grid-template-rows: auto auto; justify-items: start; text-align: left; padding: 6px 10px; contain-intrinsic-size: auto 64px; }
