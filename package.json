@@ -9,12 +9,13 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --port 4173 --strictPort",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src tests --max-warnings=0",
+    "lint": "eslint src tests tools --max-warnings=0",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "npm run build && playwright test --project=e2e",
     "shots": "npm run build && playwright test --project=shots",
-    "manual:shots": "npm run build && playwright test --project=manual && npm run build"
+    "manual:shots": "npm run build && playwright test --project=manual && npm run build",
+    "packs:build": "vitest run -c tools/packs/vitest.config.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

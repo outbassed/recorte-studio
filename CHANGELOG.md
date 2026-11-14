@@ -1,5 +1,26 @@
 # Changelog
 
+## Em desenvolvimento: Biblioteca ampliada (IDs únicos, popup, pacotes oficiais, Vila Torta e +700 itens)
+
+Branch `claude/confident-turing-m65b6g`, sobre a `main` (1.2). Sem lançamento, sem merge e sem deploy. Detalhes em `docs/RELATORIO-BIBLIOTECA.md`, `docs/BIBLIOTECA-IDS.md`, `docs/PACOTES-OFICIAIS.md` e `docs/VILA-TORTA.md`.
+
+### Novidades
+
+- **IDs únicos:** todo item novo nasce com UUID v4; o usuário pode definir um ID próprio (1–40 caracteres de `A-Z a-z 0-9 -`, maiúsculas distintas) e **alterar o ID** de um item seu, com referências atualizadas. IDs legados continuam válidos e nunca são reescritos. Busca por ID exato (`id:Rafael`).
+- **Conflito de ID ao importar:** `.rspack` e `.json` de biblioteca reconhecem duplicata idêntica e abrem o diálogo "Conflito de ID detectado" (novo ID, ID manual, não importar, resolver todos) quando o conteúdo difere; nada é sobrescrito em silêncio; gravação transacional; arquivo original intacto.
+- **Popup de detalhes** no lugar do painel lateral: centralizado, até ~950 px, com todas as informações (ID, pacote, coleção, dependências…), Esc, clique fora, foco preso; no celular ocupa a tela. Personagem mostra as 4 vistas e as diagonais sob demanda.
+- **Catálogo oficial de pacotes** (Pacotes → Catálogo oficial): coleções com volumes, ver o conteúdo antes de instalar, instalar um volume ou a coleção, atualização, estado e conteúdo essencial. Arquivos `.rspack` reais em `public/packs/`, baixados sob demanda e conferidos por sha256; funciona offline depois de instalado.
+- **Formato `.rspack` estendido** (retrocompatível): personagens e poses, metadados por item, coleção e volume.
+- **Busca e filtros:** nome, ID, tipo, categoria, subcategoria, tags, descrição, pacote, coleção e origem, sem acento; filtros Oficiais, Animados, Vila Torta, Feriados, Eventos, coleção e pacote em "Mais filtros".
+- **Conteúdo novo (780 itens originais, CC0, em 41 pacotes):** 162 personagens prontos (crianças, adolescentes, adultos, idosos, 35 profissionais, fantasia, caricaturais, figurantes e personagens de festas), 17 corpos-base com roupa neutra, 35 poses, 531 objetos (63 animados) e 35 cenários com dia e noite. Natal (2 volumes), Páscoa, Ano-Novo, Carnaval, Festa Junina, Halloween, aniversário, casamento, formatura e datas comemorativas.
+- **Vila Torta:** 95 itens reais dos episódios (36 personagens, 53 objetos, 6 cenários) em 7 pacotes, sem alterar os episódios.
+
+### Mudanças de comportamento
+
+- Importar de novo um `.json` de biblioteca **alterado** não atualiza mais o item em silêncio: vira conflito e o usuário escolhe.
+- Itens criados, duplicados e copiados usam UUID v4 (antes `obj_…`, `char_…`).
+- A caixa do objeto passa a ser medida do chão ao topo nos itens oficiais (objetos suspensos têm seleção e miniatura corretas).
+
 ## Em desenvolvimento: catálogo, biblioteca e animação de objetos
 
 Branch `feature/recorte-studio-catalogo-biblioteca`, sobre a 1.2. Sem lançamento. Detalhes, arquitetura e o que ainda não existe em `docs/CATALOGO.md`.

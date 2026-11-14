@@ -34,7 +34,7 @@ import { beginGroup, commit, currentProject, endGroup, useCurrentScene, useProje
 import { extractSequence, FRAMING_PRESETS, frameCamera, type FramingPreset } from '@/engine/model/ops';
 import { applyCustomBackground, availableTimes, customIdOf, isCustomPreset, resolveCustomVariant, TIME_LABELS } from '@/engine/world/customBackgrounds';
 import { getAction } from '@/engine/animation/actions';
-import { uid } from '@/engine/model/ids';
+import { newItemId } from '@/engine/model/ids';
 import { repo } from '@/storage/db';
 import type { TimeOfDay } from '@/engine/model/schema';
 import { seek, transport, useTransport } from '@/state/transport';
@@ -424,7 +424,7 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
             }
             const name = await promptDialog('Salvar sequência', 'Nome da sequência', `Sequência de ${node.name}`);
             if (!name) return;
-            await repo.putLibrary({ id: uid('lib'), kind: 'animation', name, favorite: 0, createdAt: Date.now(), data: seq });
+            await repo.putLibrary({ id: newItemId(), kind: 'animation', name, favorite: 0, createdAt: Date.now(), data: seq });
             toast('Sequência salva na biblioteca. Aplique em qualquer personagem pela aba Biblioteca.', 'success');
           }}>Salvar sequência</button>
         </div>

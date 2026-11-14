@@ -2,7 +2,7 @@
 import { getBuiltinCharacter } from '../character/presets';
 import { FLOOR_Y, getBackground } from '../world/backgrounds';
 import { getProp } from '../world/props';
-import { deepClone, uid } from './ids';
+import { deepClone, uid, newItemId } from './ids';
 import {
   CharacterDefinitionSchema, CharacterNodeSchema, GroupNodeSchema, ImageNodeSchema, KeyframeSchema, LightNodeSchema, ProjectSchema,
   PropNodeSchema, SCHEMA_VERSION, SceneSchema, ShapeNodeSchema, TextNodeSchema,
@@ -36,13 +36,13 @@ export function ensureBuiltinCharacter(project: Project, builtinId: string): Cha
   if (existing) return existing;
   const b = getBuiltinCharacter(builtinId);
   if (!b) return undefined;
-  const copy: CharacterDefinition = { ...deepClone(b), id: uid('char') };
+  const copy: CharacterDefinition = { ...deepClone(b), id: newItemId() };
   project.characters[copy.id] = copy;
   return copy;
 }
 
 export function newCharacterDefinition(name: string, data: Partial<CharacterDefinition> = {}): CharacterDefinition {
-  return CharacterDefinitionSchema.parse({ id: uid('char'), name, ...data });
+  return CharacterDefinitionSchema.parse({ id: newItemId(), name, ...data });
 }
 
 export function createCharacterNode(characterId: string, name: string, o: { x?: number; y?: number; scale?: number; bodyView?: ViewOrAuto; headView?: ViewOrAuto } = {}): CharacterNode {

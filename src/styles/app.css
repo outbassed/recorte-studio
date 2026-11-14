@@ -365,6 +365,8 @@ button.card { border: 1px solid var(--line); background: var(--bg-3); }
 .modal-sm { max-width: 420px; }
 .modal-md { max-width: 600px; }
 .modal-lg { max-width: 900px; }
+.modal-xl { max-width: 950px; max-height: min(85dvh, calc(100dvh - 24px)); }
+.modal-back.is-soft { background: #0004; }
 .modal-full { max-width: 1200px; height: calc(100dvh - 24px); }
 .modal-head { flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--line); gap: 8px; }
 .modal-head h2 { font-size: calc(14px * var(--ui-scale, 1)); }
@@ -414,7 +416,7 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
   .creator-preview-row { display: none; }
   .view-btn svg { height: 44px; }
   .modal-back { padding: 0; }
-  .modal-full, .modal-md, .modal-lg { height: 100dvh; max-height: 100dvh; border-radius: 0; }
+  .modal-full, .modal-md, .modal-lg, .modal-xl { height: 100dvh; max-height: 100dvh; border-radius: 0; }
 }
 
 
@@ -877,7 +879,6 @@ kbd { background: var(--bg-4); padding: 2px 6px; border-radius: 4px; font: inher
 .libh-filters { display: grid; gap: 8px; }
 .libh-filters .cat-row2 .hint { margin-left: auto; }
 .libh-body { display: grid; gap: 14px; align-items: start; }
-.libh-body.has-detail { grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); }
 .libh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 0; }
 .libh-grid.is-packs { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
 .libh-list { display: grid; gap: 4px; }
@@ -893,11 +894,6 @@ button.libh-card:hover { background: var(--bg-3); border-color: var(--line-2); }
 .libh-sub { color: var(--text-3); font-size: calc(11px * var(--ui-scale, 1)); max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .libh-list .libh-card { grid-template-columns: 56px 1fr; grid-template-rows: auto auto; justify-items: start; text-align: left; padding: 6px 10px; contain-intrinsic-size: auto 64px; }
 .libh-list .libh-thumb { grid-row: 1 / span 2; width: 56px; min-height: 48px; }
-.libh-detail { position: sticky; top: 0; display: grid; grid-template-rows: auto 1fr auto; max-height: calc(100dvh - 140px); border: 1px solid var(--line); border-radius: 14px; background: var(--bg-2); overflow: hidden; }
-.libh-detail-head { display: flex; justify-content: space-between; gap: 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); }
-.libh-detail-head h2 { font-size: calc(17px * var(--ui-scale, 1)); }
-.libh-detail-head small { color: var(--text-3); }
-.libh-detail-body { overflow: auto; padding: 12px 14px; display: grid; gap: 12px; align-content: start; }
 .libh-actions { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px; border-top: 1px solid var(--line); }
 .pack-page .libh-actions { border-top: 0; padding: 10px 0 0; }
 .pack-page { display: grid; gap: 14px; }
@@ -913,8 +909,62 @@ button.libh-card:hover { background: var(--bg-3); border-color: var(--line-2); }
 .libh-card.is-static { cursor: default; }
 .packs-tab { display: grid; gap: 12px; }
 @media (max-width: 900px) {
-  .libh-body.has-detail { grid-template-columns: 1fr; }
-  .libh-detail { position: fixed; inset: 0; z-index: 65; max-height: none; border-radius: 0; }
   .pack-hero { grid-template-columns: 1fr; }
   .libh-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }
+
+/* ------------------------------ Conflito de ID na importação ------------------------------ */
+.conf { display: grid; gap: 12px; }
+.conf-intro { display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--warn, #e0b04c) 60%, var(--line)); background: color-mix(in srgb, var(--warn, #e0b04c) 10%, var(--bg-2)); }
+.conf-intro svg { flex: none; margin-top: 2px; color: var(--warn, #e0b04c); }
+.conf-card { display: grid; gap: 8px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg-3); }
+.conf-card h3 { font-size: calc(15px * var(--ui-scale, 1)); }
+.conf-card h3 small { color: var(--text-3); font-weight: 500; margin-left: 6px; }
+.conf-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.conf-pair > div { display: grid; gap: 2px; padding: 8px 10px; border-radius: 8px; background: var(--bg-2); border: 1px solid var(--line); min-width: 0; overflow-wrap: anywhere; font-size: calc(12.5px * var(--ui-scale, 1)); }
+.conf-pair code, .libd code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: .92em; background: var(--bg-3); padding: 0 4px; border-radius: 4px; user-select: all; }
+.conf-opts { display: grid; gap: 6px; }
+.conf-opts label { display: flex; gap: 8px; align-items: flex-start; padding: 6px 8px; border-radius: 8px; cursor: pointer; }
+.conf-opts label:hover { background: var(--bg-2); }
+.conf-opts label.is-off { opacity: .55; cursor: not-allowed; }
+.conf-opts input[type="radio"] { margin-top: 4px; flex: none; }
+.conf-opts small { color: var(--text-3); }
+.conf-manual { display: grid; gap: 4px; margin: 0 0 4px 26px; }
+.conf-ok { color: var(--ok, #6dad6f); }
+@media (max-width: 640px) { .conf-pair { grid-template-columns: 1fr; } }
+
+/* ------------------------------ Popup de detalhes do item ------------------------------ */
+.libd { display: grid; grid-template-columns: minmax(240px, 360px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.libd-preview { display: grid; gap: 10px; align-content: start; justify-items: center; padding: 12px; border-radius: 12px; background: var(--bg-3); border: 1px solid var(--line); }
+.libd-info { display: grid; gap: 10px; min-width: 0; }
+.libd-sub { color: var(--text-3); }
+.libd-id { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.libd-badge { font-size: calc(10.5px * var(--ui-scale, 1)); padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--text-2); }
+.libd-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.libd-tags span { font-size: calc(11px * var(--ui-scale, 1)); padding: 1px 7px; border-radius: 999px; background: var(--bg-3); color: var(--text-2); }
+.libd .cat-info dd { overflow-wrap: anywhere; }
+.libd-foot { display: flex; flex-wrap: wrap; gap: 6px; width: 100%; }
+@media (max-width: 760px) { .libd { grid-template-columns: 1fr; } }
+
+.libh-more { border: 1px solid var(--line); border-radius: 10px; background: var(--bg-2); }
+.libh-more > summary { cursor: pointer; padding: 6px 10px; color: var(--text-2); font-weight: 600; list-style-position: inside; }
+.libh-more-body { display: grid; gap: 8px; padding: 6px 10px 10px; }
+
+/* ------------------------------ Catálogo oficial de pacotes ------------------------------ */
+.off { display: grid; gap: 14px; }
+.off-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.off-tools .hint { margin-left: auto; }
+.off-group { display: grid; gap: 8px; }
+.off-group-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+.off-group-head h3 { font-size: calc(16px * var(--ui-scale, 1)); }
+.off-group-head small { color: var(--text-3); }
+.off-card { align-content: start; }
+.off-card .libh-thumb { min-height: 120px; }
+.off-card.is-done { border-color: color-mix(in srgb, var(--ok, #6dad6f) 55%, var(--line)); }
+.off-counts { color: var(--text-2); font-size: calc(11px * var(--ui-scale, 1)); max-width: 100%; overflow-wrap: anywhere; }
+.off-state { font-size: calc(11px * var(--ui-scale, 1)); font-weight: 650; }
+.off-state.is-installed { color: var(--ok, #6dad6f); }
+.off-state.is-update { color: var(--warn, #e0b04c); }
+.off-state.is-disabled { color: var(--text-3); }
+.off-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.linklike { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }

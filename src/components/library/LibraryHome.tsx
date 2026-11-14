@@ -3,99 +3,25 @@
  * abas do Studio: o que se salva lá aparece aqui e vice-versa. Gerencia itens individuais e pacotes.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, Copy, Download, FileUp, LayoutGrid, Library, List, Package, Pencil, Plus, Star, Trash2, X } from 'lucide-react';
+import { ArrowLeft, FileUp, LayoutGrid, Library, List, Package, Plus, Star } from 'lucide-react';
 import { createProject } from '@/engine/model/factory';
-import type { Project } from '@/engine/model/schema';
 import {
-  buildCatalog, categoriesOf, DEFAULT_QUERY, FILTER_LABELS, KIND_LABELS, ORIGIN_LABELS, queryCatalog, SORT_LABELS,
-  type CatalogEntry, type CatalogFilter, type CatalogKind, type CatalogQuery, type CatalogSort,
+  buildCatalog, categoriesOf, subcategoriesOf, DEFAULT_QUERY, FILTER_LABELS, KIND_LABELS, ORIGIN_LABELS, queryCatalog, SORT_LABELS, themesOf, THEME_LABELS,
+  type CatalogFilter, type CatalogKind, type CatalogQuery, type CatalogSort, type CatalogTheme,
 } from '@/features/catalog/catalog';
-import { canEdit, insertEntry, reloadLibrary, saveEntryToLibrary, toggleFavorite, useLibrary } from '@/state/catalogActions';
-import {
-  copyToMyLibrary, createInLibrary, deleteRecord, duplicateRecord, editInLibrary, exportRecords, importLibraryJson, recordBytes, renameRecord, storageError,
-} from '@/state/libraryHomeActions';
+import { reloadLibrary, useLibrary } from '@/state/catalogActions';
+import { createInLibrary, importLibraryJson, storageError } from '@/state/libraryHomeActions';
 import { reloadPacks, usePacks } from '@/state/packActions';
 import { setPref, usePrefs } from '@/state/prefs';
 import { useProject } from '@/state/projectStore';
 import { closeOverlay, toast } from '@/state/uiStore';
 import { IconButton, SearchBox } from '../controls/fields';
 import { ScrollStrip } from '../controls/ScrollStrip';
-import { DetailPreview, EntryThumb, policyText } from '../panels/Catalog';
+import { EntryThumb } from '../panels/Catalog';
+import { ItemDetailPopup } from './ItemDetail';
 import { inspectPackFile, inspectDemoPack, PacksTab, type Inspected } from './PackPage';
 
-const ORIGINS: CatalogFilter[] = ['all', 'builtin', 'packs', 'mine', 'favorites', 'recent', 'project'];
-const fmtSize = (n: number) => (n < 1024 ? `${n} B` : n < 1024 * 1024 ? `${Math.round(n / 1024)} KB` : `${(n / 1024 / 1024).toFixed(1).replace('.', ',')} MB`);
-const COMPAT: Record<CatalogKind, string> = {
-  character: 'Personagem do Criador de Personagens (8 vistas, rig humano padrão)',
-  pose: 'Personagens com o rig humano padrão',
-  sequence: 'Qualquer personagem selecionado (passos editáveis na timeline)',
-  prop: 'Objeto pronto do app (cores e estados)',
-  object: 'Objeto montado (formato de biblioteca v2, com imagens e objetos usados)',
-  background: 'Cenário personalizado (horários, formato v2)',
-  scene: 'Cena completa com o elenco dela',
-};
-
-/** Metadados exibidos nos detalhes, conforme a origem. */
-function metaOf(e: CatalogEntry, packs: ReturnType<typeof usePacks.getState>['packs'], records: ReturnType<typeof useLibrary.getState>['records']) {
-  const pack = e.ref.type === 'pack-item' ? packs.find((p) => p.id === (e.ref as { packId: string }).packId) : undefined;
-  const rec = e.ref.type === 'library' ? records.find((r) => r.id === (e.ref as { libId: string }).libId) : undefined;
-  const assets = (e.objectBundle?.assets ?? e.backgroundBundle?.assets ?? []).reduce((s, a) => s + (a.size || 0), 0);
-  const creator = e.origin === 'builtin' ? 'Recorte Studio' : e.origin === 'pack' ? pack?.manifest.author || pack?.name || 'Pacote' : e.origin === 'mine' ? 'Você' : 'Este projeto';
-  const license = e.origin === 'builtin' ? 'Original do Recorte Studio (livre nos seus projetos)' : e.origin === 'pack' ? pack?.manifest.license ?? '—' : 'Sua criação';
-  const version = e.origin === 'pack' ? `${pack?.version ?? '—'} (pacote)` : e.origin === 'builtin' ? 'Embutido no app' : e.updatedAt ? `Atualizado em ${new Date(e.updatedAt).toLocaleDateString('pt-BR')}` : '—';
-  const size = e.origin === 'builtin' ? 'Embutido no app' : fmtSize(recordBytes(rec?.data ?? e.objectBundle ?? e.backgroundBundle ?? e.character ?? e.sceneData ?? {}, assets));
-  const anims = e.kind === 'object' && e.states.length ? e.states.map((s) => s.label).join(', ') : e.kind === 'prop' && e.states.length ? `Estados: ${e.states.map((s) => s.label).join(', ')}` : 'Nenhuma';
-  const views = e.kind === 'character' ? '8 vistas (frente, lados, costas e diagonais)' : e.kind === 'background' ? (e.ref.type === 'builtin-background' ? 'Dia e noite' : `Horários: ${(e.times ?? []).length || 'nenhum'}`) : e.kind === 'pose' ? 'Frente (aplicável em qualquer vista)' : 'Uma vista';
-  return { creator, license, version, size, anims, views };
-}
-
-function ItemDetail({ e, project, inEditor, onClose }: { e: CatalogEntry; project: Project; inEditor: boolean; onClose: () => void }) {
-  const packs = usePacks((s) => s.packs);
-  const records = useLibrary((s) => s.records);
-  const m = metaOf(e, packs, records);
-  const libId = e.ref.type === 'library' ? e.ref.libId : null;
-  const copyable = !e.editable && !e.broken && ['builtin-character', 'builtin-prop', 'builtin-object', 'pack-item'].includes(e.ref.type);
-  return (
-    <aside className="libh-detail" data-testid="library-detail" data-key={e.key} aria-label={`Detalhes de ${e.name}`}>
-      <header className="libh-detail-head">
-        <div><h2>{e.name}</h2><small>{KIND_LABELS[e.kind]} · {ORIGIN_LABELS[e.origin]}{e.packName ? ` · ${e.packName}` : ''}</small></div>
-        <IconButton label="Fechar detalhes" testId="library-detail-close" onClick={onClose}><X size={16} /></IconButton>
-      </header>
-      <div className="libh-detail-body">
-        <DetailPreview e={e} project={project} />
-        <dl className="cat-info" data-testid="library-meta">
-          <dt>Tipo</dt><dd>{KIND_LABELS[e.kind]}</dd>
-          <dt>Categoria</dt><dd>{e.category}</dd>
-          <dt>Origem</dt><dd data-testid="library-origin">{ORIGIN_LABELS[e.origin]}</dd>
-          <dt>Criador</dt><dd>{m.creator}</dd>
-          <dt>Licença</dt><dd data-testid="library-license">{m.license}</dd>
-          <dt>Versão</dt><dd>{m.version}</dd>
-          <dt>Compatível com</dt><dd>{COMPAT[e.kind]}</dd>
-          <dt>Tamanho</dt><dd>{m.size}</dd>
-          <dt>Animações</dt><dd data-testid="library-anims">{m.anims}</dd>
-          <dt>Vistas</dt><dd>{m.views}</dd>
-          {e.keywords.filter(Boolean).length > 0 && <><dt>Palavras-chave</dt><dd>{[...new Set(e.keywords.filter(Boolean))].slice(0, 8).join(', ')}</dd></>}
-        </dl>
-        <p className="hint">{policyText(e)}</p>
-        {e.broken && <p className="lib-error" role="alert">Formato incompatível: {e.broken}</p>}
-      </div>
-      <footer className="libh-actions">
-        {inEditor && !e.broken && <button type="button" className="btn btn-primary" data-testid="library-insert" onClick={async () => { if (await insertEntry(e)) closeOverlay(); }}>Inserir na cena</button>}
-        {canEdit(e) && <button type="button" className="btn" data-testid="library-edit" onClick={() => void editInLibrary(e)}><Pencil size={14} /> {e.editable ? 'Editar' : 'Editar uma cópia'}</button>}
-        {copyable && <button type="button" className="btn" data-testid="library-copy" onClick={() => void copyToMyLibrary(e)}><Copy size={14} /> Copiar para minha biblioteca</button>}
-        {inEditor && e.origin === 'project' && <button type="button" className="btn" data-testid="library-save" onClick={() => void saveEntryToLibrary(e)}>{e.libId ? 'Atualizar na biblioteca' : 'Salvar na biblioteca'}</button>}
-        <button type="button" className="btn" data-testid="library-favorite" aria-pressed={e.favorite} onClick={() => void toggleFavorite(e)}><Star size={14} fill={e.favorite ? 'currentColor' : 'none'} /> {e.favorite ? 'Favorito' : 'Favoritar'}</button>
-        {libId && <>
-          <button type="button" className="btn" data-testid="library-duplicate" onClick={() => void duplicateRecord(libId)}>Duplicar</button>
-          <button type="button" className="btn" data-testid="library-rename" onClick={() => void renameRecord(libId)}>Renomear</button>
-          <button type="button" className="btn" data-testid="library-export" onClick={() => { const r = records.find((x) => x.id === libId); if (r) exportRecords([r], `${r.name.replace(/[^\w-]+/g, '-').toLowerCase() || 'item'}.biblioteca.json`); }}><Download size={14} /> Exportar</button>
-          <button type="button" className="btn btn-danger" data-testid="library-delete" onClick={async () => { if (await deleteRecord(libId)) onClose(); }}><Trash2 size={14} /> Apagar</button>
-        </>}
-      </footer>
-    </aside>
-  );
-}
-
+const ORIGINS: CatalogFilter[] = ['all', 'builtin', 'official', 'packs', 'mine', 'favorites', 'recent', 'project'];
 export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
   const project = useProject();
   const empty = useMemo(() => createProject('Biblioteca'), []);
@@ -118,8 +44,15 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
   const entries = useMemo(() => buildCatalog({ project: base, library: records, favorites: favSet, packs }), [base, records, favSet, packs]);
   const list = useMemo(() => queryCatalog(entries, 'all', q, recents), [entries, q, recents]);
   const cats = useMemo(() => categoriesOf(entries, 'all'), [entries]);
+  const subs = useMemo(() => (q.category ? subcategoriesOf(entries, q.category) : []), [entries, q.category]);
   const kinds = useMemo(() => [...new Set(entries.map((e) => e.kind))] as CatalogKind[], [entries]);
   const hasPacks = entries.some((e) => e.origin === 'pack');
+  const hasOfficial = entries.some((e) => e.origin === 'pack' && e.official);
+  const themes = useMemo(() => (['series', 'holiday', 'event'] as CatalogTheme[]).filter((t) => entries.some((e) => themesOf(e).includes(t))), [entries]);
+  const collections = useMemo(() => [...new Set(entries.map((e) => e.collection).filter((c): c is string => !!c))].sort((a, b) => a.localeCompare(b, 'pt-BR')), [entries]);
+  const packOptions = useMemo(() => packs.filter((p) => p.enabled).map((p) => ({ id: p.id, name: p.name })), [packs]);
+  const activeExtra = Number(!!q.theme) + Number(!!q.animated) + Number(!!q.collection) + Number(!!q.packId);
+  const [moreOpen, setMoreOpen] = useState(() => typeof matchMedia === 'function' && matchMedia('(min-width: 760px)').matches);
   const [limit, setLimit] = useState(80);
   useEffect(() => setLimit(80), [q]);
   const set = (p: Partial<CatalogQuery>) => setQ((o) => ({ ...o, ...p }));
@@ -136,8 +69,10 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
       return;
     }
     try {
-      const r = await importLibraryJson(await f.text());
-      toast(`${r.created} item(ns) novo(s), ${r.updated} atualizado(s)${r.skipped ? `, ${r.skipped} ilegível(is) ignorado(s)` : ''}.`, 'success');
+      const r = await importLibraryJson(await f.text(), f.name);
+      if (r.cancelled) return;
+      const extra = [r.duplicates ? `${r.duplicates} duplicata(s) reconhecida(s)` : '', r.renamed ? `${r.renamed} com ID novo` : '', r.notImported ? `${r.notImported} não importado(s)` : '', r.skipped ? `${r.skipped} ilegível(is) ignorado(s)` : ''].filter(Boolean).join(', ');
+      toast(`${r.created} item(ns) novo(s)${extra ? ` (${extra})` : ''}.`, 'success');
     } catch (e) {
       toast(e instanceof SyntaxError ? 'Não foi possível importar: o arquivo não é JSON válido.' : storageError(e, 'Não foi possível importar'), 'error');
     }
@@ -165,25 +100,57 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
       </ScrollStrip>
       {busy && <p className="hint" role="status" data-testid="library-busy">{busy}</p>}
       {tab === 'packs' ? (
-        <PacksTab inspected={inspected} setInspected={setInspected} onInspectDemo={async () => { setBusy('Montando o pacote de demonstração…'); try { setInspected(await inspectDemoPack()); } finally { setBusy(''); } }} />
+        <PacksTab onBrowse={(b) => { setTab('items'); setInspected(null); set({ ...DEFAULT_QUERY, filter: b.filter ?? 'all', kind: b.kind ?? null, packId: b.packId ?? null }); }} inspected={inspected} setInspected={setInspected} onInspectDemo={async () => { setBusy('Montando o pacote de demonstração…'); try { setInspected(await inspectDemoPack()); } finally { setBusy(''); } }} />
       ) : (
         <>
           <div className="libh-filters">
-            <SearchBox value={q.text} onChange={(text) => set({ text })} placeholder="Buscar por nome, categoria, tipo ou palavra-chave" testId="library-search" />
+            <SearchBox value={q.text} onChange={(text) => set({ text })} placeholder="Buscar por nome, ID, tipo, categoria, tag, pacote ou coleção" testId="library-search" />
+            <ScrollStrip className="chip-row" role="group" ariaLabel="Origem" testId="library-origins" watch={q.filter}>
+              {ORIGINS.filter((f) => (f !== 'packs' || hasPacks) && (f !== 'official' || hasOfficial) && (f !== 'project' || inEditor)).map((f) => (
+                <button key={f} type="button" className={`chip${q.filter === f ? ' is-active' : ''}`} aria-pressed={q.filter === f} data-filter={f} onClick={() => set({ filter: f })}>{f === 'favorites' && <Star size={11} />}{FILTER_LABELS[f]}</button>
+              ))}
+            </ScrollStrip>
             <ScrollStrip className="chip-row" role="group" ariaLabel="Tipo" testId="library-kinds" watch={q.kind}>
               <button type="button" className={`chip${!q.kind ? ' is-active' : ''}`} aria-pressed={!q.kind} data-kind="" onClick={() => set({ kind: null, category: null })}>Todos os tipos</button>
               {kinds.map((k) => <button key={k} type="button" className={`chip${q.kind === k ? ' is-active' : ''}`} aria-pressed={q.kind === k} data-kind={k} onClick={() => set({ kind: k, category: null })}>{KIND_LABELS[k]}</button>)}
             </ScrollStrip>
-            <ScrollStrip className="chip-row" role="group" ariaLabel="Origem" testId="library-origins" watch={q.filter}>
-              {ORIGINS.filter((f) => (f !== 'packs' || hasPacks) && (f !== 'project' || inEditor)).map((f) => (
-                <button key={f} type="button" className={`chip${q.filter === f ? ' is-active' : ''}`} aria-pressed={q.filter === f} data-filter={f} onClick={() => set({ filter: f })}>{f === 'favorites' && <Star size={11} />}{FILTER_LABELS[f]}</button>
-              ))}
-            </ScrollStrip>
+            <details className="libh-more" open={moreOpen} onToggle={(ev) => setMoreOpen((ev.currentTarget as HTMLDetailsElement).open)}>
+              <summary data-testid="library-more">Mais filtros{activeExtra > 0 ? ` (${activeExtra} ativo${activeExtra > 1 ? 's' : ''})` : ''}</summary>
+              <div className="libh-more-body">
+                {themes.length > 0 && (
+                  <ScrollStrip className="chip-row" role="group" ariaLabel="Tema" testId="library-themes" watch={q.theme ?? ''}>
+                    <button type="button" className={`chip${!q.theme ? ' is-active' : ''}`} aria-pressed={!q.theme} data-theme="" onClick={() => set({ theme: null })}>Todos os temas</button>
+                    {themes.map((t) => <button key={t} type="button" className={`chip${q.theme === t ? ' is-active' : ''}`} aria-pressed={q.theme === t} data-theme={t} onClick={() => set({ theme: t })}>{THEME_LABELS[t]}</button>)}
+                  </ScrollStrip>
+                )}
+                <div className="cat-row2">
+                  <label className="anim-check"><input type="checkbox" data-testid="library-animated" checked={!!q.animated} onChange={(ev) => set({ animated: ev.target.checked })} /> Só animados</label>
+                  {collections.length > 0 && (
+                    <select className="cat-select" aria-label="Coleção" data-testid="library-collection-filter" value={q.collection ?? ''} onChange={(ev) => set({ collection: ev.target.value || null })}>
+                      <option value="">Todas as coleções</option>
+                      {collections.map((c) => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                  )}
+                  {packOptions.length > 0 && (
+                    <select className="cat-select" aria-label="Pacote" data-testid="library-pack-filter" value={q.packId ?? ''} onChange={(ev) => set({ packId: ev.target.value || null })}>
+                      <option value="">Todos os pacotes</option>
+                      {packOptions.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+                    </select>
+                  )}
+                </div>
+              </div>
+            </details>
             <div className="cat-row2">
-              <select className="cat-select" aria-label="Categoria" data-testid="library-category" value={q.category ?? ''} onChange={(ev) => set({ category: ev.target.value || null })}>
+              <select className="cat-select" aria-label="Categoria" data-testid="library-category" value={q.category ?? ''} onChange={(ev) => set({ category: ev.target.value || null, subcategory: null })}>
                 <option value="">Todas as categorias</option>
                 {cats.map((c) => <option key={c.id} value={c.id}>{c.id} ({c.count})</option>)}
               </select>
+              {subs.length > 0 && (
+                <select className="cat-select" aria-label="Subcategoria" data-testid="library-subcategory" value={q.subcategory ?? ''} onChange={(ev) => set({ subcategory: ev.target.value || null })}>
+                  <option value="">Todas as subcategorias</option>
+                  {subs.map((c) => <option key={c.id} value={c.id}>{c.id} ({c.count})</option>)}
+                </select>
+              )}
               <select className="cat-select" aria-label="Ordenar" data-testid="library-sort" value={q.sort} onChange={(ev) => set({ sort: ev.target.value as CatalogSort })}>
                 {(Object.keys(SORT_LABELS) as CatalogSort[]).map((s) => <option key={s} value={s}>{SORT_LABELS[s]}</option>)}
               </select>
@@ -193,10 +160,10 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
           </div>
           {!loaded && <p className="hint" role="status">Carregando sua biblioteca…</p>}
           {libError && <p className="lib-error" role="alert">Não foi possível ler sua biblioteca neste navegador: {libError}. Os itens padrão continuam disponíveis.</p>}
-          <div className={`libh-body${sel ? ' has-detail' : ''}`}>
+          <div className="libh-body">
             <div className={isList ? 'libh-list' : 'libh-grid'} data-testid="library-results">
               {list.slice(0, limit).map((e) => (
-                <button key={e.key} type="button" className={`libh-card${detail === e.key ? ' is-active' : ''}${e.broken ? ' is-broken' : ''}`} data-testid="library-item" data-key={e.key} data-name={e.name} data-origin={e.origin} data-kind={e.kind} aria-pressed={detail === e.key} onClick={() => setDetail(e.key)}>
+                <button key={e.key} type="button" className={`libh-card${detail === e.key ? ' is-active' : ''}${e.broken ? ' is-broken' : ''}`} data-testid="library-item" data-key={e.key} data-name={e.name} data-origin={e.origin} data-kind={e.kind} aria-haspopup="dialog" onClick={() => setDetail(e.key)}>
                   <span className="libh-thumb"><EntryThumb e={e} project={base} size={isList ? 44 : 104} /></span>
                   <span className="libh-name">{e.favorite && <Star size={11} fill="currentColor" aria-label="favorito" />} {e.name}</span>
                   <small className="libh-sub">{KIND_LABELS[e.kind]} · {e.origin === 'pack' ? e.packName : ORIGIN_LABELS[e.origin]}{e.kind === 'object' && e.states.length ? ' · animado' : ''}</small>
@@ -205,7 +172,7 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
               {list.length === 0 && <p className="empty" data-testid="library-empty">{q.text ? 'Nada encontrado com esse termo.' : q.filter === 'mine' ? 'Você ainda não salvou nada. Crie um item acima ou salve pelo Studio (detalhes → Salvar na biblioteca).' : q.filter === 'favorites' ? 'Nenhum favorito ainda.' : 'Nada aqui.'}</p>}
               {limit < list.length && <div className="cat-more"><button type="button" className="btn btn-sm" onClick={() => setLimit((l) => l + 80)}>Mostrar mais ({list.length - limit})</button></div>}
             </div>
-            {sel && <ItemDetail e={sel} project={base} inEditor={inEditor} onClose={() => setDetail(null)} />}
+            {sel && <ItemDetailPopup e={sel} project={base} inEditor={inEditor} onClose={() => setDetail(null)} />}
           </div>
         </>
       )}

@@ -135,3 +135,16 @@ Em 200 cenas, o DOM mantém menos de 40 linhas da lista por causa da virtualiza�
 - **Ollama e serviços reais de IA.** Só mocks.
 - **Zoom do navegador em 125%/150%**, de forma direta (equivale aproximadamente a janelas menores, que foram testadas).
 - **Auditoria de acessibilidade com leitor de tela.**
+
+## Expansão da Biblioteca (IDs, popup, pacotes oficiais, Vila Torta e conteúdo novo)
+
+Executados em 14/11/2026 num ambiente **diferente** dos registros acima: Linux, Node 22.23, Google Chrome for Testing 153 (Playwright), build de produção. Detalhes, falhas e a lista dos 30 testes obrigatórios em [RELATORIO-BIBLIOTECA.md](RELATORIO-BIBLIOTECA.md).
+
+| Comando | Resultado |
+| --- | --- |
+| `npm run typecheck` e `npm run lint` | sem erros nem avisos (incluem `tools/`) |
+| `npm test` | **478 de 478**, 30 arquivos (71 novos) |
+| `npm run test:e2e` (suíte inteira) | 131 de 134, 8,4 min: 2 falhas **preexistentes** (`suggestedFilename()` devolve `"download"` neste Chrome; falham igual na `main` original) e 1 expectativa antiga de um teste meu, já corrigida e reexecutada (3/3) |
+| `library-perf` (Chrome, 48 pacotes instalados, 963 itens) | busca 52 ms, filtro 61 ms, popup 56 ms, 80 itens desenhados |
+
+Os números anteriores (127/127 E2E) são de outra máquina; neste ambiente a `main` original já falha esses 2 testes.

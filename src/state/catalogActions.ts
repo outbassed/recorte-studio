@@ -6,8 +6,8 @@
  * editável com ID novo, guardada no projeto, e abre o criador nela.
  */
 import { create } from 'zustand';
-import { CharacterDefinitionSchema, CustomObjectSchema, type CharacterDefinition, type Project, type SceneNode } from '@/engine/model/schema';
-import { deepClone, uid } from '@/engine/model/ids';
+import { CharacterDefinitionSchema, CustomObjectSchema, type CharacterDefinition, type Project, type Rig, type SceneNode } from '@/engine/model/schema';
+import { deepClone, newItemId } from '@/engine/model/ids';
 import { addScene as addSceneOp, applyBackground, applySequence, characterUsage, deleteCharacter, replaceSceneContent, sceneOf, type Sequence } from '@/engine/model/ops';
 import { createScene } from '@/engine/model/factory';
 import { BUILTIN_CHARACTERS } from '@/engine/character/presets';
@@ -108,6 +108,19 @@ function bringCharacter(def: CharacterDefinition): string {
   return copy.id;
 }
 
+/** Aplica uma pose ao personagem selecionado no palco. */
+function applyPoseToSelection(name: string, pose: { rig: Rig; handL: 'open' | 'fist' | 'point'; handR: 'open' | 'fist' | 'point' }): boolean {
+  const n = selectedCharacter();
+  if (!n) { toast('Selecione um personagem no palco para aplicar a pose.', 'error'); return false; }
+  const sceneId = currentScene().id;
+  commit('Aplicar pose', (d) => {
+    const m = sceneOf(d as Project, sceneId).nodes[n.id];
+    if (m?.kind === 'character') { m.rig = deepClone(pose.rig); m.handL = pose.handL; m.handR = pose.handR; }
+  });
+  toast(`Pose "${name}" aplicada a ${n.name}.`, 'success');
+  return true;
+}
+
 /** Coloca o item na cena atual (ou aplica, no caso de pose, sequência e cenário). Devolve false se nada mudou. */
 export async function insertEntry(e: CatalogEntry, opts: { variant?: 'day' | 'night' } = {}): Promise<boolean> {
   if (e.broken) {
@@ -130,11 +143,15 @@ export async function insertEntry(e: CatalogEntry, opts: { variant?: 'day' | 'ni
         const id = await bringObjectFromLibrary(it.data, true);
         if (id) insertCustomObject(id);
         ok = !!id;
-      } else {
+      } else if (it.kind === 'background') {
         const id = await bringBackgroundFromLibrary(it.data, true);
         const cb = id ? currentProject().customBackgrounds[id] : undefined;
         if (cb && availableTimes(cb).length) commit('Usar cenário', (d) => { const c = d.customBackgrounds[cb.id]; if (c) applyCustomBackground(sceneOf(d as Project, scene.id), c); });
         ok = !!id;
+      } else if (it.kind === 'character') {
+        placeCharacter(bringCharacter(it.data));
+      } else {
+        ok = applyPoseToSelection(e.name, it.data);
       }
       break;
     }
@@ -178,14 +195,7 @@ export async function insertEntry(e: CatalogEntry, opts: { variant?: 'day' | 'ni
         }
         ok = !!id;
       } else if (e.kind === 'pose' && e.pose) {
-        const n = selectedCharacter();
-        if (!n) { toast('Selecione um personagem no palco para aplicar a pose.', 'error'); return false; }
-        const pose = e.pose;
-        commit('Aplicar pose', (d) => {
-          const m = sceneOf(d as Project, scene.id).nodes[n.id];
-          if (m?.kind === 'character') { m.rig = deepClone(pose.rig); m.handL = pose.handL; m.handR = pose.handR; }
-        });
-        toast(`Pose "${e.name}" aplicada a ${n.name}.`, 'success');
+        ok = applyPoseToSelection(e.name, e.pose);
       } else if (e.kind === 'sequence') {
         const n = selectedCharacter();
         if (!n) { toast('Selecione um personagem no palco para aplicar a sequência.', 'error'); return false; }
@@ -217,7 +227,7 @@ export async function copyBuiltin(e: CatalogEntry, open = true): Promise<string 
   if (ref.type === 'builtin-character') {
     const src = BUILTIN_CHARACTERS.find((c) => c.builtinId === ref.builtinId);
     if (!src) return null;
-    const copy: CharacterDefinition = { ...deepClone(src), id: uid('char'), name: `${src.name} (cópia)`, builtinId: undefined, favorite: false };
+    const copy: CharacterDefinition = { ...deepClone(src), id: newItemId(), name: `${src.name} (cópia)`, builtinId: undefined, favorite: false };
     commit('Criar cópia editável', (d) => { d.characters[copy.id] = copy; });
     if (open) useUI.setState({ dialog: 'creator', creatorCharacterId: copy.id });
     toast(`Cópia "${copy.name}" criada neste projeto. O personagem padrão continua igual.`, 'success');
@@ -227,7 +237,7 @@ export async function copyBuiltin(e: CatalogEntry, open = true): Promise<string 
     const def = getProp(ref.propId);
     if (!def) return null;
     const obj = CustomObjectSchema.parse({
-      id: uid('obj'), name: `${def.label} (cópia)`, width: def.w, height: def.h, createdAt: Date.now(), updatedAt: Date.now(),
+      id: newItemId(), name: `${def.label} (cópia)`, width: def.w, height: def.h, createdAt: Date.now(), updatedAt: Date.now(),
       pieces: [createPiece('prop', { name: def.label, refId: def.id, x: 0, y: 0, colorA: def.a, colorB: def.b, state: def.defaultState ?? '' })],
     });
     commit('Criar cópia editável', (d) => { d.customObjects[obj.id] = obj; });
@@ -239,11 +249,19 @@ export async function copyBuiltin(e: CatalogEntry, open = true): Promise<string 
     // Item de pacote é protegido: editar gera uma cópia pessoal com ID novo; o pacote não muda.
     const it = packItemOf(e);
     if (!it) { toast('Este pacote está desativado ou foi removido.', 'error'); return null; }
+    if (it.kind === 'character') {
+      const copy: CharacterDefinition = { ...deepClone(it.data), id: newItemId(), name: `${it.data.name} (cópia)`, builtinId: undefined, favorite: false };
+      commit('Criar cópia editável', (d) => { d.characters[copy.id] = copy; });
+      if (open) useUI.setState({ dialog: 'creator', creatorCharacterId: copy.id });
+      toast(`Cópia "${copy.name}" criada neste projeto. O personagem do pacote continua igual.`, 'success');
+      return copy.id;
+    }
+    if (it.kind === 'pose') { toast('Poses de pacote não têm o que editar: aplique a pose e ajuste no personagem.', 'info'); return null; }
     if (it.kind === 'object') {
       const srcId = await bringObjectFromLibrary(it.data, true);
       const src = srcId ? currentProject().customObjects[srcId] : undefined;
       if (!src) return null;
-      const obj = { ...deepClone(src), id: uid('obj'), name: `${src.name} (cópia)`, createdAt: Date.now(), updatedAt: Date.now() };
+      const obj = { ...deepClone(src), id: newItemId(), name: `${src.name} (cópia)`, createdAt: Date.now(), updatedAt: Date.now() };
       commit('Criar cópia editável', (d) => { d.customObjects[obj.id] = obj; });
       if (open) openObjectCreator(obj.id);
       toast(`Cópia "${obj.name}" criada. O item do pacote continua igual.`, 'success');
@@ -252,7 +270,7 @@ export async function copyBuiltin(e: CatalogEntry, open = true): Promise<string 
     const srcId = await bringBackgroundFromLibrary(it.data, true);
     const src = srcId ? currentProject().customBackgrounds[srcId] : undefined;
     if (!src) return null;
-    const cb = { ...deepClone(src), id: uid('cbg'), name: `${src.name} (cópia)`, createdAt: Date.now() };
+    const cb = { ...deepClone(src), id: newItemId(), name: `${src.name} (cópia)`, createdAt: Date.now() };
     commit('Criar cópia editável', (d) => { d.customBackgrounds[cb.id] = cb; });
     if (open) openSceneCreator(cb.id, availableTimes(cb)[0] ?? 'day');
     toast(`Cópia "${cb.name}" criada. O item do pacote continua igual.`, 'success');
@@ -261,7 +279,7 @@ export async function copyBuiltin(e: CatalogEntry, open = true): Promise<string 
   if (ref.type === 'builtin-object') {
     const tpl = animatedTemplate(ref.tplId);
     if (!tpl) return null;
-    const obj = { ...deepClone(tpl), id: uid('obj'), name: `${tpl.name} (cópia)`, createdAt: Date.now(), updatedAt: Date.now() };
+    const obj = { ...deepClone(tpl), id: newItemId(), name: `${tpl.name} (cópia)`, createdAt: Date.now(), updatedAt: Date.now() };
     commit('Criar cópia editável', (d) => { d.customObjects[obj.id] = obj; });
     if (open) openObjectCreator(obj.id);
     toast(`Cópia "${obj.name}" criada com as animações. O objeto padrão continua igual.`, 'success');
@@ -334,28 +352,28 @@ export async function duplicateEntry(e: CatalogEntry): Promise<void> {
   if (ref.type === 'project-character') {
     const c = p.characters[ref.id];
     if (!c) return;
-    const copy: CharacterDefinition = { ...deepClone(c), id: uid('char'), name: `${c.name} (cópia)`, builtinId: undefined };
+    const copy: CharacterDefinition = { ...deepClone(c), id: newItemId(), name: `${c.name} (cópia)`, builtinId: undefined };
     commit('Duplicar personagem', (d) => { d.characters[copy.id] = copy; });
   } else if (ref.type === 'project-object') {
     const o = p.customObjects[ref.id];
     if (!o) return;
-    const copy = { ...deepClone(o), id: uid('obj'), name: `${o.name} (cópia)`, createdAt: Date.now(), updatedAt: Date.now() };
+    const copy = { ...deepClone(o), id: newItemId(), name: `${o.name} (cópia)`, createdAt: Date.now(), updatedAt: Date.now() };
     commit('Duplicar objeto', (d) => { d.customObjects[copy.id] = copy; });
   } else if (ref.type === 'project-background') {
     const cb = p.customBackgrounds[ref.id];
     if (!cb) return;
-    const copy = { ...deepClone(cb), id: uid('cbg'), name: `${cb.name} (cópia)`, createdAt: Date.now() };
+    const copy = { ...deepClone(cb), id: newItemId(), name: `${cb.name} (cópia)`, createdAt: Date.now() };
     commit('Duplicar cenário', (d) => { d.customBackgrounds[copy.id] = copy; });
   } else if (ref.type === 'library') {
     const r = recordOf(e);
     if (!r) return;
     const data = deepClone(r.data) as Record<string, unknown>;
     // A cópia ganha identidade própria (senão seria tratada como o mesmo item).
-    if (r.kind === 'character') data.id = uid('char');
-    if (r.kind === 'object' && data.object) (data.object as Record<string, unknown>).id = uid('obj');
-    if (r.kind === 'background' && data.background) (data.background as Record<string, unknown>).id = uid('cbg');
+    if (r.kind === 'character') data.id = newItemId();
+    if (r.kind === 'object' && data.object) (data.object as Record<string, unknown>).id = newItemId();
+    if (r.kind === 'background' && data.background) (data.background as Record<string, unknown>).id = newItemId();
     const now = Date.now();
-    await repo.putLibrary({ ...r, id: uid('lib'), name: `${r.name} (cópia)`, favorite: 0, createdAt: now, updatedAt: now, data });
+    await repo.putLibrary({ ...r, id: newItemId(), name: `${r.name} (cópia)`, favorite: 0, createdAt: now, updatedAt: now, data });
     await reloadLibrary();
   } else {
     await copyBuiltin(e, false);
@@ -439,13 +457,13 @@ export function libraryFileOf(e: CatalogEntry): { name: string; json: string } |
   if (ref.type === 'library') item = recordOf(e);
   else if (ref.type === 'project-character') {
     const c = p.characters[ref.id];
-    if (c) item = { id: uid('lib'), kind: 'character', name: c.name, favorite: 0, createdAt: now, data: { ...deepClone(c), builtinId: undefined } };
+    if (c) item = { id: newItemId(), kind: 'character', name: c.name, favorite: 0, createdAt: now, data: { ...deepClone(c), builtinId: undefined } };
   } else if (ref.type === 'project-object') {
     const b = buildObjectBundle(p, ref.id);
-    if (b) item = { id: uid('lib'), kind: 'object', name: b.object.name, favorite: 0, createdAt: now, data: b };
+    if (b) item = { id: newItemId(), kind: 'object', name: b.object.name, favorite: 0, createdAt: now, data: b };
   } else if (ref.type === 'project-background') {
     const b = buildBackgroundBundle(p, ref.id);
-    if (b) item = { id: uid('lib'), kind: 'background', name: b.background.name, favorite: 0, createdAt: now, data: b };
+    if (b) item = { id: newItemId(), kind: 'background', name: b.background.name, favorite: 0, createdAt: now, data: b };
   }
   if (!item) return null;
   const safe = e.name.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() || 'item';

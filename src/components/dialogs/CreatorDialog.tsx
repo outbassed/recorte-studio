@@ -13,7 +13,7 @@ import { POSES, poseRig } from '@/engine/character/presets';
 import { bodyMetrics, renderCharacter } from '@/engine/character/render';
 import { VIEW_LABELS, VIEW_ORDER } from '@/engine/character/views';
 import { characterUsage } from '@/engine/model/ops';
-import { deepClone, uid } from '@/engine/model/ids';
+import { deepClone, newItemId } from '@/engine/model/ids';
 import { IMAGE_ACCEPT, importImageFile, registerAssetBlob } from '@/features/library/assets';
 import { matchesSearch } from '@/features/library/search';
 import { downloadBlob } from '@/features/projects/session';
@@ -229,7 +229,7 @@ export function CreatorDialog() {
                   <button type="button" className="btn btn-sm" onClick={() => void exportPng()}>PNG</button>
                   <button type="button" className="btn btn-sm" onClick={exportJson}>Arquivo (.json)</button>
                   <button type="button" className="btn btn-sm" onClick={async () => {
-                    await repo.putLibrary({ id: uid('lib'), kind: 'character', name: def.name, favorite: 0, createdAt: Date.now(), data: { ...deepClone(def), builtinId: undefined } });
+                    await repo.putLibrary({ id: newItemId(), kind: 'character', name: def.name, favorite: 0, createdAt: Date.now(), data: { ...deepClone(def), builtinId: undefined } });
                     toast('Salvo na sua biblioteca.', 'success');
                   }}>Salvar na biblioteca</button>
                 </div>

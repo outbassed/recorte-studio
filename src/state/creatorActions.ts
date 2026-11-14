@@ -1,7 +1,7 @@
 /** Ações dos Criadores de Objetos e de Cenários (1.2). Tudo via commit: Undo/Redo valem. */
 import type { Asset, Composition, CustomBackground, Project, Scene, TimeOfDay } from '@/engine/model/schema';
 import { BackgroundSchema, CustomObjectSchema, frameSize } from '@/engine/model/schema';
-import { uid } from '@/engine/model/ids';
+import { newItemId } from '@/engine/model/ids';
 import { createPropNode } from '@/engine/model/factory';
 import { deleteNode, sceneOf } from '@/engine/model/ops';
 import { cloneComposition, createPiece, customObjectUsage, OBJECT_PREFIX, allPieceLists } from '@/engine/world/pieces';
@@ -22,7 +22,7 @@ export async function newCustomObject(): Promise<void> {
   const name = await promptDialog('Novo objeto', 'Nome do objeto', 'Meu objeto');
   if (!name) return;
   const obj = CustomObjectSchema.parse({
-    id: uid('obj'), name, width: 240, height: 240, createdAt: Date.now(), updatedAt: Date.now(),
+    id: newItemId(), name, width: 240, height: 240, createdAt: Date.now(), updatedAt: Date.now(),
     pieces: [createPiece('rect', { name: 'Base', x: 0, y: -120, w: 200, h: 200, radius: 18 })],
   });
   commit('Criar objeto', (d) => { d.customObjects[obj.id] = obj; });
@@ -87,7 +87,7 @@ const depsLabel = (r: { addedObjects: number }) => (r.addedObjects > 1 ? ` (com 
 export async function upsertLibrary(kind: LibraryKind, identity: string, name: string, data: unknown, idOf: (data: unknown) => string | undefined): Promise<'created' | 'updated'> {
   const existing = (await repo.listLibrary(kind)).find((r) => idOf(r.data) === identity);
   const now = Date.now();
-  await repo.putLibrary({ id: existing?.id ?? uid('lib'), kind, name, favorite: existing?.favorite ?? 0, createdAt: existing?.createdAt ?? now, updatedAt: now, data });
+  await repo.putLibrary({ id: existing?.id ?? newItemId(), kind, name, favorite: existing?.favorite ?? 0, createdAt: existing?.createdAt ?? now, updatedAt: now, data });
   return existing ? 'updated' : 'created';
 }
 const field = (k: string, sub?: string) => (d: unknown): string | undefined => {

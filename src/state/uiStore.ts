@@ -1,6 +1,8 @@
 /** Estado de interface: nunca entra no projeto nem no histórico. */
 import { create } from 'zustand';
 import { registerSelectionProvider } from './projectStore';
+import type { Resolutions } from '@/features/packs/conflicts';
+import type { PreparedInstall } from './packActions';
 
 export type LeftTab = 'characters' | 'backgrounds' | 'objects' | 'media' | 'templates' | 'scenes' | 'layers' | 'library' | 'direction';
 export type MobilePanel = LeftTab | 'properties' | null;
@@ -138,12 +140,15 @@ export const closeDialog = () => useUI.setState({ dialog: null });
 /** Toasts e confirmações ficam aqui para qualquer módulo poder usá-los. */
 export interface Toast { id: number; text: string; kind: 'info' | 'error' | 'success'; action?: { label: string; run: () => void } }
 export interface ConfirmRequest { title: string; message: string; confirmLabel: string; danger?: boolean; alt?: { label: string; value: string }; resolve: (v: boolean | string) => void }
-interface FeedbackState { toasts: Toast[]; confirm: ConfirmRequest | null; prompt: PromptRequest | null; context: ContextMenuState | null }
+export interface ImportConflictAnswer { resolutions: Resolutions; resolveAll: boolean }
+/** Conflitos de ID ao importar um pacote: o diálogo devolve as escolhas, ou null se o usuário cancelar. */
+export interface ImportConflictRequest { prepared: PreparedInstall; resolve: (a: ImportConflictAnswer | null) => void }
+interface FeedbackState { toasts: Toast[]; confirm: ConfirmRequest | null; prompt: PromptRequest | null; context: ContextMenuState | null; importConflict: ImportConflictRequest | null }
 export interface PromptRequest { title: string; label: string; value: string; resolve: (v: string | null) => void }
 export interface ContextMenuItem { label: string; onSelect: () => void; danger?: boolean; disabled?: boolean }
 export interface ContextMenuState { x: number; y: number; items: ContextMenuItem[]; title?: string }
 
-export const useFeedback = create<FeedbackState>(() => ({ toasts: [], confirm: null, prompt: null, context: null }));
+export const useFeedback = create<FeedbackState>(() => ({ toasts: [], confirm: null, prompt: null, context: null, importConflict: null }));
 let toastId = 1;
 export function toast(text: string, kind: Toast['kind'] = 'info', action?: Toast['action']): void {
   const id = toastId++;
@@ -155,6 +160,9 @@ export function confirmDialog(o: Omit<ConfirmRequest, 'resolve'>): Promise<boole
 }
 export function promptDialog(title: string, label: string, value: string): Promise<string | null> {
   return new Promise((resolve) => useFeedback.setState({ prompt: { title, label, value, resolve } }));
+}
+export function askImportConflicts(prepared: PreparedInstall): Promise<ImportConflictAnswer | null> {
+  return new Promise((resolve) => useFeedback.setState({ importConflict: { prepared, resolve } }));
 }
 export const openContextMenu = (context: ContextMenuState) => useFeedback.setState({ context });
 export const closeContextMenu = () => useFeedback.setState({ context: null });

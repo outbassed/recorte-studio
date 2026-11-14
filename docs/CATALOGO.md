@@ -98,5 +98,5 @@ O palco calcula a matriz câmera × pais × nó (a mesma composição do renderi
 - A decomposição de matrizes não representa cisalhamento (pai com escala não uniforme e filho girado).
 - Mudar o pivô de um elemento cuja posição já é animada recalcula só o valor-base; os keyframes de posição não são deslocados.
 - Arrastar a bolinha num grupo com posição animada grava o keyframe do tempo atual (autokey); não desloca a animação inteira.
-- Pacotes trazem objetos e cenários (com imagens). Personagens, poses, sons e fontes em pacote ainda não.
+- Pacotes trazem objetos, cenários (com imagens), **personagens e poses** (a partir da expansão da Biblioteca, ver `docs/PACOTES-OFICIAIS.md`). Sons, fontes e roupas/cabelos como itens independentes ainda não.
 - O celular foi testado só com emulação no Chrome de desktop.

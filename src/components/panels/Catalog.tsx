@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { BackgroundSchema, CharacterDefinitionSchema, type CharacterDefinition, type CustomBackground, type Project, type ViewId } from '@/engine/model/schema';
 import { createLightNode, createShapeNode, createTextNode, newCharacterDefinition } from '@/engine/model/factory';
-import { deepClone, uid } from '@/engine/model/ids';
+import { deepClone, newItemId } from '@/engine/model/ids';
 import { BUILTIN_CHARACTERS } from '@/engine/character/presets';
 import { getProp } from '@/engine/world/props';
 import { OBJECT_PREFIX, renderCustomObject } from '@/engine/world/pieces';
@@ -191,12 +191,23 @@ function CatalogCard({ e, project, list, variant, active, onDetails }: { e: Cata
 
 /* ------------------------------ detalhes ------------------------------ */
 const VIEWS: Array<{ id: ViewId; label: string }> = [{ id: 'front', label: 'Frente' }, { id: 'left', label: 'Esquerda' }, { id: 'right', label: 'Direita' }, { id: 'back', label: 'Costas' }];
+const DIAGONALS: Array<{ id: ViewId; label: string }> = [{ id: 'front-left', label: 'Diag. frontal esq.' }, { id: 'front-right', label: 'Diag. frontal dir.' }, { id: 'back-left', label: 'Diag. traseira esq.' }, { id: 'back-right', label: 'Diag. traseira dir.' }];
+
+/** As 4 vistas principais, com as 4 diagonais atrás de um botão (o personagem tem 8 vistas). */
+function CharacterViews({ e, project }: { e: CatalogEntry; project: Project }) {
+  const [diag, setDiag] = useState(false);
+  const list = diag ? [...VIEWS, ...DIAGONALS] : VIEWS;
+  return (
+    <>
+      <div className="cat-views" data-testid="catalog-views">{list.map((v) => <figure key={v.id} data-view={v.id}><EntryThumb e={e} project={project} size={84} view={v.id} full /><figcaption>{v.label}</figcaption></figure>)}</div>
+      <button type="button" className="btn btn-sm" data-testid="catalog-diagonals" aria-pressed={diag} onClick={() => setDiag(!diag)}>{diag ? 'Só as 4 vistas principais' : 'Ver as diagonais (8 vistas)'}</button>
+    </>
+  );
+}
 
 export function DetailPreview({ e, project }: { e: CatalogEntry; project: Project }) {
   if (e.broken) return <p className="lib-error" role="alert">Indisponível: {e.broken} Você pode apagar este registro.</p>;
-  if (e.kind === 'character') {
-    return <div className="cat-views" data-testid="catalog-views">{VIEWS.map((v) => <figure key={v.id}><EntryThumb e={e} project={project} size={84} view={v.id} full /><figcaption>{v.label}</figcaption></figure>)}</div>;
-  }
+  if (e.kind === 'character') return <CharacterViews e={e} project={project} />;
   if (e.ref.type === 'project-background') {
     const cb = project.customBackgrounds[e.ref.id];
     return cb ? <CustomBackgroundCard cb={cb} /> : null;
@@ -284,7 +295,7 @@ function FooterFor({ view, onCreatedBackground }: { view: CatalogView; onCreated
             if (selChar?.kind !== 'character') return;
             const name = await promptDialog('Salvar pose', 'Nome da pose', `Pose de ${selChar.name}`);
             if (!name) return;
-            await repo.putLibrary({ id: uid('lib'), kind: 'pose', name, favorite: 0, createdAt: Date.now(), updatedAt: Date.now(), data: { rig: deepClone(selChar.rig), handL: selChar.handL, handR: selChar.handR } });
+            await repo.putLibrary({ id: newItemId(), kind: 'pose', name, favorite: 0, createdAt: Date.now(), updatedAt: Date.now(), data: { rig: deepClone(selChar.rig), handL: selChar.handL, handR: selChar.handR } });
             await reloadLibrary();
             toast(`Pose "${name}" salva em Elenco → Poses.`, 'success');
           }}>Salvar pose</button>
@@ -297,7 +308,7 @@ function FooterFor({ view, onCreatedBackground }: { view: CatalogView; onCreated
             const raw = JSON.parse(await f.text()) as { format?: string; character?: unknown };
             if (raw.format !== 'recorte-studio-character') throw new Error('arquivo não é um personagem do Recorte Studio');
             const parsed = CharacterDefinitionSchema.parse(raw.character);
-            const copy: CharacterDefinition = { ...parsed, id: uid('char'), builtinId: undefined, spriteAssetId: undefined };
+            const copy: CharacterDefinition = { ...parsed, id: newItemId(), builtinId: undefined, spriteAssetId: undefined };
             commit('Importar personagem', (d) => { d.characters[copy.id] = copy; });
             toast(`"${copy.name}" importado.`, 'success');
           } catch (err) {
@@ -503,7 +514,7 @@ export function ToolboxPanel() {
         <button type="button" className="btn btn-primary" data-testid="toolbox-open-library" onClick={openLibrary}><Library size={15} /> Abrir Biblioteca completa</button>
         <button type="button" className="btn btn-sm" data-testid="lib-save-scene" onClick={async () => {
           try {
-            await repo.putLibrary({ id: uid('lib'), kind: 'scene', name: scene.name, favorite: 0, createdAt: Date.now(), updatedAt: Date.now(), data: { scene: deepClone(scene), characters: deepClone(project.characters) } });
+            await repo.putLibrary({ id: newItemId(), kind: 'scene', name: scene.name, favorite: 0, createdAt: Date.now(), updatedAt: Date.now(), data: { scene: deepClone(scene), characters: deepClone(project.characters) } });
             await reloadLibrary();
             toast(`Cena "${scene.name}" salva na biblioteca (Cenários → Cenas-molde).`, 'success');
           } catch (err) { toast(storageError(err, 'Não foi possível salvar a cena'), 'error'); }

@@ -6,20 +6,24 @@
  */
 import { BUILTIN_CHARACTERS } from '@/engine/character/presets';
 import { createProject, newCharacterDefinition } from '@/engine/model/factory';
-import { deepClone, uid } from '@/engine/model/ids';
+import { deepClone, newItemId } from '@/engine/model/ids';
 import { CustomObjectSchema, type CharacterDefinition } from '@/engine/model/schema';
 import { getProp } from '@/engine/world/props';
 import { createPiece } from '@/engine/world/pieces';
 import { animatedTemplate } from '@/features/catalog/animatedTemplates';
 import type { CatalogEntry } from '@/features/catalog/catalog';
 import { createAndOpen, openProjectById } from '@/features/projects/session';
-import { repo, StorageQuotaError, type LibraryKind, type LibraryRecord } from '@/storage/db';
+import { db, repo, StorageQuotaError, type LibraryRecord } from '@/storage/db';
+import { identityOf, planIdChange } from '@/features/library/changeId';
+import { analyzeImport, planImport, readLibraryRecord, type Resolutions } from '@/features/packs/conflicts';
+import type { PackItemData, ParsedPack } from '@/features/packs/format';
+import { builtinIds } from '@/features/packs/builtinIds';
 import { editEntry, reloadLibrary, useLibrary } from './catalogActions';
-import { libIdentity, newCustomObject, newScenery } from './creatorActions';
+import { newCustomObject, newScenery } from './creatorActions';
 import { usePacks } from './packActions';
 import { setPref, usePrefs } from './prefs';
 import { commit, useProjectStore } from './projectStore';
-import { closeOverlay, confirmDialog, promptDialog, toast, useUI } from './uiStore';
+import { askImportConflicts, closeOverlay, confirmDialog, promptDialog, toast, useUI } from './uiStore';
 
 const hasProject = () => !!useProjectStore.getState().project;
 
@@ -77,20 +81,22 @@ export async function copyToMyLibrary(e: CatalogEntry): Promise<string | null> {
   const ref = e.ref;
   if (ref.type === 'builtin-character') {
     const src = BUILTIN_CHARACTERS.find((c) => c.builtinId === ref.builtinId);
-    if (src) { const d: CharacterDefinition = { ...deepClone(src), id: uid('char'), name: `${src.name} (cópia)`, builtinId: undefined, favorite: false }; rec = { id: uid('lib'), kind: 'character', name: d.name, favorite: 0, createdAt: now, updatedAt: now, data: d }; }
+    if (src) { const d: CharacterDefinition = { ...deepClone(src), id: newItemId(), name: `${src.name} (cópia)`, builtinId: undefined, favorite: false }; rec = { id: newItemId(), kind: 'character', name: d.name, favorite: 0, createdAt: now, updatedAt: now, data: d }; }
   } else if (ref.type === 'builtin-prop') {
     const def = getProp(ref.propId);
     if (def) {
-      const obj = CustomObjectSchema.parse({ id: uid('obj'), name: `${def.label} (cópia)`, width: def.w, height: def.h, createdAt: now, updatedAt: now, pieces: [createPiece('prop', { name: def.label, refId: def.id, colorA: def.a, colorB: def.b, state: def.defaultState ?? '' })] });
-      rec = { id: uid('lib'), kind: 'object', name: obj.name, favorite: 0, createdAt: now, updatedAt: now, data: { bundle: 2, object: obj, objects: [], assets: [] } };
+      const obj = CustomObjectSchema.parse({ id: newItemId(), name: `${def.label} (cópia)`, width: def.w, height: def.h, createdAt: now, updatedAt: now, pieces: [createPiece('prop', { name: def.label, refId: def.id, colorA: def.a, colorB: def.b, state: def.defaultState ?? '' })] });
+      rec = { id: newItemId(), kind: 'object', name: obj.name, favorite: 0, createdAt: now, updatedAt: now, data: { bundle: 2, object: obj, objects: [], assets: [] } };
     }
   } else if (ref.type === 'builtin-object') {
     const t = animatedTemplate(ref.tplId);
-    if (t) { const obj = { ...deepClone(t), id: uid('obj'), name: `${t.name} (cópia)`, createdAt: now, updatedAt: now }; rec = { id: uid('lib'), kind: 'object', name: obj.name, favorite: 0, createdAt: now, updatedAt: now, data: { bundle: 2, object: obj, objects: [], assets: [] } }; }
+    if (t) { const obj = { ...deepClone(t), id: newItemId(), name: `${t.name} (cópia)`, createdAt: now, updatedAt: now }; rec = { id: newItemId(), kind: 'object', name: obj.name, favorite: 0, createdAt: now, updatedAt: now, data: { bundle: 2, object: obj, objects: [], assets: [] } }; }
   } else if (ref.type === 'pack-item') {
     const it = usePacks.getState().packs.find((p) => p.id === ref.packId)?.items.find((i) => i.id === ref.itemId);
-    if (it?.kind === 'object') { const data = deepClone(it.data); data.object = { ...data.object, id: uid('obj'), name: `${it.name} (cópia)` }; rec = { id: uid('lib'), kind: 'object', name: data.object.name, favorite: 0, createdAt: now, updatedAt: now, data }; }
-    if (it?.kind === 'background') { const data = deepClone(it.data); data.background = { ...data.background, id: uid('cbg'), name: `${it.name} (cópia)` }; rec = { id: uid('lib'), kind: 'background', name: data.background.name, favorite: 0, createdAt: now, updatedAt: now, data }; }
+    if (it?.kind === 'object') { const data = deepClone(it.data); data.object = { ...data.object, id: newItemId(), name: `${it.name} (cópia)` }; rec = { id: newItemId(), kind: 'object', name: data.object.name, favorite: 0, createdAt: now, updatedAt: now, data }; }
+    if (it?.kind === 'background') { const data = deepClone(it.data); data.background = { ...data.background, id: newItemId(), name: `${it.name} (cópia)` }; rec = { id: newItemId(), kind: 'background', name: data.background.name, favorite: 0, createdAt: now, updatedAt: now, data }; }
+    if (it?.kind === 'character') { const d: CharacterDefinition = { ...deepClone(it.data), id: newItemId(), name: `${it.name} (cópia)`, builtinId: undefined, favorite: false }; rec = { id: newItemId(), kind: 'character', name: d.name, favorite: 0, createdAt: now, updatedAt: now, data: d }; }
+    if (it?.kind === 'pose') rec = { id: newItemId(), kind: 'pose', name: `${it.name} (cópia)`, favorite: 0, createdAt: now, updatedAt: now, data: deepClone(it.data) };
   } else if (ref.type === 'builtin-background') {
     toast('Para copiar um cenário padrão, use Editar: ele abre no Criador de Cenários e você salva na biblioteca de lá.', 'info');
     return null;
@@ -120,11 +126,11 @@ export async function duplicateRecord(libId: string): Promise<void> {
   const r = recordOf(libId);
   if (!r) return;
   const data = deepClone(r.data) as Record<string, unknown>;
-  if (r.kind === 'character') data.id = uid('char');
-  if (r.kind === 'object' && data.object) (data.object as Record<string, unknown>).id = uid('obj');
-  if (r.kind === 'background' && data.background) (data.background as Record<string, unknown>).id = uid('cbg');
+  if (r.kind === 'character') data.id = newItemId();
+  if (r.kind === 'object' && data.object) (data.object as Record<string, unknown>).id = newItemId();
+  if (r.kind === 'background' && data.background) (data.background as Record<string, unknown>).id = newItemId();
   const now = Date.now();
-  if (await safePut({ ...r, id: uid('lib'), name: `${r.name} (cópia)`, favorite: 0, createdAt: now, updatedAt: now, data }, 'Não foi possível duplicar')) {
+  if (await safePut({ ...r, id: newItemId(), name: `${r.name} (cópia)`, favorite: 0, createdAt: now, updatedAt: now, data }, 'Não foi possível duplicar')) {
     await reloadLibrary();
     toast(`"${r.name} (cópia)" criado.`, 'success');
   }
@@ -158,34 +164,107 @@ export function exportRecords(records: LibraryRecord[], fileName = 'biblioteca-r
   downloadJson(fileName, JSON.stringify({ format: 'recorte-studio-library', version: 1, items: records }, null, 2));
 }
 
-const IDENTITY: Partial<Record<LibraryKind, (d: unknown) => string | undefined>> = { object: libIdentity.object, background: libIdentity.background, character: libIdentity.character };
+export interface LibraryImportResult {
+  /** Itens gravados (novos). */
+  created: number;
+  /** Mesmo ID e mesmo conteúdo de algo que já existe: reconhecidos como duplicata, não importados de novo. */
+  duplicates: number;
+  /** Conflitos resolvidos com um ID novo (automático ou manual). */
+  renamed: number;
+  /** Itens que o usuário escolheu não importar. */
+  notImported: number;
+  /** Registros ilegíveis ou repetidos dentro do próprio arquivo. */
+  skipped: number;
+  cancelled: boolean;
+}
 
 /**
- * Importa um arquivo de biblioteca (.json). Item com a mesma identidade de um já salvo ATUALIZA o
- * registro existente em vez de duplicar. Devolve quantos foram criados e atualizados.
+ * Importa um arquivo de biblioteca (.json) com o MESMO motor de conflitos dos pacotes: item com o mesmo ID e o mesmo
+ * conteúdo é duplicata reconhecida; com conteúdo diferente (ou ID de item padrão) abre o diálogo de conflito; nada é
+ * sobrescrito em silêncio e a gravação é atômica. `opts` permite resolver sem diálogo (testes e automação).
  */
-export async function importLibraryJson(text: string): Promise<{ created: number; updated: number; skipped: number }> {
+export async function importLibraryJson(text: string, label = 'Arquivo de biblioteca', opts: { resolutions?: Resolutions; resolveAll?: boolean } = {}): Promise<LibraryImportResult> {
   const parsed = JSON.parse(text) as { format?: string; items?: unknown };
   if (parsed.format !== 'recorte-studio-library' || !Array.isArray(parsed.items)) throw new Error('não é um arquivo de biblioteca do Recorte Studio');
-  const existing = await repo.listLibrary();
-  let created = 0;
-  let updated = 0;
-  let skipped = 0;
+  const [existing, packs] = await Promise.all([repo.listLibrary(), repo.listPacks()]);
+  const res: LibraryImportResult = { created: 0, duplicates: 0, renamed: 0, notImported: 0, skipped: 0, cancelled: false };
+  const now = Date.now();
+  const items: PackItemData[] = [];
+  const plain: LibraryRecord[] = [];
+  const seen = new Set<string>();
   for (const raw of parsed.items as Array<Partial<LibraryRecord>>) {
-    if (!raw || typeof raw !== 'object' || typeof raw.name !== 'string' || !raw.kind || raw.data === undefined) { skipped++; continue; }
-    const idOf = IDENTITY[raw.kind];
-    const ident = idOf?.(raw.data);
-    const same = ident ? existing.find((r) => r.kind === raw.kind && idOf!(r.data) === ident) : undefined;
-    const now = Date.now();
-    await repo.putLibrary({ id: same?.id ?? uid('lib'), kind: raw.kind, name: raw.name.slice(0, 120), favorite: same?.favorite ?? 0, createdAt: same?.createdAt ?? now, updatedAt: now, data: raw.data });
-    if (same) updated++;
-    else created++;
+    if (!raw || typeof raw !== 'object' || typeof raw.name !== 'string' || !raw.kind || raw.data === undefined) { res.skipped++; continue; }
+    const rec: LibraryRecord = { id: typeof raw.id === 'string' && raw.id ? raw.id : newItemId(), kind: raw.kind, name: raw.name.slice(0, 120), favorite: 0, createdAt: now, updatedAt: now, data: raw.data };
+    const read = readLibraryRecord(rec);
+    if (!read) { plain.push({ ...rec, id: newItemId() }); continue; } // cena, sequência ou item ilegível: entra como novo registro
+    if (seen.has(read.id)) { res.skipped++; continue; } // o próprio arquivo repete o mesmo ID
+    seen.add(read.id);
+    items.push({ id: read.id, kind: read.kind, name: rec.name, data: read.data } as PackItemData);
   }
+  const fake: ParsedPack = { manifest: { format: 'recorte-studio-pack', formatVersion: 1, id: 'arquivo-biblioteca', name: label, version: '', description: '', author: '', license: '—', category: 'Biblioteca', tags: [], dependencies: [], items: [], media: [] }, items, media: [], size: text.length };
+  const analysis = analyzeImport(fake, { packs, library: existing, builtin: builtinIds(), incomingSource: 'imported' });
+  let resolutions = opts.resolutions ?? {};
+  let resolveAll = !!opts.resolveAll;
+  if (analysis.conflicts.length && !opts.resolutions && !opts.resolveAll) {
+    const answer = await askImportConflicts({ pack: fake, bytes: new Uint8Array(), sha256: '', source: 'imported', analysis, asSeparatePack: false });
+    if (!answer) return { ...res, cancelled: true };
+    resolutions = answer.resolutions;
+    resolveAll = answer.resolveAll;
+  }
+  const plan = planImport(fake, analysis, resolutions, { resolveAll });
+  if (!plan.ok) throw new Error(plan.errors.join(' '));
+  res.duplicates = plan.duplicates.length;
+  res.notImported = plan.skipped.length;
+  res.renamed = Object.keys(plan.idMap).length;
+  const out: LibraryRecord[] = [...plain];
+  for (const it of plan.items) {
+    // Pose e cena não têm ID interno: a identidade é o do registro. Os demais guardam a identidade dentro do dado.
+    const recId = it.kind === 'pose' ? it.id : newItemId();
+    out.push({ id: recId, kind: it.kind, name: it.name, favorite: 0, createdAt: now, updatedAt: now, data: it.data });
+  }
+  try {
+    await db.transaction('rw', db.library, async () => { for (const r of out) await db.library.put(r); });
+  } catch (e) {
+    throw new Error(storageError(e, 'Não foi possível importar'));
+  }
+  res.created = out.length;
   await reloadLibrary();
-  return { created, updated, skipped };
+  return res;
 }
 
 /** Tamanho aproximado do item salvo (dados + imagens). */
 export function recordBytes(data: unknown, assetSizes = 0): number {
   try { return new Blob([JSON.stringify(data)]).size + assetSizes; } catch { return assetSizes; }
+}
+
+/**
+ * Alterar o ID de um item da minha biblioteca: valida (1–40, A-Z a-z 0-9 -, livre no catálogo), pede confirmação,
+ * atualiza as referências em outros itens da biblioteca e grava tudo de uma vez. Projetos .jrec não são tocados.
+ */
+export async function changeItemId(libId: string): Promise<boolean> {
+  const [records, packs] = await Promise.all([repo.listLibrary(), repo.listPacks()]);
+  const r = records.find((x) => x.id === libId);
+  if (!r) return false;
+  const raw = await promptDialog('Alterar ID', 'Novo ID (1 a 40 caracteres: letras sem acento, números e hífen)', identityOf(r));
+  if (raw === null || raw === identityOf(r)) return false;
+  const plan = planIdChange({ records, packs, builtin: builtinIds(), libId, newId: raw });
+  if (!plan.ok) { toast(plan.message, 'error'); return false; }
+  const ok = await confirmDialog({
+    title: 'Alterar ID do item',
+    message: `Mudar o ID de "${r.name}" de ${plan.oldId} para ${plan.newId}? ${plan.referencesUpdated ? `${plan.referencesUpdated} outro(s) item(ns) da biblioteca que usam este ID serão atualizados. ` : ''}Projetos já salvos guardam a própria cópia e continuam abrindo como estão.`,
+    confirmLabel: 'Alterar ID',
+  });
+  if (ok !== true) return false;
+  try {
+    await db.transaction('rw', db.library, async () => {
+      for (const id of plan.remove) await db.library.delete(id);
+      for (const rec of plan.put) await db.library.put(rec);
+    });
+  } catch (e) {
+    toast(storageError(e, 'Não foi possível alterar o ID'), 'error');
+    return false;
+  }
+  await reloadLibrary();
+  toast(`ID de "${r.name}" alterado para ${plan.newId}.`, 'success');
+  return true;
 }
