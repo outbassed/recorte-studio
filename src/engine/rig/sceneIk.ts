@@ -106,7 +106,7 @@ export function applySceneIk(input: SceneIkInput): { rig: Rig; reports: Partial<
     if (!Number.isFinite(det) || Math.abs(det) < 1e-9) continue; // personagem sem área (escala 0): nada a resolver
     const [lx, ly] = apply(invert(m), world.x, world.y);
     // O IK de cada braço lê o `rig` ORIGINAL (nunca o resultado do outro braço): a ordem não importa.
-    const sol = solveArmIk(input.def, input.bodyView, input.rig, side, { x: lx, y: ly }, cfg.bend);
+    const sol = solveArmIk(input.def, input.bodyView, input.rig, side, { x: lx, y: ly }, cfg.bend, cfg.soft);
     rig = blendArmIk(rig, side, sol, cfg.weight);
     reports[side] = { reached: sol.reached, limited: sol.limited, error: sol.error, distance: sol.distance, maxReach: sol.maxReach, target: world };
   }

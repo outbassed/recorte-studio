@@ -84,6 +84,7 @@ export const PROPERTIES: PropertyDef[] = [
       num(`ik.${arm}.weight`, `IK do braço ${who}: força`, { unit: '%', display: 100, min: 0, max: 1, sliderMin: 0, sliderMax: 100, appliesTo: ['character'] }),
       num(`ik.${arm}.x`, `IK do braço ${who}: alvo X`, { unit: 'px', min: -20000, max: 20000, sliderMin: -1400, sliderMax: 1400, step: 0.5, appliesTo: ['character'] }),
       num(`ik.${arm}.y`, `IK do braço ${who}: alvo Y`, { unit: 'px', min: -20000, max: 20000, sliderMin: -800, sliderMax: 800, step: 0.5, appliesTo: ['character'] }),
+      num(`ik.${arm}.soft`, `IK do braço ${who}: suavidade`, { unit: '%', display: 100, min: 0, max: 0.3, sliderMin: 0, sliderMax: 30, appliesTo: ['character'] }),
       { path: `ik.${arm}.targetMode`, label: `IK do braço ${who}: tipo de alvo`, kind: 'enum', appliesTo: ['character'] } as PropertyDef,
       { path: `ik.${arm}.targetId`, label: `IK do braço ${who}: elemento-alvo`, kind: 'enum', appliesTo: ['character'] } as PropertyDef,
       { path: `ik.${arm}.bend`, label: `IK do braço ${who}: cotovelo`, kind: 'enum', appliesTo: ['character'] } as PropertyDef,

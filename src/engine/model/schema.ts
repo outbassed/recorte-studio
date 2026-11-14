@@ -238,6 +238,8 @@ export const ArmIkSchema = z.object({
   y: finite.default(0),
   /** Para onde o cotovelo dobra: 'in' = antebraço abre para fora (padrão das poses), 'out' = cotovelo para fora (mão na cintura). */
   bend: z.enum(['in', 'out']).default('in'),
+  /** Suavidade perto do alcance máximo (fração do braço, 0–0,3). 0 = exato (padrão); maior evita o "estalo" do cotovelo ao esticar. */
+  soft: finite.default(0),
 });
 export type ArmIk = z.infer<typeof ArmIkSchema>;
 export const CharacterIkSchema = z.object({

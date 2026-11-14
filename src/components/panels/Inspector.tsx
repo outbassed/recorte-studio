@@ -34,6 +34,8 @@ import { beginGroup, commit, currentProject, endGroup, useCurrentScene, useProje
 import { extractSequence, FRAMING_PRESETS, frameCamera, type FramingPreset } from '@/engine/model/ops';
 import { applyCustomBackground, availableTimes, customIdOf, isCustomPreset, resolveCustomVariant, TIME_LABELS } from '@/engine/world/customBackgrounds';
 import { getAction } from '@/engine/animation/actions';
+import { evaluateScene } from '@/engine/animation/evaluate';
+import { currentHandWorld } from '@/engine/rig/handPosition';
 import { newItemId } from '@/engine/model/ids';
 import { repo } from '@/storage/db';
 import type { TimeOfDay } from '@/engine/model/schema';
@@ -328,6 +330,81 @@ function ArmDepthSection({ scene, node }: { scene: Scene; node: CharacterNode })
   );
 }
 
+const IK_ARMS = [['armL', 'L', 'Braço esquerdo'], ['armR', 'R', 'Braço direito']] as const;
+const round2 = (v: number) => Math.round(v * 100) / 100;
+
+/** Diz, em português, o que o IK fez neste instante (alcançou, esticou ao máximo, bateu num limite...). */
+function IkStatus({ project, scene, node, side }: { project: Project; scene: Scene; node: CharacterNode; side: 'L' | 'R' }) {
+  const t = useTimeMs();
+  const time = t < 0 ? nowMs() : t;
+  const r = evaluateScene(project, scene, time).characters[node.id]?.ik?.[side];
+  const msg = !r
+    ? 'Sem alvo válido neste instante: o braço usa a pose.'
+    : r.reached ? 'A mão chega ao alvo.'
+      : r.limited === 'out-of-reach' ? `Alvo longe demais: o braço estica ao máximo (faltam ${Math.round(r.error)} px).`
+        : r.limited === 'too-close' ? `Alvo perto demais do ombro: o braço dobra ao máximo (${Math.round(r.error)} px de diferença).`
+          : r.limited === 'soft-reach' ? `Quase no alcance máximo: a mão freia ${Math.round(r.error)} px antes do alvo (suavidade ligada).`
+            : `Limite da articulação: a mão fica a ${Math.round(r.error)} px do alvo.`;
+  return <p className="hint" data-testid={`ik-status-${side}`} data-reached={r ? String(r.reached) : 'none'} role="status">{msg}</p>;
+}
+
+/**
+ * IK (cinemática inversa) opcional dos braços: a mão vai até um ponto ou elemento. Recolhida e desligada por padrão;
+ * desligada, o braço usa só os ângulos de "Pose e rig" e nada muda. Ao ligar, o alvo nasce na mão (nada pula).
+ */
+function IkSection({ scene, node, project, set }: { scene: Scene; node: CharacterNode; project: Project; set: (label: string, fn: (n: CharacterNode) => void) => void }) {
+  const others = Object.values(scene.nodes).filter((n) => n.id !== node.id);
+  const toggle = (arm: 'armL' | 'armR', side: 'L' | 'R', on: boolean) => {
+    if (!on) {
+      set('Desligar IK do braço', (n) => { n.ik[arm].enabled = false; });
+      return;
+    }
+    const time = nowMs();
+    const here = currentHandWorld(project, scene, node.id, side, time);
+    const rig = evaluateScene(project, scene, time).characters[node.id]?.pose.rig;
+    const lower = rig ? (side === 'L' ? rig.armLLower : rig.armRLower) : 0;
+    set('Ligar IK do braço', (n) => {
+      const c = n.ik[arm];
+      c.enabled = true;
+      c.targetMode = 'point';
+      c.weight = 1;
+      c.bend = lower < 0 ? 'out' : 'in';
+      if (here) { c.x = round2(here.x); c.y = round2(here.y); }
+    });
+  };
+  const keyPaths = IK_ARMS.flatMap(([arm]) => (node.ik[arm].enabled ? [`ik.${arm}.weight`, ...(node.ik[arm].targetMode === 'node' ? [] : [`ik.${arm}.x`, `ik.${arm}.y`])] : []));
+  return (
+    <Section title="IK: alcançar um ponto ou objeto" testId="sec-ik" defaultOpen={false} actions={<SectionKeys id="ik" scene={scene} target={node.id} kind="character" paths={keyPaths} />}>
+      <p className="hint">Opcional. Com o IK desligado o braço usa só os ângulos de “Pose e rig”. Ao ligar, o alvo começa na mão atual e nada muda na tela; depois é só mover o alvo.</p>
+      {IK_ARMS.map(([arm, side, label]) => {
+        const c = node.ik[arm];
+        return (
+          <div key={arm} className="ik-arm" data-testid={`ik-${arm}`}>
+            <ToggleField label={`${label}: usar IK`} testId={`ik-toggle-${arm}`} checked={c.enabled} onChange={(v) => toggle(arm, side, v)} />
+            {c.enabled && (
+              <>
+                <DiscreteField scene={scene} target={node.id} path={`ik.${arm}.targetMode`} label="Alvo" testId={`ik-mode-${arm}`} options={[{ id: 'point', label: 'Ponto X/Y da cena' }, { id: 'node', label: 'Um elemento da cena' }]} />
+                {c.targetMode === 'node' ? (
+                  <DiscreteField scene={scene} target={node.id} path={`ik.${arm}.targetId`} label="Elemento-alvo" testId={`ik-target-${arm}`} options={[{ id: '', label: 'Nenhum' }, ...others.map((o) => ({ id: o.id, label: o.name }))]} />
+                ) : (
+                  <>
+                    <PropField scene={scene} target={node.id} kind="character" path={`ik.${arm}.x`} label="Alvo X" testId={`ik-x-${arm}`} />
+                    <PropField scene={scene} target={node.id} kind="character" path={`ik.${arm}.y`} label="Alvo Y" testId={`ik-y-${arm}`} />
+                  </>
+                )}
+                <PropField scene={scene} target={node.id} kind="character" path={`ik.${arm}.weight`} label="Força do IK" testId={`ik-weight-${arm}`} />
+                <DiscreteField scene={scene} target={node.id} path={`ik.${arm}.bend`} label="Cotovelo" testId={`ik-bend-${arm}`} options={[{ id: 'in', label: 'Antebraço aberto (padrão)' }, { id: 'out', label: 'Cotovelo para fora (mão na cintura)' }]} />
+                <PropField scene={scene} target={node.id} kind="character" path={`ik.${arm}.soft`} label="Suavidade ao esticar" testId={`ik-soft-${arm}`} />
+                <IkStatus project={project} scene={scene} node={node} side={side} />
+              </>
+            )}
+          </div>
+        );
+      })}
+    </Section>
+  );
+}
+
 const VIEW_OPTIONS = [{ id: 'auto', label: 'Automática' }, ...VIEW_ORDER.map((v) => ({ id: v, label: VIEW_LABELS[v] }))];
 
 function CharacterSections({ scene, node, project }: { scene: Scene; node: CharacterNode; project: Project }) {
@@ -401,6 +478,7 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
         <SelectField label="Mão esquerda" value={node.handL} options={[{ id: 'open', label: 'Aberta' }, { id: 'fist', label: 'Fechada' }, { id: 'point', label: 'Apontando' }]} onChange={(v) => set('Mão', (n) => { n.handL = v as CharacterNode['handL']; })} />
         <SelectField label="Mão direita" value={node.handR} options={[{ id: 'open', label: 'Aberta' }, { id: 'fist', label: 'Fechada' }, { id: 'point', label: 'Apontando' }]} onChange={(v) => set('Mão', (n) => { n.handR = v as CharacterNode['handR']; })} />
       </Section>
+      <IkSection scene={scene} node={node} project={project} set={set} />
       </Pane>
       <Pane tab="Animar">
       <Section title="Animar" testId="sec-animate">

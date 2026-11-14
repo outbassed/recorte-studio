@@ -232,6 +232,70 @@ describe('IK 2D de dois ossos: determinismo, continuidade e estabilidade', () =>
   });
 });
 
+describe('IK 2D de dois ossos: zona suave (soft) perto do esticamento total', () => {
+  const base: TwoBoneParams = { l1: 76, l2: 87, bend: 1 };
+  const full = base.l1 + base.l2;
+
+  it('soft = 0 (padrão) é idêntico ao IK exato', () => {
+    for (const d of [20, 80, 140, 162.9, 163, 200]) {
+      expect(solveTwoBone(d, 10, { ...base, soft: 0 })).toEqual(solveTwoBone(d, 10, base));
+    }
+  });
+
+  it('abaixo da zona suave nada muda; dentro dela a mão freia, nunca passa do alvo nem do alcance, e a direção é exata', () => {
+    const soft = 20;
+    const d0 = full - soft;
+    for (const d of [20, 60, 100, d0 - 0.001]) {
+      const a = solveTwoBone(d, 0, { ...base, soft });
+      const b = solveTwoBone(d, 0, base);
+      expect(a.phi1).toBeCloseTo(b.phi1, 9);
+      expect(a.flexion).toBeCloseTo(b.flexion, 9);
+      expect(a.reached).toBe(true);
+    }
+    let prevFlex = Infinity;
+    for (let d = d0; d <= full + 60; d += 0.5) {
+      const s = solveTwoBone(d, 0, { ...base, soft });
+      const reach = Math.hypot(s.end.x, s.end.y);
+      expect(reach).toBeLessThanOrEqual(Math.min(d, full) + 1e-9); // a ponta nunca ultrapassa o alvo nem o braço
+      if (d <= full) expect(d - reach).toBeLessThanOrEqual(soft + 1e-9); // dentro do alcance, a falta é limitada pela zona suave
+      expect(Math.abs(Math.atan2(s.end.y, s.end.x))).toBeLessThan(1e-9); // direção exata (alvo no eixo x)
+      expect(Math.abs(s.flexion)).toBeLessThanOrEqual(prevFlex + 1e-12); // estica de forma monótona
+      prevFlex = Math.abs(s.flexion);
+      if (d <= full && d - reach > 1e-3) expect(s.limited).toBe('soft-reach');
+    }
+  });
+
+  it('bem fora do alcance o braço fica (praticamente) reto, sem NaN', () => {
+    const s = solveTwoBone(full + 400, 0, { ...base, soft: 20 });
+    expect(Math.abs(s.flexion)).toBeLessThan(1e-3);
+    expect(s.limited).toBe('out-of-reach');
+  });
+
+  it('a resposta é muito mais suave: o salto máximo do ângulo por passo do alvo cai bastante', () => {
+    const worst = (soft: number) => {
+      let prev = solveTwoBone(100, 30, { ...base, soft });
+      let w = 0;
+      for (let i = 1; i <= 4000; i++) {
+        const s = solveTwoBone(100 + i * 0.1, 30, { ...base, soft });
+        w = Math.max(w, Math.abs(s.flexion - prev.flexion));
+        prev = s;
+      }
+      return w;
+    };
+    const exact = worst(0);
+    const soft = worst(25);
+    expect(exact).toBeGreaterThan(0.03); // o estalo é real no IK exato (~3° em um passo de 0,1 px)
+    expect(soft).toBeLessThan(exact * 0.25);
+  });
+
+  it('soft inválido (NaN, negativo, enorme) é tratado sem NaN', () => {
+    for (const soft of [NaN, -5, 1e9, Infinity]) {
+      const s = solveTwoBone(150, 20, { ...base, soft });
+      expect(Number.isFinite(s.phi1) && Number.isFinite(s.flexion) && Number.isFinite(s.error)).toBe(true);
+    }
+  });
+});
+
 describe('IK 2D: utilidades de ângulo', () => {
   it('wrapAngle fica em (−π, π] e nearestAngle escolhe a volta mais próxima', () => {
     for (const a of [0, 1, -1, 3.5, -3.5, 10, -10, 100 * Math.PI, -100.3 * Math.PI]) {

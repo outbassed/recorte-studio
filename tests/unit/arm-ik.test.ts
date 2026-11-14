@@ -6,7 +6,7 @@ import { BUILTIN_CHARACTERS, poseRig } from '@/engine/character/presets';
 import { VIEW_ORDER } from '@/engine/character/views';
 import type { Rig } from '@/engine/model/schema';
 import { drawnHandIn, parseSvg } from './helpers/drawn';
-import { ARM_IK_LIMITS, armChain, blendArmIk, solveArmIk, type ArmSide } from '@/engine/rig/armIk';
+import { ARM_IK_LIMITS, armChain, armHandLocal, blendArmIk, solveArmIk, type ArmSide } from '@/engine/rig/armIk';
 
 function rng(seed: number) {
   let a = seed >>> 0;
@@ -41,7 +41,7 @@ describe('IK no braço do rig existente', () => {
             const reach = ch.l1 + ch.l2;
             // alvo bem dentro do alcance, em volta do ombro (no espaço do personagem)
             const ang = r() * Math.PI * 2;
-            const d = reach * (0.45 + r() * 0.5);
+            const d = reach * (0.45 + r() * 0.4); // até 85% do alcance (acima disso, só com 'soft' = 0 é exato)
             const sh = ch.toCharacter(ch.shoulder);
             const target = { x: sh.x + Math.cos(ang) * d, y: sh.y + Math.sin(ang) * d };
             const sol = solveArmIk(def, view, base, side, target, bend);
@@ -63,6 +63,62 @@ describe('IK no braço do rig existente', () => {
       }
     }
     expect(checked).toBeGreaterThan(BUILTIN_CHARACTERS.length * 8 * 4 * 0.4); // a maioria dos alvos é alcançável
+  });
+
+  it('cinemática direta (mão atual): bate com a mão desenhada para qualquer rig, vista e braço', () => {
+    const r = rng(2024);
+    for (const def of BUILTIN_CHARACTERS) {
+      for (const view of VIEW_ORDER) {
+        const rig: Rig = { ...poseRig('idle'), armLUpper: (r() - 0.3) * 200, armLLower: (r() - 0.5) * 200, armRUpper: (r() - 0.3) * 200, armRLower: (r() - 0.5) * 200, torsoLean: (r() - 0.5) * 30, breath: r(), sit: r() < 0.3 ? r() : 0, bodyY: r() < 0.3 ? r() * 40 : 0 };
+        const drawn = renderCharacter(def, poseOf(view, rig), def.id);
+        for (const side of ['L', 'R'] as const) {
+          const h = armHandLocal(def, view, rig, side);
+          const d = drawnHand(def, drawn.svg, side);
+          expect(Math.hypot(h.x - d.x, h.y - d.y), `${def.id} ${view} ${side}`).toBeLessThan(DRAW_TOL);
+        }
+      }
+    }
+  });
+
+  it('IK sobre a mão atual: alvo = mão onde já está ⇒ o braço não muda (ligar o IK não mexe em nada)', () => {
+    const r = rng(8);
+    for (const def of BUILTIN_CHARACTERS.slice(0, 4)) {
+      for (const view of VIEW_ORDER) {
+        for (const side of ['L', 'R'] as const) {
+          const [kU, kL] = keys(side);
+          // poses dentro do que o IK representa: cotovelo para o lado "in" e ombro dentro dos limites
+          const rig: Rig = { ...poseRig('idle'), [kU]: 20 + r() * 130, [kL]: 5 + r() * 120 };
+          const hand = armHandLocal(def, view, rig, side);
+          const sol = solveArmIk(def, view, rig, side, hand, 'in');
+          expect(sol.reached).toBe(true);
+          expect(blendArmIk(rig, side, sol, 1)[kU]).toBeCloseTo(rig[kU], 6);
+          expect(blendArmIk(rig, side, sol, 1)[kL]).toBeCloseTo(rig[kL], 6);
+        }
+      }
+    }
+  });
+
+  it('suavidade (soft) no braço: freia só perto do alcance máximo e o erro é limitado', () => {
+    const def = BUILTIN_CHARACTERS[0]!;
+    const rig = poseRig('idle');
+    const ch = armChain(def, 'front', rig, 'L');
+    const sh = ch.toCharacter(ch.shoulder);
+    const reach = ch.l1 + ch.l2;
+    const aim = (d: number) => ({ x: sh.x + d, y: sh.y });
+    // abaixo da zona suave: idêntico ao exato
+    const a = solveArmIk(def, 'front', rig, 'L', aim(reach * 0.7), 'in', 0.15);
+    const b = solveArmIk(def, 'front', rig, 'L', aim(reach * 0.7), 'in', 0);
+    expect(a.upper).toBeCloseTo(b.upper, 9);
+    expect(a.lower).toBeCloseTo(b.lower, 9);
+    // dentro dela: a mão para antes do alvo (no máximo `soft × alcance`)
+    const s = solveArmIk(def, 'front', rig, 'L', aim(reach * 0.99), 'in', 0.15);
+    expect(s.reached).toBe(false);
+    expect(s.limited).toBe('soft-reach');
+    expect(s.error).toBeGreaterThan(0.5);
+    expect(s.error).toBeLessThanOrEqual(0.15 * reach);
+    // e continua dentro dos limites do braço
+    expect(s.lower).toBeGreaterThanOrEqual(0);
+    for (const v of [s.upper, s.lower, s.hand.x, s.hand.y]) expect(Number.isFinite(v)).toBe(true);
   });
 
   it('a solução respeita os limites do braço (ombro e cotovelo) e o lado do cotovelo pedido', () => {

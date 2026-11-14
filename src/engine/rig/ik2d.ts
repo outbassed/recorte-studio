@@ -29,9 +29,16 @@ export interface TwoBoneParams {
   /** Limites do ângulo absoluto do osso 1, em radianos. Sem os dois, não há limite. */
   rootMin?: number;
   rootMax?: number;
+  /**
+   * IK "suave": comprimento (mesma unidade de l1/l2) da zona perto do esticamento total onde a distância é comprimida
+   * de forma contínua (d' = d₀ + s·(1 − e^−(d−d₀)/s)). Sem isso, o ângulo do cotovelo varia como √(distância) ao se
+   * aproximar do alcance máximo e o braço "estala" esticando. Com isso a resposta é suave (derivada contínua); a troca é
+   * que a mão para um pouco antes do alvo dentro dessa zona. 0 (padrão) = exato.
+   */
+  soft?: number;
 }
 
-export type IkLimit = 'none' | 'out-of-reach' | 'too-close' | 'elbow-limit' | 'root-limit';
+export type IkLimit = 'none' | 'out-of-reach' | 'too-close' | 'elbow-limit' | 'root-limit' | 'soft-reach';
 
 export interface TwoBoneResult {
   /** ângulo absoluto do osso 1 e do osso 2 */
@@ -106,7 +113,14 @@ export function solveTwoBone(tx: number, ty: number, p: TwoBoneParams): TwoBoneR
   }
 
   const dir = d < 1e-9 ? FALLBACK_DIR : Math.atan2(y, x);
-  const dEff = clamp(d, minReach, maxReach);
+  // Zona suave: comprime a distância perto do alcance máximo (a direção continua exata, só o "quanto estica" suaviza).
+  const soft = clamp(finiteOr(p.soft ?? 0, 0), 0, Math.min(maxReach * 0.5, maxReach - minReach));
+  let dUsed = d;
+  if (soft > 1e-9 && d > maxReach - soft) {
+    const d0 = maxReach - soft;
+    dUsed = d0 + soft * (1 - Math.exp(-(d - d0) / soft));
+  }
+  const dEff = clamp(dUsed, minReach, maxReach);
 
   // Ângulo interno no cotovelo (lei dos cossenos). Flexão = π − interno (0 = braço esticado).
   const cosInner = clamp((l1 * l1 + l2 * l2 - dEff * dEff) / (2 * l1 * l2), -1, 1);
@@ -132,6 +146,7 @@ export function solveTwoBone(tx: number, ty: number, p: TwoBoneParams): TwoBoneR
   const flexion = bend * flex;
   const fk = forwardTwoBone(phi1, flexion, l1, l2);
   const error = Math.hypot(fk.end.x - x, fk.end.y - y);
-  const limited: IkLimit = d > maxReach + eps ? 'out-of-reach' : d < minReach - eps ? 'too-close' : elbowClamped ? 'elbow-limit' : rootClamped ? 'root-limit' : 'none';
+  const softShort = d <= maxReach + eps && d - dUsed > Math.max(eps, 1e-4);
+  const limited: IkLimit = d > maxReach + eps ? 'out-of-reach' : d < minReach - eps ? 'too-close' : elbowClamped ? 'elbow-limit' : rootClamped ? 'root-limit' : softShort ? 'soft-reach' : 'none';
   return { phi1, phi2: phi1 + flexion, flexion: wrapAngle(flexion), elbow: fk.elbow, end: fk.end, distance: d, minReach, maxReach, reached: error <= Math.max(eps, 1e-4), error, limited };
 }

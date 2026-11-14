@@ -74,6 +74,18 @@ export function armChain(def: CharacterDefinition, bodyView: ViewId, rig: Rig, n
   };
 }
 
+/** Onde a ponta da mão fica (espaço do personagem) para os ângulos de rig dados: cinemática direta do braço. */
+export function armHandLocal(def: CharacterDefinition, bodyView: ViewId, rig: Rig, name: ArmSide): Vec2 {
+  const ch = armChain(def, bodyView, rig, name);
+  const g = armGeometry(bodyMetrics(def), viewInfo(bodyView), rig, name);
+  const a1 = g.upperDeg * RAD;
+  const a2 = (g.upperDeg + g.lowerDeg) * RAD;
+  return ch.toCharacter({
+    x: ch.shoulder.x - Math.sin(a1) * ch.l1 - Math.sin(a2) * ch.l2,
+    y: ch.shoulder.y + Math.cos(a1) * ch.l1 + Math.cos(a2) * ch.l2,
+  });
+}
+
 export interface ArmIkSolution {
   /** ângulos do rig que levam a mão ao alvo (graus), antes de misturar com o rig atual */
   upper: number;
@@ -91,8 +103,11 @@ export interface ArmIkSolution {
   maxReach: number;
 }
 
-/** Calcula `armXUpper`/`armXLower` para a mão alcançar `target` (coordenadas do personagem). Função pura. */
-export function solveArmIk(def: CharacterDefinition, bodyView: ViewId, rig: Rig, name: ArmSide, target: Vec2, bend: ElbowBend): ArmIkSolution {
+/**
+ * Calcula `armXUpper`/`armXLower` para a mão alcançar `target` (coordenadas do personagem). Função pura.
+ * `soft` (fração do alcance, 0 = exato) suaviza a chegada ao esticamento total: ver `TwoBoneParams.soft`.
+ */
+export function solveArmIk(def: CharacterDefinition, bodyView: ViewId, rig: Rig, name: ArmSide, target: Vec2, bend: ElbowBend, soft = 0): ArmIkSolution {
   const ch = armChain(def, bodyView, rig, name);
   const t = ch.toTorso(target);
   const rel = { x: t.x - ch.shoulder.x, y: t.y - ch.shoulder.y };
@@ -105,7 +120,7 @@ export function solveArmIk(def: CharacterDefinition, bodyView: ViewId, rig: Rig,
   const sign: 1 | -1 = (bend === 'in' ? -ch.side : ch.side) > 0 ? 1 : -1;
   const sol = solveTwoBone(rel.x, rel.y, {
     l1: ch.l1, l2: ch.l2, bend: sign,
-    flexMin: 0, flexMax: ARM_IK_LIMITS.lowerMax * RAD,
+    flexMin: 0, flexMax: ARM_IK_LIMITS.lowerMax * RAD, soft: Math.max(0, Number.isFinite(soft) ? soft : 0) * (ch.l1 + ch.l2),
     rootMin: Math.min(a, b), rootMax: Math.max(a, b),
   });
 
