@@ -4,7 +4,7 @@
  * nunca muda nem quebra um projeto. Itens de pacote são protegidos: editar cria cópia.
  */
 import { create } from 'zustand';
-import { buildPack, compareVersions, PACK_EXT, readPack, type PackManifest, type ParsedPack } from '@/features/packs/format';
+import { buildPack, compareVersions, PACK_EXT, readPack, type BuildItem, type PackManifest, type ParsedPack } from '@/features/packs/format';
 import { buildDemoPack } from '@/features/packs/demo';
 import { analyzeImport, planImport, separatePackId, type ImportAnalysis, type PackSource, type PlanResult, type Resolutions } from '@/features/packs/conflicts';
 import { builtinIds } from '@/features/packs/builtinIds';
@@ -273,6 +273,52 @@ export async function installOfficial(entry: OfficialEntry, all: readonly Offici
   const bytes = await downloadOfficial(entry);
   if (!bytes) return { ok: false, reason: 'Falha ao baixar o pacote.', cancelled: true };
   return installInteractive(bytes, { source: 'official' });
+}
+
+/**
+ * Instala APENAS um item oficial, com seus objetos aninhados e mídias próprias.
+ * O .rspack original é usado somente como transporte verificado por sha256.
+ * Grava um minipacote independente: não instala os outros itens do volume.
+ */
+export async function installOfficialItem(entry: OfficialEntry, itemId: string): Promise<InstallResult> {
+  const installed = await repo.listPacks();
+  const old = installed.find((p) => p.items.some((it) => it.id === itemId));
+  if (old) {
+    if (!old.enabled) return { ok: false, reason: 'Este item já foi baixado, mas seu pacote está desativado. Ative-o na aba Pacotes.' };
+    return { ok: false, reason: 'Este item já está na Biblioteca.' };
+  }
+  const bytes = await downloadOfficial(entry);
+  if (!bytes) return { ok: false, reason: 'Não foi possível transferir o conteúdo verificado do item.', cancelled: true };
+  const parsed = await readPack(bytes);
+  if (!parsed.ok) return { ok: false, reason: parsed.reason };
+  const it = parsed.pack.items.find((i) => i.id === itemId);
+  if (!it) return { ok: false, reason: 'Este item não existe mais na versão disponível do pacote.' };
+
+  const hash = await sha256Hex(new TextEncoder().encode(`${entry.id}\u0000${itemId}`));
+  if (!hash) return { ok: false, reason: 'Não foi possível gerar o identificador seguro do item.' };
+  const ownMedia = new Set(it.kind === 'object' || it.kind === 'background' ? it.data.assets.map((a) => a.id) : []);
+  const files = parsed.pack.media.filter((m) => ownMedia.has(m.asset.id)).map((m) => ({
+    bytes: m.bytes,
+    mime: m.asset.mime,
+    ext: m.asset.name.split('.').pop() || (m.asset.mime === 'image/svg+xml' ? 'svg' : 'png'),
+  }));
+  const soloId = `rs-item-${hash.slice(0,36)}`;
+  const meta = {
+    id: soloId,
+    name: `${it.name} (avulso)`,
+    version: entry.version,
+    description: `Item avulso de ${entry.name}. Os demais conteúdos do volume não foram instalados.`,
+    author: entry.author,
+    license: entry.license,
+    category: it.meta?.category || entry.category,
+    collection: entry.collection,
+    volume: entry.volume,
+    tags: entry.tags,
+    dependencies: parsed.pack.manifest.dependencies,
+  };
+  const chosen: BuildItem = { id: it.id, kind: it.kind, name: it.name, data: it.data, meta: it.meta };
+  const soloBytes = await buildPack(meta, [chosen], files);
+  return installInteractive(soloBytes, { source: 'official' });
 }
 
 /** Instala todos os volumes de uma coleção que ainda faltam (ou têm atualização). */
