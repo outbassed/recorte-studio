@@ -22,11 +22,30 @@ O catálogo de pacotes oficiais do Recorte Studio: como funciona, como é gerado
 
 `formatVersion` continua 1. Novidades opcionais no manifesto: `collection`, `volume`, `tags`; por item: `category`, `subcategory`, `tags`, `description`; tipos de item `character` (definição do Criador de Personagens) e `pose` (rig + mãos), além de `object` e `background`. Pacotes antigos continuam lendo.
 
-## Navegação unificada
+## Biblioteca como loja de assets
 
-A aba **Itens** reúne duas seções na mesma tela: os itens padrão/pessoais/instalados e o catálogo oficial agrupado por coleções. A busca principal também filtra os pacotes oficiais ainda não instalados. O atalho **Explorar pacotes oficiais** leva à seção correspondente. Ao visualizar um pacote, o aplicativo preserva a inspeção e devolve o usuário à seção Itens ao retornar.
+A aba **Itens** é uma única grade que mistura:
+- conteúdos padrão já disponíveis;
+- itens do usuário e pacotes já instalados;
+- **cada item oficial ainda não instalado, individualmente**, com nome, miniatura, tipo, categoria e estado **Baixar**.
 
-A aba **Pacotes** fica responsável por gerenciar os pacotes instalados e importar arquivos `.rspack` próprios; não existe mais uma segunda aba de catálogo oficial dentro de Pacotes.
+Não há uma lista separada de kits no meio da grade. A pesquisa e os filtros principais se aplicam também aos itens ainda não baixados.
+
+Ao abrir o card de um item disponível, há duas opções:
+1. **Baixar somente este item**: instala apenas a definição selecionada, com seus objetos aninhados e mídias próprias; os outros itens do volume não são guardados
+2. **Instalar pacote completo**: instala o volume tradicional, reconhecendo e ignorando duplicatas de itens já baixados individualmente
+
+### Arquivos individuais
+
+Na geração do catálogo, `npm run packs:build` cria **um .rspack independente por item**, em `public/packs/items/`, com miniatura SVG e metadados no índice. Cada arquivo avulso é validado pelo tamanho e pelo **sha256** antes da instalação. O navegador não precisa baixar o volume completo para obter um item individual. Itens antigos sem arquivo individual publicado mantêm o fallback de leitura seletiva do volume.
+
+Os downloads avulsos são armazenados como pacotes internos de **um item**, para reutilizar as proteções existentes de ID, mídia, autoria, licenças e projetos autocontidos. Podem ser gerenciados em **Pacotes**. O item aparece na Biblioteca como qualquer outro conteúdo instalado. Novos pacotes podem continuar sendo instalados por volume ou coleção.
+
+As miniaturas individuais ficam no índice; a página não precisa transferir os kits completos para exibir os 875 cards. O grid mantém paginação progressiva. O índice e os arquivos de itens são regenerados automaticamente antes de `dev`, `build` e `test` via scripts npm.
+
+### Aba Pacotes
+
+A aba **Pacotes** concentra pacotes já instalados e importados, opções de ativação, remoção, atualização e exportação de .rspack. Não existe mais uma subaba duplicada do Catálogo oficial.
 
 ## Coleções e volumes
 
