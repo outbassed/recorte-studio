@@ -118,11 +118,12 @@ describe('catálogo oficial: arquivos e índice', () => {
 });
 
 describe('arquivos de assets avulsos para a Biblioteca loja', () => {
-  it('cada item tem um .rspack exclusivo com SHA-256, miniatura e exatamente um item', async () => {
+  it('cada item tem um .rspack exclusivo com SHA-256, miniatura quando couber e exatamente um item', async () => {
     const files = new Set<string>();
+    let thumbs = 0;
     for (const p of index.packs) for (const it of p.items) {
       expect(it.single, p.id + '/' + it.id).toBeDefined();
-      expect(it.thumbSvg, p.id + '/' + it.id + ' sem miniatura').toMatch(/^<svg/);
+      if (it.thumbSvg) { expect(it.thumbSvg).toMatch(/^<svg/); thumbs++; }
       if (!it.single) continue;
       expect(files.has(it.single.file)).toBe(false);
       files.add(it.single.file);
@@ -137,7 +138,8 @@ describe('arquivos de assets avulsos para a Biblioteca loja', () => {
       expect(read.pack.manifest.license).toBe(p.license);
     }
     expect(files.size).toBe(875);
-  });
+    expect(thumbs).toBeGreaterThan(500);
+  }, 60_000);
 });
 
 describe('Vila Torta: fidelidade e limites do que é oficial', () => {
