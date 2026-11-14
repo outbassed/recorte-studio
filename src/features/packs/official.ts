@@ -31,6 +31,7 @@ export const OfficialEntrySchema = z.object({
   items: z.array(z.object({
     id: z.string().max(100), name: z.string().max(80), kind: z.enum(PACK_ITEM_KINDS),
     category: z.string().max(40).optional(), subcategory: z.string().max(40).optional(),
+    animated: z.boolean().optional(),
     /** Miniatura individual gerada pelo renderizador do app, sem baixar o volume. */
     thumbSvg: z.string().max(24_000).optional(),
     /** Arquivo individual verificável: baixar só este item, não o kit. */
