@@ -17,6 +17,7 @@ import { sampleSecondary } from './secondary';
 import { bodyMetrics, type CharacterPose } from '../character/render';
 import { VIEW_YAW } from '../character/views';
 import { BUILTIN_CHARACTERS } from '../character/presets';
+import { applySceneIk, type ArmIkReport } from '../rig/sceneIk';
 
 export interface ResolvedCharacter {
   pose: CharacterPose;
@@ -26,6 +27,8 @@ export interface ResolvedCharacter {
   /** cabeça no mundo */
   headX: number;
   headY: number;
+  /** Resultado do IK de cada braço ligado (só existe com IK ligado): alcançou? fora do alcance? limite? */
+  ik?: Partial<Record<'L' | 'R', ArmIkReport>>;
 }
 
 export interface ActiveBubble {
@@ -65,6 +68,8 @@ function cloneNode(n: SceneNode): SceneNode {
     const src = n as CharacterNode;
     c.rig = { ...src.rig };
     c.gaze = { ...src.gaze };
+    // O IK tem campos animáveis (alvo, força...): precisa de cópia própria para a animação nunca escrever no estado salvo.
+    if (src.ik) c.ik = { armL: { ...src.ik.armL }, armR: { ...src.ik.armR } };
   }
   return c;
 }
@@ -231,6 +236,12 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
     const sec = sampleSecondary(id, t, n.secondary, actionWeight);
     for (const key of Object.keys(sec.rig) as RigKey[]) rig[key] += sec.rig[key] ?? 0;
 
+    // IK opcional dos braços: por último, sobre o rig já composto. Desligado (padrão) não faz nada e não custa nada.
+    const ikOut = n.ik && (n.ik.armL.enabled || n.ik.armR.enabled)
+      ? applySceneIk({ project, scene, nodes, node: n, def: hp.def, bodyView: gaze.bodyView, rig })
+      : null;
+    if (ikOut) Object.assign(rig, ikOut.rig);
+
     // Boca: uma única fonte de visema por vez. Prioridade: manual > fala > áudio > expressão.
     let viseme: string | null = null;
     let visemeAmount = 0;
@@ -269,6 +280,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
       speaking,
       headX: hp.x,
       headY: hp.y,
+      ...(ikOut && (ikOut.reports.L || ikOut.reports.R) ? { ik: ikOut.reports } : {}),
       pose: {
         bodyView: gaze.bodyView,
         headView: gaze.headView,

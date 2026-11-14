@@ -223,6 +223,29 @@ export const SecondaryMotionSchema = z.object({
 });
 export type SecondaryMotion = z.infer<typeof SecondaryMotionSchema>;
 
+/**
+ * IK (cinemática inversa) de UM braço. Opcional e DESLIGADO por padrão: com `enabled: false` o braço usa só os
+ * ângulos do rig e o desenho é idêntico ao de antes. Projetos antigos não têm este campo e abrem sem diferença.
+ */
+export const ArmIkSchema = z.object({
+  enabled: z.boolean().default(false),
+  /** Mistura entre os ângulos do rig (0) e a solução do IK (1). Animável: 0 → 1 é "estender o braço até o alvo". */
+  weight: finite.default(1),
+  /** 'point': ponto X/Y da cena. 'node': o centro de outro elemento (acompanha se ele se mover). */
+  targetMode: z.enum(['point', 'node']).default('point'),
+  targetId: z.string().nullable().default(null),
+  x: finite.default(0),
+  y: finite.default(0),
+  /** Para onde o cotovelo dobra: 'in' = antebraço abre para fora (padrão das poses), 'out' = cotovelo para fora (mão na cintura). */
+  bend: z.enum(['in', 'out']).default('in'),
+});
+export type ArmIk = z.infer<typeof ArmIkSchema>;
+export const CharacterIkSchema = z.object({
+  armL: ArmIkSchema.prefault({}),
+  armR: ArmIkSchema.prefault({}),
+});
+export type CharacterIk = z.infer<typeof CharacterIkSchema>;
+
 /** Profundidade dos membros em relação à cabeça. Esquerda/direita = lados do personagem. */
 export const LimbDepthModeSchema = z.enum(['auto', 'front', 'behind']);
 export type LimbDepthMode = z.infer<typeof LimbDepthModeSchema>;
@@ -250,6 +273,7 @@ export const CharacterNodeSchema = z.object({
   handL: z.enum(['open', 'fist', 'point']).default('open'),
   handR: z.enum(['open', 'fist', 'point']).default('open'),
   limbDepth: LimbDepthSchema.prefault({}),
+  ik: CharacterIkSchema.prefault({}),
   appearanceOverrides: AppearanceOverridesSchema,
   secondary: SecondaryMotionSchema.prefault({}),
 });

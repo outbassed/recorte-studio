@@ -202,6 +202,45 @@ function outfitInfo(def: CharacterDefinition, id: string): OutfitInfo {
   };
 }
 
+/** Altura do quadril e encurtamento da coxa ao sentar. Usado pelo desenho e pelo IK dos braços (mesma conta). */
+export function hipLayout(m: BodyMetrics, bodyV: ViewInfo, rig: Rig): { thighForeshort: number; sitAngle: number; hipY: number } {
+  const sideFactor = Math.abs(Math.sin(rad(bodyV.yaw)));
+  const sit = clamp(rig.sit, 0, 1);
+  const thighForeshort = 1 - sit * 0.72 * (1 - sideFactor);
+  const sitAngle = 82 * sit * sideFactor;
+  const hipHeight = m.thigh * thighForeshort * Math.cos(rad(sitAngle)) + m.shin + m.footH;
+  return { thighForeshort, sitAngle, hipY: -hipHeight + rig.bodyY * -1 * 0 };
+}
+
+/** Raio da mão desenhada; a ponta do antebraço para o IK e para objetos segurados é `forearm + 1.2 × handSize`. */
+export function handSizeOf(def: CharacterDefinition): number {
+  return 13.5 * (0.75 + (AGE_SCALE[def.body.age]?.shoulders ?? 1) * 0.25);
+}
+
+/** Inclinação final do tronco, em graus (rig + postura de idoso). Os ombros e braços giram junto com ela. */
+export function torsoLeanDeg(def: CharacterDefinition, bodyV: ViewInfo, rig: Rig): number {
+  return rig.torsoLean + (def.body.age === 'elder' ? (bodyV.facing || 0) * 4 : 0);
+}
+
+/** Escala do grupo do tronco causada pela respiração: [x, y]. */
+export function breathScale(rig: Rig): [number, number] {
+  return [1 + 0.006 * rig.breath, 1 + 0.014 * rig.breath];
+}
+
+/** Posição do ombro no tronco e ângulos finais (em graus de SVG) do braço. Usado pelo desenho e pelo IK. */
+export function armGeometry(m: BodyMetrics, bodyV: ViewInfo, rig: Rig, name: 'L' | 'R') {
+  const near = limbNear(bodyV, name);
+  const cosY = Math.cos(rad(bodyV.yaw));
+  const halfS = (m.shoulderW / 2) * bodyV.bodyWidth;
+  const profileOff = bodyV.cls === 'profile' ? -(bodyV.facing) * 4 * (near > 0 ? 1 : -1) : 0;
+  const x = (name === 'L' ? cosY : -cosY) * halfS * 0.98 + profileOff;
+  const side = limbSide(bodyV, name);
+  const upper = name === 'L' ? rig.armLUpper : rig.armRUpper;
+  const lower = name === 'L' ? rig.armLLower : rig.armRLower;
+  const rest = bodyV.cls === 'profile' ? 2 : 7;
+  return { near, x, side, rest, upperDeg: -side * (upper + rest), lowerDeg: -side * lower };
+}
+
 /** Lado da tela para onde um membro "abre" nesta vista. */
 function limbSide(view: ViewInfo, limbName: 'L' | 'R'): number {
   const az = limbName === 'L' ? 90 : -90;
@@ -238,12 +277,8 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
 
   // ---- pernas e quadril, com "sentar" mantendo os pés no chão ----
   const swingSide = Math.abs(Math.sin(rad(bodyV.yaw))) > 0.3 ? (bodyV.facing || 1) : 0;
-  const sideFactor = Math.abs(Math.sin(rad(bodyV.yaw)));
   const sit = clamp(rig.sit, 0, 1);
-  const thighForeshort = 1 - sit * 0.72 * (1 - sideFactor);
-  const sitAngle = 82 * sit * sideFactor;
-  const hipHeight = m.thigh * thighForeshort * Math.cos(rad(sitAngle)) + m.shin + m.footH;
-  const hipY = -hipHeight + rig.bodyY * -1 * 0;
+  const { thighForeshort, sitAngle, hipY } = hipLayout(m, bodyV, rig);
   const hipOff = (m.hipW / 2 - m.legW * 0.4) * Math.abs(Math.cos(rad(bodyV.yaw))) * 1;
   const legGeom = (name: 'L' | 'R') => {
     const near = limbNear(bodyV, name);
@@ -281,19 +316,8 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
 
   // ---- braços ----
   const shoulderY = -m.torso + 18;
-  const handSize = 13.5 * (0.75 + (AGE_SCALE[def.body.age]?.shoulders ?? 1) * 0.25);
-  const armGeom = (name: 'L' | 'R') => {
-    const near = limbNear(bodyV, name);
-    const cosY = Math.cos(rad(bodyV.yaw));
-    const halfS = (m.shoulderW / 2) * bodyV.bodyWidth;
-    const profileOff = bodyV.cls === 'profile' ? -(bodyV.facing) * 4 * (near > 0 ? 1 : -1) : 0;
-    const x = (name === 'L' ? cosY : -cosY) * halfS * 0.98 + profileOff;
-    const side = limbSide(bodyV, name);
-    const upper = name === 'L' ? rig.armLUpper : rig.armRUpper;
-    const lower = name === 'L' ? rig.armLLower : rig.armRLower;
-    const rest = bodyV.cls === 'profile' ? 2 : 7;
-    return { near, x, side, upperDeg: -side * (upper + rest), lowerDeg: -side * lower };
-  };
+  const handSize = handSizeOf(def);
+  const armGeom = (name: 'L' | 'R') => armGeometry(m, bodyV, rig, name);
   const renderArm = (name: 'L' | 'R', part: 'all' | 'arm' | 'hand' = 'all', depth = ''): string => {
     const g = armGeom(name);
     const handKind = name === 'L' ? pose.handL : pose.handR;
@@ -530,14 +554,14 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
     return (l.arm === layer ? renderArm(name, 'arm', depth) : '') + (l.hand === layer ? renderArm(name, 'hand', depth) : '');
   }).join('');
   const legOrder: Array<'L' | 'R'> = limbNear(bodyV, 'L') <= limbNear(bodyV, 'R') ? ['L', 'R'] : ['R', 'L'];
-  const lean = rig.torsoLean + (def.body.age === 'elder' ? (bodyV.facing || 0) * 4 : 0);
+  const lean = torsoLeanDeg(def, bodyV, rig);
 
   const armsBehind = limbsIn('body-behind');
   const armsFront = limbsIn('head-behind');
   const armsOverHead = limbsIn('head-front');
 
   const torsoGroup =
-    `<g data-part="torso-group" transform="translate(0 ${n(hipY)}) rotate(${n(lean)})${rig.breath ? ` scale(${(1 + 0.006 * rig.breath).toFixed(4)} ${(1 + 0.014 * rig.breath).toFixed(4)})` : ''}">` +
+    `<g data-part="torso-group" transform="translate(0 ${n(hipY)}) rotate(${n(lean)})${rig.breath ? ` scale(${breathScale(rig)[0].toFixed(4)} ${breathScale(rig)[1].toFixed(4)})` : ''}">` +
     (hair.backBehindBody ? `<g transform="translate(0 ${n(headLocalY + rig.headNod)})">${hair.backBehindBody}</g>` : '') +
     armsBehind +
     pelvis +

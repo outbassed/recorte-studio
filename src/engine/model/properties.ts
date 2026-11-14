@@ -77,6 +77,18 @@ export const PROPERTIES: PropertyDef[] = [
   num('gaze.headStrength', 'Giro da cabeça', {
     unit: '%', display: 100, min: 0, max: 1, sliderMin: 0, sliderMax: 100, appliesTo: ['character'],
   }),
+  // IK dos braços (opcional). `enabled` não é animável de propósito: para ligar/desligar no tempo, anime o peso.
+  ...(['armL', 'armR'] as const).flatMap((arm) => {
+    const who = arm === 'armL' ? 'esquerdo' : 'direito';
+    return [
+      num(`ik.${arm}.weight`, `IK do braço ${who}: força`, { unit: '%', display: 100, min: 0, max: 1, sliderMin: 0, sliderMax: 100, appliesTo: ['character'] }),
+      num(`ik.${arm}.x`, `IK do braço ${who}: alvo X`, { unit: 'px', min: -20000, max: 20000, sliderMin: -1400, sliderMax: 1400, step: 0.5, appliesTo: ['character'] }),
+      num(`ik.${arm}.y`, `IK do braço ${who}: alvo Y`, { unit: 'px', min: -20000, max: 20000, sliderMin: -800, sliderMax: 800, step: 0.5, appliesTo: ['character'] }),
+      { path: `ik.${arm}.targetMode`, label: `IK do braço ${who}: tipo de alvo`, kind: 'enum', appliesTo: ['character'] } as PropertyDef,
+      { path: `ik.${arm}.targetId`, label: `IK do braço ${who}: elemento-alvo`, kind: 'enum', appliesTo: ['character'] } as PropertyDef,
+      { path: `ik.${arm}.bend`, label: `IK do braço ${who}: cotovelo`, kind: 'enum', appliesTo: ['character'] } as PropertyDef,
+    ];
+  }),
   { path: 'visible', label: 'Visibilidade', kind: 'boolean', appliesTo: ALL_VISUAL },
   { path: 'expression', label: 'Expressão', kind: 'enum', appliesTo: ['character'] },
   { path: 'mouthShape', label: 'Boca (visema)', kind: 'enum', appliesTo: ['character'] },
