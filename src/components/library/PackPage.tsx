@@ -16,7 +16,7 @@ import { BACKGROUNDS } from '@/engine/world/backgrounds';
 import { BUILTIN_CHARACTERS } from '@/engine/character/presets';
 import { PROPS } from '@/engine/world/props';
 import { ANIMATED_TEMPLATES } from '@/features/catalog/animatedTemplates';
-import { Cover, OfficialCatalog } from './OfficialCatalog';
+import { Cover } from './OfficialCatalog';
 import { toast } from '@/state/uiStore';
 import type { Asset } from '@/engine/model/schema';
 import { SearchBox } from '../controls/fields';
@@ -141,30 +141,24 @@ const ESSENTIAL = [
   { id: 'scenery', name: 'Cenários padrão', n: () => BACKGROUNDS.length, what: 'cenários com dia e noite', kind: 'background' as const },
 ];
 
-type PacksView = 'installed' | 'official';
-export function PacksTab({ inspected, setInspected, onInspectDemo, onBrowse }: { inspected: Inspected | null; setInspected: (i: Inspected | null) => void; onInspectDemo: () => Promise<void>; onBrowse?: (p: { packId?: string; filter?: 'builtin'; kind?: 'character' | 'background' | null }) => void }) {
+export function PacksTab({ inspected, setInspected, onInspectDemo, onBrowse, onBackToCatalog }: { inspected: Inspected | null; setInspected: (i: Inspected | null) => void; onInspectDemo: () => Promise<void>; onBrowse?: (p: { packId?: string; filter?: 'builtin'; kind?: 'character' | 'background' | null; showOfficial?: boolean }) => void; onBackToCatalog?: () => void }) {
   const packs = usePacks((s) => s.packs);
   const loaded = usePacks((s) => s.loaded);
   const index = useOfficial((s) => s.index);
   const [open, setOpen] = useState<string | null>(null);
   const [busy, setBusy] = useState('');
-  const [view, setView] = useState<PacksView>('installed');
   const fileRef = useRef<HTMLInputElement>(null);
   const project = useMemo(() => createProject('Pacotes'), []);
   useEffect(() => { void loadOfficialIndex(); }, []);
-  if (inspected) return <PackPage manifest={inspected.pack.manifest} items={inspected.pack.items} size={inspected.pack.size} assets={inspected.pack.media.map((m) => m.asset)} inspected={inspected} onBack={() => { setInspected(null); setOpen(inspected.pack.manifest.id); }} />;
+  if (inspected) return <PackPage manifest={inspected.pack.manifest} items={inspected.pack.items} size={inspected.pack.size} assets={inspected.pack.media.map((m) => m.asset)} inspected={inspected} onBack={() => { setInspected(null); if (inspected.source === 'official') onBackToCatalog?.(); else setOpen(inspected.pack.manifest.id); }} />;
   const rec = open ? packs.find((p) => p.id === open) : undefined;
   if (rec) return <PackPage manifest={rec.manifest} items={rec.items} size={rec.size} assets={rec.assets} onBack={() => setOpen(null)} onBrowse={onBrowse} />;
   return (
     <section className="packs-tab" data-testid="packs-tab">
-      <p className="hint">Pacotes são conjuntos de itens (.rspack): objetos, cenários, personagens e poses. Abra um arquivo para ver tudo o que ele traz antes de instalar, ou escolha no catálogo oficial. Itens de pacotes ativos aparecem em Itens e nas abas do Studio. Projetos guardam a própria cópia do que usam: desativar ou remover nunca muda um projeto.</p>
+      <p className="hint">Gerencie os pacotes já instalados e os arquivos .rspack que importar. Para descobrir e instalar pacotes oficiais, use a aba Itens, onde o catálogo aparece junto dos conteúdos da Biblioteca. Desativar ou remover pacotes não altera projetos existentes.</p>
       <div className="btn-row">
         <button type="button" className="btn btn-primary" data-testid="pack-open-file" disabled={!!busy} onClick={() => fileRef.current?.click()}><FileUp size={14} /> Abrir arquivo de pacote…</button>
         {!packs.some((p) => p.id === DEMO_PACK_ID) && <button type="button" className="btn" data-testid="pack-demo" disabled={!!busy} onClick={() => void onInspectDemo()}>Ver pacote de demonstração</button>}
-      </div>
-      <div className="libh-tabs" role="tablist" aria-label="Pacotes">
-        <button type="button" role="tab" aria-selected={view === 'installed'} className={view === 'installed' ? 'is-active' : ''} data-testid="packs-view-installed" onClick={() => setView('installed')}>Instalados <span className="count">{packs.length}</span></button>
-        <button type="button" role="tab" aria-selected={view === 'official'} className={view === 'official' ? 'is-active' : ''} data-testid="packs-view-official" onClick={() => setView('official')}>Catálogo oficial {index && <span className="count">{index.packs.length}</span>}</button>
       </div>
       <input ref={fileRef} hidden type="file" accept=".rspack,.zip" data-testid="pack-input" onChange={async (ev) => {
         const f = ev.target.files?.[0];
@@ -174,8 +168,7 @@ export function PacksTab({ inspected, setInspected, onInspectDemo, onBrowse }: {
         try { const r = await inspectPackFile(f, (d, t) => setBusy(`Verificando pacote… ${d} de ${t}`)); if (r) setInspected(r); } finally { setBusy(''); }
       }} />
       {busy && <p className="hint" role="status" data-testid="pack-busy">{busy}</p>}
-      {view === 'official' ? <OfficialCatalog onInspect={async (entry, bytes) => { const r = await inspectOfficialBytes(entry, bytes); if (r) setInspected(r); }} /> : (
-        <>
+      <>
           <div className="off-group" data-testid="essential-packs">
             <header className="off-group-head"><div><h3>Conteúdo essencial</h3><small>Vem com o programa, sempre ativo, não pode ser removido. Editar um item cria uma cópia sua.</small></div></header>
             <div className="libh-grid is-packs">
@@ -191,7 +184,7 @@ export function PacksTab({ inspected, setInspected, onInspectDemo, onBrowse }: {
             </div>
           </div>
           {!loaded && <p className="hint" role="status">Lendo pacotes…</p>}
-          {loaded && packs.length === 0 && <p className="empty" data-testid="packs-empty">Nenhum pacote instalado. Veja o <button type="button" className="linklike" onClick={() => setView('official')}>catálogo oficial</button>.</p>}
+          {loaded && packs.length === 0 && <p className="empty" data-testid="packs-empty">Nenhum pacote instalado. Explore os <button type="button" className="linklike" onClick={() => onBrowse?.({ showOfficial: true })}>pacotes oficiais em Itens</button>.</p>}
           <div className="libh-grid is-packs">
             {packs.map((p) => {
               const first = p.items.find((i) => i.kind === 'object') ?? p.items[0];
@@ -208,8 +201,7 @@ export function PacksTab({ inspected, setInspected, onInspectDemo, onBrowse }: {
               );
             })}
           </div>
-        </>
-      )}
+      </>
     </section>
   );
 }
