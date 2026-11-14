@@ -287,6 +287,22 @@ export async function installOfficialItem(entry: OfficialEntry, itemId: string):
     if (!old.enabled) return { ok: false, reason: 'Este item já foi baixado, mas seu pacote está desativado. Ative-o na aba Pacotes.' };
     return { ok: false, reason: 'Este item já está na Biblioteca.' };
   }
+  const itemInfo = entry.items.find((i) => i.id === itemId);
+  if (!itemInfo) return { ok: false, reason: 'Este item não consta mais no índice oficial.' };
+  if (itemInfo.single) {
+    // Distribuição realmente avulsa: o arquivo transferido contém apenas o asset selecionado.
+    try {
+      const bytes = await fetchOfficialPack({ ...entry, file: itemInfo.single.file, sha256: itemInfo.single.sha256, size: itemInfo.single.size });
+      const one = await readPack(bytes);
+      if (!one.ok) return { ok: false, reason: one.reason };
+      if (one.pack.items.length !== 1 || one.pack.items[0]?.id !== itemId)
+        return { ok: false, reason: 'O arquivo individual não corresponde ao item solicitado.' };
+      return installInteractive(bytes, { source: 'official' });
+    } catch (e) {
+      return { ok: false, reason: e instanceof Error ? e.message : 'Falha ao baixar o arquivo individual.' };
+    }
+  }
+  // Índice antigo: mantém a instalação seletiva, mas transfere o .rspack do volume.
   const bytes = await downloadOfficial(entry);
   if (!bytes) return { ok: false, reason: 'Não foi possível transferir o conteúdo verificado do item.', cancelled: true };
   const parsed = await readPack(bytes);
