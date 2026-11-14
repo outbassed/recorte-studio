@@ -22,6 +22,7 @@ export function MarketplaceItemCard({ pack, item }: { pack: OfficialEntry; item:
   const disabledPack = packs.find((p) => !p.enabled && p.items.some((it) => it.id === item.id));
 
   useEffect(() => {
+    if (item.thumbSvg) return; // Miniatura no índice: nenhum pacote precisa ser transferido para mostrar o card.
     let live = true;
     const load = () => {
       void loadMarketplacePreview(pack).then((p) => {
@@ -39,12 +40,14 @@ export function MarketplaceItemCard({ pack, item }: { pack: OfficialEntry; item:
     }
     load();
     return () => { live = false; };
-  }, [pack, item.id]);
+  }, [pack, item.id, item.thumbSvg]);
 
   const kindText = KIND[item.kind] || item.kind;
   const thumb = useMemo(() => preview
     ? <EntryThumb e={preview} project={previewProject} size={104} />
-    : <Cover svg={pack.coverSvg} size={104} />, [preview, pack.coverSvg]);
+    : item.thumbSvg
+      ? <img src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(item.thumbSvg)}`} alt="" width={104} height={104} loading="lazy" className="marketplace-thumb" />
+      : <Cover svg={pack.coverSvg} size={104} />, [preview, pack.coverSvg, item.thumbSvg]);
 
   const run = async (act: () => ReturnType<typeof installOfficialItem>) => {
     setBusy(true);
@@ -83,7 +86,9 @@ export function MarketplaceItemCard({ pack, item }: { pack: OfficialEntry; item:
           <div className="libd">
             <div className="libd-preview">{preview
               ? <EntryThumb e={preview} project={previewProject} size={220} />
-              : <Cover svg={pack.coverSvg} size={180} />}
+              : item.thumbSvg
+                ? <img src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(item.thumbSvg)}`} alt="" width={240} height={240} className="marketplace-thumb is-large" />
+                : <Cover svg={pack.coverSvg} size={180} />}
             </div>
             <div className="libd-info">
               <p className="libd-sub">{kindText} · Não instalado · {pack.name}</p>
@@ -97,7 +102,7 @@ export function MarketplaceItemCard({ pack, item }: { pack: OfficialEntry; item:
               </dl>
               {disabledPack && <p className="hint">Você já baixou este item, mas o pacote está desativado. Ative-o na aba Pacotes.</p>}
               {previewError && <p className="hint">A prévia individual não carregou: {previewError}. A instalação pode ser tentada normalmente com conexão.</p>}
-              <p className="hint">Baixar somente este item mantém os outros conteúdos do pacote fora da sua Biblioteca. O arquivo do volume é verificado antes da extração.</p>
+              <p className="hint">Baixar somente este item mantém os outros conteúdos do pacote fora da sua Biblioteca. O arquivo individual é verificado por SHA-256 antes de ser instalado.</p>
             </div>
           </div>
         </Modal>
