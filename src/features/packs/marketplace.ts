@@ -18,7 +18,7 @@ export function marketplaceItems(index: OfficialIndex | null, query: CatalogQuer
     if (query.category && query.category !== (item.category || pack.category)) return [];
     if (query.subcategory && query.subcategory !== item.subcategory) return [];
     if (query.collection && query.collection !== pack.collection) return [];
-    if (query.animated) return []; // O índice atual só traz contagem por pacote; não adivinhar animação por item.
+    if (query.animated && !item.animated) return [];
     if (query.theme) {
       const tags = pack.tags.map((t) => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase());
       const theme = query.theme === 'series' ? 'serie' : query.theme === 'holiday' ? 'feriado' : 'evento';
