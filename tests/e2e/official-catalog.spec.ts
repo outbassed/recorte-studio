@@ -14,9 +14,8 @@ const packCount = (page: Page) => page.evaluate(() => new Promise<number>((ok) =
 }));
 async function openOfficial(page: Page) {
   await page.getByTestId('home-nav-library').click();
-  await page.getByTestId('library-tab-packs').click();
-  await expect(page.getByTestId('essential-packs')).toBeVisible();
-  await page.getByTestId('packs-view-official').click();
+  await expect(page.getByTestId('library-tab-items')).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByTestId('library-official-section')).toBeVisible();
   await expect(page.getByTestId('official-catalog')).toBeVisible();
 }
 const card = (page: Page, id: string) => page.locator(`[data-testid="official-pack"][data-pack="${id}"]`);
@@ -35,7 +34,8 @@ test('catálogo oficial: ver conteúdo antes, instalar um volume, instalar a col
   await expect(page.getByTestId('essential-pack')).toHaveCount(3);
   await expect(page.getByTestId('essential-packs')).toContainText('sempre ativo');
   await expect(page.getByTestId('essential-packs').getByRole('button', { name: /remover/i })).toHaveCount(0);
-  await page.getByTestId('packs-view-official').click();
+  await page.getByTestId('library-tab-items').click();
+  await expect(page.getByTestId('library-official-section')).toBeVisible();
 
   // Coleção Vila Torta com 7 volumes, contagens reais e nada instalado.
   const col = page.locator('[data-testid="official-collection"][data-collection="Vila Torta"]');
@@ -47,16 +47,15 @@ test('catálogo oficial: ver conteúdo antes, instalar um volume, instalar a col
   expect(await packCount(page)).toBe(0);
 
   // Busca e filtro por categoria no catálogo.
-  await page.getByTestId('official-search').fill('lon ruan');
+  await page.getByTestId('library-search').fill('lon ruan');
   await expect(page.getByTestId('official-pack')).toHaveCount(2); // o personagem (personagens-2) e os objetos "…de Lon Ruan" (assets-2)
   await expect(card(page, 'vila-torta-personagens-2')).toBeVisible();
   await expect(card(page, 'vila-torta-assets-2')).toBeVisible();
-  await page.getByTestId('official-search').fill('');
-  await page.getByTestId('official-category').selectOption('Veículos');
-  await expect(page.getByTestId('official-pack')).toHaveCount(2); // veiculos-1 (novo) e vila-torta-veiculos-1
+  await page.getByTestId('library-search').fill('Veículos');
+  await expect(page.getByTestId('official-pack')).toHaveCount(2); // pacote novo e Vila Torta
   await expect(card(page, 'veiculos-1')).toBeVisible();
   await expect(card(page, 'vila-torta-veiculos-1')).toBeVisible();
-  await page.getByTestId('official-category').selectOption('');
+  await page.getByTestId('library-search').fill('');
 
   // Ver o conteúdo ANTES de instalar: baixa, confere e mostra; nada é gravado.
   await card(page, 'vila-torta-personagens-1').getByTestId('official-view').click();
@@ -69,8 +68,8 @@ test('catálogo oficial: ver conteúdo antes, instalar um volume, instalar a col
   await page.getByTestId('pack-install').click();
   await expect(page.getByTestId('toasts')).toContainText('Pacote instalado');
   expect(await packCount(page)).toBe(1);
-  await page.getByTestId('pack-back').click(); // volta da página do pacote para a lista de pacotes
-  await page.getByTestId('packs-view-official').click();
+  await page.getByTestId('pack-back').click(); // volta para Itens + catálogo oficial integrado
+  await expect(page.getByTestId('library-official-section')).toBeVisible();
   await expect(card(page, 'vila-torta-personagens-1').getByTestId('official-state')).toContainText('Instalado');
   await expect(card(page, 'vila-torta-personagens-1').getByTestId('official-install')).toHaveCount(0);
 
