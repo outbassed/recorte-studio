@@ -61,7 +61,7 @@ export function ImportConflictDialog({ req, onClose }: { req: ImportConflictRequ
       <button type="button" className="btn btn-primary" data-testid="conflict-confirm" disabled={invalid.length > 0} onClick={() => finish(false)}>Importar com estas escolhas</button>
     </>}>
       <div className="conf">
-        <p className="conf-intro" role="alert"><AlertTriangle size={16} aria-hidden="true" /> <span><strong>{analysis.conflicts.length} item(ns)</strong> de “{pack.manifest.name}” {pack.manifest.version} usam um ID que já existe na sua Biblioteca. Nada será sobrescrito: a troca de ID vale só para a cópia importada e o arquivo do pacote não é alterado.</span></p>
+        <p className="conf-intro" role="alert"><AlertTriangle size={16} aria-hidden="true" /> <span><strong>{analysis.conflicts.length} item(ns)</strong> de “{pack.manifest.name}”{pack.manifest.version ? ` ${pack.manifest.version}` : ''} usam um ID que já existe na sua Biblioteca. Nada será sobrescrito: a troca de ID vale só para a cópia importada e o arquivo do pacote não é alterado.</span></p>
         {analysis.conflicts.map((c) => {
           const mode = modes[c.itemId]!;
           const check = mode === 'manual-id' ? checkManual(c.itemId) : null;
@@ -79,7 +79,7 @@ export function ImportConflictDialog({ req, onClose }: { req: ImportConflictRequ
                 <div data-testid="conflict-incoming">
                   <strong>Item importado</strong>
                   <span>{c.name} · {KIND_TEXT[c.kind] ?? c.kind}</span>
-                  <span>Pacote: {pack.manifest.name} {pack.manifest.version}</span>
+                  <span>{pack.manifest.version ? 'Pacote' : 'Arquivo'}: {pack.manifest.name} {pack.manifest.version}</span>
                   <span>ID: <code>{c.innerId}</code></span>
                 </div>
               </div>

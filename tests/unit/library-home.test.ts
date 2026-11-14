@@ -53,16 +53,41 @@ describe('itens individuais sem projeto aberto', () => {
     expect(await deleteRecord(libId)).toBe(true);
     expect(useLibrary.getState().records).toHaveLength(1);
   });
-  it('importar o mesmo arquivo duas vezes atualiza em vez de duplicar', async () => {
+  it('importar o mesmo arquivo duas vezes reconhece a duplicata (não duplica nem sobrescreve)', async () => {
     const file = JSON.stringify({ format: 'recorte-studio-library', version: 1, items: [
       { id: 'x1', kind: 'object', name: 'Banco', favorite: 0, createdAt: 1, data: { bundle: 2, object: { id: 'obj_banco', name: 'Banco', pieces: [] }, objects: [], assets: [] } },
       { id: 'x2', kind: 'character', name: 'Ana', favorite: 0, createdAt: 1, data: { id: 'char_ana', name: 'Ana' } },
       { nada: true },
     ] });
-    expect(await importLibraryJson(file)).toEqual({ created: 2, updated: 0, skipped: 1 });
-    expect(await importLibraryJson(file)).toEqual({ created: 0, updated: 2, skipped: 1 });
+    expect(await importLibraryJson(file)).toEqual({ created: 2, duplicates: 0, renamed: 0, notImported: 0, skipped: 1, cancelled: false });
+    expect(await importLibraryJson(file)).toEqual({ created: 0, duplicates: 2, renamed: 0, notImported: 0, skipped: 1, cancelled: false });
     expect(await repo.listLibrary()).toHaveLength(2);
     await expect(importLibraryJson('{"format":"outro"}')).rejects.toThrow(/não é um arquivo de biblioteca/);
+  });
+  it('mesmo ID com conteúdo diferente é conflito: nunca sobrescreve; novo ID, ID manual e pular funcionam', async () => {
+    const mk = (name: string, color: string, extra: unknown[] = []) => JSON.stringify({ format: 'recorte-studio-library', version: 1, items: [
+      { id: 'a', kind: 'object', name, favorite: 0, createdAt: 1, data: { bundle: 2, object: { id: 'meu-banco', name, pieces: [{ id: 'p', kind: 'rect', fill: color }] }, objects: [], assets: [] } }, ...extra,
+    ] });
+    await importLibraryJson(mk('Banco vermelho', '#ff0000'));
+    const antes = JSON.stringify(await repo.listLibrary());
+    // sem resolução e sem diálogo: o ID em conflito exige uma escolha (não grava nada)
+    await expect(importLibraryJson(mk('Banco azul', '#0000ff'), 'b.json', { resolutions: {} })).rejects.toThrow(/Falta escolher/);
+    expect(JSON.stringify(await repo.listLibrary())).toBe(antes);
+    // novo ID automático
+    const auto = await importLibraryJson(mk('Banco azul', '#0000ff'), 'b.json', { resolveAll: true });
+    expect([auto.created, auto.renamed]).toEqual([1, 1]);
+    // ID manual
+    const man = await importLibraryJson(mk('Banco verde', '#00ff00'), 'c.json', { resolutions: { 'meu-banco': { action: 'manual-id', id: 'Banco-Verde-1' } } });
+    expect([man.created, man.renamed]).toEqual([1, 1]);
+    // pular
+    const skip = await importLibraryJson(mk('Banco amarelo', '#ffff00'), 'd.json', { resolutions: { 'meu-banco': { action: 'skip' } } });
+    expect([skip.created, skip.notImported]).toEqual([0, 1]);
+    const recs = await repo.listLibrary();
+    const ids = recs.map((r) => (r.data as { object: { id: string } }).object.id).sort();
+    expect(ids).toHaveLength(3);
+    expect(ids).toContain('meu-banco'); // o original continua com o ID dele
+    expect(ids).toContain('Banco-Verde-1');
+    expect((recs.find((r) => (r.data as { object: { id: string } }).object.id === 'meu-banco')!.data as { object: { name: string } }).object.name).toBe('Banco vermelho');
   });
   it('falha de armazenamento vira mensagem clara (sem exceção solta)', async () => {
     expect(storageError(new StorageQuotaError('cheio'), 'Não foi possível salvar')).toMatch(/armazenamento do navegador está cheio/);

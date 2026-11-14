@@ -13,15 +13,17 @@ import { createPiece } from '@/engine/world/pieces';
 import { animatedTemplate } from '@/features/catalog/animatedTemplates';
 import type { CatalogEntry } from '@/features/catalog/catalog';
 import { createAndOpen, openProjectById } from '@/features/projects/session';
-import { db, repo, StorageQuotaError, type LibraryKind, type LibraryRecord } from '@/storage/db';
+import { db, repo, StorageQuotaError, type LibraryRecord } from '@/storage/db';
 import { identityOf, planIdChange } from '@/features/library/changeId';
+import { analyzeImport, planImport, readLibraryRecord, type Resolutions } from '@/features/packs/conflicts';
+import type { PackItemData, ParsedPack } from '@/features/packs/format';
 import { builtinIds } from '@/features/packs/builtinIds';
 import { editEntry, reloadLibrary, useLibrary } from './catalogActions';
-import { libIdentity, newCustomObject, newScenery } from './creatorActions';
+import { newCustomObject, newScenery } from './creatorActions';
 import { usePacks } from './packActions';
 import { setPref, usePrefs } from './prefs';
 import { commit, useProjectStore } from './projectStore';
-import { closeOverlay, confirmDialog, promptDialog, toast, useUI } from './uiStore';
+import { askImportConflicts, closeOverlay, confirmDialog, promptDialog, toast, useUI } from './uiStore';
 
 const hasProject = () => !!useProjectStore.getState().project;
 
@@ -162,31 +164,72 @@ export function exportRecords(records: LibraryRecord[], fileName = 'biblioteca-r
   downloadJson(fileName, JSON.stringify({ format: 'recorte-studio-library', version: 1, items: records }, null, 2));
 }
 
-const IDENTITY: Partial<Record<LibraryKind, (d: unknown) => string | undefined>> = { object: libIdentity.object, background: libIdentity.background, character: libIdentity.character };
+export interface LibraryImportResult {
+  /** Itens gravados (novos). */
+  created: number;
+  /** Mesmo ID e mesmo conteúdo de algo que já existe: reconhecidos como duplicata, não importados de novo. */
+  duplicates: number;
+  /** Conflitos resolvidos com um ID novo (automático ou manual). */
+  renamed: number;
+  /** Itens que o usuário escolheu não importar. */
+  notImported: number;
+  /** Registros ilegíveis ou repetidos dentro do próprio arquivo. */
+  skipped: number;
+  cancelled: boolean;
+}
 
 /**
- * Importa um arquivo de biblioteca (.json). Item com a mesma identidade de um já salvo ATUALIZA o
- * registro existente em vez de duplicar. Devolve quantos foram criados e atualizados.
+ * Importa um arquivo de biblioteca (.json) com o MESMO motor de conflitos dos pacotes: item com o mesmo ID e o mesmo
+ * conteúdo é duplicata reconhecida; com conteúdo diferente (ou ID de item padrão) abre o diálogo de conflito; nada é
+ * sobrescrito em silêncio e a gravação é atômica. `opts` permite resolver sem diálogo (testes e automação).
  */
-export async function importLibraryJson(text: string): Promise<{ created: number; updated: number; skipped: number }> {
+export async function importLibraryJson(text: string, label = 'Arquivo de biblioteca', opts: { resolutions?: Resolutions; resolveAll?: boolean } = {}): Promise<LibraryImportResult> {
   const parsed = JSON.parse(text) as { format?: string; items?: unknown };
   if (parsed.format !== 'recorte-studio-library' || !Array.isArray(parsed.items)) throw new Error('não é um arquivo de biblioteca do Recorte Studio');
-  const existing = await repo.listLibrary();
-  let created = 0;
-  let updated = 0;
-  let skipped = 0;
+  const [existing, packs] = await Promise.all([repo.listLibrary(), repo.listPacks()]);
+  const res: LibraryImportResult = { created: 0, duplicates: 0, renamed: 0, notImported: 0, skipped: 0, cancelled: false };
+  const now = Date.now();
+  const items: PackItemData[] = [];
+  const plain: LibraryRecord[] = [];
+  const seen = new Set<string>();
   for (const raw of parsed.items as Array<Partial<LibraryRecord>>) {
-    if (!raw || typeof raw !== 'object' || typeof raw.name !== 'string' || !raw.kind || raw.data === undefined) { skipped++; continue; }
-    const idOf = IDENTITY[raw.kind];
-    const ident = idOf?.(raw.data);
-    const same = ident ? existing.find((r) => r.kind === raw.kind && idOf!(r.data) === ident) : undefined;
-    const now = Date.now();
-    await repo.putLibrary({ id: same?.id ?? newItemId(), kind: raw.kind, name: raw.name.slice(0, 120), favorite: same?.favorite ?? 0, createdAt: same?.createdAt ?? now, updatedAt: now, data: raw.data });
-    if (same) updated++;
-    else created++;
+    if (!raw || typeof raw !== 'object' || typeof raw.name !== 'string' || !raw.kind || raw.data === undefined) { res.skipped++; continue; }
+    const rec: LibraryRecord = { id: typeof raw.id === 'string' && raw.id ? raw.id : newItemId(), kind: raw.kind, name: raw.name.slice(0, 120), favorite: 0, createdAt: now, updatedAt: now, data: raw.data };
+    const read = readLibraryRecord(rec);
+    if (!read) { plain.push({ ...rec, id: newItemId() }); continue; } // cena, sequência ou item ilegível: entra como novo registro
+    if (seen.has(read.id)) { res.skipped++; continue; } // o próprio arquivo repete o mesmo ID
+    seen.add(read.id);
+    items.push({ id: read.id, kind: read.kind, name: rec.name, data: read.data } as PackItemData);
   }
+  const fake: ParsedPack = { manifest: { format: 'recorte-studio-pack', formatVersion: 1, id: 'arquivo-biblioteca', name: label, version: '', description: '', author: '', license: '—', category: 'Biblioteca', tags: [], dependencies: [], items: [], media: [] }, items, media: [], size: text.length };
+  const analysis = analyzeImport(fake, { packs, library: existing, builtin: builtinIds(), incomingSource: 'imported' });
+  let resolutions = opts.resolutions ?? {};
+  let resolveAll = !!opts.resolveAll;
+  if (analysis.conflicts.length && !opts.resolutions && !opts.resolveAll) {
+    const answer = await askImportConflicts({ pack: fake, bytes: new Uint8Array(), sha256: '', source: 'imported', analysis, asSeparatePack: false });
+    if (!answer) return { ...res, cancelled: true };
+    resolutions = answer.resolutions;
+    resolveAll = answer.resolveAll;
+  }
+  const plan = planImport(fake, analysis, resolutions, { resolveAll });
+  if (!plan.ok) throw new Error(plan.errors.join(' '));
+  res.duplicates = plan.duplicates.length;
+  res.notImported = plan.skipped.length;
+  res.renamed = Object.keys(plan.idMap).length;
+  const out: LibraryRecord[] = [...plain];
+  for (const it of plan.items) {
+    // Pose e cena não têm ID interno: a identidade é o do registro. Os demais guardam a identidade dentro do dado.
+    const recId = it.kind === 'pose' ? it.id : newItemId();
+    out.push({ id: recId, kind: it.kind, name: it.name, favorite: 0, createdAt: now, updatedAt: now, data: it.data });
+  }
+  try {
+    await db.transaction('rw', db.library, async () => { for (const r of out) await db.library.put(r); });
+  } catch (e) {
+    throw new Error(storageError(e, 'Não foi possível importar'));
+  }
+  res.created = out.length;
   await reloadLibrary();
-  return { created, updated, skipped };
+  return res;
 }
 
 /** Tamanho aproximado do item salvo (dados + imagens). */

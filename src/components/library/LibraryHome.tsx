@@ -68,8 +68,10 @@ export function LibraryHome({ inEditor = false }: { inEditor?: boolean }) {
       return;
     }
     try {
-      const r = await importLibraryJson(await f.text());
-      toast(`${r.created} item(ns) novo(s), ${r.updated} atualizado(s)${r.skipped ? `, ${r.skipped} ilegível(is) ignorado(s)` : ''}.`, 'success');
+      const r = await importLibraryJson(await f.text(), f.name);
+      if (r.cancelled) return;
+      const extra = [r.duplicates ? `${r.duplicates} duplicata(s) reconhecida(s)` : '', r.renamed ? `${r.renamed} com ID novo` : '', r.notImported ? `${r.notImported} não importado(s)` : '', r.skipped ? `${r.skipped} ilegível(is) ignorado(s)` : ''].filter(Boolean).join(', ');
+      toast(`${r.created} item(ns) novo(s)${extra ? ` (${extra})` : ''}.`, 'success');
     } catch (e) {
       toast(e instanceof SyntaxError ? 'Não foi possível importar: o arquivo não é JSON válido.' : storageError(e, 'Não foi possível importar'), 'error');
     }
