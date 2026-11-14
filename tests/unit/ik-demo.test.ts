@@ -8,7 +8,7 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { createCharacterNode, createProject, createPropNode, ensureBuiltinCharacter } from '@/engine/model/factory';
-import { addNode, ensurePropertyTrack, setKeyframe } from '@/engine/model/ops';
+import { addNode, ensurePropertyTrack, moveLayer, setKeyframe } from '@/engine/model/ops';
 import { evaluateScene } from '@/engine/animation/evaluate';
 import { armChain } from '@/engine/rig/armIk';
 import { apply, worldMatrix } from '@/engine/model/hierarchy';
@@ -38,8 +38,10 @@ function buildDemo(): { p: Project; nina: CharacterNode; ids: Record<string, str
   const bDesk = propBounds(getProp('desk')!);
   const mugC = { x: shX + 85, y: shY + 70 };
   const mug = createPropNode('mug', { x: mugC.x - (bMug.x + bMug.w / 2), y: mugC.y - (bMug.y + bMug.h / 2), name: 'Caneca' });
-  const desk = createPropNode('desk', { x: mugC.x - (bDesk.x + bDesk.w / 2), y: mugC.y + (bMug.h / 2) - bDesk.y, name: 'Escrivaninha' });
+  const K = 0.55; // escrivaninha menor: não esconde a Nina
+  const desk = createPropNode('desk', { x: mugC.x - (bDesk.x + bDesk.w / 2) * K, y: mugC.y + bMug.h / 2 - bDesk.y * K, scale: K, name: 'Escrivaninha' });
   for (const n of [lamp, plant, desk, mug]) addNode(s, n);
+  moveLayer(s, nina.id, 'top'); // a Nina fica na frente dos objetos
   const center = (id: string) => {
     const n = s.nodes[id]!;
     const b = n.kind === 'prop' ? propBounds(getProp(n.propId)!) : { x: 0, y: 0, w: 0, h: 0 };

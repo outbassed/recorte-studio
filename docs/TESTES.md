@@ -148,3 +148,15 @@ Executados em 14/11/2026 num ambiente **diferente** dos registros acima: Linux, 
 | `library-perf` (Chrome, 48 pacotes instalados, 963 itens) | busca 52 ms, filtro 61 ms, popup 56 ms, 80 itens desenhados |
 
 Os números anteriores (127/127 E2E) são de outra máquina; neste ambiente a `main` original já falha esses 2 testes.
+
+## RecorteStudio: Fases 0 e 1 (IK de braço opcional)
+
+Registro completo, com o que foi provado e o que não foi, em [recortestudio/RELATORIO-FASE-0-1.md](recortestudio/RELATORIO-FASE-0-1.md); método de compatibilidade em [recortestudio/COMPATIBILIDADE.md](recortestudio/COMPATIBILIDADE.md).
+
+| Comando | O que roda |
+| --- | --- |
+| `npm test` | inclui `ik2d`, `arm-ik`, `ik-scene`, `ik-demo`, `ik-perf` e os **testes dourados** (`character-render-golden`, `legacy-scene-golden`) que fixam o desenho do motor original |
+| `npx playwright test --project=e2e tests/e2e/ik.spec.ts` | IK na interface real (computador e celular) |
+| `npx playwright test --project=e2e tests/e2e/ik-perf.spec.ts` | fps reais no Chrome com IK ligado × desligado (`IK_PERF_WRITE=1` grava os números) |
+| `npx playwright test --project=shots tests/e2e/ik-demo.spec.ts` | gera os quadros da demonstração em `docs/recortestudio/demo/` |
+| `npx playwright test --project=baseline` | capturas de layout (use `LAYOUT_OUT` e `BASE_URL`; compare com `tools/layout-diff.py`) |
