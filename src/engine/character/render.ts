@@ -295,7 +295,9 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   const acc = (key: string) => def.accessories.find((a) => a.id === key);
 
   // ---- pernas e quadril, com "sentar" mantendo os pés no chão ----
+  const sit = clamp(rig.sit, 0, 1);
   const { thighForeshort, hipY } = hipLayout(m, bodyV, rig);
+  const hipOff = (m.hipW / 2 - m.legW * 0.4) * Math.abs(Math.cos(rad(bodyV.yaw))) * 1;
   const legGeom = (name: 'L' | 'R') => legGeometry(m, bodyV, rig, name);
   const bottomIsLong = !['shorts', 'skirt'].includes(o.bottom) && !info.skirtFromTop;
   const legColor = info.skirtFromTop ? skin : o.bottom === 'skirt' || o.bottom === 'shorts' ? skin : o.bottom === 'longskirt' ? o.bottomColor : o.bottomColor;
