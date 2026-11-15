@@ -13,6 +13,7 @@ import { bodyMetrics } from '../character/render';
 import { customObjectBounds, isCustomObjectId } from '../world/pieces';
 import { getProp, propBounds } from '../world/props';
 import { blendArmIk, solveArmIk, type ArmSide } from './armIk';
+import { blendLegIk, solveLegIk, type LegSide } from './legIk';
 import type { IkLimit, Vec2 } from './ik2d';
 
 export interface ArmIkReport {
@@ -26,6 +27,11 @@ export interface ArmIkReport {
   maxReach: number;
   /** alvo no mundo (antes da câmera) */
   target: Vec2;
+}
+
+export interface LegIkReport extends ArmIkReport {
+  /** Tornozelo resultante, em coordenadas do personagem; usado para depuração. */
+  ankle: Vec2;
 }
 
 export interface SceneIkInput {
@@ -42,6 +48,7 @@ export interface SceneIkInput {
 
 const clamp = (v: number, lo: number, hi: number) => (v < lo ? lo : v > hi ? hi : v);
 const SIDES: Array<[ArmSide, 'armL' | 'armR']> = [['L', 'armL'], ['R', 'armR']];
+const LEGS: Array<[LegSide, 'legL' | 'legR']> = [['L', 'legL'], ['R', 'legR']];
 
 /** Matriz de mundo do personagem como o desenho a usa, incluindo a escala de profundidade (perspectiva falsa). */
 export function characterWorldMatrix(scene: Scene, node: SceneNode, nodes: Record<string, SceneNode>): Mat {
@@ -92,9 +99,10 @@ export function ikTargetWorld(cfg: ArmIk, self: CharacterNode, input: Pick<Scene
   return { x, y };
 }
 
-export function applySceneIk(input: SceneIkInput): { rig: Rig; reports: Partial<Record<ArmSide, ArmIkReport>> } {
+export function applySceneIk(input: SceneIkInput): { rig: Rig; reports: Partial<Record<ArmSide, ArmIkReport>>; feet: Partial<Record<LegSide, LegIkReport>> } {
   const { node } = input;
   const reports: Partial<Record<ArmSide, ArmIkReport>> = {};
+  const feet: Partial<Record<LegSide, LegIkReport>> = {};
   let rig = input.rig;
   for (const [side, key] of SIDES) {
     const cfg = node.ik[key];
@@ -110,5 +118,21 @@ export function applySceneIk(input: SceneIkInput): { rig: Rig; reports: Partial<
     rig = blendArmIk(rig, side, sol, cfg.weight);
     reports[side] = { reached: sol.reached, limited: sol.limited, error: sol.error, distance: sol.distance, maxReach: sol.maxReach, target: world };
   }
-  return { rig, reports };
+  // Pé fixo no mundo: ao mover o corpo, o joelho se adapta. Nunca altera o corpo,
+  // somente os ângulos de coxa/canela. Para dar um passo, anime o peso e X/Y.
+  for (const [side, key] of LEGS) {
+    const cfg = node.ik[key];
+    if (!cfg?.enabled || !(cfg.weight > 0)) continue;
+    const matrix = characterWorldMatrix(input.scene, input.nodes[node.id] ?? node, input.nodes);
+    const det = matrix[0] * matrix[3] - matrix[1] * matrix[2];
+    if (!Number.isFinite(det) || Math.abs(det) < 1e-9) continue;
+    const [lx, ly] = apply(invert(matrix), cfg.x, cfg.y);
+    // Ler sempre o mesmo rig original mantém a solução independente da ordem dos pés.
+    const sol = solveLegIk(input.def, input.bodyView, input.rig, side, { x: lx, y: ly }, cfg.bend, cfg.soft);
+    rig = blendLegIk(rig, side, sol, cfg.weight);
+    feet[side] = { reached: sol.reached, limited: sol.limited, error: sol.error,
+      distance: sol.distance, maxReach: sol.maxReach, ankle: sol.ankle,
+      target: { x: cfg.x, y: cfg.y } };
+  }
+  return { rig, reports, feet };
 }
