@@ -25,6 +25,10 @@ export interface CharacterPose {
   handR: 'open' | 'fist' | 'point';
   /** Profundidade de braços e mãos em relação à cabeça (padrão: automática). */
   limbDepth?: Partial<Record<'armL' | 'handL' | 'armR' | 'handR', 'auto' | 'front' | 'behind'>>;
+  /** Suaviza os contornos dos cotovelos somente nos braços com IK ativo. Não altera personagens antigos. */
+  ikElbows?: Partial<Record<'L' | 'R', boolean>>;
+  /** Suaviza os contornos dos joelhos somente nas pernas com IK ativo. */
+  ikKnees?: Partial<Record<'L' | 'R', boolean>>;
 }
 
 /** Camada de desenho de um membro dentro do tronco. */
@@ -227,6 +231,21 @@ export function breathScale(rig: Rig): [number, number] {
   return [1 + 0.006 * rig.breath, 1 + 0.014 * rig.breath];
 }
 
+/** Geometria EXATA das pernas do SVG, compartilhada pelo motor de IK: não alterar a cinemática do rig V1. */
+export function legGeometry(m: BodyMetrics, bodyV: ViewInfo, rig: Rig, name: 'L' | 'R') {
+  const swingSide = Math.abs(Math.sin(rad(bodyV.yaw))) > 0.3 ? (bodyV.facing || 1) : 0;
+  const { thighForeshort, sitAngle, hipY } = hipLayout(m, bodyV, rig);
+  const hipOff = (m.hipW / 2 - m.legW * 0.4) * Math.abs(Math.cos(rad(bodyV.yaw))) * 1;
+  const near = limbNear(bodyV, name);
+  const x = name === 'L' ? Math.cos(rad(bodyV.yaw)) * hipOff : -Math.cos(rad(bodyV.yaw)) * hipOff;
+  const upper = name === 'L' ? rig.legLUpper : rig.legRUpper;
+  const lower = name === 'L' ? rig.legLLower : rig.legRLower;
+  const dir = swingSide !== 0 ? swingSide : limbSide(bodyV, name);
+  const k = swingSide !== 0 ? 1 : 0.4;
+  return { near, x, hipY, thigh: m.thigh * thighForeshort, shin: m.shin, dir, k, sitAngle,
+    upperDeg: -dir * (upper * k + sitAngle), lowerDeg: dir * (lower * k + sitAngle) };
+}
+
 /** Posição do ombro no tronco e ângulos finais (em graus de SVG) do braço. Usado pelo desenho e pelo IK. */
 export function armGeometry(m: BodyMetrics, bodyV: ViewInfo, rig: Rig, name: 'L' | 'R') {
   const near = limbNear(bodyV, name);
@@ -276,19 +295,10 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
   const acc = (key: string) => def.accessories.find((a) => a.id === key);
 
   // ---- pernas e quadril, com "sentar" mantendo os pés no chão ----
-  const swingSide = Math.abs(Math.sin(rad(bodyV.yaw))) > 0.3 ? (bodyV.facing || 1) : 0;
   const sit = clamp(rig.sit, 0, 1);
-  const { thighForeshort, sitAngle, hipY } = hipLayout(m, bodyV, rig);
+  const { thighForeshort, hipY } = hipLayout(m, bodyV, rig);
   const hipOff = (m.hipW / 2 - m.legW * 0.4) * Math.abs(Math.cos(rad(bodyV.yaw))) * 1;
-  const legGeom = (name: 'L' | 'R') => {
-    const near = limbNear(bodyV, name);
-    const x = name === 'L' ? Math.cos(rad(bodyV.yaw)) * hipOff : -Math.cos(rad(bodyV.yaw)) * hipOff;
-    const upper = name === 'L' ? rig.legLUpper : rig.legRUpper;
-    const lower = name === 'L' ? rig.legLLower : rig.legRLower;
-    const dir = swingSide !== 0 ? swingSide : limbSide(bodyV, name);
-    const k = swingSide !== 0 ? 1 : 0.4;
-    return { near, x, upperDeg: -dir * (upper * k + sitAngle), lowerDeg: dir * (lower * k + sitAngle) };
-  };
+  const legGeom = (name: 'L' | 'R') => legGeometry(m, bodyV, rig, name);
   const bottomIsLong = !['shorts', 'skirt'].includes(o.bottom) && !info.skirtFromTop;
   const legColor = info.skirtFromTop ? skin : o.bottom === 'skirt' || o.bottom === 'shorts' ? skin : o.bottom === 'longskirt' ? o.bottomColor : o.bottomColor;
   const renderLeg = (name: 'L' | 'R'): string => {
@@ -309,6 +319,7 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
       upperCloth + jeans + sock +
       `<g transform="translate(0 ${n(thigh)}) rotate(${n(g.lowerDeg)})">` +
       limb(`M0 0L0 ${n(m.shin)}`, legColor, ink, m.legW * 0.92, ow) +
+      (pose.ikKnees?.[name] ? ellipse(0, 0, m.legW * 0.47, m.legW * 0.47, `data-part="ik-knee-${name}" fill="${legColor}" stroke="${ink}" stroke-width="${n(ow * 0.8)}"`) : '') +
       `<g transform="rotate(${n(-g.upperDeg - g.lowerDeg)} 0 ${n(m.shin)})">${foot(o.shoes, o.shoeColor, bodyV, 0, m.shin - 2, def.body.height * (AGE_SCALE[def.body.age]?.shoulders ?? 1), ink, ow, skin)}</g>` +
       `</g></g></g>`
     );
@@ -350,6 +361,7 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
       upperArm +
       `<g transform="translate(0 ${n(m.upperArm)}) rotate(${n(g.lowerDeg)})">` +
       lowerArm + watch +
+      (pose.ikElbows?.[name] ? ellipse(0, 0, m.limbW * 0.46, m.limbW * 0.46, `data-part="ik-elbow-${name}" fill="${info.sleeveLong ? sleeve : skin}" stroke="${ink}" stroke-width="${n(ow * 0.75)}"`) : '') +
       (part === 'all' ? handSvg : '') +
       `</g></g>`
     );

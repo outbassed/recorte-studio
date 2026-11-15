@@ -242,9 +242,29 @@ export const ArmIkSchema = z.object({
   soft: finite.default(0),
 });
 export type ArmIk = z.infer<typeof ArmIkSchema>;
+
+/**
+ * IK opcional para coxa → joelho → tornozelo. Com target X/Y fixo no mundo,
+ * o pé permanece plantado enquanto o personagem se desloca (dentro do alcance).
+ * Os pés de projetos antigos continuam inteiramente controlados pelo rig V1.
+ */
+export const LegIkSchema = z.object({
+  enabled: z.boolean().default(false),
+  /** 0 = animação/pose original; 1 = pé fixo no alvo. Animável para levantar e apoiar o pé. */
+  weight: finite.default(1),
+  x: finite.default(0),
+  y: finite.default(0),
+  bend: z.enum(['forward', 'backward']).default('forward'),
+  /** Fração da extensão total usada no amortecimento antes de esticar o joelho. */
+  soft: finite.default(0),
+});
+export type LegIk = z.infer<typeof LegIkSchema>;
+
 export const CharacterIkSchema = z.object({
   armL: ArmIkSchema.prefault({}),
   armR: ArmIkSchema.prefault({}),
+  legL: LegIkSchema.prefault({}),
+  legR: LegIkSchema.prefault({}),
 });
 export type CharacterIk = z.infer<typeof CharacterIkSchema>;
 

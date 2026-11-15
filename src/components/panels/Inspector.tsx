@@ -36,6 +36,8 @@ import { applyCustomBackground, availableTimes, customIdOf, isCustomPreset, reso
 import { getAction } from '@/engine/animation/actions';
 import { evaluateScene } from '@/engine/animation/evaluate';
 import { currentHandWorld } from '@/engine/rig/handPosition';
+import { currentFootWorld } from '@/engine/rig/footPosition';
+import { legChain } from '@/engine/rig/legIk';
 import { newItemId } from '@/engine/model/ids';
 import { repo } from '@/storage/db';
 import type { TimeOfDay } from '@/engine/model/schema';
@@ -405,6 +407,63 @@ function IkSection({ scene, node, project, set }: { scene: Scene; node: Characte
   );
 }
 
+const IK_LEGS = [['legL', 'L', 'Pé esquerdo'], ['legR', 'R', 'Pé direito']] as const;
+
+/** Estado do pé neste instante, inclusive alvos fora do alcance físico do joelho. */
+function FootIkStatus({ project, scene, node, side }: { project: Project; scene: Scene; node: CharacterNode; side: 'L' | 'R' }) {
+  const time = useTimeMs();
+  const r = evaluateScene(project, scene, time < 0 ? nowMs() : time).characters[node.id]?.feet?.[side];
+  const msg = !r ? 'Pé sem alvo válido; mantendo a pose original.'
+    : r.reached ? 'Pé fixo no alvo. Você pode mover o personagem e o joelho acompanha.'
+      : r.limited === 'out-of-reach' ? `Pé fora do alcance: faltam ${Math.round(r.error)} px. A perna não estica além do limite.`
+        : r.limited === 'soft-reach' ? `Amortecimento do joelho: ${Math.round(r.error)} px até o alvo.`
+          : `Joelho limitado: ${Math.round(r.error)} px de diferença até o alvo.`;
+  return <p className="hint" data-testid={`ik-foot-status-${side}`} data-reached={r ? String(r.reached) : 'none'} role="status">{msg}</p>;
+}
+
+/** Pés plantados: a posição inicial é a do tornozelo real no instante atual.
+ * Não é simulador de caminhada: para levantar o pé, anime o peso e o alvo na timeline.
+ */
+function FootIkSection({ scene, node, project, set }: {
+  scene: Scene; node: CharacterNode; project: Project; set: (label: string, fn: (n: CharacterNode) => void) => void
+}) {
+  const toggle = (leg: 'legL' | 'legR', side: 'L' | 'R', on: boolean) => {
+    if (!on) { set('Soltar pé', (n) => { n.ik[leg].enabled = false; }); return; }
+    const t = nowMs();
+    const rc = evaluateScene(project, scene, t).characters[node.id];
+    const here = currentFootWorld(project, scene, node.id, side, t);
+    const ch = rc ? legChain(rc.def, rc.pose.bodyView, rc.pose.rig, side) : null;
+    set('Fixar pé no chão', (n) => {
+      const c = n.ik[leg];
+      c.enabled = true;
+      c.weight = 1;
+      c.soft = 0; // Ativar não deve deslocar um pé já apoiado.
+      c.bend = ch && ch.lowerDeg * ch.dir < 0 ? 'backward' : 'forward';
+      if (here) { c.x = round2(here.x); c.y = round2(here.y); }
+    });
+  };
+  const keyPaths = IK_LEGS.flatMap(([leg]) => (node.ik[leg]?.enabled ? [`ik.${leg}.weight`, `ik.${leg}.x`, `ik.${leg}.y`] : []));
+  return (
+    <Section title="IK: joelhos e pés fixos no chão" testId="sec-foot-ik" defaultOpen={false} actions={<SectionKeys id="ik-feet" scene={scene} target={node.id} kind="character" paths={keyPaths} />}>
+      <p className="hint">Ao fixar um pé, ele fica preso ao ponto atual da cena, mesmo que o corpo se mova. O joelho se ajusta dentro do alcance. Para dar passos, anime posição X/Y e força do IK; ainda não há ciclo automático de passos.</p>
+      {IK_LEGS.map(([leg, side, label]) => {
+        const c = node.ik[leg];
+        return <div key={leg} className="ik-arm" data-testid={`ik-${leg}`}>
+          <ToggleField label={`${label}: fixar pé (IK)`} testId={`ik-toggle-${leg}`} checked={c.enabled} onChange={(on) => toggle(leg, side, on)} />
+          {c.enabled && <>
+            <PropField scene={scene} target={node.id} kind="character" path={`ik.${leg}.x`} label="Alvo do pé X" testId={`ik-x-${leg}`} />
+            <PropField scene={scene} target={node.id} kind="character" path={`ik.${leg}.y`} label="Alvo do pé Y" testId={`ik-y-${leg}`} />
+            <PropField scene={scene} target={node.id} kind="character" path={`ik.${leg}.weight`} label="Força do IK" testId={`ik-weight-${leg}`} />
+            <DiscreteField scene={scene} target={node.id} path={`ik.${leg}.bend`} label="Joelho" testId={`ik-bend-${leg}`} options={[{ id: 'forward', label: 'Dobrar para frente' }, { id: 'backward', label: 'Dobrar para trás' }]} />
+            <PropField scene={scene} target={node.id} kind="character" path={`ik.${leg}.soft`} label="Suavidade ao esticar" testId={`ik-soft-${leg}`} />
+            <FootIkStatus scene={scene} node={node} project={project} side={side} />
+          </>}
+        </div>;
+      })}
+    </Section>
+  );
+}
+
 const VIEW_OPTIONS = [{ id: 'auto', label: 'Automática' }, ...VIEW_ORDER.map((v) => ({ id: v, label: VIEW_LABELS[v] }))];
 
 function CharacterSections({ scene, node, project }: { scene: Scene; node: CharacterNode; project: Project }) {
@@ -479,6 +538,7 @@ function CharacterSections({ scene, node, project }: { scene: Scene; node: Chara
         <SelectField label="Mão direita" value={node.handR} options={[{ id: 'open', label: 'Aberta' }, { id: 'fist', label: 'Fechada' }, { id: 'point', label: 'Apontando' }]} onChange={(v) => set('Mão', (n) => { n.handR = v as CharacterNode['handR']; })} />
       </Section>
       <IkSection scene={scene} node={node} project={project} set={set} />
+      <FootIkSection scene={scene} node={node} project={project} set={set} />
       </Pane>
       <Pane tab="Animar">
       <Section title="Animar" testId="sec-animate">

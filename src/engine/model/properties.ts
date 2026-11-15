@@ -90,6 +90,17 @@ export const PROPERTIES: PropertyDef[] = [
       { path: `ik.${arm}.bend`, label: `IK do braço ${who}: cotovelo`, kind: 'enum', appliesTo: ['character'] } as PropertyDef,
     ];
   }),
+  // Pés ancorados no mundo: força e alvo podem receber keyframes para dar passos controlados.
+  ...(['legL', 'legR'] as const).flatMap((leg) => {
+    const who = leg === 'legL' ? 'esquerdo' : 'direito';
+    return [
+      num(`ik.${leg}.weight`, `IK do pé ${who}: força`, { unit: '%', display: 100, min: 0, max: 1, sliderMin: 0, sliderMax: 100, appliesTo: ['character'] }),
+      num(`ik.${leg}.x`, `IK do pé ${who}: alvo X`, { unit: 'px', min: -20000, max: 20000, sliderMin: -1400, sliderMax: 1400, step: 0.5, appliesTo: ['character'] }),
+      num(`ik.${leg}.y`, `IK do pé ${who}: alvo Y`, { unit: 'px', min: -20000, max: 20000, sliderMin: -800, sliderMax: 800, step: 0.5, appliesTo: ['character'] }),
+      num(`ik.${leg}.soft`, `IK do pé ${who}: suavidade`, { unit: '%', display: 100, min: 0, max: 0.3, sliderMin: 0, sliderMax: 30, appliesTo: ['character'] }),
+      { path: `ik.${leg}.bend`, label: `IK do pé ${who}: direção do joelho`, kind: 'enum', appliesTo: ['character'] } as PropertyDef,
+    ];
+  }),
   { path: 'visible', label: 'Visibilidade', kind: 'boolean', appliesTo: ALL_VISUAL },
   { path: 'expression', label: 'Expressão', kind: 'enum', appliesTo: ['character'] },
   { path: 'mouthShape', label: 'Boca (visema)', kind: 'enum', appliesTo: ['character'] },
