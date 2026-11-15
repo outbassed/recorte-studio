@@ -1,0 +1,282 @@
+{
+ "desktop-01-inicio": {
+  "header": null,
+  "leftPanel": null,
+  "stage": null,
+  "properties": null,
+  "timeline": null,
+  "mobilePopup": null,
+  "mobileDock": null
+ },
+ "desktop-02-studio-elenco": {
+  "header": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 47
+  },
+  "leftPanel": {
+   "x": 0,
+   "y": 47,
+   "w": 318,
+   "h": 447
+  },
+  "stage": {
+   "x": 324,
+   "y": 47,
+   "w": 714,
+   "h": 410
+  },
+  "properties": {
+   "x": 1044,
+   "y": 47,
+   "w": 322,
+   "h": 447
+  },
+  "timeline": {
+   "x": 0,
+   "y": 500,
+   "w": 1366,
+   "h": 268
+  },
+  "mobilePopup": null,
+  "mobileDock": null
+ },
+ "desktop-03-inspetor-transformar": {
+  "header": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 47
+  },
+  "leftPanel": {
+   "x": 0,
+   "y": 47,
+   "w": 318,
+   "h": 447
+  },
+  "stage": {
+   "x": 324,
+   "y": 47,
+   "w": 714,
+   "h": 410
+  },
+  "properties": {
+   "x": 1044,
+   "y": 47,
+   "w": 322,
+   "h": 447
+  },
+  "timeline": {
+   "x": 0,
+   "y": 500,
+   "w": 1366,
+   "h": 268
+  },
+  "mobilePopup": null,
+  "mobileDock": null
+ },
+ "desktop-04-inspetor-pose": {
+  "header": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 47
+  },
+  "leftPanel": {
+   "x": 0,
+   "y": 47,
+   "w": 318,
+   "h": 447
+  },
+  "stage": {
+   "x": 324,
+   "y": 47,
+   "w": 714,
+   "h": 410
+  },
+  "properties": {
+   "x": 1044,
+   "y": 47,
+   "w": 322,
+   "h": 447
+  },
+  "timeline": {
+   "x": 0,
+   "y": 500,
+   "w": 1366,
+   "h": 268
+  },
+  "mobilePopup": null,
+  "mobileDock": null
+ },
+ "desktop-04b-inspetor-pose-fim": {
+  "header": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 47
+  },
+  "leftPanel": {
+   "x": 0,
+   "y": 47,
+   "w": 318,
+   "h": 447
+  },
+  "stage": {
+   "x": 324,
+   "y": 47,
+   "w": 714,
+   "h": 410
+  },
+  "properties": {
+   "x": 1044,
+   "y": 47,
+   "w": 322,
+   "h": 447
+  },
+  "timeline": {
+   "x": 0,
+   "y": 500,
+   "w": 1366,
+   "h": 268
+  },
+  "mobilePopup": null,
+  "mobileDock": null
+ },
+ "desktop-05-inspetor-rosto": {
+  "header": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 47
+  },
+  "leftPanel": {
+   "x": 0,
+   "y": 47,
+   "w": 318,
+   "h": 447
+  },
+  "stage": {
+   "x": 324,
+   "y": 47,
+   "w": 714,
+   "h": 410
+  },
+  "properties": {
+   "x": 1044,
+   "y": 47,
+   "w": 322,
+   "h": 447
+  },
+  "timeline": {
+   "x": 0,
+   "y": 500,
+   "w": 1366,
+   "h": 268
+  },
+  "mobilePopup": null,
+  "mobileDock": null
+ },
+ "desktop-06-biblioteca": {
+  "header": {
+   "x": 0,
+   "y": 0,
+   "w": 1366,
+   "h": 47
+  },
+  "leftPanel": {
+   "x": 0,
+   "y": 47,
+   "w": 318,
+   "h": 447
+  },
+  "stage": {
+   "x": 324,
+   "y": 47,
+   "w": 714,
+   "h": 410
+  },
+  "properties": {
+   "x": 1044,
+   "y": 47,
+   "w": 322,
+   "h": 447
+  },
+  "timeline": {
+   "x": 0,
+   "y": 500,
+   "w": 1366,
+   "h": 268
+  },
+  "mobilePopup": null,
+  "mobileDock": null
+ },
+ "celular-01-inicio": {
+  "header": null,
+  "leftPanel": null,
+  "stage": null,
+  "properties": null,
+  "timeline": null,
+  "mobilePopup": null,
+  "mobileDock": null
+ },
+ "celular-02-studio": {
+  "header": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 45
+  },
+  "leftPanel": null,
+  "stage": {
+   "x": 0,
+   "y": 45,
+   "w": 390,
+   "h": 384
+  },
+  "properties": null,
+  "timeline": null,
+  "mobilePopup": null,
+  "mobileDock": {
+   "x": 334,
+   "y": 789,
+   "w": 56,
+   "h": 55
+  }
+ },
+ "celular-03-pose": {
+  "header": {
+   "x": 0,
+   "y": 0,
+   "w": 390,
+   "h": 45
+  },
+  "leftPanel": null,
+  "stage": {
+   "x": 0,
+   "y": 45,
+   "w": 390,
+   "h": 384
+  },
+  "properties": {
+   "x": 0,
+   "y": 400,
+   "w": 390,
+   "h": 388
+  },
+  "timeline": null,
+  "mobilePopup": {
+   "x": 0,
+   "y": 400,
+   "w": 390,
+   "h": 388
+  },
+  "mobileDock": {
+   "x": 334,
+   "y": 789,
+   "w": 56,
+   "h": 55
+  }
+ }
+}

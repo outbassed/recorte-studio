@@ -1,0 +1,44 @@
+{
+ "computador-ik-desligado": {
+  "frames": 241,
+  "fps": 60.2,
+  "p50": 16.7,
+  "p95": 16.7,
+  "worst": 16.8
+ },
+ "computador-ik-ligado": {
+  "frames": 241,
+  "fps": 60.1,
+  "p50": 16.7,
+  "p95": 16.7,
+  "worst": 16.8
+ },
+ "computador-cpu-4x-ik-desligado": {
+  "frames": 208,
+  "fps": 51.9,
+  "p50": 16.7,
+  "p95": 33.3,
+  "worst": 50.1
+ },
+ "computador-cpu-4x-ik-ligado": {
+  "frames": 199,
+  "fps": 49.7,
+  "p50": 16.7,
+  "p95": 33.4,
+  "worst": 50
+ },
+ "celular-cpu-4x-ik-desligado": {
+  "frames": 236,
+  "fps": 59,
+  "p50": 16.7,
+  "p95": 16.8,
+  "worst": 33.4
+ },
+ "celular-cpu-4x-ik-ligado": {
+  "frames": 239,
+  "fps": 59.5,
+  "p50": 16.7,
+  "p95": 16.8,
+  "worst": 33.4
+ }
+}

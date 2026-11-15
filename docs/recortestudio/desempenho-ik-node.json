@@ -1,0 +1,9 @@
+{
+ "node": "v22.23.4",
+ "solveTwoBone_us": 0.286,
+ "solveArmIk_us": 0.912,
+ "evaluateScene_off_us": 15.6,
+ "evaluateScene_on_us": 20.3,
+ "evaluateScene_overhead_us": 4.8,
+ "frame_plan_svg_ms": 0.75
+}

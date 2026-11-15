@@ -11,21 +11,23 @@ export default defineConfig({
   retries: 0,
   reporter: [['list'], ['json', { outputFile: 'test-results/e2e-results.json' }]],
   use: {
-    baseURL: 'http://localhost:4173',
+    baseURL: process.env.BASE_URL ?? 'http://localhost:4173',
     channel: 'chrome',
     acceptDownloads: true,
     viewport: { width: 1366, height: 768 },
     launchOptions: { args: ['--autoplay-policy=no-user-gesture-required'] },
   },
-  webServer: {
+  // Com BASE_URL definido (ex.: comparar com o app original em outra porta) o servidor local não é iniciado.
+  webServer: process.env.BASE_URL ? undefined : {
     command: 'npm run preview',
     url: 'http://localhost:4173',
     reuseExistingServer: true,
     timeout: 60_000,
   },
   projects: [
-    { name: 'e2e', testMatch: /(flows|stories|library|previews|section-keys|catalog|object-anim|ui-strips|group-handle|packs|library-home|creator-text|library-popup|official-catalog|library-perf)\.spec\.ts/ },
-    { name: 'shots', testMatch: /shots\.spec\.ts/ },
+    { name: 'e2e', testMatch: /(flows|stories|library|previews|section-keys|catalog|object-anim|ui-strips|group-handle|packs|library-home|creator-text|library-popup|official-catalog|library-perf|ik|ik-perf)\.spec\.ts/ },
+    { name: 'shots', testMatch: /(shots|ik-demo)\.spec\.ts/ },
     { name: 'manual', testMatch: /manual\.spec\.ts/ },
+    { name: 'baseline', testMatch: /layout-baseline\.spec\.ts/ },
   ],
 });
