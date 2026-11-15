@@ -62,6 +62,16 @@ export function solveLegIk(
 ): LegIkSolution {
   const ch = legChain(def, view, rig, side);
   const rel = { x: target.x - ch.hip.x, y: target.y - ch.hip.y };
+  const original = footAnkleLocal(def, view, rig, side);
+  const initialError = Math.hypot(original.x - target.x, original.y - target.y);
+  // Ativar o IK com o alvo sobre o tornozelo não deve saltar nem redesenhar o joelho,
+  // mesmo numa pose manual além dos limites conservadores do solver.
+  if (initialError < 1e-4) return {
+    upper: side === 'L' ? rig.legLUpper : rig.legRUpper,
+    lower: side === 'L' ? rig.legLLower : rig.legRLower,
+    ankle: original, reached: true, error: initialError, limited: 'none',
+    distance: Math.hypot(rel.x, rel.y), maxReach: ch.thigh + ch.shin,
+  };
   const phi = (upper: number) => (-ch.dir * (upper * ch.k + ch.sitAngle)) * RAD + Math.PI / 2;
   const a = phi(LEG_IK_LIMITS.upperMin);
   const b = phi(LEG_IK_LIMITS.upperMax);
