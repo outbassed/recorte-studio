@@ -52,7 +52,7 @@ type Drag =
   | { kind: 'move'; start: { x: number; y: number }; origin: Array<{ id: string; x: number; y: number; inv: [number, number, number, number] }>; group?: boolean }
   | { kind: 'scale'; id: string; centerX: number; centerY: number; startDist: number; sx: number; sy: number }
   | { kind: 'rotate'; id: string; centerX: number; centerY: number; startAngle: number; rot: number }
-  | { kind: 'ik'; id: string; arm: 'armL' | 'armR' }
+  | { kind: 'ik'; id: string; limb: 'armL' | 'armR' | 'legL' | 'legR' }
   | { kind: 'pan'; startX: number; startY: number; px: number; py: number };
 
 export function Stage() {
@@ -232,13 +232,13 @@ export function Stage() {
     const handle = target.closest('[data-handle]');
     const w = toWorld(e.clientX, e.clientY);
     if (handle && handle.getAttribute('data-handle') === 'ik-target') {
-      // Alvo do IK do braço: arrastar grava ik.<braço>.x/y (a mesma coisa que digitar nos campos do Inspetor).
+      // Alvo de mão ou pé: arrastar grava no mesmo campo do Inspetor (Ctrl+Z em um gesto).
       const id = handle.getAttribute('data-node');
-      const arm = handle.getAttribute('data-arm');
-      if (id && (arm === 'armL' || arm === 'armR') && !scene.nodes[id]?.locked) {
+      const limb = handle.getAttribute('data-arm') ?? handle.getAttribute('data-leg');
+      if (id && (limb === 'armL' || limb === 'armR' || limb === 'legL' || limb === 'legR') && !scene.nodes[id]?.locked) {
         gestureChanged.current = false;
-        beginGroup(`ik-${id}-${arm}`);
-        drag.current = { kind: 'ik', id, arm };
+        beginGroup(`ik-${id}-${limb}`);
+        drag.current = { kind: 'ik', id, limb };
       }
       return;
     }
@@ -329,8 +329,8 @@ export function Stage() {
       // Palco → mundo: desfaz a câmera (com o parallax do elemento de topo), como o desenho a aplica.
       const wp = camMatrix(dr.id).inverse().transformPoint(new DOMPoint(w.x, w.y));
       if (Number.isFinite(wp.x) && Number.isFinite(wp.y)) {
-        commitTransform(dr.id, `ik.${dr.arm}.x`, Math.round(wp.x * 10) / 10);
-        commitTransform(dr.id, `ik.${dr.arm}.y`, Math.round(wp.y * 10) / 10);
+        commitTransform(dr.id, `ik.${dr.limb}.x`, Math.round(wp.x * 10) / 10);
+        commitTransform(dr.id, `ik.${dr.limb}.y`, Math.round(wp.y * 10) / 10);
       }
       return;
     }
@@ -474,6 +474,35 @@ export function Stage() {
     });
   }) : [];
 
+  /** Alvos de pés fixos: ponto azul (alcançado) ou laranja (além da perna). */
+  const footMarkers = showOverlay && !projectMode ? selected.flatMap((node) => {
+    const rc = resolved.characters[node.id];
+    if (node.kind !== 'character' || !rc?.feet) return [];
+    return (['L', 'R'] as const).flatMap((side) => {
+      const result = rc.feet?.[side];
+      if (!result) return [];
+      const leg = side === 'L' ? 'legL' : 'legR';
+      const cfg = node.ik[leg];
+      const pos = camMatrix(node.id).transformPoint(new DOMPoint(result.target.x, result.target.y));
+      const color = result.reached ? '#6cbefa' : '#ffb454';
+      const draggable = !node.locked;
+      return [(
+        <g key={`ik-foot-${node.id}-${side}`} data-testid={`ik-foot-marker-${side}`} data-reached={String(result.reached)}
+          data-handle={draggable ? 'ik-target' : undefined} data-node={node.id} data-leg={leg}
+          style={{ cursor: draggable ? 'grab' : 'default', pointerEvents: draggable ? 'all' : 'none' }}>
+          <title>{`IK do pé ${side === 'L' ? 'esquerdo' : 'direito'}: ${draggable ? 'arraste o alvo ou digite X/Y' : 'pé bloqueado'}`}</title>
+          <circle cx={pos.x} cy={pos.y} r={20 * px} fill="transparent" />
+          <rect x={pos.x - 9 * px} y={pos.y - 9 * px} width={18 * px} height={18 * px} rx={4 * px}
+            fill="none" stroke={color} strokeWidth={2.5 * px} />
+          <path d={`M${n(pos.x - 15 * px)} ${n(pos.y)}H${n(pos.x + 15 * px)}M${n(pos.x)} ${n(pos.y - 15 * px)}V${n(pos.y + 15 * px)}`}
+            stroke={color} strokeWidth={2 * px} strokeLinecap="round" />
+          <text x={pos.x + 12 * px} y={pos.y - 12 * px} fontSize={12 * px} fontWeight="700"
+            fill={color} stroke="#0b1020" strokeWidth={3 * px} paintOrder="stroke">PÉ {side}</text>
+        </g>
+      )];
+    });
+  }) : [];
+
   const gazeArrows = ui.gazeArrows ? Object.entries(resolved.characters).map(([id, c]) => {
     const dir = c.gaze.headView.includes('right') ? 1 : c.gaze.headView.includes('left') ? -1 : 0;
     const x2 = c.headX + (dir || c.gaze.gazeX) * 170;
@@ -498,6 +527,7 @@ export function Stage() {
           {gazeArrows}
           {gizmo}
           {ikMarkers}
+          {footMarkers}
           {rulers}
         </svg>
         <div className={`stage-mode${playing ? ' is-playing' : ''}`} data-testid="stage-mode">{playing ? <><Pause size={12} /> Reproduzindo</> : 'Edição'}</div>
