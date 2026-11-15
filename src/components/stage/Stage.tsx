@@ -482,7 +482,6 @@ export function Stage() {
       const result = rc.feet?.[side];
       if (!result) return [];
       const leg = side === 'L' ? 'legL' : 'legR';
-      const cfg = node.ik[leg];
       const pos = camMatrix(node.id).transformPoint(new DOMPoint(result.target.x, result.target.y));
       const color = result.reached ? '#6cbefa' : '#ffb454';
       const draggable = !node.locked;
