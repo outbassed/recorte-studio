@@ -33,6 +33,9 @@ export interface ActiveBubble {
   nodeId: string;
   /** progresso 0–1 */
   progress: number;
+  /** ms desde o início do clip e ms que faltam para ele acabar (entrada e saída do balão) */
+  localMs: number;
+  remainingMs: number;
 }
 
 export interface ResolvedScene {
@@ -240,7 +243,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
       if (t < clip.startMs || t >= clip.startMs + clip.durationMs) continue;
       const local = t - clip.startMs;
       speaking = true;
-      if (clip.showBubble && clip.text) bubbles.push({ clip, nodeId: id, progress: local / clip.durationMs });
+      if (clip.showBubble && clip.text) bubbles.push({ clip, nodeId: id, progress: local / clip.durationMs, localMs: local, remainingMs: clip.durationMs - local });
       if (clip.showSubtitle && clip.text) dialogueSubtitles.push({ text: clip.text, progress: local / clip.durationMs });
       if (clip.lipSync === 'text') {
         viseme = visemeAt(clip.text, local, clip.durationMs);

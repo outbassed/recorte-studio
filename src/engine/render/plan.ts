@@ -13,7 +13,7 @@ import { getBackground, FLOOR_Y, renderBackground } from '../world/backgrounds';
 import { isCustomPreset, renderCustomBackground } from '../world/customBackgrounds';
 import { getProp, propBounds, renderProp } from '../world/props';
 import { clamp, ellipse, esc, n, path, rad, rect, safeColor, seeded, shade } from './svg';
-import { bubbleLayout, renderBubble, renderSubtitle } from './bubbles';
+import { bubbleAnimation, bubbleLayout, renderBubble, renderSubtitle } from './bubbles';
 
 export interface PlanEntry {
   key: string;
@@ -397,7 +397,7 @@ export function planScene(project: Project, scene: Scene, timeMs: number, assets
     const node = resolved.nodes[b.nodeId];
     if (!headInfo || !node || !node.visible) continue;
     const layout = bubbleLayout({ text: b.clip.text, style: b.clip.bubbleStyle, scale: b.clip.bubbleScale, offsetX: b.clip.bubbleOffsetX, offsetY: b.clip.bubbleOffsetY, frameW, frameH: WORLD_HEIGHT, headX: (headInfo.headX - cam.x) * cam.zoom, headY: (headInfo.headY - cam.y) * cam.zoom, headR: 120 * Math.abs(node.transform.scaleY) * cam.zoom });
-    screen += renderBubble(layout);
+    screen += renderBubble(layout, bubbleAnimation(b.clip, b.localMs, b.remainingMs));
   }
   for (const s of resolved.subtitles) screen += renderSubtitle(s.clip.text, s.clip.position, s.clip.fontSize, s.clip.color, s.clip.background, frameW);
   for (const s of resolved.dialogueSubtitles) screen += renderSubtitle(s.text, 'bottom', 46, '#ffffff', true, frameW);

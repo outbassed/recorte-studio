@@ -25,11 +25,11 @@ function movePivot(n: SceneNode, px: number, py: number): void {
   n.transform.y = d.y;
 }
 import { addSectionKeys, animatablePaths, keyTime, previewRemoveSectionKeys, removeSectionKeys, sectionKeyState, type AddSectionKeysResult, type KeyOwner, type RemoveSectionKeysResult } from '@/engine/model/sectionKeys';
-import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type Transition, type TransitionEasing } from '@/engine/model/schema';
+import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type BubbleAnim, type Transition, type TransitionEasing } from '@/engine/model/schema';
 import { EXPRESSIONS, VISEMES } from '@/engine/character/expressions';
 import { POSES } from '@/engine/character/presets';
 import { VIEW_LABELS, VIEW_ORDER } from '@/engine/character/views';
-import { BUBBLE_STYLES } from '@/engine/render/bubbles';
+import { BUBBLE_ANIM_DEFAULT_IN_MS, BUBBLE_ANIM_DEFAULT_OUT_MS, BUBBLE_IN_OPTIONS, BUBBLE_OUT_OPTIONS, BUBBLE_STYLES } from '@/engine/render/bubbles';
 import { beginGroup, commit, currentProject, endGroup, useCurrentScene, useProject } from '@/state/projectStore';
 import { extractSequence, FRAMING_PRESETS, frameCamera, type FramingPreset } from '@/engine/model/ops';
 import { applyCustomBackground, availableTimes, customIdOf, isCustomPreset, resolveCustomVariant, TIME_LABELS } from '@/engine/world/customBackgrounds';
@@ -632,6 +632,18 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
         <Section title="Balão">
           <ToggleField label="Mostrar balão" checked={c.showBubble} onChange={(v) => set<typeof c>((x) => { x.showBubble = v; })} />
           <SelectField label="Estilo do balão" value={c.bubbleStyle} options={BUBBLE_STYLES} onChange={(v) => set<typeof c>((x) => { x.bubbleStyle = v; })} />
+          <SelectField label="Entrada do balão" value={c.bubbleIn ?? 'none'} testId="bubble-in" options={BUBBLE_IN_OPTIONS} onChange={(v) => set<typeof c>((x) => {
+            if (v === 'none') { delete x.bubbleIn; delete x.bubbleInMs; } else x.bubbleIn = v as BubbleAnim;
+          })} />
+          {(c.bubbleIn ?? 'none') !== 'none' && (
+            <SliderNumberField label="Duração da entrada" unit="ms" min={40} max={3000} step={10} decimals={0} sliderMin={40} sliderMax={1000} value={c.bubbleInMs ?? BUBBLE_ANIM_DEFAULT_IN_MS} testId="bubble-in-ms" onChange={(v) => set<typeof c>((x) => { x.bubbleInMs = Math.round(v); })} />
+          )}
+          <SelectField label="Saída do balão" value={c.bubbleOut ?? 'none'} testId="bubble-out" options={BUBBLE_OUT_OPTIONS} onChange={(v) => set<typeof c>((x) => {
+            if (v === 'none') { delete x.bubbleOut; delete x.bubbleOutMs; } else x.bubbleOut = v as BubbleAnim;
+          })} />
+          {(c.bubbleOut ?? 'none') !== 'none' && (
+            <SliderNumberField label="Duração da saída" unit="ms" min={40} max={3000} step={10} decimals={0} sliderMin={40} sliderMax={1000} value={c.bubbleOutMs ?? BUBBLE_ANIM_DEFAULT_OUT_MS} testId="bubble-out-ms" onChange={(v) => set<typeof c>((x) => { x.bubbleOutMs = Math.round(v); })} />
+          )}
           <SliderNumberField label="Tamanho do balão" unit="%" display={100} min={0.2} max={4} sliderMin={40} sliderMax={250} value={c.bubbleScale} onChange={(v) => set<typeof c>((x) => { x.bubbleScale = v; })} />
           <SliderNumberField label="Balão X" unit="px" sliderMin={-800} sliderMax={800} value={c.bubbleOffsetX} onChange={(v) => set<typeof c>((x) => { x.bubbleOffsetX = v; })} />
           <SliderNumberField label="Balão Y" unit="px" sliderMin={-500} sliderMax={500} value={c.bubbleOffsetY} onChange={(v) => set<typeof c>((x) => { x.bubbleOffsetY = v; })} />

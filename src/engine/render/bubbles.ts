@@ -1,5 +1,7 @@
 /** Balões de diálogo e legendas originais. Quebra de linha determinística. */
 import { clamp, esc, n, path, rect } from './svg';
+import { EASINGS } from '../animation/interp';
+import type { BubbleAnim, DialogueClip } from '../model/schema';
 
 const CHAR_W = 0.54;
 
@@ -69,7 +71,83 @@ export function bubbleLayout(o: {
   return { text: lines, style: o.style, x, y, w, h, tailX: clamp(o.headX, -o.frameW / 2, o.frameW / 2), tailY: o.headY - o.headR * 0.72, fontSize };
 }
 
-export function renderBubble(b: BubbleLayout): string {
+/* ---------------------------- Entrada e saída do balão ---------------------------- */
+
+export const BUBBLE_ANIM_DEFAULT_IN_MS = 240;
+export const BUBBLE_ANIM_DEFAULT_OUT_MS = 200;
+export const BUBBLE_IN_OPTIONS: Array<{ id: BubbleAnim; label: string }> = [
+  { id: 'none', label: 'Nenhuma (estático)' }, { id: 'pop', label: 'Pop com leve overshoot' }, { id: 'fade', label: 'Aparecer suavemente' }, { id: 'popFade', label: 'Pop + aparecer' },
+];
+export const BUBBLE_OUT_OPTIONS: Array<{ id: BubbleAnim; label: string }> = [
+  { id: 'none', label: 'Nenhuma (some no fim)' }, { id: 'pop', label: 'Encolher' }, { id: 'fade', label: 'Sumir suavemente' }, { id: 'popFade', label: 'Encolher + sumir' },
+];
+
+export interface BubbleAnimState {
+  /** 1 = tamanho normal */
+  scale: number;
+  opacity: number;
+}
+
+const STATIC_BUBBLE: BubbleAnimState = { scale: 1, opacity: 1 };
+const smooth01 = (x: number) => {
+  const k = clamp(x, 0, 1);
+  return k * k * (3 - 2 * k);
+};
+
+/**
+ * Estado do balão num instante, só a partir do tempo local do clip e do que resta dele.
+ * Sem campos de animação (clips antigos) devolve escala 1 e opacidade 1: balão estático.
+ * Se entrada + saída não cabem no clip, as duas encolhem na mesma proporção.
+ */
+export function bubbleAnimation(
+  clip: Pick<DialogueClip, 'bubbleIn' | 'bubbleOut' | 'bubbleInMs' | 'bubbleOutMs'>,
+  localMs: number,
+  remainingMs: number,
+): BubbleAnimState {
+  const kindIn = clip.bubbleIn ?? 'none';
+  const kindOut = clip.bubbleOut ?? 'none';
+  if (kindIn === 'none' && kindOut === 'none') return STATIC_BUBBLE;
+  const fin = (v: number, fallback = 0) => (Number.isFinite(v) ? v : fallback);
+  let inMs = kindIn === 'none' ? 0 : Math.max(0, fin(clip.bubbleInMs ?? BUBBLE_ANIM_DEFAULT_IN_MS));
+  let outMs = kindOut === 'none' ? 0 : Math.max(0, fin(clip.bubbleOutMs ?? BUBBLE_ANIM_DEFAULT_OUT_MS));
+  const local = Math.max(0, fin(localMs));
+  const remaining = Math.max(0, fin(remainingMs));
+  const total = local + remaining;
+  if (inMs + outMs > total && inMs + outMs > 0) {
+    const k = total / (inMs + outMs);
+    inMs *= k;
+    outMs *= k;
+  }
+  let scale = 1;
+  let opacity = 1;
+  if (inMs > 0 && local < inMs) {
+    const p = clamp(local / inMs, 0, 1);
+    if (kindIn === 'pop' || kindIn === 'popFade') scale *= 0.6 + 0.4 * EASINGS.backOut(p);
+    opacity *= kindIn === 'pop' ? Math.min(1, p * 3) : EASINGS.easeOutCubic(p);
+  }
+  if (outMs > 0 && remaining < outMs) {
+    const q = 1 - clamp(remaining / outMs, 0, 1); // 0 → 1 durante a saída
+    if (kindOut === 'pop' || kindOut === 'popFade') scale *= 1 - 0.2 * EASINGS.easeInCubic(q);
+    opacity *= kindOut === 'pop' ? 1 - smooth01((q - 0.4) / 0.6) : 1 - smooth01(q);
+  }
+  return { scale: clamp(scale, 0, 2), opacity: clamp(opacity, 0, 1) };
+}
+
+/** Ponto que não pode se mover durante o pop: a ponta da cauda (ou o centro da base na caixa de narração). */
+export function bubbleAnchor(b: BubbleLayout): { x: number; y: number } {
+  return b.style === 'caption' ? { x: b.x + b.w / 2, y: b.y + b.h } : { x: b.tailX, y: b.tailY };
+}
+
+export function renderBubble(b: BubbleLayout, anim?: BubbleAnimState): string {
+  const svg = renderBubbleBody(b);
+  if (!anim || (anim.scale === 1 && anim.opacity === 1)) return svg;
+  const a = bubbleAnchor(b);
+  const t = anim.scale === 1 ? '' : ` transform="translate(${n(a.x)} ${n(a.y)}) scale(${anim.scale.toFixed(4)}) translate(${n(-a.x)} ${n(-a.y)})"`;
+  const o = anim.opacity === 1 ? '' : ` opacity="${anim.opacity.toFixed(3)}"`;
+  return `<g data-part="bubble-anim"${t}${o}>${svg}</g>`;
+}
+
+function renderBubbleBody(b: BubbleLayout): string {
   const ink = '#23202b';
   const attrs = `fill="#fffdf6" stroke="${ink}" stroke-width="5" stroke-linejoin="round"`;
   const cx = b.x + b.w / 2;
