@@ -42,6 +42,8 @@ import { confirmDialog, openContextMenu, promptDialog, useUI, toast } from '@/st
 import { deleteSelection } from '@/state/actions';
 import { ColorField, IconButton, Section, SelectField, TextField, ToggleField, useLongPress } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
+import { BezierEditor } from '../controls/BezierEditor';
+import { EASING_AS_HANDLES } from '@/engine/animation/bezier';
 import { ScrollStrip } from '../controls/ScrollStrip';
 
 const useTimeMs = () => useTransport((s) => (s.playing ? -1 : s.timeMs));
@@ -686,6 +688,14 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
   );
 }
 
+const EASING_OPTIONS = [
+  { id: 'easeInOut', label: 'Suave nas duas pontas' }, { id: 'easeIn', label: 'Acelera' }, { id: 'easeOut', label: 'Desacelera' },
+  { id: 'easeInOutCubic', label: 'Cúbica: suave nas duas pontas' }, { id: 'easeInCubic', label: 'Cúbica: acelera' }, { id: 'easeOutCubic', label: 'Cúbica: desacelera' },
+  { id: 'backOut', label: 'Passa e volta' }, { id: 'backIn', label: 'Recua e vai' }, { id: 'backInOut', label: 'Recua, vai e passa' },
+  { id: 'bounceOut', label: 'Quica' }, { id: 'linear', label: 'Constante' },
+  { id: 'custom', label: 'Curva personalizada (Bézier)…' },
+];
+
 function KeySections({ scene, trackId, keyId }: { scene: Scene; trackId: string; keyId: string }) {
   const track = scene.tracks.find((t) => t.id === trackId) as PropertyTrack | undefined;
   const k = track?.keyframes.find((x) => x.id === keyId);
@@ -710,7 +720,24 @@ function KeySections({ scene, trackId, keyId }: { scene: Scene; trackId: string;
         {typeof k.value === 'string' && <TextField label="Valor" value={k.value} onChange={(v) => set((kf) => { kf.value = v; })} />}
         <SelectField label="Interpolação até o próximo" value={k.interpolation} testId="key-interp" options={[{ id: 'hold', label: 'Segurar (degrau)' }, { id: 'linear', label: 'Linear' }, { id: 'bezier', label: 'Suave (easing)' }]} onChange={(v) => set((kf) => { kf.interpolation = v as typeof kf.interpolation; })} />
         {k.interpolation === 'bezier' && (
-          <SelectField label="Easing" value={k.easing} options={[{ id: 'easeInOut', label: 'Suave nas duas pontas' }, { id: 'easeIn', label: 'Acelera' }, { id: 'easeOut', label: 'Desacelera' }, { id: 'backOut', label: 'Passa e volta' }, { id: 'bounceOut', label: 'Quica' }, { id: 'linear', label: 'Constante' }]} onChange={(v) => set((kf) => { kf.easing = v as typeof kf.easing; })} />
+          <>
+            <SelectField label="Easing" value={k.bezierHandles ? 'custom' : k.easing} testId="key-easing" options={EASING_OPTIONS} onChange={(v) => set((kf) => {
+              if (v === 'custom') kf.bezierHandles = { ...(EASING_AS_HANDLES[kf.easing] ?? EASING_AS_HANDLES.easeInOut!) };
+              else {
+                kf.easing = v as typeof kf.easing;
+                delete kf.bezierHandles;
+              }
+            }, 'Trocar easing')} />
+            {k.bezierHandles && (
+              <BezierEditor
+                handles={k.bezierHandles}
+                onGestureStart={() => beginGroup('bezier')}
+                onGestureEnd={endGroup}
+                onChange={(h) => set((kf) => { kf.bezierHandles = h; }, 'Editar curva')}
+                onReset={() => set((kf) => { delete kf.bezierHandles; }, 'Restaurar curva')}
+              />
+            )}
+          </>
         )}
       </Section>
       <button type="button" className="btn btn-danger btn-block" data-testid="delete-key" onClick={() => {

@@ -165,7 +165,7 @@ export function duplicateSelection(): void {
 }
 
 /* -------- área de transferência interna de keyframes -------- */
-let keyClipboard: { path: string; value: KeyValue; interpolation: Keyframe['interpolation']; easing: Keyframe['easing'] } | null = null;
+let keyClipboard: { path: string; value: KeyValue; interpolation: Keyframe['interpolation']; easing: Keyframe['easing']; bezierHandles?: Keyframe['bezierHandles'] } | null = null;
 
 export function copySelectedKey(): boolean {
   const sel = useUI.getState().timeline;
@@ -174,7 +174,7 @@ export function copySelectedKey(): boolean {
   if (track?.type !== 'property') return false;
   const k = track.keyframes.find((x) => x.id === sel.keyId);
   if (!k) return false;
-  keyClipboard = { path: track.propertyPath, value: k.value, interpolation: k.interpolation, easing: k.easing };
+  keyClipboard = { path: track.propertyPath, value: k.value, interpolation: k.interpolation, easing: k.easing, bezierHandles: k.bezierHandles ? { ...k.bezierHandles } : undefined };
   toast('Keyframe copiado.');
   return true;
 }
@@ -195,7 +195,7 @@ export function pasteKey(): boolean {
   const tgt = target;
   commit('Colar keyframe', (d) => {
     const s = sceneOf(d as Project, scene.id);
-    setKeyframe(ensurePropertyTrack(s, tgt, clip.path), t, clip.value, { interpolation: clip.interpolation, easing: clip.easing });
+    setKeyframe(ensurePropertyTrack(s, tgt, clip.path), t, clip.value, { interpolation: clip.interpolation, easing: clip.easing, bezierHandles: clip.bezierHandles ? { ...clip.bezierHandles } : undefined });
   });
   toast('Keyframe colado.');
   return true;

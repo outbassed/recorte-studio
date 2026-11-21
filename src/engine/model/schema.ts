@@ -14,6 +14,7 @@
  * trocar 16:9 por 9:16 só recorta a moldura e nunca desloca os elementos.
  */
 import { z } from 'zod';
+import { sanitizeHandles } from '../animation/bezier';
 
 export const SCHEMA_VERSION = 1;
 export const WORLD_HEIGHT = 1080;
@@ -344,7 +345,19 @@ export type NodeKind = SceneNode['kind'];
 /* -------------------------------------------------------------------------- */
 
 export const InterpolationSchema = z.enum(['hold', 'linear', 'bezier']);
-export const EasingSchema = z.enum(['linear', 'easeIn', 'easeOut', 'easeInOut', 'backOut', 'bounceOut']);
+/** Os seis primeiros são os identificadores originais (dados salvos continuam valendo); os demais são da Etapa 1. */
+export const EasingSchema = z.enum([
+  'linear', 'easeIn', 'easeOut', 'easeInOut', 'backOut', 'bounceOut',
+  'easeInCubic', 'easeOutCubic', 'easeInOutCubic', 'backIn', 'backInOut',
+]);
+
+/**
+ * Curva cubic-bezier livre de um segmento. x1/x2 ficam em [0,1] (o tempo nunca volta);
+ * y1/y2 podem sair de [0,1] dentro de um limite, para overshoot controlado. Valores fora da
+ * faixa são limitados; um objeto malformado é descartado e o keyframe volta ao easing nomeado.
+ */
+export const BezierHandlesSchema = z.object({ x1: z.number(), y1: z.number(), x2: z.number(), y2: z.number() }).transform((h) => sanitizeHandles(h));
+export type BezierHandlesData = z.output<typeof BezierHandlesSchema>;
 export type Interpolation = z.infer<typeof InterpolationSchema>;
 export type Easing = z.infer<typeof EasingSchema>;
 
@@ -354,6 +367,8 @@ export const KeyframeSchema = z.object({
   value: z.union([finite, z.string(), z.boolean()]),
   interpolation: InterpolationSchema.default('linear'),
   easing: EasingSchema.default('easeInOut'),
+  /** Só vale com interpolation 'bezier'. Ausente = usa o easing nomeado, como sempre foi. */
+  bezierHandles: BezierHandlesSchema.optional().catch(undefined),
 });
 export type Keyframe = z.infer<typeof KeyframeSchema>;
 export type KeyValue = Keyframe['value'];

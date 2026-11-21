@@ -968,3 +968,20 @@ button.libh-card:hover { background: var(--bg-3); border-color: var(--line-2); }
 .off-state.is-disabled { color: var(--text-3); }
 .off-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
 .linklike { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }
+
+/* Editor de curva cubic-bezier (Inspector do keyframe) */
+.bezier-editor { display: flex; flex-direction: column; gap: 8px; margin: 2px 0 6px; }
+.bz-graph { width: 100%; max-width: 280px; align-self: center; height: auto; background: var(--bg); border: 1px solid var(--line-2); border-radius: 8px; touch-action: none; user-select: none; }
+.bz-unit { fill: var(--bg-2); stroke: var(--line-2); stroke-width: 1; }
+.bz-diag { stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 3 3; }
+.bz-stem { stroke: var(--accent-2); stroke-width: 1.5; opacity: .8; }
+.bz-curve { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.bz-handle { fill: var(--accent-2); stroke: var(--bg); stroke-width: 2; cursor: grab; touch-action: none; }
+.bz-handle:active { cursor: grabbing; }
+.bz-handle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bz-handle.is-clipped { fill: var(--accent); }
+.bz-presets { display: flex; flex-wrap: wrap; gap: 4px; }
+.bz-presets .btn { min-height: 30px; }
+.bz-presets .btn.is-active { background: var(--accent-soft); border-color: var(--accent-line); color: var(--accent); }
+.bz-numbers summary { cursor: pointer; color: var(--text-2); font-size: calc(12px * var(--ui-scale, 1)); min-height: 28px; display: flex; align-items: center; }
+@media (pointer: coarse) { .bz-presets .btn { min-height: 38px; } .bz-handle { r: 11px; } }

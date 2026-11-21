@@ -335,13 +335,14 @@ export function ensurePropertyTrack(scene: Scene, target: string, path: string):
 }
 
 /** Cria ou atualiza o key no tempo. Nunca há dois keys no mesmo instante. */
-export function setKeyframe(track: PropertyTrack, timeMs: number, value: KeyValue, o: Partial<Pick<Keyframe, 'interpolation' | 'easing'>> = {}): Keyframe {
+export function setKeyframe(track: PropertyTrack, timeMs: number, value: KeyValue, o: Partial<Pick<Keyframe, 'interpolation' | 'easing' | 'bezierHandles'>> = {}): Keyframe {
   const t = Math.max(0, Math.round(timeMs));
   const existing = track.keyframes.find((k) => k.timeMs === t);
   if (existing) {
     existing.value = value;
     if (o.interpolation) existing.interpolation = o.interpolation;
     if (o.easing) existing.easing = o.easing;
+    if ('bezierHandles' in o) existing.bezierHandles = o.bezierHandles;
     return existing;
   }
   const k = createKeyframe(t, value, typeof value === 'number' ? o : { interpolation: 'hold', ...o });
