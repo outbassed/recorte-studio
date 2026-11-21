@@ -2,6 +2,30 @@
 
 Versão 1.2.0 (com os dois ajustes pré-lançamento), executados em 08/11/2026. Nada aqui é estimativa: são as saídas das execuções.
 
+## Etapa 1: acabamento de movimento e curvas
+
+Executada em 21/11/2026 num container Linux (não no ambiente Windows descrito acima), com o Chromium do Playwright (`/opt/pw-browsers/chromium`, build 1243) em vez do Chrome do sistema, contra o build de produção (`vite preview`). Nada foi rodado em Firefox, Safari ou aparelho físico.
+
+| Comando | Resultado |
+| --- | --- |
+| `npm run typecheck` | Sem erros |
+| `npm run lint` | Sem erros nem avisos |
+| `npm test` | **558 de 558**, 34 arquivos (eram 539 em 33 antes da Etapa 1: +4 arquivos novos, +37 testes dos arquivos novos e +2 de exportação = prévia) |
+| `npm run build` | OK (6,5 MB em `dist/`) |
+| `playwright --project=e2e` (suíte completa) | **142 de 144** em 8,8 min |
+
+**As 2 falhas não vêm da Etapa 1.** `20. offline: o build não depende de rede` e `dist/index.html abre direto do disco (file://)` falham só na última checagem (`suggestedFilename()` vem como `download` em vez de terminar em `.png`) e falham do mesmo jeito na `main`, sem nenhuma alteração (conferido num worktree limpo, build próprio, mesma configuração). O fluxo anterior à checagem (abrir offline e por `file://`, exportar) rodou sem erro de console. Provável diferença de comportamento do Chromium no Linux ao nomear downloads em contexto `file://`/offline; não investigada.
+
+**Novos na Etapa 1:**
+
+- `bezier-easing.test.ts` (24): ids antigos idênticos; pontas exatas; valores das cúbicas e do back; cubic-bezier conferida por força bruta e contra o valor conhecido do CSS (`ease`, 50 % ≈ 0,8024); prova de que não se usa o progresso como parâmetro; monotonia; overshoot limitado; sanitização (NaN, Infinity, fora de faixa); `linear`/`hold` ignoram pontos; acesso fora de ordem; segmento de 1 ms; schema (campo ausente, descartado, limitado); ida e volta pelo JSON; quadro com curvas corrompidas sem NaN/Infinity.
+- `transition-easing.test.ts` (14): progresso linear sem easing, suave com valores exatos, 0 %/100 % de crossfade/slide/wipe, sobreposição curta, duração 0, fades de entrada e de saída avaliados separadamente, exportação = montagem, legado idêntico antes e depois de salvar.
+- `motion-finish.test.ts` (24): pulo legado idêntico à fórmula original; fases do pulo; altura igual à original; pouso com `bodyY` 0; limites (|squash| ≤ 0,5); clips de 1 ms a 5 s e entradas ruins sempre finitos; função pura do tempo; escala dos pés em todas as vistas e com escala X negativa; cabeça e mãos acompanham; "Converter em keyframes"; sequências.
+- `bubble-anim.test.ts` (18): estático sem campos, pop, fade, pop+fade, saída, clips curtos, NaN, âncora da cauda nos cinco estilos, texto escapado, janelas na cena, exportação = prévia, schema, sequências.
+- `etapa1.spec.ts` (9 E2E): editor de curva (presets, teclado, numérico, arrasto com mouse, desfazer, refazer, restaurar, valor interpolado muda), persistência (autosave, recarregar, .jrec lido), ids de easing, suavização da transição (.jrec), acabamento do pulo (.jrec), balão (desfazer/refazer), palco com balão, e dois testes em 390×844 com toque (alvos ≥ 32/36 px, sem estouro horizontal, arrasto por eventos de ponteiro de toque). Capturas em `test-results/e2e/etapa1-*.png`.
+
+**Inspeção visual:** folhas de contato do pulo (14 instantes, com e sem acabamento) e do balão (10 instantes) renderizadas e conferidas à mão. Isso confirma a forma do movimento, não prova que ele "parece natural" para outras pessoas.
+
 ## Ambiente
 
 - Windows 10 Pro 19045, Node 24.21.0
