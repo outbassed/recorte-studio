@@ -25,11 +25,11 @@ function movePivot(n: SceneNode, px: number, py: number): void {
   n.transform.y = d.y;
 }
 import { addSectionKeys, animatablePaths, keyTime, previewRemoveSectionKeys, removeSectionKeys, sectionKeyState, type AddSectionKeysResult, type KeyOwner, type RemoveSectionKeysResult } from '@/engine/model/sectionKeys';
-import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type Transition } from '@/engine/model/schema';
+import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type BubbleAnim, type Transition, type TransitionEasing } from '@/engine/model/schema';
 import { EXPRESSIONS, VISEMES } from '@/engine/character/expressions';
 import { POSES } from '@/engine/character/presets';
 import { VIEW_LABELS, VIEW_ORDER } from '@/engine/character/views';
-import { BUBBLE_STYLES } from '@/engine/render/bubbles';
+import { BUBBLE_ANIM_DEFAULT_IN_MS, BUBBLE_ANIM_DEFAULT_OUT_MS, BUBBLE_IN_OPTIONS, BUBBLE_OUT_OPTIONS, BUBBLE_STYLES } from '@/engine/render/bubbles';
 import { beginGroup, commit, currentProject, endGroup, useCurrentScene, useProject } from '@/state/projectStore';
 import { extractSequence, FRAMING_PRESETS, frameCamera, type FramingPreset } from '@/engine/model/ops';
 import { applyCustomBackground, availableTimes, customIdOf, isCustomPreset, resolveCustomVariant, TIME_LABELS } from '@/engine/world/customBackgrounds';
@@ -42,6 +42,8 @@ import { confirmDialog, openContextMenu, promptDialog, useUI, toast } from '@/st
 import { deleteSelection } from '@/state/actions';
 import { ColorField, IconButton, Section, SelectField, TextField, ToggleField, useLongPress } from '../controls/fields';
 import { SliderNumberField } from '../controls/SliderNumberField';
+import { BezierEditor } from '../controls/BezierEditor';
+import { EASING_AS_HANDLES } from '@/engine/animation/bezier';
 import { ScrollStrip } from '../controls/ScrollStrip';
 
 const useTimeMs = () => useTransport((s) => (s.playing ? -1 : s.timeMs));
@@ -595,6 +597,17 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
           <SliderNumberField label="Intensidade" unit="%" display={100} min={0} max={3} sliderMin={0} sliderMax={200} value={c.intensity} onChange={(v) => set<typeof c>((x) => { x.intensity = v; })} />
           <SliderNumberField label="Velocidade" unit="×" min={0.05} max={10} step={0.05} decimals={2} sliderMin={0.1} sliderMax={4} value={c.speed} onChange={(v) => set<typeof c>((x) => { x.speed = v; })} />
           <SliderNumberField label="Transição (entrada e saída)" unit="ms" min={0} max={5000} sliderMin={0} sliderMax={1500} step={10} decimals={0} value={c.blendMs ?? getAction(c.action)?.blend ?? 180} testId="clip-blend" onChange={(v) => set<typeof c>((x) => { x.blendMs = Math.round(v); })} />
+          {getAction(c.action)?.finishable && (
+            <>
+              <ToggleField label="Acabamento de movimento" hint="Antecipação (agacha antes) e esmagar/esticar no impulso e no pouso. Desligado, o pulo fica como era." checked={(c.finish ?? 0) > 0} testId="clip-finish" onChange={(v) => set<typeof c>((x) => {
+                if (v) x.finish = 1;
+                else delete x.finish;
+              })} />
+              {(c.finish ?? 0) > 0 && (
+                <SliderNumberField label="Intensidade do acabamento" unit="%" display={100} min={0.05} max={2} step={0.05} decimals={0} sliderMin={10} sliderMax={200} value={c.finish ?? 1} testId="clip-finish-amount" onChange={(v) => set<typeof c>((x) => { x.finish = Math.min(2, Math.max(0.05, v)); })} />
+              )}
+            </>
+          )}
           <SelectField label="Braço" value={c.side} options={[{ id: 'auto', label: 'Automático (lado do alvo)' }, { id: 'L', label: 'Esquerdo' }, { id: 'R', label: 'Direito' }]} onChange={(v) => set<typeof c>((x) => { x.side = v as typeof x.side; })} />
           <button type="button" className="btn btn-block" data-testid="bake-clip" onClick={() => {
             let count = 0;
@@ -619,6 +632,18 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
         <Section title="Balão">
           <ToggleField label="Mostrar balão" checked={c.showBubble} onChange={(v) => set<typeof c>((x) => { x.showBubble = v; })} />
           <SelectField label="Estilo do balão" value={c.bubbleStyle} options={BUBBLE_STYLES} onChange={(v) => set<typeof c>((x) => { x.bubbleStyle = v; })} />
+          <SelectField label="Entrada do balão" value={c.bubbleIn ?? 'none'} testId="bubble-in" options={BUBBLE_IN_OPTIONS} onChange={(v) => set<typeof c>((x) => {
+            if (v === 'none') { delete x.bubbleIn; delete x.bubbleInMs; } else x.bubbleIn = v as BubbleAnim;
+          })} />
+          {(c.bubbleIn ?? 'none') !== 'none' && (
+            <SliderNumberField label="Duração da entrada" unit="ms" min={40} max={3000} step={10} decimals={0} sliderMin={40} sliderMax={1000} value={c.bubbleInMs ?? BUBBLE_ANIM_DEFAULT_IN_MS} testId="bubble-in-ms" onChange={(v) => set<typeof c>((x) => { x.bubbleInMs = Math.round(v); })} />
+          )}
+          <SelectField label="Saída do balão" value={c.bubbleOut ?? 'none'} testId="bubble-out" options={BUBBLE_OUT_OPTIONS} onChange={(v) => set<typeof c>((x) => {
+            if (v === 'none') { delete x.bubbleOut; delete x.bubbleOutMs; } else x.bubbleOut = v as BubbleAnim;
+          })} />
+          {(c.bubbleOut ?? 'none') !== 'none' && (
+            <SliderNumberField label="Duração da saída" unit="ms" min={40} max={3000} step={10} decimals={0} sliderMin={40} sliderMax={1000} value={c.bubbleOutMs ?? BUBBLE_ANIM_DEFAULT_OUT_MS} testId="bubble-out-ms" onChange={(v) => set<typeof c>((x) => { x.bubbleOutMs = Math.round(v); })} />
+          )}
           <SliderNumberField label="Tamanho do balão" unit="%" display={100} min={0.2} max={4} sliderMin={40} sliderMax={250} value={c.bubbleScale} onChange={(v) => set<typeof c>((x) => { x.bubbleScale = v; })} />
           <SliderNumberField label="Balão X" unit="px" sliderMin={-800} sliderMax={800} value={c.bubbleOffsetX} onChange={(v) => set<typeof c>((x) => { x.bubbleOffsetX = v; })} />
           <SliderNumberField label="Balão Y" unit="px" sliderMin={-500} sliderMax={500} value={c.bubbleOffsetY} onChange={(v) => set<typeof c>((x) => { x.bubbleOffsetY = v; })} />
@@ -686,6 +711,14 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
   );
 }
 
+const EASING_OPTIONS = [
+  { id: 'easeInOut', label: 'Suave nas duas pontas' }, { id: 'easeIn', label: 'Acelera' }, { id: 'easeOut', label: 'Desacelera' },
+  { id: 'easeInOutCubic', label: 'Cúbica: suave nas duas pontas' }, { id: 'easeInCubic', label: 'Cúbica: acelera' }, { id: 'easeOutCubic', label: 'Cúbica: desacelera' },
+  { id: 'backOut', label: 'Passa e volta' }, { id: 'backIn', label: 'Recua e vai' }, { id: 'backInOut', label: 'Recua, vai e passa' },
+  { id: 'bounceOut', label: 'Quica' }, { id: 'linear', label: 'Constante' },
+  { id: 'custom', label: 'Curva personalizada (Bézier)…' },
+];
+
 function KeySections({ scene, trackId, keyId }: { scene: Scene; trackId: string; keyId: string }) {
   const track = scene.tracks.find((t) => t.id === trackId) as PropertyTrack | undefined;
   const k = track?.keyframes.find((x) => x.id === keyId);
@@ -710,7 +743,24 @@ function KeySections({ scene, trackId, keyId }: { scene: Scene; trackId: string;
         {typeof k.value === 'string' && <TextField label="Valor" value={k.value} onChange={(v) => set((kf) => { kf.value = v; })} />}
         <SelectField label="Interpolação até o próximo" value={k.interpolation} testId="key-interp" options={[{ id: 'hold', label: 'Segurar (degrau)' }, { id: 'linear', label: 'Linear' }, { id: 'bezier', label: 'Suave (easing)' }]} onChange={(v) => set((kf) => { kf.interpolation = v as typeof kf.interpolation; })} />
         {k.interpolation === 'bezier' && (
-          <SelectField label="Easing" value={k.easing} options={[{ id: 'easeInOut', label: 'Suave nas duas pontas' }, { id: 'easeIn', label: 'Acelera' }, { id: 'easeOut', label: 'Desacelera' }, { id: 'backOut', label: 'Passa e volta' }, { id: 'bounceOut', label: 'Quica' }, { id: 'linear', label: 'Constante' }]} onChange={(v) => set((kf) => { kf.easing = v as typeof kf.easing; })} />
+          <>
+            <SelectField label="Easing" value={k.bezierHandles ? 'custom' : k.easing} testId="key-easing" options={EASING_OPTIONS} onChange={(v) => set((kf) => {
+              if (v === 'custom') kf.bezierHandles = { ...(EASING_AS_HANDLES[kf.easing] ?? EASING_AS_HANDLES.easeInOut!) };
+              else {
+                kf.easing = v as typeof kf.easing;
+                delete kf.bezierHandles;
+              }
+            }, 'Trocar easing')} />
+            {k.bezierHandles && (
+              <BezierEditor
+                handles={k.bezierHandles}
+                onGestureStart={() => beginGroup('bezier')}
+                onGestureEnd={endGroup}
+                onChange={(h) => set((kf) => { kf.bezierHandles = h; }, 'Editar curva')}
+                onReset={() => set((kf) => { delete kf.bezierHandles; }, 'Restaurar curva')}
+              />
+            )}
+          </>
         )}
       </Section>
       <button type="button" className="btn btn-danger btn-block" data-testid="delete-key" onClick={() => {
@@ -723,6 +773,10 @@ function KeySections({ scene, trackId, keyId }: { scene: Scene; trackId: string;
 
 const TRANSITIONS: Array<{ id: Transition['kind']; label: string }> = [
   { id: 'cut', label: 'Corte seco' }, { id: 'fade', label: 'Fade por preto' }, { id: 'crossfade', label: 'Dissolver' }, { id: 'wipe', label: 'Cortina' }, { id: 'slide', label: 'Deslizar' },
+];
+
+const TRANSITION_EASINGS = [
+  { id: 'linear', label: 'Linear (padrão)' }, { id: 'easeInOutCubic', label: 'Suave (começa e termina devagar)' }, { id: 'easeOutCubic', label: 'Desacelera no fim' },
 ];
 
 function SceneSections({ scene }: { scene: Scene }) {
@@ -781,8 +835,18 @@ function SceneSections({ scene }: { scene: Scene }) {
       <Section title="Transição entre cenas" testId="sec-transition">
         <SelectField label="Entrada" value={scene.transitionIn.kind} testId="transition-in" options={TRANSITIONS} onChange={(v) => set('Transição', (s) => { s.transitionIn.kind = v as Transition['kind']; })} />
         <SliderNumberField label="Duração da entrada" unit="ms" min={0} max={10000} step={50} decimals={0} sliderMin={0} sliderMax={3000} value={scene.transitionIn.durationMs} onChange={(v) => set('Transição', (s) => { s.transitionIn.durationMs = Math.round(v); }, 'tr-in')} />
+        <SelectField label="Suavização da entrada" disabled={scene.transitionIn.kind === 'cut'} value={scene.transitionIn.easing ?? 'linear'} testId="transition-in-easing" options={TRANSITION_EASINGS} onChange={(v) => set('Suavização da transição', (s) => {
+          if (v === 'linear') delete s.transitionIn.easing;
+          else s.transitionIn.easing = v as TransitionEasing;
+        })} />
         <SelectField label="Saída" value={scene.transitionOut.kind === 'fade' ? 'fade' : 'cut'} options={[{ id: 'cut', label: 'Sem efeito' }, { id: 'fade', label: 'Fade para preto' }]} onChange={(v) => set('Transição', (s) => { s.transitionOut.kind = v as Transition['kind']; })} />
         <SliderNumberField label="Duração da saída" unit="ms" min={0} max={10000} step={50} decimals={0} sliderMin={0} sliderMax={3000} value={scene.transitionOut.durationMs} onChange={(v) => set('Transição', (s) => { s.transitionOut.durationMs = Math.round(v); }, 'tr-out')} />
+        {scene.transitionOut.kind === 'fade' && (
+          <SelectField label="Suavização da saída" value={scene.transitionOut.easing ?? 'linear'} testId="transition-out-easing" options={TRANSITION_EASINGS} onChange={(v) => set('Suavização da transição', (s) => {
+            if (v === 'linear') delete s.transitionOut.easing;
+            else s.transitionOut.easing = v as TransitionEasing;
+          })} />
+        )}
       </Section>
       </Pane>
     </>

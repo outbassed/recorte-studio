@@ -23,10 +23,84 @@ export interface ActionDef {
   usesSide?: boolean;
   /** Blenda de entrada/saída em ms */
   blend?: number;
-  sample: (ctx: { t: number; ms: number; speed: number; intensity: number; side: 'L' | 'R' }) => ActionSample;
+  /** Aceita o "Acabamento de movimento" (antecipação + esmagar e esticar). Só `jump` por enquanto. */
+  finishable?: boolean;
+  sample: (ctx: { t: number; ms: number; speed: number; intensity: number; side: 'L' | 'R'; durationMs?: number; finish?: number }) => ActionSample;
 }
 
 const TAU = Math.PI * 2;
+const smoothstep = (x: number) => {
+  const k = Math.min(1, Math.max(0, x));
+  return k * k * (3 - 2 * k);
+};
+
+/** Maior valor de `squash` (esmagar positivo, esticar negativo) que o renderizador aceita. */
+export const MAX_SQUASH = 0.5;
+
+/**
+ * Pulo com acabamento de movimento (opcional). Tudo é função de `t` normalizado e da duração:
+ *  1. antecipação: agacha (esmaga), braços recuam;
+ *  2. impulso: a compressão vira esticada em poucos quadros;
+ *  3. arco com pausa curta no topo (a curva é achatada perto do ápice) e esticada proporcional à velocidade;
+ *  4. pouso: esmaga no contato e recupera com uma oscilação amortecida.
+ * `finish` (0–2) escala só o esmagar/esticar e a antecipação; a altura continua vindo de `intensity`.
+ */
+export function jumpFinishSample(t: number, durationMs: number, intensity: number, finish: number): ActionSample {
+  const num = (v: number, fallback: number) => (Number.isFinite(v) ? v : fallback);
+  const D = Math.max(1, num(durationMs, 800));
+  intensity = num(intensity, 1);
+  const g = Math.min(2, Math.max(0, num(finish, 0))) * Math.min(1.5, Math.max(0, intensity));
+  let a = Math.min(0.3, Math.max(90, Math.min(260, 0.2 * D)) / D);
+  let l = Math.min(0.34, Math.max(110, Math.min(320, 0.24 * D)) / D);
+  if (a + l > 0.7) {
+    const k = 0.7 / (a + l);
+    a *= k;
+    l *= k;
+  }
+  const x = Math.min(1, Math.max(0, num(t, 0)));
+  let height = 0;
+  let squash = 0;
+  let armBack = 0;
+  let airU = 0;
+  let airborne = false;
+  if (x < a) {
+    // 1. antecipação: desce devagar e segura um instante antes de lançar
+    const c = (1 - Math.cos(Math.PI * (x / a))) / 2;
+    squash = 0.13 * g * c;
+    armBack = c;
+  } else if (x < 1 - l) {
+    // 2 e 3. impulso e arco
+    airborne = true;
+    airU = (x - a) / (1 - l - a);
+    const v = Math.abs(2 * airU - 1);
+    height = 1 - Math.pow(v, 2.4);
+    const speedNorm = Math.pow(v, 1.4);
+    const release = Math.max(0, 1 - airU / 0.14);
+    const landingRamp = 1 - smoothstep((airU - 0.88) / 0.12);
+    squash = 0.13 * g * release * release - 0.1 * g * smoothstep(airU / 0.14) * speedNorm * landingRamp;
+    armBack = Math.max(0, 1 - smoothstep(airU / 0.18));
+  } else {
+    // 4. pouso
+    const w = (x - (1 - l)) / l;
+    const peak = 0.18 * g;
+    squash = w < 0.2
+      ? peak * (1 - (1 - w / 0.2) * (1 - w / 0.2))
+      : peak * Math.exp(-3.6 * ((w - 0.2) / 0.8)) * Math.cos(((w - 0.2) / 0.8) * Math.PI * 1.25);
+  }
+  const k = intensity;
+  const arc = airborne ? height : 0;
+  const crouch = Math.min(1.2, Math.max(0, squash) / 0.15);
+  return {
+    rig: {
+      bodyY: arc * 150 * k,
+      squash: Math.min(MAX_SQUASH, Math.max(-MAX_SQUASH, squash)),
+      sit: 0.1 * crouch,
+      torsoLean: 40 * Math.max(0, squash),
+      legLUpper: arc * 22, legRUpper: -arc * 16, legLLower: arc * 42, legRLower: arc * 42,
+      armLUpper: arc * 120 * k - 26 * g * armBack, armRUpper: arc * 120 * k - 26 * g * armBack,
+    },
+  };
+}
 const sin = Math.sin;
 const arm = (side: 'L' | 'R', part: 'Upper' | 'Lower'): RigKey => `arm${side}${part}` as RigKey;
 const other = (s: 'L' | 'R'): 'L' | 'R' => (s === 'L' ? 'R' : 'L');
@@ -119,8 +193,9 @@ export const ACTIONS: ActionDef[] = [
     },
   },
   {
-    id: 'jump', label: 'Pular', keywords: ['pular', 'pula', 'saltar'], duration: 800, blend: 60,
-    sample: ({ t, intensity }) => {
+    id: 'jump', label: 'Pular', keywords: ['pular', 'pula', 'saltar'], duration: 800, blend: 60, finishable: true,
+    sample: ({ t, intensity, durationMs, finish }) => {
+      if (finish && finish > 0) return jumpFinishSample(t, durationMs ?? 800, intensity, finish);
       const arc = sin(t * Math.PI);
       return { rig: { bodyY: arc * 150 * intensity, legLUpper: arc * 22, legRUpper: -arc * 16, legLLower: arc * 42, legRLower: arc * 42, armLUpper: arc * 120 * intensity, armRUpper: arc * 120 * intensity } };
     },
@@ -195,7 +270,8 @@ export function sampleActionClip(clip: ActionClip, timeMs: number, sideAuto: 'L'
   const weight = Math.min(1, local / blend, (clip.durationMs - local) / blend);
   const eased = weight * weight * (3 - 2 * weight);
   const side = clip.side === 'auto' ? sideAuto : clip.side;
-  const s = def.sample({ t: local / clip.durationMs, ms: local, speed: clip.speed, intensity: clip.intensity, side });
+  const finish = def.finishable && Number.isFinite(clip.finish) ? Math.min(2, Math.max(0, clip.finish ?? 0)) : 0;
+  const s = def.sample({ t: local / clip.durationMs, ms: local, speed: clip.speed, intensity: clip.intensity, side, durationMs: clip.durationMs, finish });
   return { ...s, weight: eased };
 }
 

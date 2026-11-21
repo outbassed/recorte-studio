@@ -33,6 +33,9 @@ export interface ActiveBubble {
   nodeId: string;
   /** progresso 0–1 */
   progress: number;
+  /** ms desde o início do clip e ms que faltam para ele acabar (entrada e saída do balão) */
+  localMs: number;
+  remainingMs: number;
 }
 
 export interface ResolvedScene {
@@ -215,7 +218,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
       if (clip.action === 'standUp' && t >= clip.startMs) sitHold = 0;
       const s = sampleActionClip(clip, t, side);
       if (!s) continue;
-      for (const key of Object.keys(s.rig) as RigKey[]) rig[key] += (s.rig[key] ?? 0) * s.weight;
+      for (const key of Object.keys(s.rig) as RigKey[]) rig[key] = (rig[key] ?? 0) + (s.rig[key] ?? 0) * s.weight;
       actionWeight = Math.max(actionWeight, s.weight);
       if (s.expression && s.weight >= exprWeight && s.weight > 0.25) {
         expression = s.expression;
@@ -229,7 +232,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
     rig.sit = Math.min(1, rig.sit + sitHold);
     // Movimento secundário: diminui enquanto uma ação está ativa, para não brigar com ela.
     const sec = sampleSecondary(id, t, n.secondary, actionWeight);
-    for (const key of Object.keys(sec.rig) as RigKey[]) rig[key] += sec.rig[key] ?? 0;
+    for (const key of Object.keys(sec.rig) as RigKey[]) rig[key] = (rig[key] ?? 0) + (sec.rig[key] ?? 0);
 
     // Boca: uma única fonte de visema por vez. Prioridade: manual > fala > áudio > expressão.
     let viseme: string | null = null;
@@ -240,7 +243,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
       if (t < clip.startMs || t >= clip.startMs + clip.durationMs) continue;
       const local = t - clip.startMs;
       speaking = true;
-      if (clip.showBubble && clip.text) bubbles.push({ clip, nodeId: id, progress: local / clip.durationMs });
+      if (clip.showBubble && clip.text) bubbles.push({ clip, nodeId: id, progress: local / clip.durationMs, localMs: local, remainingMs: clip.durationMs - local });
       if (clip.showSubtitle && clip.text) dialogueSubtitles.push({ text: clip.text, progress: local / clip.durationMs });
       if (clip.lipSync === 'text') {
         viseme = visemeAt(clip.text, local, clip.durationMs);

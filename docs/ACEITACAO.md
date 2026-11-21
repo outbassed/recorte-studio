@@ -76,6 +76,26 @@ Legenda: **PASSOU** = implementado e verificado em teste automatizado. **PARCIAL
 
 Detalhes em [CATALOGO.md](CATALOGO.md).
 
+## Etapa 1: acabamento de movimento e curvas
+
+| Item | Estado | Evidência |
+| --- | --- | --- |
+| Easings cúbicos e back-in/in-out sem quebrar ids antigos | PASSOU | unit `bezier-easing` (valores exatos, pontas, ids antigos) |
+| Curva cubic-bezier real (resolve x(t)), pontas exatas, X em [0,1], overshoot controlado, sem NaN/Infinity | PASSOU | unit `bezier-easing` (força bruta, valor CSS conhecido, dados corrompidos, SVG sem NaN) |
+| `bezier` sem pontos e `linear`/`hold` inalterados | PASSOU | unit `bezier-easing` |
+| Editor de curva (mouse, toque, teclado, números, presets, restaurar) | PASSOU | E2E `etapa1` (desktop e celular 390×844 com eventos de ponteiro de toque) |
+| Desfazer/refazer, autosave, .jrec da curva | PASSOU | E2E `etapa1` (um arraste = uma entrada; reabrir; .jrec lido) |
+| Suavização das transições (crossfade, slide, wipe, fades de entrada e saída) | PASSOU | unit `transition-easing` (0 %/100 %, sobreposição curta, duração 0, exportação = montagem); E2E `etapa1` |
+| Acabamento do pulo (antecipação, esticada, pausa no topo, esmagar no pouso) | PASSOU* | unit `motion-finish` (função pura, clips curtos, limites, baking, sequências); folha de contato inspecionada. *Avaliação de naturalidade é visual e subjetiva |
+| Esmagar e esticar em todas as vistas, escala X negativa, pés no chão | PASSOU | unit `motion-finish` (8 vistas, espelhado, `bodyY` 0 no pouso) |
+| Legado: sem campos novos, mesmo quadro ao abrir e salvar | PASSOU | unit nos quatro arquivos (ida e volta pelo JSON, SVG idêntico) |
+| Balões animados (pop, fade, pop+fade; cauda ancorada; clip curto) | PASSOU | unit `bubble-anim` (ancora de todos os estilos, janelas, exportação = prévia); E2E `etapa1` |
+| Controles no celular sem estouro, alvos de toque | PASSOU* | E2E `etapa1`. *Chrome emulando 390×844, sem aparelho físico |
+| Acabamento em andar/correr, foot-lock, IK, física de cabelo, máquina de escrever, tipos novos de transição | NÃO IMPLEMENTADO | fora do escopo da Etapa 1, de propósito |
+| Auditoria perceptiva com pessoas (naturalidade) | NÃO IMPLEMENTADO | só inspeção visual das folhas de contato |
+
+Guia de uso e modelo de dados em [ETAPA-1.md](ETAPA-1.md).
+
 ## Por área do prompt
 
 | Seção | Item | Estado | Observação |

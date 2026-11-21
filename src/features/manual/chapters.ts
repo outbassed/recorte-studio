@@ -206,7 +206,7 @@ export const MANUAL_CHAPTERS: Chapter[] = [
       { list: [
         'Cada cena tem seus próprios elementos, posições, câmera e duração.',
         'Na aba **Cena** das propriedades (sem nada selecionado): nome, duração e anotações.',
-        'Na aba **Transições**: entrada (corte, fade, deslizar e outras) e saída com fade, com duração.',
+        'Na aba **Transições**: entrada (corte, fade, deslizar e outras) e saída com fade, com duração e **suavização** (Linear, como sempre foi, ou Suave, que começa e termina devagar).',
         'Reproduzir o **projeto completo** toca todas as cenas na ordem, com as transições.',
       ] },
       { tip: 'Em projetos muito grandes, desligar as miniaturas em [Configurações → Desempenho](#configuracoes) abre o painel mais rápido.' },
@@ -366,6 +366,7 @@ export const MANUAL_CHAPTERS: Chapter[] = [
       { p: 'Na aba **Animar** do personagem: escreva uma fala ou escolha uma ação (andar ou correr até um ponto, entrar e sair de cena, virar, olhar, abrir porta e outras) e insira no tempo atual.' },
       { list: [
         'Clip de ação: intensidade, velocidade, braço usado e **Transição** (entrada e saída suaves, em ms).',
+        'No **Pular**, ligue **Acabamento de movimento** para um pulo com antecipação (agacha antes), pausa curta no topo e compressão no pouso, com esmagar e esticar sutis. Desligado, o pulo é o de antes.',
         '**Converter em keyframes** transforma o clip em keyframes editáveis.',
         '**Salvar sequência** guarda as ações e falas do personagem na biblioteca; aplique em qualquer personagem pela aba Biblioteca, a partir do tempo atual.',
       ] },
@@ -385,6 +386,15 @@ export const MANUAL_CHAPTERS: Chapter[] = [
         'Interpolação até o próximo: **Segurar** (degrau), **Linear** ou **Suave**.',
         'Ctrl+C / Ctrl+V copiam e colam keyframes.',
         'Selecionar um keyframe mostra tempo, valor e interpolação.',
+      ] },
+      { h: 'Curvas de aceleração (easing)' },
+      { p: 'Com a interpolação **Suave**, o campo **Easing** escolhe como o movimento acelera e freia no trecho que **parte** deste keyframe. Além dos modelos de sempre há cúbicos (mais marcados) e "Recua e vai". A última opção, **Curva personalizada (Bézier)**, abre um editor compacto.' },
+      { list: [
+        'Arraste os dois pontos da curva, ou use as **setas do teclado** com o ponto focado (Shift anda de 0,1 em 0,1). Em **Valores numéricos** estão os mesmos quatro números, com caixa de digitação.',
+        'O X dos pontos vai de 0 a 1 (o tempo nunca volta). O Y pode passar de 0 e de 1, o que dá **overshoot**: o valor passa do destino e volta.',
+        'Os botões de curvas prontas servem de ponto de partida; **Restaurar curva original** volta ao easing nomeado do keyframe.',
+        'Cada arraste é um único passo de desfazer. A curva fica salva no projeto e no .jrec.',
+        'Keyframes antigos continuam exatamente como estavam: a curva só existe se você a criar.',
       ] },
       { h: 'Keyframe da seção inteira' },
       { p: 'Ao lado direito do título de cada seção que tem várias propriedades animáveis (por exemplo **Posição e transformação**) há um losango. Um clique cria, **no tempo atual**, os keyframes de todas as propriedades animáveis daquela seção, com os valores de agora.' },
@@ -421,6 +431,7 @@ export const MANUAL_CHAPTERS: Chapter[] = [
       { list: [
         'Palavras longas quebram com hífen e o texto diminui para caber no quadro.',
         'O balão aponta para o personagem que fala e acompanha o movimento.',
+        'Na aba **Balão**, **Entrada** e **Saída** animam o balão: pop com leve overshoot, aparecer/sumir suavemente ou os dois juntos, cada um com sua duração. A ponta da cauda não sai do lugar. Por padrão não há animação, como antes.',
       ] },
     ],
     related: ['lip-sync', 'legendas'],

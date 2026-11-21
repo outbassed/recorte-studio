@@ -65,6 +65,7 @@ export const PROPERTIES: PropertyDef[] = [
   rig('headNod', 'Acenar cabeça', 'px', -30, 30),
   rig('bodyY', 'Altura do corpo', 'px', -300, 300),
   num('rig.sit', 'Sentar', { unit: '%', display: 100, min: 0, max: 1, sliderMin: 0, sliderMax: 100, appliesTo: ['character'] }),
+  num('rig.squash', 'Esmagar e esticar', { unit: '%', display: 100, min: -0.5, max: 0.5, sliderMin: -50, sliderMax: 50, appliesTo: ['character'] }),
   num('rig.breath', 'Respiração', { unit: '%', display: 100, min: 0, max: 1.5, sliderMin: 0, sliderMax: 100, appliesTo: ['character'] }),
   num('expressionIntensity', 'Intensidade da expressão', {
     unit: '%', display: 100, min: 0, max: 1.5, sliderMin: 0, sliderMax: 100, appliesTo: ['character'],

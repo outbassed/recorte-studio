@@ -14,6 +14,7 @@
  * trocar 16:9 por 9:16 só recorta a moldura e nunca desloca os elementos.
  */
 import { z } from 'zod';
+import { sanitizeHandles } from '../animation/bezier';
 
 export const SCHEMA_VERSION = 1;
 export const WORLD_HEIGHT = 1080;
@@ -193,6 +194,8 @@ export const RigSchema = z.object({
   headNod: finite.default(0),
   bodyY: finite.default(0),
   sit: finite.default(0),
+  /** Esmagar (+) e esticar (−) o corpo inteiro a partir dos pés, em fração (±0,5 no máximo). Ausente = 0 (dados antigos não mudam). */
+  squash: finite.optional(),
   /** Respiração (0–1): expansão sutil do tronco, usada pelo movimento secundário. */
   breath: finite.default(0),
 });
@@ -344,7 +347,19 @@ export type NodeKind = SceneNode['kind'];
 /* -------------------------------------------------------------------------- */
 
 export const InterpolationSchema = z.enum(['hold', 'linear', 'bezier']);
-export const EasingSchema = z.enum(['linear', 'easeIn', 'easeOut', 'easeInOut', 'backOut', 'bounceOut']);
+/** Os seis primeiros são os identificadores originais (dados salvos continuam valendo); os demais são da Etapa 1. */
+export const EasingSchema = z.enum([
+  'linear', 'easeIn', 'easeOut', 'easeInOut', 'backOut', 'bounceOut',
+  'easeInCubic', 'easeOutCubic', 'easeInOutCubic', 'backIn', 'backInOut',
+]);
+
+/**
+ * Curva cubic-bezier livre de um segmento. x1/x2 ficam em [0,1] (o tempo nunca volta);
+ * y1/y2 podem sair de [0,1] dentro de um limite, para overshoot controlado. Valores fora da
+ * faixa são limitados; um objeto malformado é descartado e o keyframe volta ao easing nomeado.
+ */
+export const BezierHandlesSchema = z.object({ x1: z.number(), y1: z.number(), x2: z.number(), y2: z.number() }).transform((h) => sanitizeHandles(h));
+export type BezierHandlesData = z.output<typeof BezierHandlesSchema>;
 export type Interpolation = z.infer<typeof InterpolationSchema>;
 export type Easing = z.infer<typeof EasingSchema>;
 
@@ -354,6 +369,8 @@ export const KeyframeSchema = z.object({
   value: z.union([finite, z.string(), z.boolean()]),
   interpolation: InterpolationSchema.default('linear'),
   easing: EasingSchema.default('easeInOut'),
+  /** Só vale com interpolation 'bezier'. Ausente = usa o easing nomeado, como sempre foi. */
+  bezierHandles: BezierHandlesSchema.optional().catch(undefined),
 });
 export type Keyframe = z.infer<typeof KeyframeSchema>;
 export type KeyValue = Keyframe['value'];
@@ -376,10 +393,19 @@ export const ActionClipSchema = z.object({
   easing: EasingSchema.default('easeInOut'),
   /** Transição de entrada e saída; ausente usa o padrão da ação. */
   blendMs: z.number().int().min(0).max(5000).optional(),
+  /**
+   * "Acabamento de movimento": antecipação e esmagar/esticar (0–2). Ausente ou 0 = comportamento original.
+   * Só tem efeito em ações que o oferecem (hoje: pular).
+   */
+  finish: z.number().min(0).max(2).optional().catch(undefined),
 });
 export type ActionClip = z.infer<typeof ActionClipSchema>;
 
 export const LipSyncModeSchema = z.enum(['text', 'amplitude', 'manual', 'off']);
+
+/** Animação do balão ao entrar e ao sair. Ausente = 'none': balão estático, como sempre foi. */
+export const BubbleAnimSchema = z.enum(['none', 'pop', 'fade', 'popFade']);
+export type BubbleAnim = z.infer<typeof BubbleAnimSchema>;
 
 export const DialogueClipSchema = z.object({
   ...clipBase,
@@ -391,6 +417,11 @@ export const DialogueClipSchema = z.object({
   bubbleOffsetX: finite.default(0),
   bubbleOffsetY: finite.default(0),
   bubbleScale: finite.default(1),
+  /** Entrada e saída do balão (opcionais; clips antigos ficam estáticos). Durações em ms. */
+  bubbleIn: BubbleAnimSchema.optional().catch(undefined),
+  bubbleOut: BubbleAnimSchema.optional().catch(undefined),
+  bubbleInMs: z.number().int().min(0).max(3000).optional().catch(undefined),
+  bubbleOutMs: z.number().int().min(0).max(3000).optional().catch(undefined),
   lipSync: LipSyncModeSchema.default('text'),
   /** Clip de áudio cuja amplitude comanda a boca no modo "amplitude". */
   audioClipId: z.string().nullable().default(null),
@@ -531,9 +562,14 @@ export const CameraSchema = z.object({
 });
 export type Camera = z.infer<typeof CameraSchema>;
 
+/** Suavização do progresso da transição. Ausente = 'linear' (comportamento original). */
+export const TransitionEasingSchema = z.enum(['linear', 'easeInOutCubic', 'easeOutCubic']);
+export type TransitionEasing = z.infer<typeof TransitionEasingSchema>;
+
 export const TransitionSchema = z.object({
   kind: z.enum(['cut', 'fade', 'crossfade', 'wipe', 'slide']).default('cut'),
   durationMs: z.number().int().min(0).default(500),
+  easing: TransitionEasingSchema.optional().catch(undefined),
 });
 export type Transition = z.infer<typeof TransitionSchema>;
 

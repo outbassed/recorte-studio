@@ -1,5 +1,24 @@
 # Changelog
 
+## Em desenvolvimento: Etapa 1, acabamento de movimento e curvas
+
+Branch `ccr-9f02ac6f-ks0w2a`, sobre a `main`. Sem lançamento, sem merge e sem deploy. Tudo é **opcional e desligado por padrão para conteúdo existente**: projetos .jrec antigos abrem e salvam com o mesmo visual, e nenhum campo novo é gravado enquanto você não usar o recurso. Detalhes de uso em `docs/ETAPA-1.md`.
+
+### Novidades
+
+- **Curvas de easing:** easings novos (`easeInCubic`, `easeOutCubic`, `easeInOutCubic`, `backIn`, `backInOut`) e **curva cubic-bezier real** por keyframe (`bezierHandles: { x1, y1, x2, y2 }`), resolvendo x(t) de verdade (Newton com bissecção). Pontas exatas, X limitado a [0,1] (o tempo nunca volta), Y livre em [-1, 2] para overshoot controlado e dados inválidos sanitizados (nunca NaN/Infinity). Os seis ids antigos e o `bezier` sem pontos continuam com a fórmula original.
+- **Editor de curva no Inspector** (keyframe → Interpolação "Suave" → Easing → "Curva personalizada"): gráfico SVG com dois pontos arrastáveis (mouse e toque), setas do teclado, quatro campos numéricos, curvas prontas e "Restaurar curva original". Cada arraste é um passo de desfazer.
+- **Suavização das transições de cena** (Cena → Transições): Linear (padrão, como sempre foi), Suave (`easeInOutCubic`) ou Desacelera (`easeOutCubic`) para dissolver, deslizar, cortina e para os fades de entrada e de saída (cada um com a sua).
+- **Acabamento de movimento no Pular** (clip de ação → "Acabamento de movimento"): antecipação (agacha, braços recuam), impulso com esticada, arco com pausa curta no topo e compressão no pouso com recuperação amortecida. Usa um novo canal de rig `squash` (esmagar/esticar a partir dos pés, área constante, limitado a ±50 %). Intensidade de 5 % a 200 %.
+- **Balões animados** (clip de fala → aba Balão): entrada e saída "Nenhuma", "Pop com leve overshoot", "Aparecer/Sumir suavemente" ou "Pop + aparecer", com duração própria. A ponta da cauda fica ancorada durante o pop; clips curtos encolhem entrada e saída na mesma proporção.
+
+### Mudanças técnicas
+
+- `ActiveBubble` agora traz `localMs` e `remainingMs`; `bubbleAnimation()` é uma função pura do tempo.
+- `ActionDef.sample` recebe `durationMs` e `finish` (opcionais); `ActionDef.finishable` marca as ações que aceitam o acabamento (só `jump`).
+- Campos novos, todos opcionais: `Keyframe.bezierHandles`, `Transition.easing`, `ActionClip.finish`, `DialogueClip.bubbleIn/bubbleOut/bubbleInMs/bubbleOutMs`, `Rig.squash`. Valores inválidos são descartados na leitura. Sequências salvas levam `finish` e os campos do balão.
+- Fora do escopo desta etapa (de propósito): foot-lock, IK, física de cabelo, reescrita de andar/correr, rigs novos, máquina de escrever nos balões e tipos novos de transição.
+
 ## Em desenvolvimento: Biblioteca ampliada (IDs únicos, popup, pacotes oficiais, Vila Torta e +700 itens)
 
 Branch `claude/confident-turing-m65b6g`, sobre a `main` (1.2). Sem lançamento, sem merge e sem deploy. Detalhes em `docs/RELATORIO-BIBLIOTECA.md`, `docs/BIBLIOTECA-IDS.md`, `docs/PACOTES-OFICIAIS.md` e `docs/VILA-TORTA.md`.

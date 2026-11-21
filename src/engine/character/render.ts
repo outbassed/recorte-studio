@@ -16,6 +16,17 @@ import { renderEars, renderFace, type FaceState } from './face';
 import { renderHair } from './hair';
 import { azZ, viewInfo, type ViewInfo } from './views';
 
+/**
+ * Esmagar (+) e esticar (−) a partir dos pés, mantendo o volume aparente (área constante).
+ * Com `squash` 0 (todo projeto antigo) devolve escala 1: o SVG sai idêntico ao de antes.
+ */
+export function squashScale(squash: number | undefined): { sx: number; sy: number } {
+  const q = typeof squash === 'number' && Number.isFinite(squash) ? clamp(squash, -0.5, 0.5) : 0;
+  if (q === 0) return { sx: 1, sy: 1 };
+  const sy = 1 - q;
+  return { sx: 1 / Math.sqrt(sy), sy };
+}
+
 export interface CharacterPose {
   bodyView: ViewId;
   headView: ViewId;
@@ -550,8 +561,11 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
     `</g>`;
 
   const legs = renderLeg(legOrder[0]!) + renderLeg(legOrder[1]!);
+  // Esmagar e esticar em torno dos pés (origem): o personagem nunca afunda nem flutua por causa disso.
+  const sq = squashScale(rig.squash);
+  const squashAttr = rig.squash ? ` scale(${n(sq.sx)} ${n(sq.sy)})` : '';
   const svg =
-    `<g data-part="root" data-body-view="${pose.bodyView}" data-head-view="${pose.headView}" transform="translate(0 ${n(-rig.bodyY)})">` +
+    `<g data-part="root" data-body-view="${pose.bodyView}" data-head-view="${pose.headView}" transform="translate(0 ${n(-rig.bodyY)})${squashAttr}">` +
     (info.defs ? `<defs>${info.defs}</defs>` : '') +
     legs +
     (skirt ? `<g transform="translate(0 ${n(hipY)})">${skirt}</g>` : '') +
@@ -565,13 +579,13 @@ export function renderCharacter(def: CharacterDefinition, pose: CharacterPose, i
     const a2 = rad(g.upperDeg + g.lowerDeg);
     const hx = g.x - Math.sin(a1) * m.upperArm - Math.sin(a2) * (m.forearm + handSize * 1.2);
     const hy = hipY + shoulderY + Math.cos(a1) * m.upperArm + Math.cos(a2) * (m.forearm + handSize * 1.2);
-    return [hx, hy - rig.bodyY];
+    return [hx * sq.sx, hy * sq.sy - rig.bodyY];
   };
   return {
     svg,
     handL: handPos('L'),
     handR: handPos('R'),
-    head: [0, hipY + headLocalY - rig.bodyY],
+    head: [0, (hipY + headLocalY) * sq.sy - rig.bodyY],
     metrics: m,
   };
 }
