@@ -10,7 +10,7 @@ Executada em 21/11/2026 num container Linux (não no ambiente Windows descrito a
 | --- | --- |
 | `npm run typecheck` | Sem erros |
 | `npm run lint` | Sem erros nem avisos |
-| `npm test` | **558 de 558**, 34 arquivos (eram 539 em 33 antes da Etapa 1: +4 arquivos novos, +37 testes dos arquivos novos e +2 de exportação = prévia) |
+| `npm test` | **558 de 558**, 34 arquivos (a `main` tem 478 em 30; a Etapa 1 acrescenta 4 arquivos e 80 testes) |
 | `npm run build` | OK (6,5 MB em `dist/`) |
 | `playwright --project=e2e` (suíte completa) | **142 de 144** em 8,8 min |
 
