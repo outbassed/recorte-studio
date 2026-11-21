@@ -4,6 +4,7 @@
  */
 import { frameSize, type Project, type Scene, type Transition } from '../model/schema';
 import { n, safeColor } from './svg';
+import { EASINGS } from '../animation/interp';
 import { planFrame, planScene, type AssetResolver, type FramePlan, type PlanGroup } from './plan';
 
 export interface MontageSegment {
@@ -13,6 +14,13 @@ export interface MontageSegment {
   /** sobreposição efetiva com a cena anterior */
   overlapMs: number;
   transition: Transition;
+}
+
+/** Suaviza o progresso (0–1) de uma transição. Sem easing salvo = linear, igual ao comportamento original. */
+export function transitionProgress(tr: Pick<Transition, 'easing'>, raw: number): number {
+  const p = Number.isFinite(raw) ? Math.min(1, Math.max(0, raw)) : 0;
+  const id = tr.easing ?? 'linear';
+  return id === 'linear' ? p : EASINGS[id](p);
 }
 
 const OVERLAPPING = new Set(['crossfade', 'wipe', 'slide']);
@@ -53,13 +61,13 @@ export function planMontageFrame(project: Project, segments: MontageSegment[], t
   const prev = idx > 0 ? segments[idx - 1] : undefined;
   // Fades de/para preto
   const black = (op: number) => `<rect x="-4000" y="-3000" width="8000" height="6000" fill="#000" opacity="${op.toFixed(3)}"/>`;
-  if (cur.transition.kind === 'fade' && local < cur.transition.durationMs && idx > 0) base.screen += black(1 - local / Math.max(1, cur.transition.durationMs));
+  if (cur.transition.kind === 'fade' && local < cur.transition.durationMs && idx > 0) base.screen += black(1 - transitionProgress(cur.transition, local / Math.max(1, cur.transition.durationMs)));
   const out = scene.transitionOut;
   const remaining = cur.durationMs - local;
-  if (out.kind === 'fade' && remaining < out.durationMs) base.screen += black(1 - remaining / Math.max(1, out.durationMs));
+  if (out.kind === 'fade' && remaining < out.durationMs) base.screen += black(transitionProgress(out, 1 - remaining / Math.max(1, out.durationMs)));
 
   if (prev && cur.overlapMs > 0 && local < cur.overlapMs) {
-    const progress = local / cur.overlapMs;
+    const progress = transitionProgress(cur.transition, local / cur.overlapMs);
     const prevScene = project.scenes[prev.sceneId] as Scene;
     const a = planScene(project, prevScene, t - prev.startMs, assets, opts);
     const groupA: PlanGroup = { ...a.group, key: `${a.group.key}-prev` };

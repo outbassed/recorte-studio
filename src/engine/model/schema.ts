@@ -546,9 +546,14 @@ export const CameraSchema = z.object({
 });
 export type Camera = z.infer<typeof CameraSchema>;
 
+/** Suavização do progresso da transição. Ausente = 'linear' (comportamento original). */
+export const TransitionEasingSchema = z.enum(['linear', 'easeInOutCubic', 'easeOutCubic']);
+export type TransitionEasing = z.infer<typeof TransitionEasingSchema>;
+
 export const TransitionSchema = z.object({
   kind: z.enum(['cut', 'fade', 'crossfade', 'wipe', 'slide']).default('cut'),
   durationMs: z.number().int().min(0).default(500),
+  easing: TransitionEasingSchema.optional().catch(undefined),
 });
 export type Transition = z.infer<typeof TransitionSchema>;
 

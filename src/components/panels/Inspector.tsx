@@ -25,7 +25,7 @@ function movePivot(n: SceneNode, px: number, py: number): void {
   n.transform.y = d.y;
 }
 import { addSectionKeys, animatablePaths, keyTime, previewRemoveSectionKeys, removeSectionKeys, sectionKeyState, type AddSectionKeysResult, type KeyOwner, type RemoveSectionKeysResult } from '@/engine/model/sectionKeys';
-import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type Transition } from '@/engine/model/schema';
+import { CAMERA_TARGET, type AnyClip, type CharacterNode, type KeyValue, type Keyframe, type Project, type PropertyTrack, type Scene, type SceneNode, type Transition, type TransitionEasing } from '@/engine/model/schema';
 import { EXPRESSIONS, VISEMES } from '@/engine/character/expressions';
 import { POSES } from '@/engine/character/presets';
 import { VIEW_LABELS, VIEW_ORDER } from '@/engine/character/views';
@@ -752,6 +752,10 @@ const TRANSITIONS: Array<{ id: Transition['kind']; label: string }> = [
   { id: 'cut', label: 'Corte seco' }, { id: 'fade', label: 'Fade por preto' }, { id: 'crossfade', label: 'Dissolver' }, { id: 'wipe', label: 'Cortina' }, { id: 'slide', label: 'Deslizar' },
 ];
 
+const TRANSITION_EASINGS = [
+  { id: 'linear', label: 'Linear (padrão)' }, { id: 'easeInOutCubic', label: 'Suave (começa e termina devagar)' }, { id: 'easeOutCubic', label: 'Desacelera no fim' },
+];
+
 function SceneSections({ scene }: { scene: Scene }) {
   const set = (label: string, fn: (s: Scene) => void, coalesce?: string) => commit(label, (d) => fn(sceneOf(d as Project, scene.id)), coalesce ? { coalesce } : {});
   const bg = scene.background;
@@ -808,8 +812,18 @@ function SceneSections({ scene }: { scene: Scene }) {
       <Section title="Transição entre cenas" testId="sec-transition">
         <SelectField label="Entrada" value={scene.transitionIn.kind} testId="transition-in" options={TRANSITIONS} onChange={(v) => set('Transição', (s) => { s.transitionIn.kind = v as Transition['kind']; })} />
         <SliderNumberField label="Duração da entrada" unit="ms" min={0} max={10000} step={50} decimals={0} sliderMin={0} sliderMax={3000} value={scene.transitionIn.durationMs} onChange={(v) => set('Transição', (s) => { s.transitionIn.durationMs = Math.round(v); }, 'tr-in')} />
+        <SelectField label="Suavização da entrada" disabled={scene.transitionIn.kind === 'cut'} value={scene.transitionIn.easing ?? 'linear'} testId="transition-in-easing" options={TRANSITION_EASINGS} onChange={(v) => set('Suavização da transição', (s) => {
+          if (v === 'linear') delete s.transitionIn.easing;
+          else s.transitionIn.easing = v as TransitionEasing;
+        })} />
         <SelectField label="Saída" value={scene.transitionOut.kind === 'fade' ? 'fade' : 'cut'} options={[{ id: 'cut', label: 'Sem efeito' }, { id: 'fade', label: 'Fade para preto' }]} onChange={(v) => set('Transição', (s) => { s.transitionOut.kind = v as Transition['kind']; })} />
         <SliderNumberField label="Duração da saída" unit="ms" min={0} max={10000} step={50} decimals={0} sliderMin={0} sliderMax={3000} value={scene.transitionOut.durationMs} onChange={(v) => set('Transição', (s) => { s.transitionOut.durationMs = Math.round(v); }, 'tr-out')} />
+        {scene.transitionOut.kind === 'fade' && (
+          <SelectField label="Suavização da saída" value={scene.transitionOut.easing ?? 'linear'} testId="transition-out-easing" options={TRANSITION_EASINGS} onChange={(v) => set('Suavização da transição', (s) => {
+            if (v === 'linear') delete s.transitionOut.easing;
+            else s.transitionOut.easing = v as TransitionEasing;
+          })} />
+        )}
       </Section>
       </Pane>
     </>
