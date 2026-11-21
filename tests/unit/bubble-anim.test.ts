@@ -6,6 +6,7 @@ import { DialogueClipSchema, ProjectSchema, type DialogueClip } from '@/engine/m
 import { addDialogue, applySequence, extractSequence, sceneOf } from '@/engine/model/ops';
 import { createDemoProject } from '@/features/templates/projects';
 import { planFrame, planToSvgString } from '@/engine/render/plan';
+import { scopeRange } from '@/features/export/pipeline';
 
 type Anim = Pick<DialogueClip, 'bubbleIn' | 'bubbleOut' | 'bubbleInMs' | 'bubbleOutMs'>;
 const anim = (o: Anim, local: number, dur = 2000) => bubbleAnimation(o, local, dur - local);
@@ -172,6 +173,14 @@ describe('na cena (preview = exportação)', () => {
     frame(p, s, 0);
     expect(frame(p, s, 1100)).toBe(x);
     for (const t of [1000, 1001, 1100, 1299, 2701, 2999]) expect(frame(p, s, t)).not.toMatch(/NaN|Infinity/);
+  });
+  it('o quadro exportado da cena (PNG/vídeo) é idêntico ao da prévia durante a entrada e a saída', () => {
+    const { p, s } = setup({ bubbleIn: 'popFade', bubbleInMs: 400, bubbleOut: 'popFade', bubbleOutMs: 400 });
+    const exp = scopeRange(p, { kind: 'current', sceneId: s.id });
+    for (const t of [1000, 1100, 1399, 1800, 2700, 2950]) {
+      expect(exp.frameAt(t, () => undefined, false)).toBe(planToSvgString(planFrame(p, s, t, () => undefined), p.settings.width, p.settings.height));
+    }
+    expect(exp.frameAt(1100, () => undefined, false)).toContain('bubble-anim');
   });
   it('clip de 120 ms com entrada e saída longas funciona', () => {
     const { p, s, id } = setup();

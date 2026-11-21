@@ -73,6 +73,15 @@ Os testes E2E usam o Chrome instalado no sistema (`channel: 'chrome'`) e `ffprob
 
 Atalhos: tecla `?` dentro do editor.
 
+## Curvas e acabamento de movimento
+
+Recursos opcionais, desligados por padrão (projetos antigos não mudam). Guia completo em [docs/ETAPA-1.md](docs/ETAPA-1.md).
+
+- **Keyframe → Interpolação "Suave" → Easing → "Curva personalizada (Bézier)"**: editor de curva com pontos arrastáveis, teclado e valores numéricos.
+- **Cena → Transições → Suavização**: Linear (padrão), Suave ou Desacelera.
+- **Clip "Pular" → Acabamento de movimento**: antecipação, esmagar e esticar, pouso amortecido.
+- **Clip de fala → Balão → Entrada/Saída**: pop e fade, com durações.
+
 ## Projetos (.jrec)
 
 - **Salvar projeto** baixa um `.jrec` com tudo: cenas, personagens, timeline e as mídias em binário. É o único formato de projeto editável; serve de backup e para abrir em outro aparelho.

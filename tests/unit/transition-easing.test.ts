@@ -5,6 +5,7 @@ import { ProjectSchema, TransitionSchema, type Project, type Transition } from '
 import { buildMontage, planMontageFrame, transitionProgress } from '@/engine/render/montage';
 import { planToSvgString } from '@/engine/render/plan';
 import { EASINGS } from '@/engine/animation/interp';
+import { scopeRange } from '@/features/export/pipeline';
 
 const twoScenes = (inTr: Partial<Transition>, outTr: Partial<Transition> = {}, dur = 4000): Project => {
   const p = createProject('t');
@@ -109,6 +110,20 @@ describe('fades de entrada e saída (avaliados separadamente)', () => {
     expect(blackOpacities(frame(p, 3999).screen)[0]).toBeGreaterThan(0.99);
     const lin = twoScenes({ kind: 'cut' }, { kind: 'fade', durationMs: 1000 });
     expect(blackOpacities(frame(lin, 3250).screen)[0]).toBeCloseTo(0.25, 2);
+  });
+});
+
+describe('exportação usa o mesmo quadro da prévia', () => {
+  it('quadro exportado do projeto inteiro é idêntico ao da montagem, com e sem suavização', () => {
+    for (const easing of [undefined, 'easeInOutCubic'] as const) {
+      const p = twoScenes({ kind: 'crossfade', durationMs: 1000, easing }, { kind: 'fade', durationMs: 500, easing });
+      const { segments } = buildMontage(p);
+      const exp = scopeRange(p, { kind: 'project' });
+      const { w, h } = { w: p.settings.width, h: p.settings.height };
+      for (const t of [segments[1]!.startMs + 100, segments[1]!.startMs + 500, 3700, 5000]) {
+        expect(exp.frameAt(t, () => undefined, false)).toBe(planToSvgString(planMontageFrame(p, segments, t, () => undefined), w, h));
+      }
+    }
   });
 });
 

@@ -13,7 +13,7 @@ import { SliderNumberField } from './SliderNumberField';
 // Área do gráfico (unidades do viewBox). O Y visível vai de -0.5 a 1.5; além disso o handle é fixado na borda.
 const PAD = 14;
 const GW = 168; // largura de 1,0 em X
-const UNIT_Y = 96; // altura de 1,0 em Y
+const UNIT_Y = 84; // altura de 1,0 em Y
 const VIEW_Y_MIN = -0.5;
 const VIEW_Y_MAX = 1.5;
 const VIEW_W = GW + PAD * 2;
@@ -57,7 +57,11 @@ export function BezierEditor({ handles, onChange, onReset, onGestureStart, onGes
 
   const startDrag = (which: HandleKey) => (e: React.PointerEvent) => {
     e.preventDefault();
-    (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+    try {
+      (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+    } catch {
+      /* ponteiro sintético ou já liberado: o arraste continua pelos eventos do próprio handle */
+    }
     drag.current = which;
     onGestureStart?.();
   };
@@ -68,7 +72,11 @@ export function BezierEditor({ handles, onChange, onReset, onGestureStart, onGes
   };
   const endDrag = (e: React.PointerEvent) => {
     if (!drag.current) return;
-    (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    try {
+      (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+    } catch {
+      /* já liberado */
+    }
     drag.current = null;
     onGestureEnd?.();
   };
