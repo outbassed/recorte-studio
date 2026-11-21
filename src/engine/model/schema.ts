@@ -194,6 +194,8 @@ export const RigSchema = z.object({
   headNod: finite.default(0),
   bodyY: finite.default(0),
   sit: finite.default(0),
+  /** Esmagar (+) e esticar (−) o corpo inteiro a partir dos pés, em fração (±0,5 no máximo). Ausente = 0 (dados antigos não mudam). */
+  squash: finite.optional(),
   /** Respiração (0–1): expansão sutil do tronco, usada pelo movimento secundário. */
   breath: finite.default(0),
 });
@@ -391,10 +393,19 @@ export const ActionClipSchema = z.object({
   easing: EasingSchema.default('easeInOut'),
   /** Transição de entrada e saída; ausente usa o padrão da ação. */
   blendMs: z.number().int().min(0).max(5000).optional(),
+  /**
+   * "Acabamento de movimento": antecipação e esmagar/esticar (0–2). Ausente ou 0 = comportamento original.
+   * Só tem efeito em ações que o oferecem (hoje: pular).
+   */
+  finish: z.number().min(0).max(2).optional().catch(undefined),
 });
 export type ActionClip = z.infer<typeof ActionClipSchema>;
 
 export const LipSyncModeSchema = z.enum(['text', 'amplitude', 'manual', 'off']);
+
+/** Animação do balão ao entrar e ao sair. Ausente = 'none': balão estático, como sempre foi. */
+export const BubbleAnimSchema = z.enum(['none', 'pop', 'fade', 'popFade']);
+export type BubbleAnim = z.infer<typeof BubbleAnimSchema>;
 
 export const DialogueClipSchema = z.object({
   ...clipBase,
@@ -406,6 +417,11 @@ export const DialogueClipSchema = z.object({
   bubbleOffsetX: finite.default(0),
   bubbleOffsetY: finite.default(0),
   bubbleScale: finite.default(1),
+  /** Entrada e saída do balão (opcionais; clips antigos ficam estáticos). Durações em ms. */
+  bubbleIn: BubbleAnimSchema.optional().catch(undefined),
+  bubbleOut: BubbleAnimSchema.optional().catch(undefined),
+  bubbleInMs: z.number().int().min(0).max(3000).optional().catch(undefined),
+  bubbleOutMs: z.number().int().min(0).max(3000).optional().catch(undefined),
   lipSync: LipSyncModeSchema.default('text'),
   /** Clip de áudio cuja amplitude comanda a boca no modo "amplitude". */
   audioClipId: z.string().nullable().default(null),

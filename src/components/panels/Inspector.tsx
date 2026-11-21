@@ -597,6 +597,17 @@ function ClipSections({ scene, clipId, project }: { scene: Scene; clipId: string
           <SliderNumberField label="Intensidade" unit="%" display={100} min={0} max={3} sliderMin={0} sliderMax={200} value={c.intensity} onChange={(v) => set<typeof c>((x) => { x.intensity = v; })} />
           <SliderNumberField label="Velocidade" unit="×" min={0.05} max={10} step={0.05} decimals={2} sliderMin={0.1} sliderMax={4} value={c.speed} onChange={(v) => set<typeof c>((x) => { x.speed = v; })} />
           <SliderNumberField label="Transição (entrada e saída)" unit="ms" min={0} max={5000} sliderMin={0} sliderMax={1500} step={10} decimals={0} value={c.blendMs ?? getAction(c.action)?.blend ?? 180} testId="clip-blend" onChange={(v) => set<typeof c>((x) => { x.blendMs = Math.round(v); })} />
+          {getAction(c.action)?.finishable && (
+            <>
+              <ToggleField label="Acabamento de movimento" hint="Antecipação (agacha antes) e esmagar/esticar no impulso e no pouso. Desligado, o pulo fica como era." checked={(c.finish ?? 0) > 0} testId="clip-finish" onChange={(v) => set<typeof c>((x) => {
+                if (v) x.finish = 1;
+                else delete x.finish;
+              })} />
+              {(c.finish ?? 0) > 0 && (
+                <SliderNumberField label="Intensidade do acabamento" unit="%" display={100} min={0.05} max={2} step={0.05} decimals={0} sliderMin={10} sliderMax={200} value={c.finish ?? 1} testId="clip-finish-amount" onChange={(v) => set<typeof c>((x) => { x.finish = Math.min(2, Math.max(0.05, v)); })} />
+              )}
+            </>
+          )}
           <SelectField label="Braço" value={c.side} options={[{ id: 'auto', label: 'Automático (lado do alvo)' }, { id: 'L', label: 'Esquerdo' }, { id: 'R', label: 'Direito' }]} onChange={(v) => set<typeof c>((x) => { x.side = v as typeof x.side; })} />
           <button type="button" className="btn btn-block" data-testid="bake-clip" onClick={() => {
             let count = 0;

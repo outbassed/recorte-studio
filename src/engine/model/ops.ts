@@ -13,7 +13,7 @@ import { deepClone, uid } from './ids';
 import { decompose, IDENTITY, invert, mul, worldMatrix } from './hierarchy';
 import { getPath, setPath, type PropertyDef, clampToDef, getPropertyDef } from './properties';
 import {
-  ActionClipSchema, AudioClipSchema, CAMERA_TARGET, DialogueClipSchema, EffectClipSchema, SubtitleClipSchema, frameSize, type ActionClip, type AnyClip, type AudioTrack,
+  ActionClipSchema, AudioClipSchema, CAMERA_TARGET, DialogueClipSchema, EffectClipSchema, SubtitleClipSchema, frameSize, type ActionClip, type AnyClip, type AudioTrack, type DialogueClip,
   type Background, type CharacterNode, type Keyframe, type KeyValue, type Project, type PropertyTrack, type RigKey, type Scene, type SceneNode, type Track, type ViewId,
 } from './schema';
 
@@ -422,7 +422,7 @@ export function addAudioTrack(scene: Scene, role: AudioTrack['role']): AudioTrac
   return track;
 }
 
-export function addDialogue(scene: Scene, nodeId: string, text: string, startMs: number, durationMs?: number, extra: Partial<{ showBubble: boolean; showSubtitle: boolean; bubbleStyle: string }> = {}) {
+export function addDialogue(scene: Scene, nodeId: string, text: string, startMs: number, durationMs?: number, extra: Partial<Pick<DialogueClip, 'showBubble' | 'showSubtitle' | 'bubbleStyle' | 'bubbleIn' | 'bubbleOut' | 'bubbleInMs' | 'bubbleOutMs'>> = {}) {
   const track = getOrCreateDialogueTrack(scene, nodeId);
   const dur = durationMs ?? Math.max(900, Math.min(6000, text.length * 62 + 400));
   const clip = DialogueClipSchema.parse({ id: uid('clip'), kind: 'dialogue', startMs: Math.round(startMs), durationMs: Math.round(dur), text, ...extra });
@@ -705,7 +705,7 @@ export function bakeActionClip(scene: Scene, clipId: string, stepMs = 100): numb
   let count = 0;
   for (const k of keys) {
     const track = ensurePropertyTrack(scene, nodeId, `rig.${k}`);
-    const base = node.rig[k];
+    const base = node.rig[k] ?? 0;
     for (const s of samples) {
       setKeyframe(track, s.t, base + (s.rig[k] ?? 0), { interpolation: 'linear' });
       count++;
@@ -802,8 +802,13 @@ export interface SequenceItem {
   speed?: number;
   side?: 'auto' | 'L' | 'R';
   blendMs?: number;
+  finish?: number;
   text?: string;
   bubbleStyle?: string;
+  bubbleIn?: DialogueClip['bubbleIn'];
+  bubbleOut?: DialogueClip['bubbleOut'];
+  bubbleInMs?: number;
+  bubbleOutMs?: number;
 }
 export interface Sequence { version: 1; items: SequenceItem[]; durationMs: number }
 
@@ -811,8 +816,8 @@ export interface Sequence { version: 1; items: SequenceItem[]; durationMs: numbe
 export function extractSequence(scene: Scene, nodeId: string): Sequence | null {
   const items: SequenceItem[] = [];
   for (const t of scene.tracks) {
-    if (t.type === 'action' && t.targetNodeId === nodeId) for (const c of t.clips) items.push({ kind: 'action', offsetMs: c.startMs, durationMs: c.durationMs, action: c.action, intensity: c.intensity, speed: c.speed, side: c.side, blendMs: c.blendMs });
-    if (t.type === 'dialogue' && t.targetNodeId === nodeId) for (const c of t.clips) items.push({ kind: 'dialogue', offsetMs: c.startMs, durationMs: c.durationMs, text: c.text, bubbleStyle: c.bubbleStyle });
+    if (t.type === 'action' && t.targetNodeId === nodeId) for (const c of t.clips) items.push({ kind: 'action', offsetMs: c.startMs, durationMs: c.durationMs, action: c.action, intensity: c.intensity, speed: c.speed, side: c.side, blendMs: c.blendMs, finish: c.finish });
+    if (t.type === 'dialogue' && t.targetNodeId === nodeId) for (const c of t.clips) items.push({ kind: 'dialogue', offsetMs: c.startMs, durationMs: c.durationMs, text: c.text, bubbleStyle: c.bubbleStyle, bubbleIn: c.bubbleIn, bubbleOut: c.bubbleOut, bubbleInMs: c.bubbleInMs, bubbleOutMs: c.bubbleOutMs });
   }
   if (items.length === 0) return null;
   const start = Math.min(...items.map((i) => i.offsetMs));
@@ -827,10 +832,16 @@ export function applySequence(scene: Scene, nodeId: string, seq: Sequence, atMs:
   for (const it of seq.items) {
     const start = Math.max(0, Math.round(atMs + it.offsetMs));
     if (it.kind === 'dialogue') {
-      addDialogue(scene, nodeId, it.text ?? '', start, it.durationMs, { bubbleStyle: it.bubbleStyle ?? 'speech' });
+      const extra: Partial<DialogueClip> = { bubbleStyle: it.bubbleStyle ?? 'speech' };
+      if (it.bubbleIn) extra.bubbleIn = it.bubbleIn;
+      if (it.bubbleOut) extra.bubbleOut = it.bubbleOut;
+      if (it.bubbleInMs !== undefined) extra.bubbleInMs = it.bubbleInMs;
+      if (it.bubbleOutMs !== undefined) extra.bubbleOutMs = it.bubbleOutMs;
+      addDialogue(scene, nodeId, it.text ?? '', start, it.durationMs, extra);
     } else if (it.action && getAction(it.action)) {
       const clip = addActionClip(scene, nodeId, it.action, start, it.durationMs, { intensity: it.intensity, speed: it.speed, side: it.side });
       if (it.blendMs !== undefined) clip.blendMs = it.blendMs;
+      if (it.finish !== undefined) clip.finish = it.finish;
     } else continue;
     count++;
   }

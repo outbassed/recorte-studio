@@ -215,7 +215,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
       if (clip.action === 'standUp' && t >= clip.startMs) sitHold = 0;
       const s = sampleActionClip(clip, t, side);
       if (!s) continue;
-      for (const key of Object.keys(s.rig) as RigKey[]) rig[key] += (s.rig[key] ?? 0) * s.weight;
+      for (const key of Object.keys(s.rig) as RigKey[]) rig[key] = (rig[key] ?? 0) + (s.rig[key] ?? 0) * s.weight;
       actionWeight = Math.max(actionWeight, s.weight);
       if (s.expression && s.weight >= exprWeight && s.weight > 0.25) {
         expression = s.expression;
@@ -229,7 +229,7 @@ export function evaluateScene(project: Project, scene: Scene, timeMs: number): R
     rig.sit = Math.min(1, rig.sit + sitHold);
     // Movimento secundário: diminui enquanto uma ação está ativa, para não brigar com ela.
     const sec = sampleSecondary(id, t, n.secondary, actionWeight);
-    for (const key of Object.keys(sec.rig) as RigKey[]) rig[key] += sec.rig[key] ?? 0;
+    for (const key of Object.keys(sec.rig) as RigKey[]) rig[key] = (rig[key] ?? 0) + (sec.rig[key] ?? 0);
 
     // Boca: uma única fonte de visema por vez. Prioridade: manual > fala > áudio > expressão.
     let viseme: string | null = null;
